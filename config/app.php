@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // dev-1.0, Ferry, 20170804, New additional classes
+        Spatie\Permission\PermissionServiceProvider::class,     // role & permission package
+        Collective\Html\HtmlServiceProvider::class,             // Helper Form and Html
     ],
 
     /*
@@ -225,6 +228,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        // dev-1.0, Ferry, 20170804, Other aliases here...
+        'Form' => Collective\Html\FormFacade::class,            // Helper Form and Html
+        'Html' => Collective\Html\HtmlFacade::class,            // Helper Form and Html
 
     ],
 
