@@ -15,15 +15,10 @@ class CreateMPartsTable extends Migration
     {
         Schema::create('m_parts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id')->unsigned();;
-            $table->string('back_number', 100);
-            $table->string('part_number', 100);
+            $table->string('back_number');
+            $table->string('part_number');
             $table->timestamps();
-
-            $table->foreign('customer_id')->references('id')->on('m_customers')
-            ->onUpdate('cascade')->onDelete('cascade');
         });
-
     }
 
     /**
