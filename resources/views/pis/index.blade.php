@@ -3,11 +3,55 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div id="imageDiv" class="col-sm-4">
-            
+
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">Loading List</div>
+                    <div class="panel-body">       
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Detail No</label>
+
+                            <div class="col-md-8">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Part</div>
+                    <div class="panel-body">       
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Detail No</label>
+
+                            <div class="col-md-8">
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        
+        <div id="imageDiv" class="col-md-8">
+            
+        </div>  
+
     </div>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script> -->
 <!-- <script src="{{ asset('js/jquery.mmp.barcodereader.js') }}"></script> -->
@@ -42,7 +86,7 @@
                         if(rep2 == '')
                         document.getElementById("imageDiv").innerHTML="Data Part tidak ada, silahkan input ke Sistem";
                         else
-                        document.getElementById("imageDiv").innerHTML="<img src='{{url('/uploads/PIS')}}/"+rep2+".jpg' />";
+                        document.getElementById("imageDiv").innerHTML="<img src='{{url('/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>";
                         barcode = "";
                         rep2    = "";
                         jsonData= "";
