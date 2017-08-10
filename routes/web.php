@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/pis', 'PisController@index')->name('pis');
+Route::get('/getAjaxImage/{image}', 'PisController@getAjaxImage');

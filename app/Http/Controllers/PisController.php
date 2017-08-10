@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\m_customers;
+use App\m_parts;
 class PisController extends Controller
 {
     /**
@@ -14,7 +15,23 @@ class PisController extends Controller
     public function index()
     {
         //
-        return view('pis/index');
+        $customer = m_customers::all();
+        return view('pis/index', compact('customer'));
+    }
+
+
+    public function getAjaxImage($image)
+    {
+        //
+        $part = m_parts::where('part_number', $image)->get();
+
+//         return $;
+//         return response()->json([
+//     'name' => $image,
+//     'state' => 'CA'
+// ]);  
+                return response()->json($part); 
+        // return $part;
     }
 
     /**

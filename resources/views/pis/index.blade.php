@@ -3,66 +3,65 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div class="panel-heading">Login</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Login
-                                </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div id="imageDiv" class="col-sm-4">
+            
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<!-- <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script> -->
+<!-- <script src="{{ asset('js/jquery.mmp.barcodereader.js') }}"></script> -->
+<!-- <script type="text/javascript" src="./jquery-1.7.1.js"></script> -->
+    <script type="text/javascript">
+      var barcode="";
+      var rep2 = "";
+      var jsonData ="";
+ $(document).keypress(function(e) {
+
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if(code==13)// Enter key hit
+            {
+                console.log(barcode)
+                // $.get("{{ url('getAjaxImage/".barcode."') }}", data, function (dataJSON) {
+
+                //     console.log(data.part_number);
+
+                // });
+                $.ajax({
+                    type: 'get',           // POST Request
+                    url: "{{ url('getAjaxImage') }}"+'/'+barcode,            // Url of the Route (in this case user/save not only save)
+                    _token: "{{ csrf_token() }}",
+                    dataType: 'json',       // Data Type of the Transmit
+                    success: function (data) {
+                        // Successfuly called the Controler
+                        // alert(data.part_number)
+                        $.each(data, function(k, v){
+                                rep2 = v.part_number
+                        });
+
+                        if(rep2 == '')
+                        document.getElementById("imageDiv").innerHTML="Data Part tidak ada, silahkan input ke Sistem";
+                        else
+                        document.getElementById("imageDiv").innerHTML="<img src='{{url('/uploads/PIS')}}/"+rep2+".jpg' />";
+                        barcode = "";
+                        rep2    = "";
+                        jsonData= "";
+
+                    },
+                    error: function (data) {
+                        // Error while calling the controller (HTTP Response Code different as 200 OK
+                        console.log('Error:', data);
+                    }
+                });
+
+            }
+            else
+            {
+                barcode=barcode+String.fromCharCode(e.which);
+            }
+            
+        });
+    </script>
+
+
 @endsection
