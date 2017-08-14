@@ -9,10 +9,13 @@
                 <div class="panel-heading">Loading List</div>
                     <div class="panel-body">       
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Detail No</label>
-
-                            <div class="col-md-8">
+                            <div class="row">
+                                <label class="col-md-8 control-label">Detail No</label>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-11">
                                 <input id="detail_no" class="form-control" name="detail_no" required autofocus>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -49,9 +52,8 @@
     </div>
 </div>
 <!-- <script src="{{asset('/js/jquery.js')}}"></script> -->
- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 <script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
 
