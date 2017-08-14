@@ -26,51 +26,50 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">Part</div>
-                    <div class="panel-body">       
+                <div class="panel-body">       
                         <div class="form-group">
-                            <label class="col-md-4 control-label">Detail No</label>
-
-                            <div class="col-md-8">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                        </div>
-                    </div>
+                    <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Part</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
-            </div>
 
+         
+            <!-- x_panel -->
         </div>
         
         <div id="imageDiv" class="col-md-8">
+
             
+                <!-- x_content -->
+            </div>
+
         </div>  
 
     </div>
 </div>
+<!-- <script src="{{asset('/js/jquery.js')}}"></script> -->
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+<script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<!-- <script type='text/javascript' src='http://code.jquery.com/jquery-1.7.1.js'></script> -->
-<!-- <script src="{{ asset('js/jquery.mmp.barcodereader.js') }}"></script> -->
-<!-- <script type="text/javascript" src="./jquery-1.7.1.js"></script> -->
     <script type="text/javascript">
       var barcode="";
       var rep2 = "";
       var jsonData ="";
- $(document).keypress(function(e) {
+      $(document).keypress(function(e) {
 
             var code = (e.keyCode ? e.keyCode : e.which);
             if(code==13)// Enter key hit
             {
                 console.log(barcode)
-                // $.get("{{ url('getAjaxImage/".barcode."') }}", data, function (dataJSON) {
-
-                //     console.log(data.part_number);
-
-                // });
+               
                 $.ajax({
                     type: 'get',           // POST Request
                     url: "{{ url('getAjaxImage') }}"+'/'+barcode,            // Url of the Route (in this case user/save not only save)
@@ -105,7 +104,50 @@
             }
             
         });
-    </script>
+
+
+//sudah bener
+//  var database;
+// $(document).ready(function() {
+//     LoadData();
+// } );
+
+// function LoadData(){
+//     $.ajax({
+//         url: "{{ url('pis/pis_transaction') }}",
+//         type: "GET",
+//         dataType:"json",
+//         success:function(result){
+//             database=result;
+//             initTable();
+//         }
+//     })
+// }
+
+// function initTable(){
+//  $('#data_table').DataTable( {
+//         "aaData" : database,
+//         "aoColumns": [
+//          {"mDataProp": "id" },
+//          {"mDataProp" :"part_number" }
+//      ],
+   
+//  });
+// }
+// sudah bener
+
+$(document).ready(function() {
+    $('#data_table').DataTable( {
+        "ajax": "{{ url('pis/pis_transaction') }}",
+        "columns": [
+            { "data": "no" },
+            { "data": "part_number" },
+          
+        ]
+    } );
+} );
+
+</script>
 
 
 @endsection

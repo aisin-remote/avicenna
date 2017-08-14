@@ -10,7 +10,7 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "spatie/laravel-permission": "^1.12",
-        "yajra/laravel-datatables-oracle": "^7.5"
+        "yajra/laravel-datatables-oracle": "^7.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -19,4 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/pis', 'PisController@index')->name('pis');
+Route::get('/pis/pis_transaction', 'PisController@getPisTransaction');
 Route::get('/getAjaxImage/{image}', 'PisController@getAjaxImage');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\m_customers;
 use App\m_parts;
+use Yajra\Datatables\Datatables;
+
 class PisController extends Controller
 {
     /**
@@ -25,13 +27,34 @@ class PisController extends Controller
         //
         $part = m_parts::where('part_number', $image)->get();
 
-//         return $;
-//         return response()->json([
-//     'name' => $image,
-//     'state' => 'CA'
-// ]);  
-                return response()->json($part); 
-        // return $part;
+        return response()->json($part); 
+
+    }
+
+    public function getPisTransaction()
+    {
+         // $data = array();
+        $data['data'] = [];
+
+            $part=m_parts::get();
+            $i = 1;
+            foreach ($part as $value) {
+
+                 $data['data'][] = [
+                        //Hotfix-2.12 by Ferry on 20150812 no urut
+                    // $value->budget_no,
+                    'no' => str_pad($i, 2, '0', STR_PAD_LEFT),
+                    'part_number' => $value->part_number,                   //Hotfix-2.12 by Ferry on 20150814 asset no
+                ];
+                $i++;
+            }
+        
+
+        return $data;
+           // return $part;
+        // $users = m_parts::select(['id','part_number']);
+
+        // return Datatables::of($users)->make();
     }
 
     /**

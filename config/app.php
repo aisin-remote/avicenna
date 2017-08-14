@@ -180,6 +180,8 @@ return [
         // dev-1.0, Ferry, 20170804, New additional classes
         Spatie\Permission\PermissionServiceProvider::class,     // role & permission package
         Collective\Html\HtmlServiceProvider::class,             // Helper Form and Html
+
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*
@@ -232,6 +234,8 @@ return [
         // dev-1.0, Ferry, 20170804, Other aliases here...
         'Form' => Collective\Html\FormFacade::class,            // Helper Form and Html
         'Html' => Collective\Html\HtmlFacade::class,            // Helper Form and Html
+
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
 
     ],
 

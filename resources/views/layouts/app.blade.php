@@ -12,6 +12,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
+
 </head>
 <body>
     <div id="app">
@@ -75,7 +80,8 @@
         @yield('content')
     </div>
 
-    <!-- Scripts -->
+    <!-- Scripts 
     <script src="{{ asset('js/app.js') }}"></script>
+-->
 </body>
 </html>
