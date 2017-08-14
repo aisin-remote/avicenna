@@ -12,13 +12,7 @@
                             <label class="col-md-4 control-label">Detail No</label>
 
                             <div class="col-md-8">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="detail_no" class="form-control" name="detail_no" required autofocus>
                         </div>
                     </div>
                 </div>
@@ -27,16 +21,18 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Part</div>
                 <div class="panel-body">       
-                        <div class="form-group">
-                    <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Part</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    <div class="form-group">
+                        <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Part</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
+            </div>
 
          
             <!-- x_panel -->
@@ -86,6 +82,8 @@
                         document.getElementById("imageDiv").innerHTML="Data Part tidak ada, silahkan input ke Sistem";
                         else
                         document.getElementById("imageDiv").innerHTML="<img src='{{url('/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>";
+                        $('detail_no').val(rep2);
+                        document.getElementById("detail_no").readOnly = true;
                         barcode = "";
                         rep2    = "";
                         jsonData= "";
@@ -138,12 +136,15 @@
 
 $(document).ready(function() {
     $('#data_table').DataTable( {
+        "searching": false, 
+        "paging": false,
         "ajax": "{{ url('pis/pis_transaction') }}",
         "columns": [
             { "data": "no" },
             { "data": "part_number" },
           
-        ]
+        ],
+
     } );
 } );
 
