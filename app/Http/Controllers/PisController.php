@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\m_customers;
-use App\m_parts;
-use App\inventory_mutations;
+use App\all_customers;
+use App\all_parts;
+use App\all_mutations;
 use Yajra\Datatables\Datatables;
 
 class PisController extends Controller
@@ -18,7 +18,7 @@ class PisController extends Controller
     public function index()
     {
         //
-        $customer = m_customers::all();
+        $customer = all_customers::all();
         return view('pis/index', compact('customer'));
     }
 
@@ -26,7 +26,7 @@ class PisController extends Controller
     public function getAjaxImage($image)
     {
         //
-        $part = m_parts::where('part_number', $image)->get();
+        $part = all_parts::where('part_number', $image)->get();
 
         return response()->json($part); 
 
@@ -37,7 +37,7 @@ class PisController extends Controller
          // $data = array();
         $data['data'] = [];
 
-            $part=m_parts::get();
+            $part=all_mutations::get();
             $i = 1;
             foreach ($part as $value) {
 

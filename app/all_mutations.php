@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class inventory_mutations extends Model
+class all_mutations extends Model
 {
     protected $fillable = [
           'mutation_date','part_number','store_location','quantity','serial_no','loading_list',
