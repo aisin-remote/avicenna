@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMCustomersTable extends Migration
+class CreateAviPartsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateMCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::create('m_customers', function (Blueprint $table) {
+        Schema::create('avi_parts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('customer_code', 50);
-            $table->string('customer_name', 50);
+            $table->string('customer_id')->nullable();
+            $table->string('supplier_id')->nullable();
+            $table->string('back_number')->nullable();
+            $table->string('part_number');
+            $table->float('quantity');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ class CreateMCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('m_customers');
+        Schema::dropIfExists('avi_parts');
     }
 }

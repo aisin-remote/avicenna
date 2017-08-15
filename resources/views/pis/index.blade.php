@@ -92,12 +92,10 @@
                         }
                         else
                         {
-
+                            $('detail_no').val(rep2);
                             $('#table_hide').show(); //show div 
                             $('#imageDiv').show(); //show div 
-                            $("#imageDiv").html("<img src='{{url('/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>");
-                            document.getElementById("detail_no").readOnly = false;
-                            $('detail_no').val(rep2);
+                            $("#imageDiv").html("<img src='{{url('storage/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>");
                             document.getElementById("detail_no").readOnly = true;
                             barcode = "";
                             rep2    = "";
@@ -139,6 +137,7 @@ $("#btnReset").click(function(){
        $('#table_hide').hide();
        $('#imageDiv').hide();
        $('#detail_no').val('');
+       document.getElementById("detail_no").readOnly = false;
     });
 
 $(document).ready(function() {
