@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class all_parts extends Model
+class avi_parts extends Model
 {
     //
      protected $fillable = [

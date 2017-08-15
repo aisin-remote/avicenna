@@ -13,11 +13,11 @@ class AddQuantityAllPartsTable extends Migration
      */
     public function up()
     {
-        Schema::rename('m_parts', 'all_parts'); //rename parts
-        Schema::rename('inventory_mutations', 'all_mutations'); //rename mutations
-        Schema::rename('m_customers', 'all_customers'); //rename mutations
+        Schema::rename('m_parts', 'avi_parts'); //rename parts
+        Schema::rename('inventory_mutations', 'avi_mutations'); //rename mutations
+        Schema::rename('m_customers', 'avi_customers'); //rename mutations
 
-        Schema::table('all_parts', function (Blueprint $table) {
+        Schema::table('avi_parts', function (Blueprint $table) {
 
             $table->integer('quantity')->after('part_number');
 
@@ -31,7 +31,7 @@ class AddQuantityAllPartsTable extends Migration
      */
     public function down()
     {
-        Schema::table('m_parts', function (Blueprint $table) {
+        Schema::table('avi_parts', function (Blueprint $table) {
             //
         });
     }

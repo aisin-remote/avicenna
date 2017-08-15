@@ -21,10 +21,10 @@ Route::group(['middleware' => 'auth'], function () {
 //    });
 
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/pis', 'PisController@index')->name('pis');
-Route::get('/pis/pis_transaction', 'PisController@getPisTransaction');
-Route::get('/getAjaxImage/{image}', 'PisController@getAjaxImage');
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/pis', 'PisController@index')->name('pis');
+	Route::get('/pis/pis_transaction', 'PisController@getPisTransaction');
+	Route::get('/getAjaxImage/{image}', 'PisController@getAjaxImage');
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes

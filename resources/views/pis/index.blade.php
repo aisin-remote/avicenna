@@ -88,7 +88,7 @@
 
                         if(rep2 == ''){
                             $('#imageDiv').show(); //show div 
-                            $("#imageDiv").html("Data Part tidak ada, silahkan input ke Sistem");    
+                            $("#imageDiv").html('@lang("avicenna/pis.part_not_found")');    
                         }
                         else
                         {
@@ -135,61 +135,13 @@
         });
 
 
-//sudah bener
-//  var database;
-// $(document).ready(function() {
-//     LoadData();
-// } );
-
-// function LoadData(){
-//     $.ajax({
-//         url: "{{ url('pis/pis_transaction') }}",
-//         type: "GET",
-//         dataType:"json",
-//         success:function(result){
-//             database=result;
-//             initTable();
-//         }
-//     })
-// }
-
-// function initTable(){
-//  $('#data_table').DataTable( {
-//         "aaData" : database,
-//         "aoColumns": [
-//          {"mDataProp": "id" },
-//          {"mDataProp" :"part_number" }
-//      ],
-   
-//  });
-// }
-// sudah bener
-
 $("#btnReset").click(function(){
-       // var table = $('#data_table').DataTable();
- 
-       //      table
-       //          .clear()
-       //          .draw();
        $('#table_hide').hide();
        $('#imageDiv').hide();
        $('#detail_no').val('');
     });
 
 $(document).ready(function() {
-
-    // document.getElementById("detail_no").readOnly = true;
-    // var table = $('#data_table').DataTable( {
-    //     "searching" : false, 
-    //     "paging"    : false,
-    //     "info"      : false,
-    //     "ajax"      : "{{ url('pis/pis_transaction') }}",
-    //     "columns"   : [
-    //                     { "data": "no" },
-    //                     { "data": "part_number" },
-    //                   ],
-
-    // } );
     $('#table_hide').hide();
     $('#imageDiv').hide();
 } );
