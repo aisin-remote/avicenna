@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\m_customers;
 use App\m_parts;
+use App\inventory_mutations;
 use Yajra\Datatables\Datatables;
 
 class PisController extends Controller
