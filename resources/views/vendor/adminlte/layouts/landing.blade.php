@@ -295,6 +295,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{{ url (mix('/js/app-landing.js')) }}"></script>
+
 <script>
     $('.carousel').carousel({
         interval: 3500
