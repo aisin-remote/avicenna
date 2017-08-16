@@ -181,10 +181,13 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,     // role & permission package
         Collective\Html\HtmlServiceProvider::class,             // Helper Form and Html
 
+        Yajra\Datatables\DatatablesServiceProvider::class,
+
         /*
          * Acacha AdminLTE template provider
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+
     ],
 
     /*
@@ -238,10 +241,15 @@ return [
         'Form' => Collective\Html\FormFacade::class,            // Helper Form and Html
         'Html' => Collective\Html\HtmlFacade::class,            // Helper Form and Html
 
+
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
+
         /*
          * Acacha AdminLTE template alias
          */
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+
     ],
 
 ];
