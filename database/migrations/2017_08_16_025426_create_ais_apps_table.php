@@ -18,8 +18,12 @@ class CreateAisAppsTable extends Migration
     {
         Schema::create('ais_apps', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('apps_tcode', 4);
+            $table->string('apps_tcode', 4)->unique();
+            $table->integer('apps_level');
             $table->string('apps_sname', 10);
+            $table->string('apps_tcode_parent', 4);
+            $table->string('apps_tcode_root', 4);
+            $table->string('apps_route');
             $table->string('apps_fname', 50);
             $table->string('apps_icon_code', 50);
             $table->string('apps_icon_path');

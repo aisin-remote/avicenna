@@ -187,6 +187,7 @@ return [
          * Acacha AdminLTE template provider
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
+        App\Providers\AisyaMenuServiceProvider::class,
 
     ],
 
@@ -248,7 +249,8 @@ return [
         /*
          * Acacha AdminLTE template alias
          */
-        'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'AdminLTE'  => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
+        'AisyaApps' => App\Models\Aisya\ais_apps::class,        // dev-1.0, Ferry, 20180821, Helper untuk AISYA
 
     ],
 
