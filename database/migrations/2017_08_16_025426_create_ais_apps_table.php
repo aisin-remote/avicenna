@@ -20,6 +20,7 @@ class CreateAisAppsTable extends Migration
             $table->increments('id');
             $table->string('apps_tcode', 4)->unique();
             $table->integer('apps_level');
+            $table->boolean('apps_has_child');
             $table->string('apps_sname', 10);
             $table->string('apps_tcode_parent', 4);
             $table->string('apps_tcode_root', 4);

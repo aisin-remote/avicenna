@@ -27,6 +27,10 @@ class AisyaMenuServiceProvider extends ServiceProvider
             // Aisya level 0
             $aisya_root_menu = ais_apps::where('apps_level', 0)->get();
             $view->with('aisya_root_menu', $aisya_root_menu);
+
+            // Aisya level 0
+            $aisya_menu_1 = ais_apps::where('apps_level', 1)->get();
+            $view->with('aisya_menu_1', $aisya_menu_1);
         });
     }
 
