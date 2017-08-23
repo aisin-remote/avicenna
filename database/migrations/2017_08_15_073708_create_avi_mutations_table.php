@@ -17,9 +17,10 @@ class CreateAviMutationsTable extends Migration
             $table->increments('id');
             $table->dateTime('mutation_date');
             $table->string('part_number', 50);
-            $table->string('store_location', 50);
+            $table->string('from_location', 50); //
+            $table->string('to_location', 50);
             $table->integer('quantity');
-            $table->integer('serial_no');
+            $table->integer('serial_no')->nullable();
             $table->string('loading_list', 50);
             $table->string('delivery', 50);
             $table->string('customer', 50);

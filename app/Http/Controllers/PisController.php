@@ -30,7 +30,6 @@ class PisController extends Controller
     {
         //
         $part = avi_parts::where('part_number', $image)->get();
-
         return response()->json($part); 
 
     }
@@ -40,7 +39,9 @@ class PisController extends Controller
          // $data = array();
         $data['data'] = [];
 
-            $part=avi_mutations::get();
+            $part=avi_mutations::where('flag_confirm', 0)
+                    ->orderBy('id', 'desc')
+                    ->get();
             $i = 1;
             foreach ($part as $value) {
 
