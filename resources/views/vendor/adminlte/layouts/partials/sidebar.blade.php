@@ -33,15 +33,80 @@
         <ul class="sidebar-menu">
             <li class="header">{{ trans('adminlte_lang::message.header') }}</li>
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
-            <li class="treeview">
-                <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
-                <ul class="treeview-menu">
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
-                    <li><a href="#">{{ trans('adminlte_lang::message.linklevel2') }}</a></li>
-                </ul>
-            </li>
+            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+            <!-- Multilevel link ref -->
+            {{-- dev-1.0, Ferry, 20170822, Depth level menu kami batasi 0-3 untuk performance, jika lebih maka dianggap 3 --}}
+            @foreach ($aisya_root_menu as $root_menu)
+
+              @if (! $root_menu->apps_has_child)    {{-- level-0 --}}
+                <li><a href="{{ url($root_menu->apps_route) }}"><i class='{{ $root_menu->apps_icon_code }}'></i> <span>{{ $root_menu->apps_fname }}</span></a></li>
+              
+              @else
+                <li class="treeview">
+                  <a href="{{ url($root_menu->apps_route) }}">
+                    <i class="{{ $root_menu->apps_icon_code }}"></i> <span>{{ $root_menu->apps_fname }}</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+
+                    @foreach ($aisya_menu_1 = AisyaApps::where('apps_level', 1)
+                                                        ->where('apps_tcode_root', $root_menu->apps_tcode)
+                                                        ->get() as $menu_1)
+
+                      @if (! $menu_1->apps_has_child)    {{-- level-1 --}}
+                        <li><a href="{{ url($menu_1->apps_route) }}"><i class="{{ $menu_1->apps_icon_code }}"></i> {{ $menu_1->apps_fname }}</a></li>
+
+                      @else
+                        <li class="treeview">
+                          <a href="{{ url($menu_1->apps_route) }}"><i class="{{ $menu_1->apps_icon_code }}"></i> {{ $menu_1->apps_fname }}
+                            <span class="pull-right-container">
+                              <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                          </a>
+                          <ul class="treeview-menu">
+
+                            @foreach ($aisya_menu_2 = AisyaApps::where('apps_level', 2)
+                                                                ->where('apps_tcode_parent', $menu_1->apps_tcode)
+                                                                ->get() as $menu_2)
+                              
+                              @if (! $menu_2->apps_has_child)    {{-- level-2 --}}
+                                <li><a href="{{ url($menu_2->apps_route) }}"><i class="{{ $menu_2->apps_icon_code }}"></i> {{ $menu_2->apps_fname }}</a></li>
+
+                              @else
+                                <li class="treeview">
+                                  <a href="{{ url($menu_2->apps_route) }}"><i class="{{ $menu_2->apps_icon_code }}"></i> {{ $menu_2->apps_fname }}
+                                    <span class="pull-right-container">
+                                      <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                  </a>
+                                  <ul class="treeview-menu">
+                                    @foreach ($aisya_menu_3 = AisyaApps::where('apps_level', 3)
+                                                                ->where('apps_tcode_parent', $menu_2->apps_tcode)
+                                                                ->get() as $menu_3)
+
+                                        <li><a href="{{ url($menu_3->apps_route) }}"><i class="{{ $menu_3->apps_icon_code }}"></i> {{ $menu_3->apps_fname }}</a></li>
+                                    @endforeach
+                                  </ul>
+                                </li>
+                              @endif
+
+                            @endforeach
+
+                          </ul>
+                        </li>
+
+                      @endif
+
+                    @endforeach
+
+                  </ul>
+                </li>
+             
+              @endif  {{-- dev-1.0, Ferry, 20170822, jika menu punya sub menu --}}
+            @endforeach
+
         </ul><!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

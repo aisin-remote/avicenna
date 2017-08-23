@@ -7,6 +7,9 @@ use App\avi_customers;
 use App\avi_parts;
 use App\avi_mutations;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Input;
+use DB;
+
 
 class PisController extends Controller
 {
@@ -42,20 +45,43 @@ class PisController extends Controller
             foreach ($part as $value) {
 
                  $data['data'][] = [
-                        //Hotfix-2.12 by Ferry on 20150812 no urut
-                    // $value->budget_no,
                     'no' => str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'part_number' => $value->part_number,                   //Hotfix-2.12 by Ferry on 20150814 asset no
+                    'part_number' => $value->part_number,                   
                 ];
                 $i++;
             }
-        
 
         return $data;
-           // return $part;
-        // $users = m_parts::select(['id','part_number']);
+    }
 
-        // return Datatables::of($users)->make();
+    public function insertMutation( Request $request )
+    {
+        try{
+
+            DB::beginTransaction();
+
+            $user           = \Auth::user()->id;
+            $loading_list   = $request->get('loading_list');
+            $part_number    = $request->get('part_number');
+            $quantity       = avi_parts::getQuantity($part_number);
+
+            avi_mutations::insert(
+                ['mutation_date' => date('Y-m-d'), 'loading_list' => $loading_list, 
+                 'quantity' => $quantity->quantity , 'part_number' => $part_number, 
+                 'npk' => $user, 'flag_confirm' => 0]
+            );
+
+            DB::commit();
+            return $detail_no;
+
+        }
+        catch(\Exception $e){
+
+            return $e;
+            DB::rollBack();
+
+        }
+        
     }
 
     /**
