@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/part',"CreateOpnameController@GetPart");
+Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
 Route::post('/saveopname',"CreateOpnameController@SaveOpname");
 
 
