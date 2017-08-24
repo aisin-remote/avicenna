@@ -11,15 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
+Route::get('/', 'HomeController@index');
 
 Route::get('/part',"CreateOpnameController@GetPart");
 Route::post('/saveopname',"CreateOpnameController@SaveOpname");
-
-
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {

@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="{{ url('/home') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>A</b>LT</span>
+        <span class="logo-mini">@lang('aisya/header.app_title_mini')</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Admin</b>LTE Laravel </span>
+        <span class="logo-lg">@lang('aisya/header.app_title') </span>
     </a>
 
     <!-- Header Navbar -->

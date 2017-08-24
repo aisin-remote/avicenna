@@ -29,7 +29,7 @@
 
                 <register-form></register-form>
 
-                @include('adminlte::auth.partials.social_login')
+                {{-- dev-1.0, Ferry, 20170823, menghilangkan social facebook login ## @include('adminlte::auth.partials.social_login') --}}
 
                 <a href="{{ url('/login') }}" class="text-center">{{ trans('adminlte_lang::message.membreship') }}</a>
             </div><!-- /.form-box -->
