@@ -81,6 +81,11 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{asset('/js/app.js')}}"></script>
+<!-- laravel mix -->
+<script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
+<!-- laravel mix  -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+<script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
 </body>
 </html>

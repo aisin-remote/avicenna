@@ -57,11 +57,12 @@
 
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- <script src="{{asset('/js/jquery.js')}}"></script> -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
+<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script> -->
 
     <script type="text/javascript">
       var barcode   ="";
@@ -73,15 +74,18 @@
             var code = (e.keyCode ? e.keyCode : e.which);
             if(code==13)// Enter key hit
             {
-                if(detail_no.val().length === 0 || detail_no.val().length == 0)
+                // if(detail_no.val().length === 0 || detail_no.val().length == 0)
+                if($('#detail_no').val()=="")
                 {
                    
                     $("#detail_no").val(barcode);
                     barcode = "";
                     rep2    = "";
+                    console.log('loading list');
                 }
                 else
                 {
+                    console.log('masuk cari part#');
                     $.ajax({
                         type: 'get',           // POST Request
                         url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode,            // Url of the Route (in this case user/save not only save)
@@ -96,6 +100,7 @@
                             
                             if(rep2 == "" ){
                                 $("#imageDiv").html('@lang("avicenna/pis.part_not_found")');
+                                console.log('Ga ketemu part#');
                             }
                             else{
                              
