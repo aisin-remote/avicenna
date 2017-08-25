@@ -17,7 +17,7 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('/part',"CreateOpnameController@GetPart");
+Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
 Route::post('/saveopname',"CreateOpnameController@SaveOpname");
 
 Route::group(['middleware' => 'auth'], function () {
