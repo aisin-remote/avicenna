@@ -4,30 +4,30 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Loading List</div>
+                <div class="panel-heading">Part Number</div>
                     <div class="panel-body">       
                         <div class="form-group">
-                            <div class="row">
+                           <!--  <div class="row">
                                 <label class="col-md-8 control-label">Detail No</label>
-                            </div>
+                            </div> -->
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-12">
                                     <input id="detail_no" class="form-control" name="detail_no" required >
                                 </div>
-                                <div class="col-md-3">
+                               <!--  <div class="col-md-3">
                                     <button id="btnReset" class="btn btn-primary">
                                      Reset
                                     </button>
-                                </div>
+                                </div> -->
                             <!-- </div> -->
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="panel panel-default" id="table_hide">
+            <!-- <div class="panel panel-default" id="table_hide">
                 <div class="panel-heading">Part</div>
                 <div class="panel-body">       
                     <div class="form-group">
@@ -41,8 +41,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
-
+            </div> -->
+            
          
             <!-- x_panel -->
         </div>
@@ -58,11 +58,6 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<!-- <script src="{{asset('/js/jquery.js')}}"></script> -->
-<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script> -->
 
     <script type="text/javascript">
       var barcode   ="";
@@ -74,91 +69,50 @@
             var code = (e.keyCode ? e.keyCode : e.which);
             if(code==13)// Enter key hit
             {
-                // if(detail_no.val().length === 0 || detail_no.val().length == 0)
-                if($('#detail_no').val()=="")
-                {
-                   
-                    $("#detail_no").val(barcode);
-                    barcode = "";
-                    rep2    = "";
-                    console.log('loading list');
-                }
-                else
-                {
-                    console.log('masuk cari part#');
-                    $.ajax({
+                $('#detail_no').val('');
+                
+                $.ajax({
                         type: 'get',           // POST Request
-                        url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode,            // Url of the Route (in this case user/save not only save)
+                        url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode,  
                         _token: "{{ csrf_token() }}",
                         dataType: 'json',       // Data Type of the Transmit
                         success: function (data) {
-                            // Successfuly called the Controler
-                            // alert(data.part_number)
+
                             $.each(data, function(k, v){
                                     rep2 = v.part_number
                             });
                             
                             if(rep2 == "" ){
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(barcode);
                                 $("#imageDiv").html('@lang("avicenna/pis.part_not_found")');
-                                console.log('Ga ketemu part#');
+                                 $('#detail_no').prop('readonly', true);
+                                barcode = "";
+                                rep2    = "";
                             }
                             else{
-                             
-                                $('#table_hide').show(); //show div 
-                                // $('#imageDiv').show(); //show div 
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(rep2);
+                                $('#imageDiv').show();
 
                                 //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
                                 $("#imageDiv").html("<img src='{{url('storage/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>");
-                                //end fungsi menampilkan gambar
-                                //dev-1.0, 20170816, by yudo, get from table mutation
-                                var table = $('#data_table').DataTable( {
-                                "destroy"   : true, //ini refresh table
-                                "searching" : false, 
-                                "paging"    : false,
-                                "info"      : false,
-                                "ajax"      : "{{ url('pis/getAjaxMutation') }}",
-                                "columns"   : [
-                                                { "data": "no" },
-                                                { "data": "part_number" },
-                                              ],
+                                 $('#detail_no').prop('readonly', true);
+                                barcode = "";
+                                rep2    = "";
 
-                                } );
-                                //end of get from table mutation
-                                //dev-1.0 insert ke table mutation
-                                $.ajax({
-                                    type: 'POST',
-                                    url: "{{ url('/pis/insertMutation/') }}",
-                                    data: { 
-                                        "_token"        : "{{ csrf_token() }}",
-                                        'loading_list'  : $('#detail_no').val(), 
-                                        'part_number'   : rep2
-                                    },
-                                    success: function(msg){
-                                        console.log('wow' + msg);
-                                    }
-                                });
-                                //end of insert to table mutation
                             }
-
-                            barcode = "";
-                            rep2    = "";
-                            
-                        },
-                        error: function (data) {
-                            // Error while calling the controller (HTTP Response Code different as 200 OK
-                            console.log('Error:', data);
                         }
+                                          
                     });
-                }
-               
+                   
+                    
             }
             else
             {
                 barcode=barcode+String.fromCharCode(e.which);
-            }
-            
+            }    
         });
-
 
 $("#btnReset").click(function(){
        rep2    = "";
@@ -169,7 +123,7 @@ $("#btnReset").click(function(){
     });
 
 $(document).ready(function() {
-    $('#table_hide').hide();
+    // $('#table_hide').hide();
     // $('#imageDiv').hide();
     $('#detail_no').prop('readonly', true);
 } );

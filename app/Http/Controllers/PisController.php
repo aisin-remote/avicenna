@@ -25,55 +25,39 @@ class PisController extends Controller
         return view('pis/index', compact('customer'));
     }
 
-
+    //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
     public function getAjaxImage($image)
-    {
-        //
+    {       
         $part = avi_parts::where('part_number', $image)->get();
-        return response()->json($part); 
+        $qty  = avi_parts::getQuantity($image);
+        try{    
 
-    }
-
-    public function getPisTransaction()
-    {
-         // $data = array();
-        $data['data'] = [];
-
-            $part=avi_mutations::where('flag_confirm', 0)
-                    ->orderBy('id', 'desc')
-                    ->get();
-            $i = 1;
-            foreach ($part as $value) {
-
-                 $data['data'][] = [
-                    'no' => str_pad($i, 2, '0', STR_PAD_LEFT),
-                    'part_number' => $value->part_number,                   
-                ];
-                $i++;
+            if($part->isEmpty())
+            {       
+                return response()->json($part); 
             }
+            else{
 
-        return $data;
-    }
+                DB::beginTransaction();
 
-    public function insertMutation( Request $request )
-    {
-        try{
+                $user           = \Auth::user()->id;
 
-            DB::beginTransaction();
+                for($i = 0 ; $i <= 1 ; $i++){
 
-            $user           = \Auth::user()->id;
-            $loading_list   = $request->get('loading_list');
-            $part_number    = $request->get('part_number');
-            $quantity       = avi_parts::getQuantity($part_number);
+                    avi_mutations::insert(
+                        ['mutation_date' => date('Y-m-d'), 
+                         'quantity' => $i == 0 ? '-'.$qty->quantity : $qty->quantity, 
+                         'part_number' => $image, 
+                         'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'),
+                         'npk' => $user, 
+                         'flag_confirm' => 0]
+                    );
+                }
 
-            avi_mutations::insert(
-                ['mutation_date' => date('Y-m-d'), 'loading_list' => $loading_list, 
-                 'quantity' => $quantity->quantity , 'part_number' => $part_number, 
-                 'npk' => $user, 'flag_confirm' => 0]
-            );
+                DB::commit();
 
-            DB::commit();
-            return $detail_no;
+                return response()->json($part); 
+            }
 
         }
         catch(\Exception $e){
@@ -83,7 +67,28 @@ class PisController extends Controller
 
         }
         
+
     }
+    
+
+    function viewDashboardMutation(){
+
+        return view('adminlte::dashboard.mutation');
+    } 
+
+
+    function getAjaxMutation(){ 
+
+        $arr_result = avi_mutations::selectRaw('SUM(quantity) AS new_qty, part_number')
+                                                    ->where('store_location', config('global.warehouse_body.finish_good'))
+                                                    ->groupBy('part_number')
+                                                    ->get();
+
+
+        // $data = avi_mutations::select(DB::raw('part_number, store_location, SUM(quantity) as new_qty'))
+        //                         ->where('store_location', config('global.warehouse_body.finish_good'));
+        return $arr_result;
+    } 
 
     /**
      * Show the form for creating a new resource.
