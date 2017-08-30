@@ -19,6 +19,8 @@ class CreateAviPartsTable extends Migration
             $table->string('supplier_id')->nullable();
             $table->string('back_number')->nullable();
             $table->string('part_number');
+            $table->string('part_number_customer')->nullable(); //20170818, penambahan part_number_cust
+            $table->string('part_name')->nullable(); //20170818, penamabahan part_name
             $table->float('quantity');
             $table->timestamps();
         });
