@@ -13,7 +13,7 @@
 <script type="text/javascript">
 var data = {  _token: "{{ csrf_token() }}" };   // keep csrf token for session
 var i = 0;
-
+        setInterval(function(){
             $.get("{{ url('dashboard/getAjaxMutation') }}", data, function (dataJSON) {
                     
 
@@ -47,7 +47,7 @@ var i = 0;
                     });
 
             });
-
+        }, 5000);
 
 </script>
 @endsection

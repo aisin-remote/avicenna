@@ -15,6 +15,8 @@
 //     return view('welcome');
 // });
 
+Route::get('/', 'HomeController@index');
+
 
 Route::get('/pis', 'PisController@index')->name('pis');
 
@@ -30,6 +32,7 @@ Route::get('/dashboard/getAjaxMutation', 'PisController@getAjaxMutation');
 
 Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
 Route::post('/saveopname',"CreateOpnameController@SaveOpname");
+
 
 Route::group(['middleware' => 'auth'], function () {
     //    Route::get('/link1', function ()    {

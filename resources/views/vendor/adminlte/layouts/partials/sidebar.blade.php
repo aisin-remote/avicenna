@@ -51,7 +51,8 @@
                   </a>
                   <ul class="treeview-menu">
 
-                    @foreach ($aisya_menu_1 = AisyaApps::where('apps_level', 1)
+                    @foreach ($aisya_menu_1 = AisyaApps::join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                        ->where('apps_level', 1)
                                                         ->where('apps_tcode_root', $root_menu->apps_tcode)
                                                         ->get() as $menu_1)
 
@@ -67,7 +68,8 @@
                           </a>
                           <ul class="treeview-menu">
 
-                            @foreach ($aisya_menu_2 = AisyaApps::where('apps_level', 2)
+                            @foreach ($aisya_menu_2 = AisyaApps::join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                                ->where('apps_level', 2)
                                                                 ->where('apps_tcode_parent', $menu_1->apps_tcode)
                                                                 ->get() as $menu_2)
                               
@@ -82,7 +84,8 @@
                                     </span>
                                   </a>
                                   <ul class="treeview-menu">
-                                    @foreach ($aisya_menu_3 = AisyaApps::where('apps_level', 3)
+                                    @foreach ($aisya_menu_3 = AisyaApps::join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                                ->where('apps_level', 3)
                                                                 ->where('apps_tcode_parent', $menu_2->apps_tcode)
                                                                 ->get() as $menu_3)
 
