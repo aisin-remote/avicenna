@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\avi_parts;
 use App\avi_opname;
 use App\avi_mutations;
+use App\avi_locations;
 use Illuminate\Http\Request;
 
 class CreateOpnameController extends Controller
 {
 	function Opname(){
-		return view('adminlte::opname.CreateOpname');
+		$locations=avi_locations::all();
+		return view('adminlte::opname.CreateOpname',compact('locations'));
 	}   
 
 	function GetAjaxPart(){
@@ -35,13 +37,15 @@ class CreateOpnameController extends Controller
 		$qty_inserted=0;
 		$date_start=date('Y-m-d',strtotime('2011-08-02'));
 		$date_end=date('Y-m-d');
+		$location_code=$input['location'];
 		$opname_user_id=1;
 		$npk='0075';
+		$flag=1;
 
 		$opname=avi_opname::where('part_number','=',$part_number)
 				->orderby('id','desc')
 				->first();
-		// return $opname;
+		
 		if($opname!=null){
 			$qty_avi_opname=$opname['opname_quantity'];
 			$date_start=date('Y-m-d',strtotime($opname['opname_date']));
@@ -66,6 +70,7 @@ class CreateOpnameController extends Controller
 			$new_opname->part_number=$part_number;
 			$new_opname->opname_date=date('Y-m-d');
 			$new_opname->opname_quantity=$opname_quantity;
+			$new_opname->location_code=$location_code;
 			$new_opname->opname_user_id=$opname_user_id;
 			$new_opname->save();
 
@@ -73,6 +78,8 @@ class CreateOpnameController extends Controller
 			$new_mutation->mutation_date=date('Y-m-d');
 			$new_mutation->part_number=$part_number;
 			$new_mutation->quantity=$qty_inserted;
+			$new_mutation->store_location=$location_code;
+			$new_mutation->flag_confirm=$flag;
 			$new_mutation->npk=$npk;
 			$new_mutation->save();
 

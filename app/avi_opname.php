@@ -11,6 +11,7 @@ class avi_opname extends Model
         'part_number',
         'opname_date',
         'opname_quantity',
+        'location_code',
         'opname_user_id'
 
     ];
