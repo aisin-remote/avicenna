@@ -24,6 +24,7 @@ class CreateAviPartsTable extends Migration
             $table->string('product_group')->nullable();            // dev-1.0, Ferry, 20170830, Grouping product
             $table->string('product_line')->nullable();             // dev-1.0, Ferry, 20170830, Grouping product
             $table->float('quantity');
+            $table->float('standart_stock')->nullable();
             $table->timestamps();
         });
     }
