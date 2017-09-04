@@ -83,10 +83,6 @@ class PisController extends Controller
                                                     ->where('store_location', config('global.warehouse_body.finish_good'))
                                                     ->groupBy('part_number')
                                                     ->get();
-
-
-        // $data = avi_mutations::select(DB::raw('part_number, store_location, SUM(quantity) as new_qty'))
-        //                         ->where('store_location', config('global.warehouse_body.finish_good'));
         return $arr_result;
     } 
 

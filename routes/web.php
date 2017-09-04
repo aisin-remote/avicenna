@@ -43,6 +43,8 @@ Route::group(['middleware' => 'auth'], function () {
 	//dev-1.0, by Yudo, 20170824, Dashboard
 	Route::get('/dashboard/viewDashboardMutation', 'PisController@viewDashboardMutation');
 	Route::get('/dashboard/getAjaxMutation', 'PisController@getAjaxMutation');
+	Route::get('/dashboard/viewDashboardGenba', 'DashboardController@viewDashboardGenba'); //dev-1.0, 20170904, view genba
+	Route::get('/dashboard/getAjaxGenba', 'DashboardController@getAjaxGenba'); //dev-1.0, 20170904, ajax genba
 	//end of dashboard
 	
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
