@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 
 // dev-1.0, 20170821, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 use View;
+use Auth;
 
 // dev-1.0, 20170821, Ferry, Declare disini jika butuh Class customizing sendiri
 use App\Models\Aisya\ais_apps;
@@ -24,12 +25,21 @@ class AisyaMenuServiceProvider extends ServiceProvider
 
         View::composer('*.sidebar', function($view) {
 
+            $user = Auth::user();
+            $view->with('user', $user);
+
             // Aisya level 0
-            $aisya_root_menu = ais_apps::where('apps_level', 0)->get();
+            $aisya_root_menu = ais_apps::select('ais_apps.*')
+                                        ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                        ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
+                                        ->where('apps_level', 0)->distinct()->get();
             $view->with('aisya_root_menu', $aisya_root_menu);
 
             // Aisya level 0
-            $aisya_menu_1 = ais_apps::where('apps_level', 1)->get();
+            $aisya_menu_1 = ais_apps::select('ais_apps.*')
+                                        ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                        ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())    
+                                        ->where('apps_level', 1)->distinct()->get();
             $view->with('aisya_menu_1', $aisya_menu_1);
         });
     }

@@ -51,9 +51,12 @@
                   </a>
                   <ul class="treeview-menu">
 
-                    @foreach ($aisya_menu_1 = AisyaApps::where('apps_level', 1)
+                    @foreach ($aisya_menu_1 = AisyaApps::select('ais_apps.*')
+                                                        ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                        ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
+                                                        ->where('apps_level', 1)
                                                         ->where('apps_tcode_root', $root_menu->apps_tcode)
-                                                        ->get() as $menu_1)
+                                                        ->distinct()->get() as $menu_1)
 
                       @if (! $menu_1->apps_has_child)    {{-- level-1 --}}
                         <li><a href="{{ url($menu_1->apps_route) }}"><i class="{{ $menu_1->apps_icon_code }}"></i> {{ $menu_1->apps_fname }}</a></li>
@@ -67,9 +70,12 @@
                           </a>
                           <ul class="treeview-menu">
 
-                            @foreach ($aisya_menu_2 = AisyaApps::where('apps_level', 2)
+                            @foreach ($aisya_menu_2 = AisyaApps::select('ais_apps.*')
+                                                                ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                                ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
+                                                                ->where('apps_level', 2)
                                                                 ->where('apps_tcode_parent', $menu_1->apps_tcode)
-                                                                ->get() as $menu_2)
+                                                                ->distinct()->get() as $menu_2)
                               
                               @if (! $menu_2->apps_has_child)    {{-- level-2 --}}
                                 <li><a href="{{ url($menu_2->apps_route) }}"><i class="{{ $menu_2->apps_icon_code }}"></i> {{ $menu_2->apps_fname }}</a></li>
@@ -82,9 +88,12 @@
                                     </span>
                                   </a>
                                   <ul class="treeview-menu">
-                                    @foreach ($aisya_menu_3 = AisyaApps::where('apps_level', 3)
+                                    @foreach ($aisya_menu_3 = AisyaApps::select('ais_apps.*')
+                                                                ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                                                ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
+                                                                ->where('apps_level', 3)
                                                                 ->where('apps_tcode_parent', $menu_2->apps_tcode)
-                                                                ->get() as $menu_3)
+                                                                ->distinct()->get() as $menu_3)
 
                                         <li><a href="{{ url($menu_3->apps_route) }}"><i class="{{ $menu_3->apps_icon_code }}"></i> {{ $menu_3->apps_fname }}</a></li>
                                     @endforeach
