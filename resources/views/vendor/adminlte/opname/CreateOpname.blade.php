@@ -5,14 +5,22 @@
 @endsection
 
 @section('htmlheader')
-@parent
-<link rel="stylesheet" type="text/css" href="{{url('/css/select2.min.css')}}">
+  @parent
+  <link rel="stylesheet" type="text/css" href="{{url('/css/select2.min.css')}}">
+@endsection
+
+@section('contentheader_title')
+  @lang('avicenna/opname.default_title')
+@endsection
+
+@section('contentheader_description')
+  @lang('avicenna/opname.sto_entry_desc')
 @endsection
 
 @section('main-content')
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Create Opname</h3>
+        <h3 class="box-title">@lang('avicenna/opname.sto_entry_box')</h3>
 
         <div class="box-tools pull-right">
           <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
