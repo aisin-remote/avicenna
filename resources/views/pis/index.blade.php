@@ -79,7 +79,7 @@
                         success: function (data) {
 
                             $.each(data, function(k, v){
-                                    rep2 = v.part_number
+                                    rep2 = v.part_number_customer
                             });
                             
                             if(rep2 == "" ){

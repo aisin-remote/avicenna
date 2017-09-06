@@ -15,7 +15,7 @@ class avi_parts extends Model
 
     public static function getQuantity($part_number){
 
-    	return self::where('part_number', $part_number)->first();
+    	return self::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$part_number.'%"')->first();
     
     }
 }

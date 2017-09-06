@@ -28,8 +28,11 @@ class PisController extends Controller
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
     public function getAjaxImage($image)
     {       
-        $part = avi_parts::where('part_number_customer', $image)->get(); //dev-1.0, by yudo, 20170609, change part number customer
-        $qty  = avi_parts::getQuantity($image);
+        $image  = str_replace("-","", $image);
+        $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')->get(); //dev-1.0, by yudo, 20170609, change part number customer
+        // $qty    = avi_parts::getQuantity($image);
+
+        return $part; 
         try{    
 
             if($part->isEmpty())
