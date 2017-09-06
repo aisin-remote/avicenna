@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
+use Cache;
+
 class LoginController extends Controller
 {
     /*
@@ -21,6 +24,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers {
         attemptLogin as attemptLoginAtAuthenticatesUsers;
+        logout as performLogout;        // dev-1.0, Ferry, 20170906, Override logout function to clear cache
     }
 
     /**
@@ -88,5 +92,11 @@ class LoginController extends Controller
             $request->has('remember'));
     }
 
-
+    // dev-1.0, Ferry, 201709906, Jika melakukan logout clear cache juga
+    public function logout(Request $request)
+    {
+        $this->performLogout($request);
+        Cache::forget('avi_mutation_types');
+        return redirect('/');
+    }
 }

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\avi_dashboard_genbas;
+
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
+
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
+use App\Models\Avicenna\avi_dashboard_genbas;
 
 class DashboardController extends Controller
 {

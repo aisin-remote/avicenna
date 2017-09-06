@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\avi_customers;
-use App\avi_parts;
-use App\avi_mutations;
-use Yajra\Datatables\Datatables;
+
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 use Illuminate\Support\Facades\Input;
 use DB;
 
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
+use App\Models\Avicenna\avi_customers;
+use App\Models\Avicenna\avi_parts;
+use App\Models\Avicenna\avi_mutations;
+use Yajra\Datatables\Datatables;
 
 class PisController extends Controller
 {

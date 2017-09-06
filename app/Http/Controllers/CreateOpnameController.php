@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\avi_parts;
-use App\avi_opname;
-use App\avi_mutations;
-use App\avi_locations;
 use Illuminate\Http\Request;
+
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
+use Auth;
+
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
+use App\Models\Avicenna\avi_parts;
+use App\Models\Avicenna\avi_opname;
+use App\Models\Avicenna\avi_mutations;
+use App\Models\Avicenna\avi_locations;
 
 class CreateOpnameController extends Controller
 {
@@ -39,7 +44,7 @@ class CreateOpnameController extends Controller
 		$date_end=date('Y-m-d');
 		$location_code=$input['location'];
 		$opname_user_id=1;
-		$npk='0075';
+		$npk=Auth::user()->npk;
 		$flag=1;
 
 		$opname=avi_opname::where('part_number','=',$part_number)
@@ -76,6 +81,7 @@ class CreateOpnameController extends Controller
 
 			$new_mutation=new avi_mutations();
 			$new_mutation->mutation_date=date('Y-m-d');
+			$new_mutation->mutation_code=($qty_inserted > 0 ? config('avi_mutation.sto_fg_in') : config('avi_mutation.sto_fg_out'));
 			$new_mutation->part_number=$part_number;
 			$new_mutation->quantity=$qty_inserted;
 			$new_mutation->store_location=$location_code;
