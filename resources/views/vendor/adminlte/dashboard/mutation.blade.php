@@ -6,6 +6,14 @@
 
 @endsection
 
+@section('contentheader_title')
+  @lang('avicenna/dashboard.default_title')
+@endsection
+
+@section('contentheader_description')
+  @lang('avicenna/dashboard.dashboard_mutation')
+@endsection
+
 @section('scripts')
 @parent
 <script src="{{ url('/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
@@ -13,7 +21,7 @@
 <script type="text/javascript">
 var data = {  _token: "{{ csrf_token() }}" };   // keep csrf token for session
 var i = 0;
-        setInterval(function(){
+   
             $.get("{{ url('dashboard/getAjaxMutation') }}", data, function (dataJSON) {
                     
 
@@ -26,7 +34,29 @@ var i = 0;
                      
                     $('#container').highcharts({
                         chart: {
-                            type: 'column'
+                                type: 'column',
+                                events: {
+                                    load: function() {
+
+                                        // set up the updating of the chart each second
+                                        setInterval(function(){
+                                            var chart = $("#container").highcharts();
+
+                                            $.get("{{ url('dashboard/getAjaxMutation') }}", data, function(dataJSON) {  //dev-1.0, 20170905, by yudo, modify $getJSON
+                                               
+                                                var myseries = [];
+
+                                                for(var i=0;i<dataJSON.length;i++){
+                                                   myseries.push(parseInt(dataJSON[i].new_qty));
+                                                }
+                                                
+                                                chart.series[0].update({data : myseries});
+                                            
+                                            });
+
+                                        }, 5000);
+                                    }              
+                                }
                         },
                         title: {
                             text: 'Dashboard Stock'
@@ -47,7 +77,7 @@ var i = 0;
                     });
 
             });
-        }, 5000);
+       
 
 </script>
 @endsection

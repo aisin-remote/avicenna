@@ -28,7 +28,7 @@ class PisController extends Controller
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
     public function getAjaxImage($image)
     {       
-        $part = avi_parts::where('part_number', $image)->get();
+        $part = avi_parts::where('part_number_customer', $image)->get(); //dev-1.0, by yudo, 20170609, change part number customer
         $qty  = avi_parts::getQuantity($image);
         try{    
 
@@ -46,7 +46,7 @@ class PisController extends Controller
 
                     avi_mutations::insert(
                         ['mutation_date' => date('Y-m-d'), 
-                         'quantity' => $i == 0 ? '-'.$qty->quantity : $qty->quantity, 
+                         'quantity' => $i == 0 ? '-'.$qty->quantity_box : $qty->quantity_box, 
                          'part_number' => $image, 
                          'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'),
                          'npk' => $user, 
