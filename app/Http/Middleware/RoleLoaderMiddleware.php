@@ -12,6 +12,7 @@ use Schema;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\Avicenna\avi_mutation_type;
+use App\Models\Avicenna\avi_uom;
 
 class RoleLoaderMiddleware
 {
@@ -39,6 +40,18 @@ class RoleLoaderMiddleware
                 });
 
                 config()->set('avi_mutation', $avi_mutation);
+            }
+
+            if (Schema::hasTable('avi_uoms')) {
+                
+                // Using cache to speed performance, so don't forget to FORGET the cache everytime update periods !!!
+                $avi_uom = new avi_uom;
+                $avi_uom = Cache::remember('avi_uoms', 60, function() use ($avi_uom)
+                {
+                    return $avi_uom->pluck('code', 'sname')->all();
+                });
+
+                config()->set('avi_uom', $avi_uom);
             }
         }
 

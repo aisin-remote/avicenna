@@ -19,9 +19,9 @@ CREATE TABLE IF NOT EXISTS `avi_mutation_types` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_mutation_types: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_mutation_types: ~14 rows (approximately)
 /*!40000 ALTER TABLE `avi_mutation_types` DISABLE KEYS */;
 INSERT INTO `avi_mutation_types` (`id`, `code`, `name`, `desc`, `created_at`, `updated_at`) VALUES
 	(1, 'Z01', 'sto_fg_in', 'Stock Opname In Finish Good', '2017-09-06 11:14:57', '2017-09-06 11:14:58'),
@@ -37,7 +37,9 @@ INSERT INTO `avi_mutation_types` (`id`, `code`, `name`, `desc`, `created_at`, `u
 	(11, '261', 'consumption_out', 'Good Consumption Out From Production', '2017-09-06 11:30:46', '2017-09-06 11:30:49'),
 	(12, '262', 'consumption_in', 'Good Consumption In (Reversal) From Production', '2017-09-06 11:31:33', '2017-09-06 11:31:33'),
 	(13, '311', 'move_out_in', 'Good Movement Out From In To Location', '2017-09-06 11:34:11', '2017-09-06 11:34:12'),
-	(14, '312', 'move_in_out', 'Good Movement In From Out To (Reversal) Location', '2017-09-06 11:35:10', '2017-09-06 11:35:10');
+	(14, '312', 'move_in_out', 'Good Movement In From Out To (Reversal) Location', '2017-09-06 11:35:10', '2017-09-06 11:35:10'),
+	(15, '601', 'gi_out_delivery', 'Good Issue Out Delivery', '2017-09-07 15:05:30', '2017-09-07 15:05:30'),
+	(16, '602', 'gi_in_delivery', 'Good Issue In (Reversal) Delivery', '2017-09-07 15:06:07', '2017-09-07 15:06:07');
 /*!40000 ALTER TABLE `avi_mutation_types` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
