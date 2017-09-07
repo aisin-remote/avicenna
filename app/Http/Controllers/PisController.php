@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
-use Illuminate\Support\Facades\Input;
 use DB;
+use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\Input;
 
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
-use App\Models\Avicenna\avi_customers;
 use App\Models\Avicenna\avi_parts;
 use App\Models\Avicenna\avi_mutations;
-use Yajra\Datatables\Datatables;
+use App\Models\Avicenna\avi_customers;
+
 
 class PisController extends Controller
 {
@@ -33,9 +34,8 @@ class PisController extends Controller
     {       
         $image  = str_replace("-","", $image);
         $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')->get(); //dev-1.0, by yudo, 20170609, change part number customer
-        // $qty    = avi_parts::getQuantity($image);
-
-        return $part; 
+        $qty    = avi_parts::getQuantity($image);
+        
         try{    
 
             if($part->isEmpty())
@@ -46,19 +46,25 @@ class PisController extends Controller
 
                 DB::beginTransaction();
 
-                $user           = \Auth::user()->id;
+                $user           = \Auth::user()->npk;
 
-                for($i = 0 ; $i <= 1 ; $i++){
+                // for($i = 0 ; $i <= 1 ; $i++){ //akitfkan jika prioritas 2 dijalankan
 
                     avi_mutations::insert(
-                        ['mutation_date' => date('Y-m-d'), 
-                         'quantity' => $i == 0 ? '-'.$qty->quantity_box : $qty->quantity_box, 
-                         'part_number' => $image, 
-                         'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'),
+                        [
+                         'mutation_code' => config('avi_mutation.gi_out_delivery'),
+                         'mutation_date' => date('Y-m-d'), 
+                         // 'quantity' => $i == 0 ? '-'.$qty->quantity_box : $qty->quantity_box, //prioritas 2
+                        'quantity' => $qty->quantity_box * -1, 
+                         'part_number' => $qty->part_number, 
+                         // 'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'), //prioritas 2
+                         'store_location' => config('global.warehouse_body.finish_good') ,
                          'npk' => $user, 
-                         'flag_confirm' => 0]
+                         'flag_confirm' => 0,
+                         'uom_code' => config('avi_uom.pcs')
+                         ]
                     );
-                }
+                // }
 
                 DB::commit();
 
