@@ -11,13 +11,14 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
     //    Route::get('/link1', function ()    {
 	//        // Uses Auth Middleware
 	//    });
 
 	// dev-1.0, Ferry, 20170830, Route AISYA ==========================================================
 	Route::get('/', 'HomeController@index');
+	Route::get('/home', 'HomeController@index');
 	//
 	//
 	//
