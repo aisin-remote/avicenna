@@ -84,6 +84,7 @@ class CreateOpnameController extends Controller
 			$new_mutation->mutation_code=($qty_inserted > 0 ? config('avi_mutation.sto_fg_in') : config('avi_mutation.sto_fg_out'));
 			$new_mutation->part_number=$part_number;
 			$new_mutation->quantity=$qty_inserted;
+			$new_mutation->uom_code=config('avi_uom.pcs');
 			$new_mutation->store_location=$location_code;
 			$new_mutation->flag_confirm=$flag;
 			$new_mutation->npk=$npk;
