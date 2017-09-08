@@ -78,9 +78,7 @@
                         dataType: 'json',       // Data Type of the Transmit
                         success: function (data) {
 
-                            $.each(data, function(k, v){
-                                    rep2 = v.part_number_customer
-                            });
+                            rep2 = data.part_number_customer;
                             
                             if(rep2 == "" ){
                                 $('#detail_no').prop('readonly', false);
@@ -96,8 +94,8 @@
                                 $('#imageDiv').show();
 
                                 //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                                $("#imageDiv").html("<img src='{{url('storage')}}/"+rep2+".JPG' width='1000px'/>");
-                                 $('#detail_no').prop('readonly', true);
+                                $("#imageDiv").html("<img src='"+data.img_path+"' width='1000px'/>");
+                                $('#detail_no').prop('readonly', true);
                                 barcode = "";
                                 rep2    = "";
 

@@ -33,14 +33,19 @@ class PisController extends Controller
     public function getAjaxImage($image)
     {       
         $image  = str_replace("-","", $image);
-        $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')->get(); //dev-1.0, by yudo, 20170609, change part number customer
+        
+        $part   = avi_parts::select('part_number_customer')
+                            ->whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')
+                            ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
+        
         $qty    = avi_parts::getQuantity($image);
         
         try{    
 
-            if($part->isEmpty())
+            if(! $part)
             {       
-                return response()->json($part); 
+                // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
+                return array("part_number_customer" => "");
             }
             else{
 
@@ -52,23 +57,30 @@ class PisController extends Controller
 
                     avi_mutations::insert(
                         [
-                         'mutation_code' => config('avi_mutation.gi_out_delivery'),
-                         'mutation_date' => date('Y-m-d'), 
-                         // 'quantity' => $i == 0 ? '-'.$qty->quantity_box : $qty->quantity_box, //prioritas 2
-                        'quantity' => $qty->quantity_box * -1, 
-                         'part_number' => $qty->part_number, 
-                         // 'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'), //prioritas 2
-                         'store_location' => config('global.warehouse_body.finish_good') ,
-                         'npk' => $user, 
-                         'flag_confirm' => 0,
-                         'uom_code' => config('avi_uom.pcs')
+                            'mutation_code' => config('avi_mutation.gi_out_delivery'),
+                            'mutation_date' => date('Y-m-d'), 
+                            // 'quantity' => $i == 0 ? '-'.$qty->quantity_box : $qty->quantity_box, //prioritas 2
+                            'quantity' => $qty->quantity_box * -1, 
+                            'part_number' => $qty->part_number, 
+                            // 'store_location' => $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'), //prioritas 2
+                            'store_location' => config('global.warehouse_body.finish_good') ,
+                            'npk' => $user, 
+                            'flag_confirm' => 0,
+                            'uom_code' => config('avi_uom.pcs')
                          ]
                     );
                 // }
 
                 DB::commit();
 
-                return response()->json($part); 
+                // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
+                $arrJSON = array(
+                                "img_path" => \Storage::exists('/public/pis/'.$part->part_number_customer.'.JPG') ? 
+                                                asset('storage/pis/'.$part->part_number_customer.'.JPG') :
+                                                asset('storage/pis/default.JPG'),
+                                "part_number_customer" => $part->part_number_customer
+                        );
+                return $arrJSON;
             }
 
         }
