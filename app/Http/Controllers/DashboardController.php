@@ -29,6 +29,18 @@ class DashboardController extends Controller
         return $arr_result;
     } 
 
+       function viewDashboardModel(){
+
+        return view('adminlte::dashboard.model');
+    } 
+
+
+    function getAjaxModel(){ 
+
+        $arr_result = avi_dashboard_models::all();
+        return $arr_result;
+    } 
+
     public function index()
     {
         //

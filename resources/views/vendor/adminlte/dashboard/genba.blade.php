@@ -6,6 +6,14 @@
 
 @endsection
 
+@section('contentheader_title')
+  @lang('avicenna/dashboard.default_title')
+@endsection
+
+@section('contentheader_description')
+  @lang('avicenna/dashboard.dashboard_genba')
+@endsection
+
 @section('scripts')
 @parent
 <script src="{{ url('/js/highcharts/highcharts.js') }}" type="text/javascript"></script>
@@ -27,10 +35,40 @@ var i = 0;
                normal.push(parseInt(dataJSON[i].normal));
                abnormality.push(parseInt(dataJSON[i].abnormality));
             }
+
              
             $('#container').highcharts({
+
                chart: {
-                    type: 'column'
+                    // type: 'column'
+                    type: 'column',
+                    events: {
+                        load: function() {
+
+                            // set up the updating of the chart each second
+                            setInterval(function(){
+                                var chart = $("#container").highcharts();
+
+                                $.get("{{ url('dashboard/getAjaxGenba') }}", data, function(dataJSON) {  //dev-1.0, 20170905, by yudo, modify $getJSON
+                                   
+                                    var categories   =[];
+                                    var normal       =[];
+                                    var abnormality  =[];
+                                    var myseries = [];
+
+                                    for(var i=0;i<dataJSON.length;i++){
+                                       categories.push(dataJSON[i].categories);
+                                       normal.push(parseInt(dataJSON[i].normal));
+                                       abnormality.push(parseInt(dataJSON[i].abnormality));
+                                    }
+
+                                    chart.series[0].update({data : normal});
+                                    chart.series[1].update({data : abnormality});
+
+                                });
+                            }, 5000);
+                        }              
+                    }
                 },
                 title: {
                     text: 'Dashboard Part Model'

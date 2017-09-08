@@ -79,7 +79,7 @@
                         success: function (data) {
 
                             $.each(data, function(k, v){
-                                    rep2 = v.part_number
+                                    rep2 = v.part_number_customer
                             });
                             
                             if(rep2 == "" ){
@@ -96,7 +96,7 @@
                                 $('#imageDiv').show();
 
                                 //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                                $("#imageDiv").html("<img src='{{url('storage/uploads/PIS')}}/"+rep2+".jpg' width='1000px'/>");
+                                $("#imageDiv").html("<img src='{{url('storage')}}/"+rep2+".JPG' width='1000px'/>");
                                  $('#detail_no').prop('readonly', true);
                                 barcode = "";
                                 rep2    = "";
