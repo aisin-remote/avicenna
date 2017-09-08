@@ -18,50 +18,113 @@
 @endsection
 
 @section('main-content')
-    <div class="box box-primary">
-      <div class="box-header with-border">
-        <h3 class="box-title">@lang('avicenna/opname.sto_entry_box')</h3>
+      <!-- /.box -->
 
-        <div class="box-tools pull-right">
-          <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-          <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> -->
-        </div>
-      </div>
-      <!-- /.box-header -->
-      <div class="box-body">
-        <div class="row">
-         <form role="form" method="post" action="{{url('/saveopname')}}">
-         	<div class="box-body">
-         		<div class="form-group">
-         			<label for="exampleInputEmail1">Part Number</label>
-         			<select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
-         				<option value="" selected="" disabled="">--Choose Part Number--</option>
-         			</select>
-         		</div>
-         		<div class="form-group">
-         			<label for="exampleInputPassword1">Stock Opname</label>
-         			<input type="number" class="form-control" id="opname_quantity" placeholder="Stock Opname" name="opname_quantity" required>
-         		</div>
-         		<input type="hidden" value="{{csrf_token()}}" name="_token">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Location</label>
-              <select id="location" class="form-control select2" style="width: 100%;" name="location" required>
-                <option value="" selected="" disabled="" required>--Choose Location--</option>
-                @if(count($locations)>0)
-                @foreach($locations as $location)
-                <option value="{{$location->code}}">{{$location->code}}</option>
-                @endforeach
-                @endif
-              </select>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">@lang('avicenna/opname.sto_entry_box')</h3>
+
+              <div class="box-tools pull-right">
+                <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> -->
+              </div>
             </div>
-         		<div class="box-footer">
-         			<button type="submit" class="btn btn-primary">
-         				<span class="glyphicon glyphicon-save"></span>
-         				Save
-         			</button>
-         		</div>
-         	</form>
-        </div>
+            <form role="form" method="post" action="{{url('/saveopname')}}">
+            <div class="box-body">
+              <div class="row">
+                <div class="col-xs-4">
+                  <label for="exampleInputEmail1">Part Number</label>
+                    <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
+                    <option value="" selected="" disabled="" required>--Choose Part Number--</option>
+                    </select>
+                </div>
+                <div class="col-xs-4">
+                  <label for="exampleInputPassword1">Stock Opname</label>
+                  <input type="number" class="form-control" id="opname_quantity" placeholder="Stock Opname" name="opname_quantity"required>
+                </div>
+                <input type="hidden" value="{{csrf_token()}}" name="_token">
+                <div class="col-xs-4">
+                  <label for="exampleInputEmail1">Location</label>
+                    <select id="location" class="form-control select2" style="width: 100%;" name="location" required>
+                    <option value="" selected="" disabled="" required>--Choose Location--</option>
+                    @if(count($locations)>0)
+                    @foreach($locations as $location)
+                    <option value="{{$location->code}}">{{$location->code}}</option>
+                    @endforeach
+                    @endif
+                    </select>
+                </div>
+              </div>
+              <div class="box-footer">
+                  <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-save"></span>Save</button>
+              </div>
+            </div>
+            </form>
+            <!-- /.box-body -->
+          </div>
+
+      <div class="box box-primary">
+      
+            <div class="box-header">
+              <h3 class="box-title">Data Table With Full Features</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Rendering engine</th>
+                  <th>Browser</th>
+                  <th>Platform(s)</th>
+                  <th>Engine version</th>
+                  <th>CSS grade</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0
+                  </td>
+                  <td>Win 95+</td>
+                  <td> 4</td>
+                  <td>X</td>
+                </tr>
+                   <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.0
+                  </td>
+                  <td>Win 95+</td>
+                  <td>5</td>
+                  <td>C</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 5.5
+                  </td>
+                  <td>Win 95+</td>
+                  <td>5.5</td>
+                  <td>A</td>
+                </tr>
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 6
+                  </td>
+                  <td>Win 98+</td>
+                  <td>6</td>
+                  <td>A</td>
+                </tr>
+
+              </table>
+            </div>
+            <!-- /.box-body -->
+      
+      </div>
+           <!-- /.box --
       </div>
       <!-- /.box -->
 @endsection
