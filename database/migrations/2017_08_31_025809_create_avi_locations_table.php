@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAviLocationTable extends Migration
+class CreateAviLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateAviLocationTable extends Migration
      */
     public function up()
     {
-        Schema::create('avi_location', function (Blueprint $table) {
+        Schema::create('avi_locations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('code','4');
-            $table->string('name','50');
+            $table->string('code', 4);
+            $table->string('sname', 20);
+            $table->string('fname', 50);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateAviLocationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avi_location');
+        Schema::dropIfExists('avi_locations');
     }
 }

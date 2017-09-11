@@ -18,6 +18,7 @@ class CreateAviMutationsTable extends Migration
             $table->date('mutation_date');
             $table->string('mutation_code', 3);             // dev-1.0, Ferry, 20170906, Kode Mutasi
             $table->string('part_number', 50);
+            $table->string('part_number_customer', 50)->nullable();     // dev-1.0, Ferry, 20170911
             $table->string('store_location', 4);            // dev-1.0, Ferry, 20170830
             $table->double('quantity', 15, 2);              // dev-1.0, Ferry, 20170907, Jika pecahan
             $table->string('uom_code', 10);                // dev-1.0, Ferry, 20170907, Unit of Measure

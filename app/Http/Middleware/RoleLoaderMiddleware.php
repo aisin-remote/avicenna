@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\Avicenna\avi_mutation_type;
 use App\Models\Avicenna\avi_uom;
+use App\Models\Avicenna\avi_location;
 
 class RoleLoaderMiddleware
 {
@@ -32,7 +33,7 @@ class RoleLoaderMiddleware
 
             if (Schema::hasTable('avi_mutation_types')) {
                 
-                // Using cache to speed performance, so don't forget to FORGET the cache everytime update periods !!!
+                // Using cache to speed performance, so don't forget to FORGET the cache everytime logout in Authcontroller
                 $avi_mutation = new avi_mutation_type;
                 $avi_mutation = Cache::remember('avi_mutation_types', 60, function() use ($avi_mutation)
                 {
@@ -52,6 +53,18 @@ class RoleLoaderMiddleware
                 });
 
                 config()->set('avi_uom', $avi_uom);
+            }
+
+            if (Schema::hasTable('avi_locations')) {
+                
+                // Using cache to speed performance, so don't forget to FORGET the cache everytime update periods !!!
+                $avi_location = new avi_location;
+                $avi_location = Cache::remember('avi_locations', 60, function() use ($avi_location)
+                {
+                    return $avi_location->pluck('code', 'sname')->all();
+                });
+
+                config()->set('avi_location', $avi_location);
             }
         }
 
