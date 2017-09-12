@@ -27,30 +27,55 @@
                 </div>
             </div>
 
-            <!-- <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">Part</div>
+            <!-- counter -->
+            <div class="panel panel-default" id="table_hide">
+                <div class="panel-heading">Counter</div>
+                <div class="panel-body" style="height:110px;">       
+                    <div class="form-group">
+                        <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
+                            <tbody>
+                                <tr>
+                                    <td height=100> </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel-body" >Date : </div>
+            </div>
+            <!-- end counter -->
+
+            <!-- last scan -->
+            <div class="panel panel-default" id="table_hide">
+                <div class="panel-heading">Last scan</div>
                 <div class="panel-body">       
                     <div class="form-group">
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
-                                <tr>
-                                    <th>No</th>
+                                <tr> 
                                     <th>Part Number</th>
                                 </tr>
+                                <tr>
+                                <td>800A</td>
+                                </tr>
+                                <tr>
+                                <td>4L45W</td>
+                                </tr>
                             </thead>
+
                         </table>
                     </div>
                 </div>
-            </div> -->
+            </div>
+            <!-- end last scan -->
             
-         
             <!-- x_panel -->
         </div>
         
         <div id="imageDiv" class="col-md-8">
 
             
-                <!-- x_content -->
+            <!-- x_content -->
             </div>
 
         </div>  
