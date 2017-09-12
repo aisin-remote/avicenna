@@ -98,6 +98,7 @@ class LoginController extends Controller
         $this->performLogout($request);
         Cache::forget('avi_mutation_types');
         Cache::forget('avi_uoms');
+        Cache::forget('avi_locations');
         return redirect('/');
     }
 }

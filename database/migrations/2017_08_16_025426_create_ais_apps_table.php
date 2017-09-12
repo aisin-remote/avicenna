@@ -28,6 +28,7 @@ class CreateAisAppsTable extends Migration
             $table->string('apps_fname', 50);
             $table->string('apps_icon_code', 50);
             $table->string('apps_icon_path');
+            $table->string('apps_store_path')->nullable();
             $table->timestamps();
         });
     }
