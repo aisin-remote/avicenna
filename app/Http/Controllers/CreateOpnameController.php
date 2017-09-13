@@ -11,12 +11,12 @@ use Auth;
 use App\Models\Avicenna\avi_parts;
 use App\Models\Avicenna\avi_opname;
 use App\Models\Avicenna\avi_mutations;
-use App\Models\Avicenna\avi_locations;
+use App\Models\Avicenna\avi_location;
 
 class CreateOpnameController extends Controller
 {
 	function Opname(){
-		$locations=avi_locations::all();
+		$locations=avi_location::all();
 		return view('adminlte::opname.CreateOpname',compact('locations'));
 	}   
 
@@ -50,13 +50,16 @@ class CreateOpnameController extends Controller
 		$opname=avi_opname::where('part_number','=',$part_number)
 				->orderby('id','desc')
 				->first();
+
+		// dev-1.0, Ferry, 20170912, query info master part untuk info mutation
+		$part = avi_parts::where('part_number', $part_number)->first();
 		
 		if($opname!=null){
 			$qty_avi_opname=$opname['opname_quantity'];
 			$date_start=date('Y-m-d',strtotime($opname['opname_date']));
 		}
 
-		$qty_avi_mutation=avi_mutations::where('part_number','=',$part_number)
+		$qty_avi_mutation=avi_mutations::where('part_number', $part_number)
 				->where('mutation_date',">",$date_start)
 				->where('mutation_date','<=',$date_end)
 				->sum('quantity');
@@ -71,23 +74,26 @@ class CreateOpnameController extends Controller
 
 		try {
 			\DB::beginTransaction();
-			$new_opname=new avi_opname();
-			$new_opname->part_number=$part_number;
-			$new_opname->opname_date=date('Y-m-d');
-			$new_opname->opname_quantity=$opname_quantity;
-			$new_opname->location_code=$location_code;
-			$new_opname->opname_user_id=$opname_user_id;
+			$new_opname 						= new avi_opname();
+			$new_opname->part_number 			= $part_number;
+			$new_opname->opname_date 			= date('Y-m-d');
+			$new_opname->opname_quantity 		= $opname_quantity;
+			$new_opname->location_code 			= $location_code;
+			$new_opname->opname_user_id 		= $opname_user_id;
 			$new_opname->save();
 
-			$new_mutation=new avi_mutations();
-			$new_mutation->mutation_date=date('Y-m-d');
-			$new_mutation->mutation_code=($qty_inserted > 0 ? config('avi_mutation.sto_fg_in') : config('avi_mutation.sto_fg_out'));
-			$new_mutation->part_number=$part_number;
-			$new_mutation->quantity=$qty_inserted;
-			$new_mutation->uom_code=config('avi_uom.pcs');
-			$new_mutation->store_location=$location_code;
-			$new_mutation->flag_confirm=$flag;
-			$new_mutation->npk=$npk;
+			$new_mutation 						= new avi_mutations();
+			$new_mutation->mutation_date 		= date('Y-m-d');
+			$new_mutation->mutation_code 		= ($qty_inserted > 0 ? config('avi_mutation.sto_fg_in') : config('avi_mutation.sto_fg_out'));
+			$new_mutation->part_number 			= $part_number;
+			$new_mutation->quantity 			= $qty_inserted;
+			$new_mutation->part_number_customer = $part->part_number_customer;
+            $new_mutation->part_name            = $part->part_name;
+            $new_mutation->customer             = $part->customer_id;
+			$new_mutation->uom_code				= config('avi_uom.pcs');
+			$new_mutation->store_location 		= $location_code;
+			$new_mutation->flag_confirm			= $flag;
+			$new_mutation->npk 					= $npk;
 			$new_mutation->save();
 
 			\DB::commit();
