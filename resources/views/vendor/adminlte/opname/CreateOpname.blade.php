@@ -100,34 +100,14 @@
                   <td>5</td>
                   <td>C</td>
                 </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.5
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5.5</td>
-                  <td>A</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 6
-                  </td>
-                  <td>Win 98+</td>
-                  <td>6</td>
-                  <td>A</td>
-                </tr>
 
               </table>
             </div>
             <!-- /.box-body -->
-      
-      </div>
-           <!-- /.box --
-      </div>
-      <!-- /.box -->
+        </div>
+           <!-- /.box -->
 @endsection
+
 @section('scripts')
 @parent
 <script type="text/javascript" src="{{url('/plugins/select2.js')}}"></script>

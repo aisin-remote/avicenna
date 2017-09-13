@@ -14,6 +14,7 @@ return [
     */
 
     'part_not_found' => 'Part Not Found!!! Please input first in System',
+    'part_found'     => ' successfully scanned!',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
