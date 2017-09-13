@@ -35,7 +35,8 @@
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
                             <tbody>
                                 <tr>
-                                    <td align="center" height=100> <font size=40>TRIAL</font></td>
+                                    <td align="center" height=100> 
+                                        <font size=40><div id="counter">TRIAL</div></font></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -75,7 +76,7 @@
             <!-- x_panel -->
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
                 {{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}
             </div>
@@ -125,6 +126,8 @@
                             $('#detail_no').prop('readonly', true);
                             barcode = "";
                             rep2    = "";
+
+                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
                             $("#imageDiv").html("");
                         }
                         else{
@@ -138,11 +141,28 @@
                             $('#imageDiv').show();
 
                             //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                            $("#imageDiv").html("<img src='"+data.img_path+"' />");
+                            $("#imageDiv").html("<img src='"+data.img_path+"' width='1100px' height='590px' />");
                             $('#detail_no').prop('readonly', true);
+
+                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            $('#counter').text(data.counter);
+
                             barcode = "";
                             rep2    = "";
                         }
+                    },
+                    error: function (xhr) {
+
+                            {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                            $('#alert').removeClass('alert-success');
+                            $('#alert').addClass('alert-danger');
+                            $('#alert').text('@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                            
+                            barcode = "";
+                            rep2    = "";
+
+                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            $("#imageDiv").html("");
                     }
                                       
                 });
