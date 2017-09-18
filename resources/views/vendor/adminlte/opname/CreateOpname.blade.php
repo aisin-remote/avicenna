@@ -33,18 +33,18 @@
             <div class="box-body">
               <div class="row">
                 <div class="col-xs-4">
-                  <label for="exampleInputEmail1">Part Number</label>
+                  <label for="exampleInputEmail1">@lang('avicenna/pis.part_numb')</label>
                     <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
                     <option value="" selected="" disabled="" required>--Choose Part Number--</option>
                     </select>
                 </div>
                 <div class="col-xs-4">
-                  <label for="exampleInputPassword1">Stock Opname</label>
+                  <label for="exampleInputPassword1">@lang('avicenna/opname.stock_opname')</label>
                   <input type="number" class="form-control" id="opname_quantity" placeholder="Stock Opname" name="opname_quantity"required>
                 </div>
                 <input type="hidden" value="{{csrf_token()}}" name="_token">
                 <div class="col-xs-4">
-                  <label for="exampleInputEmail1">Location</label>
+                  <label for="exampleInputEmail1">@lang('avicenna/opname.location')</label>
                     <select id="location" class="form-control select2" style="width: 100%;" name="location" required>
                     <option value="" selected="" disabled="" required>--Choose Location--</option>
                     @if(count($locations)>0)
@@ -57,7 +57,7 @@
               </div>
               <div class="box-footer">
                   <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-save"></span>Save</button>
+                    <span class="glyphicon glyphicon-save"></span>@lang('avicenna/opname.save')</button>
               </div>
             </div>
             </form>
@@ -67,7 +67,7 @@
       <div class="box box-primary">
       
             <div class="box-header">
-              <h3 class="box-title">Data Table With Full Features</h3>
+              <h3 class="box-title">@lang('avicenna/opname.table_opname')</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">

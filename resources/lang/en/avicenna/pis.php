@@ -14,8 +14,12 @@ return [
     */
 
     'part_not_found' => 'Part Not Found!!! Please input first in System',
-    'part_found'     => ' successfully scanned!',
+    'part_found'     => 'Successfully scanned!',
     'error_scan'     => 'Error scan occured : ',
+    'part_numb'      => 'Part Number',
+    'counter'        => 'Counter (Total Scan)',
+    'date'           => 'Date :',
+    'last_scan'      => 'Last scan',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

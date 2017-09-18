@@ -6,7 +6,7 @@
 
         <div class="col-md-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Part Number</div>
+                <div class="panel-heading">@lang('avicenna/pis.part_numb')</div>
                     <div class="panel-body">       
                         <div class="form-group">
                            <!--  <div class="row">
@@ -29,7 +29,7 @@
 
             <!-- counter -->
             <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">Counter (Total Scan)</div>
+                <div class="panel-heading">@lang('avicenna/pis.counter')</div>
                 <div class="panel-body" style="height:110px;">       
                     <div class="form-group">
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
@@ -42,19 +42,19 @@
                         </table>
                     </div>
                 </div>
-                <div class="panel-body" >Date : </div>
+                <div class="panel-body" >@lang('avicenna/pis.date')</div>
             </div>
             <!-- end counter -->
 
             <!-- last scan -->
             <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">Last scan</div>
+                <div class="panel-heading">@lang('avicenna/pis.last_scan')</div>
                 <div class="panel-body">       
                     <div class="form-group">
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
-                                    <th>Part Number</th>
+                                    <th>@lang('avicenna/pis.part_numb')</th>
                                 </tr>
                                 <tr>
                                     <td>TRIAL - 800A</td>

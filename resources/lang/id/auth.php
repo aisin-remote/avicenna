@@ -13,13 +13,8 @@ return [
     |
     */
 
-    'default_title'     => 'Stock Opname',
-    'sto_entry_desc'    => 'Entry stock mutation',
-    'sto_entry_box'     => 'Create stock mutation',
-    'stock_opname'      => 'Stock Opname',
-    'location'          => 'Location',
-    'save'              => 'Save', 
-    'table_opname'      => 'List Asset Opname',
-    // '' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Kredensial ini tidak sesuai dengan catatan kami.',
+    'throttle' => 'Terlalu banyak usaha login. Silakan coba lagi di:seconds seconds.',
+    'test' => 'INi Tes'
 
 ];

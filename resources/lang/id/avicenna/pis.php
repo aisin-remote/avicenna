@@ -13,13 +13,13 @@ return [
     |
     */
 
-    'default_title'     => 'Stock Opname',
-    'sto_entry_desc'    => 'Entry stock mutation',
-    'sto_entry_box'     => 'Create stock mutation',
-    'stock_opname'      => 'Stock Opname',
-    'location'          => 'Location',
-    'save'              => 'Save', 
-    'table_opname'      => 'List Asset Opname',
+    'part_not_found' => 'Part tidak ditemukan !!! Silahkan masukan dulu di System',
+    'part_found'     => 'Berhasil dipindai',
+    'error_scan'     => 'Terjadi kesalahan pemindaian : ',
+    'part_numb'      => 'Nomor Part',
+    'counter'        => 'Penghitung (Total Scan)',
+    'date'           => 'Tanggal :',
+    'last_scan'      => 'Scan terakhir',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
