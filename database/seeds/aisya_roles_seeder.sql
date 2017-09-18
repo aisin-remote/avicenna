@@ -9,7 +9,18 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
--- Dumping data for table avicenna.dev.roles: ~1 rows (approximately)
+
+-- Dumping structure for table avicenna.dev.roles
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `roles_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table avicenna.dev.roles: ~10 rows (approximately)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'ais_admin', '2017-08-24 16:09:06', '2017-08-24 16:09:07'),
@@ -21,7 +32,7 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(7, 'avi_mgr', '2017-08-24 16:24:25', '2017-08-24 16:24:26'),
 	(8, 'avi_gm', '2017-08-24 16:24:36', '2017-08-24 16:24:37'),
 	(9, 'avi_bod', '2017-08-24 16:24:49', '2017-08-24 16:24:50'),
-	(10, 'pis_operator', '2017-08-24 16:37:05', '2017-08-24 16:37:06');
+	(10, 'avi_pis_scan', '2017-08-24 16:37:05', '2017-08-24 16:37:06');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

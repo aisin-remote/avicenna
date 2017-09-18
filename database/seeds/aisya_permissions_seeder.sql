@@ -9,7 +9,18 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
--- Dumping data for table avicenna.dev.permissions: ~0 rows (approximately)
+
+-- Dumping structure for table avicenna.dev.permissions
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `permissions_name_unique` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table avicenna.dev.permissions: ~10 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 INSERT INTO `permissions` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'create', '2017-08-24 16:29:18', '2017-08-24 16:29:18'),
@@ -21,7 +32,8 @@ INSERT INTO `permissions` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(7, 'backup', '2017-08-24 16:47:38', '2017-08-24 16:47:38'),
 	(8, 'restore', '2017-08-24 16:47:43', '2017-08-24 16:47:44'),
 	(9, 'insert', '2017-08-24 16:48:11', '2017-08-24 16:48:12'),
-	(10, 'update', '2017-08-24 16:48:22', '2017-08-24 16:48:22');
+	(10, 'update', '2017-08-24 16:48:22', '2017-08-24 16:48:22'),
+	(11, 'scan', '2017-09-18 12:00:24', '2017-09-18 12:00:25');
 /*!40000 ALTER TABLE `permissions` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
