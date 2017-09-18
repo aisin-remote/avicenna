@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `user_has_roles` (
   CONSTRAINT `user_has_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.user_has_roles: ~2 rows (approximately)
+-- Dumping data for table avicenna.dev.user_has_roles: ~10 rows (approximately)
 /*!40000 ALTER TABLE `user_has_roles` DISABLE KEYS */;
 INSERT INTO `user_has_roles` (`role_id`, `user_id`) VALUES
 	(1, 1),
@@ -32,7 +32,9 @@ INSERT INTO `user_has_roles` (`role_id`, `user_id`) VALUES
 	(10, 6),
 	(10, 7),
 	(10, 8),
-	(10, 9);
+	(10, 9),
+	(10, 10),
+	(10, 11);
 /*!40000 ALTER TABLE `user_has_roles` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
