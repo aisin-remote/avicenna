@@ -38,9 +38,6 @@ class PisController extends Controller
         
         $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')
                             ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
-        
-        // $qty    = avi_parts::getQuantity($image);
-        
         try{    
 
             if(! $part)
@@ -73,12 +70,18 @@ class PisController extends Controller
 
                 DB::commit();
 
+                $counter = avi_mutations::where('mutation_date', date('Y-m-d'))
+                                        ->where('mutation_code', config('avi_mutation.gi_out_delivery'))
+                                        ->where('npk', $user->npk)
+                                        ->count();
+
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                 $arrJSON = array(
                                 "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.'.JPG') ? 
                                                 asset('storage/pis/'.$part->part_number_customer.'.JPG') :
                                                 asset('storage/pis/default.JPG'),
-                                "part_number_customer" => $part->part_number_customer
+                                "part_number_customer" => $part->part_number_customer,
+                                "counter"   => $counter
                         );
                 return $arrJSON;
             }
