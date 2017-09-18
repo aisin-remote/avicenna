@@ -50,7 +50,7 @@
                         <div class="col-xs-8">
                             <div class="checkbox icheck">
                                 <label>
-                                    <input style="display:none;" type="checkbox" name="remember"/> {{ trans('adminlte_lang::message.remember') }}
+                                    <input style="display:none;" type="checkbox" name="remember" id="remember" checked /> {{ trans('adminlte_lang::message.remember') }}
                                 </label>
                             </div>
                         </div><!-- /.col -->
@@ -79,6 +79,8 @@
         increaseArea: '20%' // optional
         });
         });
+
+        $('#remember').iCheck('check')
 
         $( "#npk" ).keypress(function( event ) {
             if ( event.keyCode == 124 ) {
