@@ -32,9 +32,10 @@ class PisController extends Controller
     }
 
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
-    public function getAjaxImage($image)
+    public function getAjaxImage($image, $type)
     {       
         $image  = str_replace("-","", $image);
+        $path_suffix = ($type == 'GNP') ? '-GNP.JPG' : '.JPG';
         
         $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')
                             ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
@@ -77,8 +78,8 @@ class PisController extends Controller
 
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                 $arrJSON = array(
-                                "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.'.JPG') ? 
-                                                asset('storage/pis/'.$part->part_number_customer.'.JPG') :
+                                "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.$path_suffix) ? 
+                                                asset('storage/pis/'.$part->part_number_customer.$path_suffix) :
                                                 asset('storage/pis/default.JPG'),
                                 "part_number_customer" => $part->part_number_customer,
                                 "counter"   => $counter

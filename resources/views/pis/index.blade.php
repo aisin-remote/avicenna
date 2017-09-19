@@ -76,14 +76,22 @@
             <!-- x_panel -->
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-8">
             <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                {{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}
+                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>Alert!</div></h4>
+                <div id="alert-body">{{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}</div>
             </div>
+
             <div id="imageDiv">
             
             <!-- x_content -->
             </div>
+        </div>
+
+        <div class="col-md-2">
+            <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">Mode : OEM Activated</button>
+            <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
+            <input id="delivery_type" value="OEM" type="hidden"></input>
         </div>
 
     </div>
@@ -93,11 +101,37 @@
 
 @section('scripts')
 @parent
+
 <script type="text/javascript">
+  
+  function func_change_delivery(obj) {
+    if ($(obj).val() == "OEM") {
+        $(obj).removeClass('btn-default');
+        $(obj).addClass('btn-primary');
+        $(obj).text('Mode : OEM Activated');
+        
+        $('#btnGNP').removeClass('btn-primary');
+        $('#btnGNP').addClass('btn-default');
+        $('#btnGNP').text("GNP");
+    }
+    else if ($(obj).val() == "GNP") {
+        $(obj).removeClass('btn-default');
+        $(obj).addClass('btn-primary');
+        $(obj).text('Mode : GNP Activated');
+        
+        $('#btnOEM').removeClass('btn-primary');
+        $('#btnOEM').addClass('btn-default');
+        $('#btnOEM').text("OEM");
+        
+    }
+    $('#delivery_type').val(obj.value);
+  }
+
   var barcode   ="";
   var rep2      = "";
   var old_html  = $("#imageDiv").html();
   var detail_no = $('#detail_no');
+  
   $(document).keypress(function(e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -107,7 +141,7 @@
             
             $.ajax({
                     type: 'get',           // POST Request
-                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode,  
+                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode+'/'+$('#delivery_type').val(),  
                     _token: "{{ csrf_token() }}",
                     dataType: 'json',       // Data Type of the Transmit
                     success: function (data) {
@@ -121,7 +155,8 @@
                             {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                             $('#alert').removeClass('alert-success');
                             $('#alert').addClass('alert-danger');
-                            $('#alert').text('@lang("avicenna/pis.part_not_found")');
+                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.alert_error")');
+                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                             
                             $('#detail_no').prop('readonly', true);
                             barcode = "";
@@ -134,14 +169,15 @@
                             {{-- dev-1.0, ferry, 20170913, alert jika success scan --}}
                             $('#alert').removeClass('alert-danger');
                             $('#alert').addClass('alert-success');
-                            $('#alert').text(rep2+'@lang("avicenna/pis.part_found")');
+                            $('#alert-header').html('<i class="icon fa fa-check"></i>'+'@lang("avicenna/pis.alert_success")');
+                            $('#alert-body').text(rep2+'@lang("avicenna/pis.part_found")');
 
                             $('#detail_no').prop('readonly', false);
                             $('#detail_no').val(rep2);
                             $('#imageDiv').show();
 
                             //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                            $("#imageDiv").html("<img src='"+data.img_path+"' width='1100px' height='590px' />");
+                            $("#imageDiv").html("<img src='"+data.img_path+"' width='1100px' height='560px' />");
                             $('#detail_no').prop('readonly', true);
 
                             // dev-1.0, 20170913, Ferry, Fungsi informasi display
@@ -153,16 +189,18 @@
                     },
                     error: function (xhr) {
 
-                            {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                            // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                             $('#alert').removeClass('alert-success');
                             $('#alert').addClass('alert-danger');
-                            $('#alert').text('@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                             
                             barcode = "";
                             rep2    = "";
 
                             // dev-1.0, 20170913, Ferry, Fungsi informasi display
                             $("#imageDiv").html("");
+                            location.reload();
                     }
                                       
                 });
