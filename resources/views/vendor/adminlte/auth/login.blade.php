@@ -39,7 +39,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
 
                     <div class="form-group has-feedback">
-                        <input type="email" class="form-control" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email"/>
+                        <input type="text" class="form-control" placeholder="@lang('auth.placeholder_user')" id="npk" name="npk" autofocus />
                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
@@ -50,7 +50,7 @@
                         <div class="col-xs-8">
                             <div class="checkbox icheck">
                                 <label>
-                                    <input style="display:none;" type="checkbox" name="remember"/> {{ trans('adminlte_lang::message.remember') }}
+                                    <input style="display:none;" type="checkbox" name="remember" id="remember" checked /> {{ trans('adminlte_lang::message.remember') }}
                                 </label>
                             </div>
                         </div><!-- /.col -->
@@ -72,14 +72,24 @@
     @include('adminlte::layouts.partials.scripts_auth')
 
     <script>
-      $(function () {
+        $(function () {
         $('input').iCheck({
-          checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue',
-          increaseArea: '20%' // optional
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
         });
-      });
+        });
+
+        $('#remember').iCheck('check')
+
+        $( "#npk" ).keypress(function( event ) {
+            if ( event.keyCode == 124 ) {
+                event.preventDefault();
+                $( "#password" ).focus();
+            }
+        });
+
     </script>
-    </body>
+</body>
 
 @endsection

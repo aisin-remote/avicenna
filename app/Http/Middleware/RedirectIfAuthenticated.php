@@ -5,6 +5,9 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
+// dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
+use Spatie\Permission\Models\Role;
+
 class RedirectIfAuthenticated
 {
     /**
@@ -18,7 +21,17 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+
+            // dev-1.0, Cek apakah punya role avi_pis_scan. special redirect ke url default (pis scanner)
+            if (Auth::user()->hasRole('avi_pis_scan')) {
+
+                $role = Role::findByName('avi_pis_scan');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            }
+            else {
+                return redirect('home');
+            }
+
         }
 
         return $next($request);
