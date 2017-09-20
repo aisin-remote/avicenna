@@ -14,6 +14,7 @@
 CREATE TABLE IF NOT EXISTS `avi_part_pis` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `part_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `part_number_agbond` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `part_kind` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `part_dock` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `back_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -25,9 +26,9 @@ CREATE TABLE IF NOT EXISTS `avi_part_pis` (
 
 -- Dumping data for table avicenna.dev.avi_part_pis: ~0 rows (approximately)
 /*!40000 ALTER TABLE `avi_part_pis` DISABLE KEYS */;
-INSERT INTO `avi_part_pis` (`id`, `part_number`, `part_kind`, `part_dock`, `back_number`, `qty_kanban`, `created_at`, `updated_at`) VALUES
-	(1, '423108-11770', 'OEM', '43', 'MP24', 5.00, '2017-09-20 13:44:39', '2017-09-20 13:44:39'),
-	(2, '423108-11770', 'GNP', '53', 'MP24', 1.00, '2017-09-20 13:44:58', '2017-09-20 13:44:59');
+INSERT INTO `avi_part_pis` (`id`, `part_number`, `part_number_agbond`, `part_kind`, `part_dock`, `back_number`, `qty_kanban`, `created_at`, `updated_at`) VALUES
+	(1, '423108-11770', NULL, 'OEM', '43', 'MP24', 5.00, '2017-09-20 13:44:39', '2017-09-20 13:44:39'),
+	(2, '423108-11770', NULL, 'GNP', '53', 'MP24', 1.00, '2017-09-20 13:44:58', '2017-09-20 13:44:59');
 /*!40000 ALTER TABLE `avi_part_pis` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

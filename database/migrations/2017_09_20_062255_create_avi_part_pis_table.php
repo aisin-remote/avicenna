@@ -16,6 +16,7 @@ class CreateAviPartPisTable extends Migration
         Schema::create('avi_part_pis', function (Blueprint $table) {
             $table->increments('id');
             $table->string('part_number');
+            $table->string('part_number_agbond')->nullable();
             $table->string('part_kind', 10);
             $table->string('part_dock', 10);
             $table->string('back_number')->nullable();
