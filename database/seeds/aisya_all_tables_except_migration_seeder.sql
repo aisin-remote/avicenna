@@ -30,13 +30,13 @@ CREATE TABLE IF NOT EXISTS `ais_apps` (
   UNIQUE KEY `ais_apps_apps_tcode_unique` (`apps_tcode`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.ais_apps: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.ais_apps: ~10 rows (approximately)
 /*!40000 ALTER TABLE `ais_apps` DISABLE KEYS */;
 INSERT INTO `ais_apps` (`id`, `apps_tcode`, `apps_level`, `apps_has_child`, `apps_sname`, `apps_tcode_parent`, `apps_tcode_root`, `apps_route`, `apps_fname`, `apps_icon_code`, `apps_icon_path`, `apps_store_path`, `created_at`, `updated_at`) VALUES
 	(1, 'AV00', 0, 1, 'avicenna', 'AV00', 'AV00', '', 'Avicenna', 'fa fa-line-chart', '', NULL, '2017-08-21 11:52:51', '2017-08-21 11:52:53'),
 	(2, 'PI00', 1, 1, 'pis', 'AV00', 'AV00', '', 'PIS Digital', 'fa fa-calendar-check-o', '', 'pis/', '2017-08-21 11:52:43', '2017-08-21 11:52:49'),
-	(3, 'PI01', 2, 0, 'pis_scan', 'PI00', 'AV00', 'pis', 'PIS Scanner', 'fa fa-circle-o', '', 'pis/', '2017-08-21 11:54:36', '2017-08-21 11:54:37'),
-	(4, 'PI02', 2, 0, 'pis_entry', 'PI00', 'AV00', 'pis/entry', 'PIS Data Entry', 'fa fa-circle-o', '', 'pis/', '2017-08-21 11:55:22', '2017-08-21 11:55:23'),
+	(3, 'PI01', 2, 0, 'pis_scan', 'PI00', 'AV00', 'pis', 'PIS Scanner', 'fa fa-barcode', '', 'pis/', '2017-08-21 11:54:36', '2017-08-21 11:54:37'),
+	(4, 'PI02', 2, 0, 'pis_master', 'PI00', 'AV00', 'pis/master', 'PIS Master Data', 'fa fa-id-card', '', 'pis/', '2017-08-21 11:55:22', '2017-08-21 11:55:23'),
 	(5, 'ST00', 1, 1, 'sto', 'AV00', 'AV00', '#', 'Stock Opname', 'fa fa-cubes', '', 'sto/', '2017-08-21 11:56:02', '2017-08-21 11:56:03'),
 	(6, 'ST01', 2, 0, 'sto_entry', 'ST00', 'AV00', '/opname', 'STO Data Entry', 'fa fa-circle-o', '', 'sto/', '2017-08-21 11:57:31', '2017-08-21 11:57:32'),
 	(7, 'AC00', 0, 0, 'aca', 'AC00', 'AC00', 'aca/', 'Aisin Cutting Tools', 'fa fa-scissors', '', NULL, '2017-08-21 11:58:27', '2017-08-21 11:58:28'),
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `avi_dashboard_genbas` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_dashboard_genbas: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_dashboard_genbas: ~4 rows (approximately)
 /*!40000 ALTER TABLE `avi_dashboard_genbas` DISABLE KEYS */;
 INSERT INTO `avi_dashboard_genbas` (`id`, `categories`, `normal`, `abnormality`, `created_at`, `updated_at`) VALUES
 	(1, '4l45W', 80, 20, NULL, NULL),
@@ -141,10 +141,82 @@ CREATE TABLE IF NOT EXISTS `avi_mutations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_mutations: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_mutations: ~67 rows (approximately)
 /*!40000 ALTER TABLE `avi_mutations` DISABLE KEYS */;
+INSERT INTO `avi_mutations` (`id`, `mutation_date`, `mutation_code`, `part_number`, `part_number_customer`, `store_location`, `quantity`, `uom_code`, `serial_no`, `loading_list`, `delivery`, `customer`, `part_name`, `npk`, `flag_confirm`, `npk_edited`, `info_edited`, `created_at`, `updated_at`) VALUES
+	(1, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:37:01', '2017-09-19 02:37:01'),
+	(2, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:39:26', '2017-09-19 02:39:26'),
+	(3, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:45:25', '2017-09-19 02:45:25'),
+	(4, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:46:16', '2017-09-19 02:46:16'),
+	(5, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:46:54', '2017-09-19 02:46:54'),
+	(6, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:47:40', '2017-09-19 02:47:40'),
+	(7, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:47:54', '2017-09-19 02:47:54'),
+	(8, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:52:12', '2017-09-19 02:52:12'),
+	(9, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 02:53:32', '2017-09-19 02:53:32'),
+	(10, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 03:05:16', '2017-09-19 03:05:16'),
+	(11, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 06:14:33', '2017-09-19 06:14:33'),
+	(12, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 06:14:35', '2017-09-19 06:14:35'),
+	(13, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 07:05:18', '2017-09-19 07:05:18'),
+	(14, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 07:22:18', '2017-09-19 07:22:18'),
+	(15, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 07:22:56', '2017-09-19 07:22:56'),
+	(16, '2017-09-19', '601', '423107-11770', '69203-0K070', 'FG01', -4.00, 'PC', NULL, NULL, NULL, 'C002', 'FRAME SUB-ASSY, FR DOOR OUTSIDE HANDLE, LH', '000940', 0, NULL, NULL, '2017-09-19 09:23:14', '2017-09-19 09:23:14'),
+	(17, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:23:38', '2017-09-19 09:23:38'),
+	(18, '2017-09-19', '601', '423107-11770', '69203-0K070', 'FG01', -4.00, 'PC', NULL, NULL, NULL, 'C002', 'FRAME SUB-ASSY, FR DOOR OUTSIDE HANDLE, LH', '000940', 0, NULL, NULL, '2017-09-19 09:42:24', '2017-09-19 09:42:24'),
+	(19, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:42:40', '2017-09-19 09:42:40'),
+	(20, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:42:44', '2017-09-19 09:42:44'),
+	(21, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:43:22', '2017-09-19 09:43:22'),
+	(22, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:43:28', '2017-09-19 09:43:28'),
+	(23, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:55:52', '2017-09-19 09:55:52'),
+	(24, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:56:30', '2017-09-19 09:56:30'),
+	(25, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:56:51', '2017-09-19 09:56:51'),
+	(26, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:57:07', '2017-09-19 09:57:07'),
+	(27, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:57:25', '2017-09-19 09:57:25'),
+	(28, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:57:30', '2017-09-19 09:57:30'),
+	(29, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 09:57:36', '2017-09-19 09:57:36'),
+	(30, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:57:40', '2017-09-19 09:57:40'),
+	(31, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:57:57', '2017-09-19 09:57:57'),
+	(32, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:57:59', '2017-09-19 09:57:59'),
+	(33, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:58:07', '2017-09-19 09:58:07'),
+	(34, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:58:48', '2017-09-19 09:58:48'),
+	(35, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:58:56', '2017-09-19 09:58:56'),
+	(36, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 09:59:06', '2017-09-19 09:59:06'),
+	(37, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 10:00:52', '2017-09-19 10:00:52'),
+	(38, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 10:05:03', '2017-09-19 10:05:03'),
+	(39, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 10:05:13', '2017-09-19 10:05:13'),
+	(40, '2017-09-19', '601', '423105-11660', '69201-0K040', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE LH', '000940', 0, NULL, NULL, '2017-09-19 10:05:26', '2017-09-19 10:05:26'),
+	(41, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:05:38', '2017-09-19 10:05:38'),
+	(42, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:05:42', '2017-09-19 10:05:42'),
+	(43, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:02', '2017-09-19 10:06:02'),
+	(44, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:06', '2017-09-19 10:06:06'),
+	(45, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:18', '2017-09-19 10:06:18'),
+	(46, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:19', '2017-09-19 10:06:19'),
+	(47, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:23', '2017-09-19 10:06:23'),
+	(48, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:53', '2017-09-19 10:06:53'),
+	(49, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:06:59', '2017-09-19 10:06:59'),
+	(50, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:09:22', '2017-09-19 10:09:22'),
+	(51, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:09:35', '2017-09-19 10:09:35'),
+	(52, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:15', '2017-09-19 10:25:15'),
+	(53, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:17', '2017-09-19 10:25:17'),
+	(54, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:19', '2017-09-19 10:25:19'),
+	(55, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:21', '2017-09-19 10:25:21'),
+	(56, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:32', '2017-09-19 10:25:32'),
+	(57, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:39', '2017-09-19 10:25:39'),
+	(58, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:40', '2017-09-19 10:25:40'),
+	(59, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:25:47', '2017-09-19 10:25:47'),
+	(60, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:28:35', '2017-09-19 10:28:35'),
+	(61, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:28:39', '2017-09-19 10:28:39'),
+	(62, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 10:28:41', '2017-09-19 10:28:41'),
+	(63, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 10:28:50', '2017-09-19 10:28:50'),
+	(64, '2017-09-19', '601', '455108-10900', '75762-0K010', 'FG01', -12.00, 'PC', NULL, NULL, NULL, 'C001', 'MOULDING, RR DOOR WINDOW FRAME, FR RH', '000940', 0, NULL, NULL, '2017-09-19 10:28:54', '2017-09-19 10:28:54'),
+	(65, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:29:43', '2017-09-19 10:29:43'),
+	(66, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:30:27', '2017-09-19 10:30:27'),
+	(67, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:30:47', '2017-09-19 10:30:47'),
+	(68, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:31:14', '2017-09-19 10:31:14'),
+	(69, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:31:16', '2017-09-19 10:31:16'),
+	(70, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 10:31:45', '2017-09-19 10:31:45'),
+	(71, '2017-09-19', '601', '423108-11770', '69204-0K070', 'FG01', -5.00, 'PC', NULL, NULL, NULL, 'C001', 'FRAME S/A RR DR O/S HANDLE RH', '000940', 0, NULL, NULL, '2017-09-19 11:01:40', '2017-09-19 11:01:40');
 /*!40000 ALTER TABLE `avi_mutations` ENABLE KEYS */;
 
 
@@ -159,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `avi_mutation_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_mutation_types: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_mutation_types: ~16 rows (approximately)
 /*!40000 ALTER TABLE `avi_mutation_types` DISABLE KEYS */;
 INSERT INTO `avi_mutation_types` (`id`, `code`, `name`, `desc`, `created_at`, `updated_at`) VALUES
 	(1, 'Z01', 'sto_fg_in', 'Stock Opname In Finish Good', '2017-09-06 11:14:57', '2017-09-06 11:14:58'),
@@ -219,7 +291,7 @@ CREATE TABLE IF NOT EXISTS `avi_parts` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=490 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_parts: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_parts: ~489 rows (approximately)
 /*!40000 ALTER TABLE `avi_parts` DISABLE KEYS */;
 INSERT INTO `avi_parts` (`id`, `customer_id`, `supplier_id`, `back_number`, `part_number`, `part_number_nostrip`, `part_number_customer`, `part_name`, `product_group`, `product_line`, `quantity_box`, `min_stock`, `max_stock`, `created_at`, `updated_at`) VALUES
 	(1, 'C001', '', 'LP18', '423601-12320-11H', '4236011232011H', '69205-0K010-B1', 'HANDLE I/S FR RH PLATING 669L', '692N(Export)', '', 12.00, 1.00, 0.00, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -725,7 +797,7 @@ CREATE TABLE IF NOT EXISTS `avi_uoms` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.avi_uoms: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.avi_uoms: ~13 rows (approximately)
 /*!40000 ALTER TABLE `avi_uoms` DISABLE KEYS */;
 INSERT INTO `avi_uoms` (`id`, `code`, `sname`, `fname`, `created_at`, `updated_at`) VALUES
 	(1, 'PC', 'pcs', 'Piece', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -767,7 +839,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   UNIQUE KEY `permissions_name_unique` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.permissions: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.permissions: ~11 rows (approximately)
 /*!40000 ALTER TABLE `permissions` DISABLE KEYS */;
 INSERT INTO `permissions` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'create', '2017-08-24 16:29:18', '2017-08-24 16:29:18'),
@@ -795,7 +867,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
   UNIQUE KEY `roles_name_unique` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.roles: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.roles: ~10 rows (approximately)
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` (`id`, `name`, `route_redirect`, `created_at`, `updated_at`) VALUES
 	(1, 'ais_admin', NULL, '2017-08-24 16:09:06', '2017-08-24 16:09:07'),
@@ -821,7 +893,7 @@ CREATE TABLE IF NOT EXISTS `role_has_apps` (
   CONSTRAINT `role_has_apps_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.role_has_apps: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.role_has_apps: ~27 rows (approximately)
 /*!40000 ALTER TABLE `role_has_apps` DISABLE KEYS */;
 INSERT INTO `role_has_apps` (`role_id`, `apps_id`) VALUES
 	(1, 1),
@@ -864,7 +936,7 @@ CREATE TABLE IF NOT EXISTS `role_has_permissions` (
   CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.role_has_permissions: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.role_has_permissions: ~4 rows (approximately)
 /*!40000 ALTER TABLE `role_has_permissions` DISABLE KEYS */;
 INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 	(1, 1),
@@ -888,18 +960,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.users: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.users: ~11 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `npk`, `name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(1, '000017', 'Ferry Avianto', 'ferry@aiia.co.id', '$2y$10$1rJ/l5UiRxByX6zXezWTDej9pXkYBvtaKRc39L4uUpGOK/vu91fDG', 'NdmXswmGJ0Yf1aGdZCvdhPdAAYxqv1thS9kC36ZyEwuDLl5y153u1IxT9DBA', '2017-08-21 08:15:12', '2017-08-21 08:15:12'),
+	(1, '000017', 'Ferry Avianto', 'ferry@aiia.co.id', '$2y$10$1rJ/l5UiRxByX6zXezWTDej9pXkYBvtaKRc39L4uUpGOK/vu91fDG', 'KMlyeAj17jmjiX1vIkaDc2RNQpgteJuxQKlsHRwHp0yhy14NDRvGB8nWcQVl', '2017-08-21 08:15:12', '2017-08-21 08:15:12'),
 	(2, '001018', 'Yudo Maryanto', 'yudo@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', 'sV06IDGruLgsKg1MbszvHegDGc18rmHVBrOccPfU7nklFtTa8asH1E6EQXtk', '2017-08-24 10:25:07', '2017-08-24 10:25:07'),
 	(3, '000124', 'Rizal Fahlepi', 'rizal@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', 'CpJ4lRrdhQ4WbWtlO2ClErNfuvqI5mBuEi1GxNZEFBOV17cvXzxtw9Ja6D8G', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(4, '000120', 'Ahmad Bayu', 'bayu@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '9dpfRFaqmgoD91P2mQK8q78qm9C6uvX0bcTu6nVcD79bnVU0SgFw6VcMaIaB', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(5, '000453', 'Bagas Jati', 'bagas.wicaksono@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(6, '000755', 'Ahmad Nur Sidiq', 'pis1@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '7Av7buG6RhQVhlULyzLFFzvbtkelS9DBvTVX1DHzBGf1kamaLwSQvbH6uUwN', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(7, '000940', 'Adi Rahmat', 'pis2@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(7, '000940', 'Adi Rahmat', 'pis2@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', 'kOa1JEL4yIvmW96xC1Dme4FWxmyqQVyONTRf2CY7UsE6BZzK3u0UKTKSmJhH', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(8, '000416', 'Rian Fauzi', 'pis3@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '2luxtyMy0P7Y0s3RC95c1rhflBCcA3clYywyUepzLelVjIrCPwE8LLOZ0Q3i', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-	(9, '001115', 'Wahyu Suyanto', 'pis4@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', 'dtNvbyo4xfA59xnblBIxOmQby7TfvBHhYtXVCqNSNSPbQPyjZfMRvXF079DA', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+	(9, '001115', 'Wahyu Suyanto', 'pis4@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', 'tc9QL1fUcTyh9vDtF4waxhOTLn8h7cwK2KmnuMVpBoajr5PY88WSfZfJ6DzC', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(10, '000149', 'Umbul Wahyu', 'pis5@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 	(11, '000146', 'Ahmad Khoeri', 'pis6@aiia.co.id', '$2y$10$C3JMXQk3ksvz9xuAePMC/e9S3.rUBTa7g6pu4lrV8Q.S1zkKVW5c6', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -930,7 +1002,7 @@ CREATE TABLE IF NOT EXISTS `user_has_roles` (
   CONSTRAINT `user_has_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Dumping data for table avicenna.dev.user_has_roles: ~0 rows (approximately)
+-- Dumping data for table avicenna.dev.user_has_roles: ~12 rows (approximately)
 /*!40000 ALTER TABLE `user_has_roles` DISABLE KEYS */;
 INSERT INTO `user_has_roles` (`role_id`, `user_id`) VALUES
 	(1, 1),
