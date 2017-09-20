@@ -9,23 +9,16 @@
                 <div class="panel-heading">@lang('avicenna/pis.part_numb')</div>
                     <div class="panel-body">       
                         <div class="form-group">
-                           <!--  <div class="row">
-                                <label class="col-md-8 control-label">Detail No</label>
-                            </div> -->
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <input id="detail_no" class="form-control" name="detail_no" required >
                                 </div>
-                               <!--  <div class="col-md-3">
-                                    <button id="btnReset" class="btn btn-primary">
-                                     Reset
-                                    </button>
-                                </div> -->
-                            <!-- </div> -->
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <!-- counter -->
             <div class="panel panel-default" id="table_hide">
@@ -76,7 +69,7 @@
             <!-- x_panel -->
         </div>
 
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
                 <h4><div id="alert-header"> <i class="icon fa fa-check"></i>Alert!</div></h4>
                 <div id="alert-body">{{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}</div>
@@ -88,10 +81,25 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-            <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">Mode : OEM Activated</button>
-            <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
-            <input id="delivery_type" value="OEM" type="hidden"></input>
+        <div class="col-md-1">
+            <div id="delivery" class="form-group">
+                <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">OEM</button>
+                <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
+                <input id="delivery_type" value="OEM" type="hidden"></input>
+            </div>
+
+            <div id="dock" class="form-group">
+                <label>Dock :</label>
+                <button id="btn43" value="43" type="button" class="btn btn-block btn-primary" onclick="func_change_dock(this);">43</button>
+                <button id="btn53" value="53" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">53</button>
+                <button id="btn4L45W" value="4L45W" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">4L45W</button>
+                <button id="btn1L" value="1L" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1L</button>
+                <button id="btn1N" value="1N" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1N</button>
+                <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1S</button>
+                <button id="btn6I" value="6I" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">6I</button>
+                <input id="dock_type" value="43" type="hidden"></input>
+            </div>
+
         </div>
 
     </div>
@@ -105,26 +113,31 @@
 <script type="text/javascript">
   
   function func_change_delivery(obj) {
-    if ($(obj).val() == "OEM") {
-        $(obj).removeClass('btn-default');
-        $(obj).addClass('btn-primary');
-        $(obj).text('Mode : OEM Activated');
+    // if ($(obj).val() == "OEM") {
+    //     $(obj).removeClass('btn-default');
+    //     $(obj).addClass('btn-primary');
         
-        $('#btnGNP').removeClass('btn-primary');
-        $('#btnGNP').addClass('btn-default');
-        $('#btnGNP').text("GNP");
-    }
-    else if ($(obj).val() == "GNP") {
-        $(obj).removeClass('btn-default');
-        $(obj).addClass('btn-primary');
-        $(obj).text('Mode : GNP Activated');
+    //     $('#btnGNP').removeClass('btn-primary');
+    //     $('#btnGNP').addClass('btn-default');
+    // }
+    // else if ($(obj).val() == "GNP") {
+    //     $(obj).removeClass('btn-default');
+    //     $(obj).addClass('btn-primary');
         
-        $('#btnOEM').removeClass('btn-primary');
-        $('#btnOEM').addClass('btn-default');
-        $('#btnOEM').text("OEM");
-        
-    }
+    //     $('#btnOEM').removeClass('btn-primary');
+    //     $('#btnOEM').addClass('btn-default');    
+    // }
+    $('#delivery').find('button').removeClass('btn-primary');
+    $('#delivery').find('button').addClass('btn-default');
+    $(obj).addClass('btn-primary');
     $('#delivery_type').val(obj.value);
+  }
+
+  function func_change_dock(obj) {
+    $('#dock').find('button').removeClass('btn-primary');
+    $('#dock').find('button').addClass('btn-default');
+    $(obj).addClass('btn-primary');
+    $('#dock_type').val(obj.value);  
   }
 
   var barcode   ="";
@@ -140,10 +153,10 @@
             $('#detail_no').val('');
             
             $.ajax({
-                    type: 'get',           // POST Request
+                    type: 'get',           // {{-- POST Request --}}
                     url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode+'/'+$('#delivery_type').val(),  
                     _token: "{{ csrf_token() }}",
-                    dataType: 'json',       // Data Type of the Transmit
+                    dataType: 'json',       // {{-- Data Type of the Transmit --}}
                     success: function (data) {
 
                         rep2 = data.part_number_customer;
@@ -162,7 +175,7 @@
                             barcode = "";
                             rep2    = "";
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $("#imageDiv").html("");
                         }
                         else{
@@ -176,11 +189,11 @@
                             $('#detail_no').val(rep2);
                             $('#imageDiv').show();
 
-                            //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                            $("#imageDiv").html("<img src='"+data.img_path+"' width='1100px' height='560px' />");
+                            // {{-- dev-1.0, 20170816, by yudo, fungsi menampilkan gambar --}}
+                            $("#imageDiv").html("<img src='"+data.img_path+"' width='990px' height='560px' />");
                             $('#detail_no').prop('readonly', true);
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $('#counter').text(data.counter);
 
                             barcode = "";
@@ -198,7 +211,7 @@
                             barcode = "";
                             rep2    = "";
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $("#imageDiv").html("");
                             location.reload();
                     }
@@ -213,17 +226,7 @@
         }    
     });
 
-    $("#btnReset").click(function(){
-           rep2    = "";
-           $('#table_hide').hide();
-           $('#imageDiv').html(old_html);
-           $(this).blur();
-           detail_no.val("");
-        });
-
     $(document).ready(function() {
-        // $('#table_hide').hide();
-        // $('#imageDiv').hide();
         $('#detail_no').prop('readonly', true);
     } );
 
