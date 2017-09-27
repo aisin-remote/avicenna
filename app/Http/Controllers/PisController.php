@@ -114,6 +114,10 @@ class PisController extends Controller
         return $arr_result;
     } 
 
+    function PisMasterView(){
+        $locations = '';
+        return view('pis.ViewMasterPis',compact('locations'));
+    }
     /**
      * Show the form for creating a new resource.
      *
