@@ -41,22 +41,28 @@
 
             <!-- last scan -->
             <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">Last scan</div>
+                <div class="panel-heading">@lang("avicenna/pis.last_scan_title")</div>
                 <div class="panel-body">       
                     <div class="form-group">
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
-                                    <th>Part Number</th>
+                                    <th class="btn-primary">BackNo/Dest/Total</th>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 800A</td>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 4L45W</td>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 4L45W</td>
+                                    <td id="last_scan">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td id="last_scan">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                             </thead>
 
@@ -90,14 +96,19 @@
 
             <div id="dock" class="form-group">
                 <label>Dock :</label>
-                <button id="btn43" value="43" type="button" class="btn btn-block btn-primary" onclick="func_change_dock(this);">43</button>
+                <button id="btnOTHER" value="OTHER" type="button" class="btn btn-block btn-primary" onclick="func_change_dock(this);">OTHER</button>
+                <button id="btn43" value="43" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">43</button>
                 <button id="btn53" value="53" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">53</button>
-                <button id="btn4L45W" value="4L45W" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">4L45W</button>
                 <button id="btn1L" value="1L" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1L</button>
                 <button id="btn1N" value="1N" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1N</button>
                 <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1S</button>
                 <button id="btn6I" value="6I" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">6I</button>
-                <input id="dock_type" value="43" type="hidden"></input>
+                <button id="btnTAMTAM" value="TAMTAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-TAM</button>
+                <button id="btnTAMADM" value="TAMADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-ADM</button>
+                <button id="btnTAMHINO" value="TAMHINO" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-HINO</button>
+                <button id="btnADMAS" value="ADMAS" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-AS</button>
+                <button id="btnADMKP" value="ADMKP" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-KP</button>
+                <input id="dock_type" value="OTHER" type="hidden"></input>
             </div>
 
         </div>
@@ -113,20 +124,6 @@
 <script type="text/javascript">
   
   function func_change_delivery(obj) {
-    // if ($(obj).val() == "OEM") {
-    //     $(obj).removeClass('btn-default');
-    //     $(obj).addClass('btn-primary');
-        
-    //     $('#btnGNP').removeClass('btn-primary');
-    //     $('#btnGNP').addClass('btn-default');
-    // }
-    // else if ($(obj).val() == "GNP") {
-    //     $(obj).removeClass('btn-default');
-    //     $(obj).addClass('btn-primary');
-        
-    //     $('#btnOEM').removeClass('btn-primary');
-    //     $('#btnOEM').addClass('btn-default');    
-    // }
     $('#delivery').find('button').removeClass('btn-primary');
     $('#delivery').find('button').addClass('btn-default');
     $(obj).addClass('btn-primary');
@@ -154,7 +151,7 @@
             
             $.ajax({
                     type: 'get',           // {{-- POST Request --}}
-                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode+'/'+$('#delivery_type').val(),  
+                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode+'/'+$('#delivery_type').val()+'/'+$('#dock_type').val(),  
                     _token: "{{ csrf_token() }}",
                     dataType: 'json',       // {{-- Data Type of the Transmit --}}
                     success: function (data) {
@@ -196,6 +193,13 @@
                             // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $('#counter').text(data.counter);
 
+                            $('[id^=last_scan]').html('&nbsp;');
+                            for (var i=0; i < data.last_scan.length; i++) {
+                                $('[id^=last_scan]').eq(i).text(data.last_scan[i].back_number+" - "+
+                                                                data.last_scan[i].part_kind+" - "+
+                                                                data.last_scan[i].total_kanban);
+                            };
+
                             barcode = "";
                             rep2    = "";
                         }
@@ -213,7 +217,7 @@
 
                             // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $("#imageDiv").html("");
-                            location.reload();
+                            // location.reload();
                     }
                                       
                 });
