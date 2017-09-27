@@ -35,8 +35,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	// dev-1.0, Ferry, 20170830, Route PIS ============================================================
 	Route::get('/pis', 'PisController@index')->name('pis');
 	// dev-1.0, Ferry, 20170822, Merged
-	Route::get('/pis/getAjaxImage/{image}/{type}', 'PisController@getAjaxImage');
 	Route::get('/pis/master', 'PisController@PisMasterView'); //dev-1.0, 20170926, view master pis
+
+	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
 	//end of modul pis
 	//
 	//

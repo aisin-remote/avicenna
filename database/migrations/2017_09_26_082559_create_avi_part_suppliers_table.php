@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAviPartPisTable extends Migration
+class CreateAviPartSuppliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,13 @@ class CreateAviPartPisTable extends Migration
      */
     public function up()
     {
-        Schema::create('avi_part_pis', function (Blueprint $table) {
+        Schema::create('avi_part_suppliers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('part_number');
             $table->string('part_number_ag')->nullable();
             $table->string('part_number_kanban')->nullable();
-            $table->string('part_number_customer')->nullable();
-            $table->string('customer_code')->nullable();
-            $table->string('customer_code_ag')->nullable();
-            $table->string('part_kind', 10);
-            $table->string('part_dock', 10);
+            $table->string('supplier_code')->nullable();
+            $table->string('supplier_code_ag')->nullable();
             $table->string('back_number')->nullable();
             $table->float('qty_kanban');
             $table->timestamps();
@@ -36,6 +33,6 @@ class CreateAviPartPisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avi_part_pis');
+        Schema::dropIfExists('avi_part_suppliers');
     }
 }
