@@ -13,16 +13,9 @@ return [
     |
     */
 
-    'default_title'     => 'Stock Opname',
-    'sto_entry_desc'    => 'Entry stock mutation',
-    'pis_master'        => 'Search Master PIS',    
-    
-    // dev-1.0, 20170928, Ferry|Merge|Handika terjamahan english
-    'sto_entry_box'     => 'Create stock mutation',
-    'stock_opname'      => 'Stock Opname',
-    'location'          => 'Location',
-    'save'              => 'Save', 
-    'table_opname'      => 'List Asset Opname',
+    'default_title'      => 'Dasbor',
+    'dashboard_genba'    => 'Ringkasan Part Model',
+    'dashboard_model'    => 'Part Per Model'
 
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 

@@ -13,14 +13,19 @@ return [
     |
     */
 
+    // dev-1.0, 20170928, Ferry|Merge|Handika terjamahan english
+    'part_not_found' => 'Part Not Found!!! Please check PIS Master Data',
+    'part_found'     => ' successfully scanned!',
+    'error_scan'     => 'Error scan occured : ',
+    'part_numb'      => 'Part Number Scanned',
+    'counter'        => 'Counter (Total Scan)',
+    'date'           => 'Date :',
+    'last_scan'      => 'Last scan',
+
     'alert_error'       => 'Error !',
     'alert_success'     => 'Success !',
-
-    'part_not_found'    => 'Part Not Found!!! Please input first in System',
-    'part_found'        => ' successfully scanned!',
-    'error_scan'        => 'Error scan occured : ',
-
     'last_scan_title'   => 'Last scan (5 latests)',
+    'last_scan_part'    => 'BackNo/Dest/Total',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
