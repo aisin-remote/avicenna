@@ -15,7 +15,8 @@ return [
 
     'default_title'     => 'Stock Opname',
     'sto_entry_desc'    => 'Entry stock mutation',
-    'sto_entry_box'     => 'Create stock mutation',    
+    'sto_entry_box'     => 'Create stock mutation', 
+    'pis_master'        => 'Search Master PIS',    
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

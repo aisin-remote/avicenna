@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Input;
 
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
 use App\Models\Avicenna\avi_parts;
+use App\Models\Avicenna\avi_part_pis;
 use App\Models\Avicenna\avi_mutations;
 use App\Models\Avicenna\avi_customers;
 
@@ -32,15 +33,23 @@ class PisController extends Controller
     }
 
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
-    public function getAjaxImage($image)
-    {       
+    public function getAjaxImage($image, $type, $dock)
+    {
+        // dev-1.0, Ferry, 20170926, Normalisasi string barcode
+        $image  = strlen($image) == 208 ? substr($image, 53, 16) : $image;  // dev-1.0, Ferry, 20170926, Cust SIM
         $image  = str_replace("-","", $image);
-        
-        $part   = avi_parts::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$image.'%"')
+        $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
+        $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
+
+        $path_suffix = '-'.$type.'-'.$dock.'.JPG';
+
+        $part_pis   = avi_part_pis::whereRaw('REPLACE(part_number_customer, "-", "") LIKE "%'.$image.'%"')
+                            ->where('part_kind', $type)
+                            ->where('part_dock', $dock)
                             ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
         try{    
 
-            if(! $part)
+            if(! $part_pis)
             {       
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                 return array("part_number_customer" => "");
@@ -50,17 +59,21 @@ class PisController extends Controller
                 DB::beginTransaction();
 
                 $user           = Auth::user();
+                $part = $part_pis->hasPart;    // dev-1.0, Ferry, 20170927, Ambil info master avi_part nya
 
                 // for($i = 0 ; $i <= 1 ; $i++){ //akitfkan jika prioritas 2 dijalankan
                 $scan = new avi_mutations;
                 $scan->mutation_code        = config('avi_mutation.gi_out_delivery');
                 $scan->mutation_date        = date('Y-m-d');
                 // $scan->quantity = $i == 0 ? '-'.$scan->quantity_box : $scan->quantity_box; //prioritas 2
-                $scan->quantity             = $part->quantity_box * -1;
-                $scan->part_number          = $part->part_number;
-                $scan->part_number_customer = $part->part_number_customer;
+                $scan->quantity             = $part_pis->qty_kanban * -1;
+                $scan->part_number          = is_null($part_pis->part_number_agbond) ? $part_pis->part_number : $part_pis->part_number_agbond;
+                $scan->part_number_customer = $part_pis->part_number_customer;
+                $scan->part_kind            = $part_pis->part_kind;
+                $scan->part_dock            = $part_pis->part_dock;
                 $scan->part_name            = $part->part_name;
-                $scan->customer             = $part->customer_id;
+                $scan->customer             = $part_pis->customer_code;
+                $scan->back_number          = $part_pis->back_number;
                 // 'store_location = $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'), //prioritas 2
                 $scan->store_location       = config('avi_location.fg_store');
                 $scan->npk                  = $user->npk;
@@ -75,23 +88,33 @@ class PisController extends Controller
                                         ->where('npk', $user->npk)
                                         ->count();
 
+                // dev-1.0, Ferry, 20170926, ambil info last scan
+                $last_scan = avi_mutations::selectRaw('back_number, part_kind, COUNT(id) AS total_kanban')
+                                            ->where('mutation_code', config('avi_mutation.gi_out_delivery'))
+                                            ->where('npk', $user->npk)
+                                            ->groupBy('back_number', 'part_kind')
+                                            ->orderBy('created_at', 'desc')
+                                            ->take(5)
+                                            ->get();
+
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                 $arrJSON = array(
-                                "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.'.JPG') ? 
-                                                asset('storage/pis/'.$part->part_number_customer.'.JPG') :
+                                "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.$path_suffix) ? 
+                                                asset('storage/pis/'.$part->part_number_customer.$path_suffix) :
                                                 asset('storage/pis/default.JPG'),
                                 "part_number_customer" => $part->part_number_customer,
-                                "counter"   => $counter
+                                "counter"   => $counter,
+                                "last_scan" => $last_scan
                         );
+
                 return $arrJSON;
             }
 
         }
         catch(\Exception $e){
 
-            return $e;
             DB::rollBack();
-
+            return array( "part_number_customer" => "", "error" => $e->getMessage() );
         }
         
 
@@ -113,6 +136,10 @@ class PisController extends Controller
         return $arr_result;
     } 
 
+    function PisMasterView(){
+        $locations = '';
+        return view('pis.ViewMasterPis',compact('locations'));
+    }
     /**
      * Show the form for creating a new resource.
      *

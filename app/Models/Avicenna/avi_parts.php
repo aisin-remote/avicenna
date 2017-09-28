@@ -4,18 +4,21 @@ namespace App\Models\Avicenna;
 
 use Illuminate\Database\Eloquent\Model;
 
+// dev-1.0, 20170926, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
+
+// dev-1.0, 20170926, Ferry, Declare disini jika butuh Class customizing sendiri
+use App\Models\Avicenna\avi_part_pis;
+
 class avi_parts extends Model
 {
-    //
-     protected $fillable = [
-        'customer_id', 'supplier_id', 'back_number', 'part_number', 
-        'part_number_customer', 'part_name', 'product_group', 'product_line', 
-        'quantity_box', 'min_stock', 'max_stock'
-    ];
-
     public static function getQuantity($part_number){
 
     	return self::whereRaw('CONCAT(REPLACE(part_number_customer, "-", ""), "000") LIKE "%'.$part_number.'%"')->first();
-    
+    }
+
+    public function hasPis ($part_kind, $part_dock) {
+    	return avi_part_pis::where('part_number', $this->part_number)
+    						->where('part_kind', $part_kind)
+    						->where('part_dock', $part_dock)->first();
     }
 }

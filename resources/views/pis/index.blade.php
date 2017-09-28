@@ -9,23 +9,16 @@
                 <div class="panel-heading">Part Number</div>
                     <div class="panel-body">       
                         <div class="form-group">
-                           <!--  <div class="row">
-                                <label class="col-md-8 control-label">Detail No</label>
-                            </div> -->
+
                             <div class="row">
                                 <div class="col-md-12">
                                     <input id="detail_no" class="form-control" name="detail_no" required >
                                 </div>
-                               <!--  <div class="col-md-3">
-                                    <button id="btnReset" class="btn btn-primary">
-                                     Reset
-                                    </button>
-                                </div> -->
-                            <!-- </div> -->
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <!-- counter -->
             <div class="panel panel-default" id="table_hide">
@@ -48,22 +41,28 @@
 
             <!-- last scan -->
             <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">Last scan</div>
+                <div class="panel-heading">@lang("avicenna/pis.last_scan_title")</div>
                 <div class="panel-body">       
                     <div class="form-group">
                         <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
-                                    <th>Part Number</th>
+                                    <th class="btn-primary">BackNo/Dest/Total</th>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 800A</td>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 4L45W</td>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                                 <tr>
-                                    <td>TRIAL - 4L45W</td>
+                                    <td id="last_scan">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td id="last_scan">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td id="last_scan">&nbsp;</td>
                                 </tr>
                             </thead>
 
@@ -76,14 +75,42 @@
             <!-- x_panel -->
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                {{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}
+                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>Alert!</div></h4>
+                <div id="alert-body">{{ session('message')['text'] ? session('message')['text'] : 'Ready to Scan !!' }}</div>
             </div>
+
             <div id="imageDiv">
             
             <!-- x_content -->
             </div>
+        </div>
+
+        <div class="col-md-1">
+            <div id="delivery" class="form-group">
+                <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">OEM</button>
+                <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
+                <input id="delivery_type" value="OEM" type="hidden"></input>
+            </div>
+
+            <div id="dock" class="form-group">
+                <label>Dock :</label>
+                <button id="btnOTHER" value="OTHER" type="button" class="btn btn-block btn-primary" onclick="func_change_dock(this);">OTHER</button>
+                <button id="btn43" value="43" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">43</button>
+                <button id="btn53" value="53" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">53</button>
+                <button id="btn1L" value="1L" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1L</button>
+                <button id="btn1N" value="1N" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1N</button>
+                <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1S</button>
+                <button id="btn6I" value="6I" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">6I</button>
+                <button id="btnTAMTAM" value="TAMTAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-TAM</button>
+                <button id="btnTAMADM" value="TAMADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-ADM</button>
+                <button id="btnTAMHINO" value="TAMHINO" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-HINO</button>
+                <button id="btnADMAS" value="ADMAS" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-AS</button>
+                <button id="btnADMKP" value="ADMKP" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-KP</button>
+                <input id="dock_type" value="OTHER" type="hidden"></input>
+            </div>
+
         </div>
 
     </div>
@@ -93,11 +120,28 @@
 
 @section('scripts')
 @parent
+
 <script type="text/javascript">
+  
+  function func_change_delivery(obj) {
+    $('#delivery').find('button').removeClass('btn-primary');
+    $('#delivery').find('button').addClass('btn-default');
+    $(obj).addClass('btn-primary');
+    $('#delivery_type').val(obj.value);
+  }
+
+  function func_change_dock(obj) {
+    $('#dock').find('button').removeClass('btn-primary');
+    $('#dock').find('button').addClass('btn-default');
+    $(obj).addClass('btn-primary');
+    $('#dock_type').val(obj.value);  
+  }
+
   var barcode   ="";
   var rep2      = "";
   var old_html  = $("#imageDiv").html();
   var detail_no = $('#detail_no');
+  
   $(document).keypress(function(e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
@@ -106,10 +150,10 @@
             $('#detail_no').val('');
             
             $.ajax({
-                    type: 'get',           // POST Request
-                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode,  
+                    type: 'get',           // {{-- POST Request --}}
+                    url: "{{ url('pis/getAjaxImage') }}"+'/'+barcode+'/'+$('#delivery_type').val()+'/'+$('#dock_type').val(),  
                     _token: "{{ csrf_token() }}",
-                    dataType: 'json',       // Data Type of the Transmit
+                    dataType: 'json',       // {{-- Data Type of the Transmit --}}
                     success: function (data) {
 
                         rep2 = data.part_number_customer;
@@ -121,31 +165,40 @@
                             {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                             $('#alert').removeClass('alert-success');
                             $('#alert').addClass('alert-danger');
-                            $('#alert').text('@lang("avicenna/pis.part_not_found")');
+                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.alert_error")');
+                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                             
                             $('#detail_no').prop('readonly', true);
                             barcode = "";
                             rep2    = "";
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $("#imageDiv").html("");
                         }
                         else{
                             {{-- dev-1.0, ferry, 20170913, alert jika success scan --}}
                             $('#alert').removeClass('alert-danger');
                             $('#alert').addClass('alert-success');
-                            $('#alert').text(rep2+'@lang("avicenna/pis.part_found")');
+                            $('#alert-header').html('<i class="icon fa fa-check"></i>'+'@lang("avicenna/pis.alert_success")');
+                            $('#alert-body').text(rep2+'@lang("avicenna/pis.part_found")');
 
                             $('#detail_no').prop('readonly', false);
                             $('#detail_no').val(rep2);
                             $('#imageDiv').show();
 
-                            //dev-1.0, 20170816, by yudo, fungsi menampilkan gambar
-                            $("#imageDiv").html("<img src='"+data.img_path+"' width='1100px' height='590px' />");
+                            // {{-- dev-1.0, 20170816, by yudo, fungsi menampilkan gambar --}}
+                            $("#imageDiv").html("<img src='"+data.img_path+"' width='990px' height='560px' />");
                             $('#detail_no').prop('readonly', true);
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $('#counter').text(data.counter);
+
+                            $('[id^=last_scan]').html('&nbsp;');
+                            for (var i=0; i < data.last_scan.length; i++) {
+                                $('[id^=last_scan]').eq(i).text(data.last_scan[i].back_number+" - "+
+                                                                data.last_scan[i].part_kind+" - "+
+                                                                data.last_scan[i].total_kanban);
+                            };
 
                             barcode = "";
                             rep2    = "";
@@ -153,16 +206,18 @@
                     },
                     error: function (xhr) {
 
-                            {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                            // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                             $('#alert').removeClass('alert-success');
                             $('#alert').addClass('alert-danger');
-                            $('#alert').text('@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                             
                             barcode = "";
                             rep2    = "";
 
-                            // dev-1.0, 20170913, Ferry, Fungsi informasi display
+                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                             $("#imageDiv").html("");
+                            // location.reload();
                     }
                                       
                 });
@@ -175,17 +230,7 @@
         }    
     });
 
-    $("#btnReset").click(function(){
-           rep2    = "";
-           $('#table_hide').hide();
-           $('#imageDiv').html(old_html);
-           $(this).blur();
-           detail_no.val("");
-        });
-
     $(document).ready(function() {
-        // $('#table_hide').hide();
-        // $('#imageDiv').hide();
         $('#detail_no').prop('readonly', true);
     } );
 

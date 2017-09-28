@@ -66,8 +66,9 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
+            'driver'    => 'eloquent',
+            'model'     => App\User::class,
+            'field'     => 'npk',           // dev-1.0, 20170918, jika username pakai npk dan bukan email
         ],
 
         // 'users' => [

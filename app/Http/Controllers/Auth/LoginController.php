@@ -73,14 +73,16 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
         if ($this->username() === 'email') return $this->attemptLoginAtAuthenticatesUsers($request);
+
         if ( ! $this->attemptLoginAtAuthenticatesUsers($request)) {
+
             return $this->attempLoginUsingUsernameAsAnEmail($request);
         }
         return false;
     }
 
     /**
-     * Attempt to log the user into application using username as an email.
+     * Attempt to log the user into application using username as an email. (query ke field selain email)
      *
      * @param \Illuminate\Http\Request $request
      * @return bool
@@ -102,41 +104,4 @@ class LoginController extends Controller
         return redirect('/');
     }
 
-    /* dev-1.0, Ferry, Alternative login bukan email
-     * Handle an authentication attempt.
-     *
-     * @return Response
-     */
-    public function authenticate()
-    {
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            // Authentication passed...
-            return redirect()->intended('dashboard');
-        }
-
-        $username = $request->username; //the input field has name='username' in form
-
-        if(filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            //user sent their email 
-            $auth_check = Auth::attempt(['email' => $username, 'password' => $password]);
-        } else {
-            //they sent their username instead 
-             $auth_check = Auth::attempt(['username' => $username, 'password' => $password]);
-        }
-
-        // cek otentikasi
-        if (  $auth_check ) {
-            //send them where they are going 
-            return redirect()->intended('dashboard');
-        }
-        else {
-            
-        }
-
-        //Nope, something wrong during authentication 
-        return redirect()->back()->withErrors([
-            'credentials' => 'Please, check your credentials'
-        ]);
-
-    }
 }
