@@ -99,10 +99,10 @@ class PisController extends Controller
 
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                 $arrJSON = array(
-                                "img_path" => Storage::exists('/public/pis/'.$part->part_number_customer.$path_suffix) ? 
-                                                asset('storage/pis/'.$part->part_number_customer.$path_suffix) :
+                                "img_path" => Storage::exists('/public/pis/'.$part_pis->part_number_customer.$path_suffix) ? 
+                                                asset('storage/pis/'.$part_pis->part_number_customer.$path_suffix) :
                                                 asset('storage/pis/default.JPG'),
-                                "part_number_customer" => $part->part_number_customer,
+                                "part_number_customer" => $part_pis->part_number_customer,
                                 "counter"   => $counter,
                                 "last_scan" => $last_scan
                         );
