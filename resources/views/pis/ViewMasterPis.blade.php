@@ -73,6 +73,7 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
+
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -84,14 +85,17 @@
                   </tr>
                   </thead>
                   <tbody>
+                  @if(count($avi_part_piss) > 0)
+                  @foreach($avi_part_piss as $avp)
                   <tr>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td>{{$avp->part_number}}</td>
+                    <td>{{$avp->part_kind}}</td>
+                    <td>{{$avp->part_dock}}</td>
+                    <td><!-- {{$avp->part_number}} --><a href="/pis/preview/{{$avp->link}}">klik</a></td>
                     
                   </tr>
-                  
+                  @endforeach
+                  @endif
                 </table>
               </div>
               <!-- /.box-body -->
@@ -135,4 +139,17 @@
   	
   			// alert('test');
   		</script>
+      <script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
   		@endsection

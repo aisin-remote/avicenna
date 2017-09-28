@@ -137,8 +137,12 @@ class PisController extends Controller
     } 
 
     function PisMasterView(){
-        $locations = '';
-        return view('pis.ViewMasterPis',compact('locations'));
+       
+        $avi_part_piss  = avi_part_pis::select('*')                
+                                        ->get();
+                                        // return $avi_part_piss;
+                        // return $t_transaction;       
+        return view('pis.ViewMasterPis',compact('avi_part_piss'));
     }
     /**
      * Show the form for creating a new resource.
