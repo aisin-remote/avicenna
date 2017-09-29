@@ -18,8 +18,8 @@ class CreateAviPartProductionsTable extends Migration
             $table->string('part_number');
             $table->string('part_number_ag')->nullable();
             $table->string('part_number_kanban')->nullable();
-            $table->string('supplier_code')->nullable();
-            $table->string('supplier_code_ag')->nullable();
+            $table->string('line_number')->nullable();
+            $table->string('line_number_ag')->nullable();
             $table->string('back_number')->nullable();
             $table->float('qty_kanban');
             $table->timestamps();
