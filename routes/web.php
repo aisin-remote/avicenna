@@ -52,6 +52,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/dashboard/getAjaxModel', 'DashboardController@getAjaxModel'); //dev-1.0, 20170905, ajax Model
 	//end of dashboard
 	
+
+	//Dandori Page
+	Route::get('/dandori/dandori','CreateDandoriController@index');
+	Route::get('/dandori/getajaxpart',"CreateDandoriController@GetAjaxPart");
+	Route::get('/dandori/getajaxmodel',"CreateDandoriController@GetAjaxModel");
+	Route::post('/dandori/save',"CreateDandoriController@Update");
+	//End of Dandori Page
+
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
