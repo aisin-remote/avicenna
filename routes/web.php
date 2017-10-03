@@ -29,6 +29,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/opname',"CreateOpnameController@Opname"); // Dev-10, Alliq, 20170816, Route untuk tampil page stock opname di dalam folder adminlte
 	Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
 	Route::post('/saveopname',"CreateOpnameController@SaveOpname");
+
+	Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
+	Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
+	Route::get('/avicenna/stock/mutation/ajax/getDetail/{part_number}','Avicenna\StockMutationController@getAjaxDetail');
 	//
 	//
 	//
