@@ -26,6 +26,8 @@ return [
     'lbl_choose_model' => 'Choose New Model',
     'modal_title_txt'   => 'Confirmation',
     'modal_body_txt' => 'Do you really want to Save changes ?',
+    'success_msg'   => 'Success Saving Data',
+    'failed_msg'   => 'Failed Saving Data',
 
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 

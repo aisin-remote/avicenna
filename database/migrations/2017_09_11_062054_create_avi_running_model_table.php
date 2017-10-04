@@ -16,6 +16,7 @@ class CreateAviRunningModelTable extends Migration
               $table->string('ip_address','20');
               $table->string('back_number','20');
               $table->string('part_number','30');
+              $table->integer('quantity');
               $table->timestamp('dandori_date');
               $table->timestamps();
             });

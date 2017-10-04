@@ -52,7 +52,10 @@ class CreateDandoriController extends Controller
 			$dandori->line=$model->line_name;
 			$dandori->is_dandori=TRUE;
 			$dandori->save();
+			\Session::flash('flash_type', 'alert-success');
+			\Session::flash('flash_message', __('avicenna/dandori.success_msg'));
 		}
+
 		return \Redirect::Back();
 		
 	}
