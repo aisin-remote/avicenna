@@ -6,7 +6,8 @@
 
 @section('htmlheader')
   @parent
-  <link rel="stylesheet" type="text/css" href="{{url('/css/dataTables.bootstrap.min.css')}}">
+  <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url('/plugins/daterangepicker.css') }}">
 @endsection
 
 @section('contentheader_title')
@@ -19,41 +20,87 @@
 
 @section('main-content')
 
-  <div class="box box-primary">
+<div class="row">
+    <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">Select parameters :</h3>
+            </div>
+            <div class="box-body">
+                <!-- Date range -->
+                <div class="form-group">
+                    <label>Date range:</label>
 
-    <div class="box-header">
-      <h3 class="box-title">Inventory Summary</h3>
+                    <div class="input-group">
+                        <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
+                        <input type="text" class="form-control pull-right" id="date_mutation">
+                    </div>
+                <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
     </div>
-    <!-- /.box-header -->
-    <div class="box-body">
-      <table id="tblMutation" class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th></th>
-            <th>No</th>
-            <th>Part Number</th>
-            <th>Location</th>
-            <th>Beginning Stock</th>
-            <th>Stock In</th>
-            <th>Stock Out</th>
-            <th>Ending Stock</th>
-          </tr>
-        </thead>
-      </table>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Inventory Summary</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="tblMutation" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>No</th>
+                    <th>Part Number</th>
+                    <th>Location</th>
+                    <th>Beginning Stock</th>
+                    <th>Stock In</th>
+                    <th>Stock Out</th>
+                    <th>Ending Stock</th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
     </div>
-    <!-- /.box-body -->
-  </div>
-  <!-- /.box -->
+</div>
 
 @endsection
 
 @section('scripts')
 @parent
-    <script type="text/javascript" src="{{ asset('/js/handlebars.runtime.js') }}"></script>
-    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
+<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 
-  <script type="text/javascript">
-    // var template = Handlebars.compile($("#details-template").html());
+<script id="details-template" type="text/x-handlebars-template">
+    <div class="label label-info">Info Part @{{ part_number }} </div>
+    <table class="table table-bordered table-striped" style="width: 100%" id="part-@{{ part_number }}">
+        <thead>
+        <tr>
+            <th>Part No</th>
+            <th>Part Name</th>
+        </tr>
+        </thead>
+    </table>
+</script>
+
+<script type="text/javascript">
+    // {{-- dev-1.0, Ferry, 20171004, Init all input --}}
+    $('#date_mutation').daterangepicker()
+
+    // {{-- dev-1.0, Ferry, 20171004, Atur tampilan datatable --}}
+    var template = Handlebars.compile($("#details-template").html());
     var table = $('#tblMutation').DataTable({
         processing: true,
         serverSide: true,
@@ -66,7 +113,10 @@
                 "data"            : null,
                 "defaultContent"  : ''
             },
-            {data: 'DT_Row_Index', name: 'DT_Row_Index'},
+            {
+                "searchable"      : false,
+                "data"            : 'DT_Row_Index',
+            },
             {data: 'part_number', name: 'part_number'},
             {data: 'store_location', name: 'store_location'},
             {data: 'mutation_code', name: 'mutation_code'},
@@ -89,8 +139,8 @@
             tr.removeClass('shown');
         } else {
             // Open this row
-            row.child(format(row.data())).show();
-            // initTable(tableId, row.data());
+            row.child(template(row.data())).show();
+            initTable(tableId, row.data());
             tr.addClass('shown');
             tr.next().find('td').addClass('no-padding bg-gray');
         }
@@ -108,30 +158,6 @@
         })
     }
 
-    function format ( d ) {
-        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-                '<tr>'+
-                    '<td>Tool Name      :</td>'+
-                    '<td>'+d.part_number+'</td>'+
-                '</tr>'+
-                 '<tr>'+
-                    '<td>Lifetime       :</td>'+
-                    '<td>'+d.part_name+'</td>'+
-                '</tr>'+
-                '</table>';
-    }
-  </script>
-
-    <script id="details-template" type="text/x-handlebars-template">
-        <div class="label label-info">Info Part @{{ part_number }} </div>
-        <table class="table details-table" id="part-@{{ part_number }}">
-            <thead>
-            <tr>
-                <th>Part No</th>
-                <th>Part Name</th>
-            </tr>
-            </thead>
-        </table>
-    </script>
+</script>
 
 @endsection
