@@ -47,13 +47,20 @@ class CreateDandoriController extends Controller
 		if($model != null){
 			//Update AVI ANDON DADNDORI
 			$dandori = avi_andon_dandori::where('ip_address','=',$model->ip_address)->first();
-			$dandori->timestamps = false;
-			$dandori->back_no = $back_number;
-			$dandori->line=$model->line_name;
-			$dandori->is_dandori=TRUE;
-			$dandori->save();
-			\Session::flash('flash_type', 'alert-success');
-			\Session::flash('flash_message', __('avicenna/dandori.success_msg'));
+
+			if ($dandori) {
+				$dandori->back_no = $back_number;
+				$dandori->line=$model->line_name;
+				$dandori->is_dandori=TRUE;
+				$dandori->save();
+
+				\Session::flash('flash_type', 'alert-success');
+				\Session::flash('flash_message', __('avicenna/dandori.success_msg'));
+			}
+			else {
+				\Session::flash('flash_type', 'alert-danger');
+				\Session::flash('flash_message', __('avicenna/dandori.failed_msg'));
+			}
 		}
 
 		return \Redirect::Back();

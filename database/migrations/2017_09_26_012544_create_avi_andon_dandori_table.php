@@ -15,6 +15,7 @@ class CreateAviAndonDandoriTable extends Migration
          $table->string('line',40);
          $table->string('back_no',4);
          $table->boolean('is_dandori');
+         $table->timestamps();
      });
     }
 

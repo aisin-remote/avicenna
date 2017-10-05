@@ -14,6 +14,7 @@ class CreateAviRunningModelTable extends Migration
             Schema::create('avi_running_model', function (Blueprint $table) {
               $table->increments('id');
               $table->string('ip_address','20');
+              $table->string('line_name','6');
               $table->string('back_number','20');
               $table->string('part_number','30');
               $table->integer('quantity');
