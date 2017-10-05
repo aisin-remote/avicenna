@@ -7,7 +7,7 @@
 
 
   @section('contentheader_title')
-    @lang('avicenna/opname.default_title')
+    @lang('avicenna/opname.master_pis')
   @endsection
 
   @section('contentheader_description')
@@ -26,7 +26,8 @@
                   <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> -->
                 </div> 
               </div>
-              <form role="form" method="post" action="{{url('/saveopname')}}">
+              <form role="form" method="post" action="{{url('/pis/search')}}">
+                <input type="hidden" value="{{csrf_token()}}" name="_token">
               <div class="box-body">
                 
                 <div class="row">
@@ -34,11 +35,11 @@
                     <label for="exampleInputEmail1">Type</label>
                     <br>
                       <label>
-                        <input type="checkbox" class="minimal" name = "" id="">
+                        <input type="checkbox" class="minimal" name = "oem" value = "OEM" id="">
                         OEM
                       </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <label>
-                        <input type="checkbox" class="minimal" name = "" id="">
+                        <input type="checkbox" class="minimal" name = "gnp" value = "GNP" id="">
                         GNP
                       </label>
                   </div>
@@ -46,19 +47,19 @@
                     <label for="exampleInputPassword1">Destination</label>
                     <br>
                     <label>
-                        <input type="checkbox" class="minimal" name = "" id="">
+                        <input type="checkbox" class="minimal" name = "dock_4N" value = "4N" id="">
                         Dock 4N
                       </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <label>
-                        <input type="checkbox" class="minimal" name = "" id="">
+                        <input type="checkbox" class="minimal" name = "dock_4L" value = "4L" id="">
                         Dock 4L
                       </label>
                   </div>
-                  <input type="hidden" value="{{csrf_token()}}" name="_token">
+                  
                   
                 </div>
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" name ="search">
                       <span class="glyphicon glyphicon-search"></span> Search</button>
                 </div>
               </div>
@@ -78,9 +79,13 @@
                   <thead>
                   <tr>
                     <th>Part No</th>
+                    <th>Back No</th>
+                    <th>Qty</th>
                     <th>Type</th>
                     <th>Destination</th>
-                    <th>Path</th>
+                    <th>Picture</th>
+                    <th>Status Picture</th>
+                    <th>Edit</th>
                     
                   </tr>
                   </thead>
@@ -89,10 +94,21 @@
                   @foreach($avi_part_piss as $avp)
                   <tr>
                     <td>{{$avp->part_number}}</td>
+                    <td>{{$avp->back_number}}</td>
+                    <td>{{$avp->qty_kanban}}</td>
                     <td>{{$avp->part_kind}}</td>
                     <td>{{$avp->part_dock}}</td>
-                    <td><!-- {{$avp->part_number}} --><a href="/pis/preview/{{$avp->link}}">klik</a></td>
-                    
+                   
+                   
+                    <td>
+                       
+                        <a href="{{ url('pis/preview/'.$avp->img_path) }}" target="_blank" onclick="window.open('{{ url('pis/preview/'.$avp->img_path) }}', 'popup', 'height=480, width=640, top = 120, left= 350 '); return false;">{{$avp->img_path}}</a>
+                    </td>
+                    <td bgcolor="{{ $avp->validasi == 'Ada' ? 'green' : 'red' }}" align = 'center'><strong><font color="white"> {{$avp->validasi}}</font></strong></td>
+                    <td>
+                      <a class = "btn btn-primary" href="{{url('/pis/edit/'.$avp->id)}}"><span class="glyphicon glyphicon-edit"></span> </a>
+                     <!--  <a class = "btn btn-danger" href="{{url('/pis/delete/'.$avp->id)}}" ><span class="glyphicon glyphicon-trash"></span> </a> -->
+                    </td>
                   </tr>
                   @endforeach
                   @endif

@@ -12,7 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-
+    'part_not_found' => 'Part Not Found!!! Please input first in System',
+    'part_found'     => 'Successfully scanned!',
+    'error_scan'     => 'Error scan occured : ',
+    'part_numb'      => 'Part Number',
+    'counter'        => 'Counter (Total Scan)',
+    'date'           => 'Date :',
+    'last_scan'      => 'Last scan',
     'alert_error'       => 'Error !',
     'alert_success'     => 'Success !',
 

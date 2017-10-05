@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Routing\Controller;   //pemecah error tokenmismatch
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 use DB;
 use Auth;
@@ -137,13 +137,121 @@ class PisController extends Controller
     } 
 
     function PisMasterView(){
-       
-        $avi_part_piss  = avi_part_pis::select('*')                
-                                        ->get();
+       //dev-1.0, ambil data pis dari avi_part_pis
+        $avi_part_piss  = avi_part_pis::selectRaw("0 as validasi, part_number, back_number, qty_kanban, part_kind, part_dock, CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path")
+                                        ->get();    
                                         // return $avi_part_piss;
-                        // return $t_transaction;       
+        foreach ($avi_part_piss as $avi_part_pis) {
+                                        $avi_part_pis->validasi = Storage::exists('/public/pis/'.$avi_part_pis->img_path) ? 
+                                                "Ada" :
+                                                "Belum Ada"; 
+
+                                        }                                
+                                   // return $avi_part_piss;
         return view('pis.ViewMasterPis',compact('avi_part_piss'));
     }
+
+    function UpdatePis($id){
+       //dev-1.0, ambil data pis dari avi_part_pis untuk tampil di view update
+        $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+                                        ->where('id',$id)
+                                        ->get();
+                                        
+        return view('pis.UpdatePis',compact('avi_part_piss'));
+    }
+
+    function UpdatePisProses(Request $request){
+       
+        $input=\Request::all();
+        $id=$input['id'];
+        $part_number=$input['part_number'];
+        $back_no=$input['back_no']; 
+        $dock=$input['part_dock'];
+        $type=$input['type']; 
+        $qty=$input['qty'];
+        $img_path  = $input['part_picture'];
+        $destinationPath = asset('storage/pis');
+
+        try{
+            \DB::beginTransaction();
+
+            // simpan ke database
+            $avp=avi_part_pis::find($id);
+            $avp->part_number=$part_number;
+            $avp->back_number=$back_no;
+            $avp->qty_kanban=$qty;
+            $avp->part_dock=$dock;
+            $avp->part_kind=$type;
+            $avp->save(); 
+
+            //upload gambar ke 
+            $file = $request->file('part_picture');
+            $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
+            $file->move(public_path('storage/pis/'),$filesName);
+            \DB::commit();
+            \Session::flash('flash_type', 'alert-success');
+            \Session::flash('flash_message', 'Sukses simpan atur ulang data');
+            
+            return redirect('/pis/master');
+        }catch(Exception $e){
+            \DB::rollback();
+            \Session::flash('flash_type', 'alert-danger');
+            \Session::flash('flash_message', 'Gagal mengatur ulang data karena '.$e->getMessage());
+            return \Redirect::Back();
+        }
+                                       
+        return url('/pis/master');
+    }
+
+    function PisPreview($img){
+       
+       $arrJSONpict = array(
+                        
+        $img_path = Storage::exists('/public/pis/'.$img) ? 
+                      asset('storage/pis/'.$img) :
+                      asset('storage/pis/default.JPG')
+                    );
+       
+       return view('pis.PisPreview',compact('img_path'));
+    }
+
+    function PisSearch(){
+        $input=\Request::all();
+       
+        $oem=$input['oem'];
+
+        $gnp=$input['gnp'];
+        $dock_4N=$input['dock_4N']; 
+        $dock_4L=$input['dock_4L'];
+
+            if(isset($input['oem']) or isset($input['gnp'])){ 
+                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+                                        ->whereIn('part_kind',[$oem,$gnp])
+                                        ->orWhereIn('part_dock',[$dock_4L,$dock_4N])
+                                        ->get();
+                
+            }else{
+
+            }
+
+            if(isset($input['dock_4N']) or isset($input['dock_4L'])){ //oem dan gnp
+                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+                                        ->whereIn('part_kind',[$oem,$gnp])
+                                        ->orWhereIn('part_dock',[$dock_4L,$dock_4N])
+                                        ->get();
+            }else{
+
+            }
+
+        // $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+        //                                 ->whereIn('part_kind',[$oem,$gnp])
+        //                                 ->orWhereIn('part_dock',[$dock_4L,$dock_4N])
+        //                                 ->get();
+                                        // return $avi_part_piss;       
+        return view('pis.ViewMasterPis',compact('avi_part_piss'));
+    }
+
+    
     /**
      * Show the form for creating a new resource.
      *

@@ -1,0 +1,1 @@
+<img src = "{{ $img_path }}" width='640px' height='480px' />

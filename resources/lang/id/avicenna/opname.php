@@ -13,16 +13,13 @@ return [
     |
     */
 
-    'default_title'     => 'Stock Opname',
-    'sto_entry_desc'    => 'Entry stock mutation',
-    'sto_entry_box'     => 'Create stock mutation', 
-    'pis_master'        => 'Search Master PIS',    
-    'stock_opname'      => 'Stock Opname',
-    'location'          => 'Location',
-    'save'              => 'Save', 
-    'table_opname'      => 'List Asset Opname',
-    'master_pis'      => 'Master Parts PIS',
-
+    'default_title'     => 'Survei asset',
+    'sto_entry_desc'    => 'Input mutasi stok',
+    'sto_entry_box'     => 'Buat mutasi stok',
+    'stock_opname'      => 'Penghitungan Asset',
+    'location'          => 'Lokasi',
+    'save'              => 'Simpan',
+    'table_opname'      => 'Daftar Asset Opname',    
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
