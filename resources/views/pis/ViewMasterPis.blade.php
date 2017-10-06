@@ -93,7 +93,7 @@
                   @if(count($avi_part_piss) > 0)
                   @foreach($avi_part_piss as $avp)
                   <tr>
-                    <td>{{$avp->part_number}}</td>
+                    <td>{{$avp->part_number_customer}}</td>
                     <td>{{$avp->back_number}}</td>
                     <td>{{$avp->qty_kanban}}</td>
                     <td>{{$avp->part_kind}}</td>
@@ -102,7 +102,7 @@
                    
                     <td>
                        
-                        <a href="{{ url('pis/preview/'.$avp->img_path) }}" target="_blank" onclick="window.open('{{ url('pis/preview/'.$avp->img_path) }}', 'popup', 'height=480, width=640, top = 120, left= 350 '); return false;">{{$avp->img_path}}</a>
+                        <a href="{{ url('pis/preview/'.$avp->img_path) }}" target="_blank" onclick="window.open('{{ url('pis/preview/'.$avp->img_path) }}', 'popup', 'height=540, width=650, top = 120, left= 350 '); return false;">{{$avp->img_path}}</a>
                     </td>
                     <td bgcolor="{{ $avp->validasi == 'Ada' ? 'green' : 'red' }}" align = 'center'><strong><font color="white"> {{$avp->validasi}}</font></strong></td>
                     <td>
