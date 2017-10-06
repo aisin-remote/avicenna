@@ -138,7 +138,7 @@ class PisController extends Controller
 
     function PisMasterView(){
        //dev-1.0, ambil data pis dari avi_part_pis
-        $avi_part_piss  = avi_part_pis::selectRaw("0 as validasi, id, part_number, back_number, qty_kanban, part_kind, part_dock, CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path")
+        $avi_part_piss  = avi_part_pis::selectRaw("0 as validasi, id, part_number_customer, part_number, back_number, qty_kanban, part_kind, part_dock, CONCAT(part_number_customer,'-',part_kind,'-',part_dock,'.JPG') as img_path")
                                         ->get();    
                                         // return $avi_part_piss;
         foreach ($avi_part_piss as $avi_part_pis) {
@@ -153,7 +153,7 @@ class PisController extends Controller
 
     function UpdatePis($id){
        //dev-1.0, ambil data pis dari avi_part_pis untuk tampil di view update
-        $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+        $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number_customer,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
                                         ->where('id',$id)
                                         ->get();
                                         
@@ -177,7 +177,7 @@ class PisController extends Controller
 
             // simpan ke database
             $avp=avi_part_pis::find($id);
-            $avp->part_number=$part_number;
+            $avp->part_number_customer=$part_number;
             $avp->back_number=$back_no;
             $avp->qty_kanban=$qty;
             $avp->part_dock=$dock;
@@ -225,7 +225,7 @@ class PisController extends Controller
         $dock_4L=$input['dock_4L'];
 
             if(isset($input['oem']) or isset($input['gnp'])){ 
-                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number_customer,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
                                         ->whereIn('part_kind',[$oem,$gnp])
                                         ->orWhereIn('part_dock',[$dock_4L,$dock_4N])
                                         ->get();
@@ -235,7 +235,7 @@ class PisController extends Controller
             }
 
             if(isset($input['dock_4N']) or isset($input['dock_4L'])){ //oem dan gnp
-                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
+                $avi_part_piss  = avi_part_pis::select("*",DB::raw("CONCAT(part_number_customer,'-',part_kind,'-',part_dock,'.JPG') as img_path"))
                                         ->whereIn('part_kind',[$oem,$gnp])
                                         ->orWhereIn('part_dock',[$dock_4L,$dock_4N])
                                         ->get();
