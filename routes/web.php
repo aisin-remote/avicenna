@@ -40,7 +40,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/pis', 'PisController@index')->name('pis');
 	// dev-1.0, Ferry, 20170822, Merged
 	Route::get('/pis/master', 'PisController@PisMasterView'); //dev-1.0, 20170926, view master pis
-
+	Route::get('/pis/preview/{img}', 'PisController@PisPreview'); //dev-1.0, 20170926, view 
+	Route::get('/pis/edit/{id}', 'PisController@UpdatePis'); //dev-1.0, 20170926, view update pis
+	Route::get('/pis/update/{id}', 'PisController@UpdatePisProses'); //dev-1.0, 20170926, view update pis
+	Route::post('/updatepis','PisController@UpdatePisProses');
+	Route::post('/pis/search','PisController@PisSearch');
 	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
 	//end of modul pis
 	//

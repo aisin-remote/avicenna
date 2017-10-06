@@ -24,6 +24,8 @@ return [
     'save'              => 'Save', 
     'table_opname'      => 'List Asset Opname',
 
+    'master_pis'        => 'Master Parts PIS',
+
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
