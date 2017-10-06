@@ -17,16 +17,16 @@
   @section('main-content')
         <!-- /.box -->
 
-            <div class="box box-primary">
-              <div class="box-header with-border">
+            <!-- <div class="box box-primary"> -->
+              <!-- <div class="box-header with-border">
                 <h3 class="box-title">@lang('avicenna/opname.pis_master')</h3>
 
                 <div class="box-tools pull-right">
-                  <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button> -->
+                  <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                  <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
                 </div> 
-              </div>
-              <form role="form" method="post" action="{{url('/pis/search')}}">
+              </div> -->
+              <!-- <form role="form" method="post" action="{{url('/pis/search')}}">
                 <input type="hidden" value="{{csrf_token()}}" name="_token">
               <div class="box-body">
                 
@@ -63,9 +63,9 @@
                       <span class="glyphicon glyphicon-search"></span> Search</button>
                 </div>
               </div>
-              </form>
-              <!-- /.box-body -->
-            </div>
+              </form> -->
+              <!-- /.box-body
+            </div> -->
 
         <div class="box box-primary">
         

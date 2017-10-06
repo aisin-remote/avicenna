@@ -138,7 +138,7 @@ class PisController extends Controller
 
     function PisMasterView(){
        //dev-1.0, ambil data pis dari avi_part_pis
-        $avi_part_piss  = avi_part_pis::selectRaw("0 as validasi, part_number, back_number, qty_kanban, part_kind, part_dock, CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path")
+        $avi_part_piss  = avi_part_pis::selectRaw("0 as validasi, id, part_number, back_number, qty_kanban, part_kind, part_dock, CONCAT(part_number,'-',part_kind,'-',part_dock,'.JPG') as img_path")
                                         ->get();    
                                         // return $avi_part_piss;
         foreach ($avi_part_piss as $avi_part_pis) {
