@@ -71,7 +71,7 @@ class PisController extends Controller
                 $scan->part_number_customer = $part_pis->part_number_customer;
                 $scan->part_kind            = $part_pis->part_kind;
                 $scan->part_dock            = $part_pis->part_dock;
-                $scan->part_name            = $part->part_name;
+                $scan->part_name            = $part ? $part->part_name : null;  // dev-1.0, Ferry, 20171017, jangan berhenti walaupun part masih blm register (tetap isi null)
                 $scan->customer             = $part_pis->customer_code;
                 $scan->back_number          = $part_pis->back_number;
                 // 'store_location = $i == 0 ? config('global.warehouse_body.finish_good') : config('global.warehouse_body.staging'), //prioritas 2
