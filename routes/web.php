@@ -47,6 +47,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::post('/updatepis','PisController@UpdatePisProses');
 	Route::post('/pis/search','PisController@PisSearch');
 	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
+	Route::post('/pis/add', 'PisController@AddNewPis'); //dev-1.0, 20170926, view master pis
+	Route::get('/getajaxpartPis','PisController@GetAjaxPart');
+
+
 	//end of modul pis
 
 	// dev-1.0, Ario, 20171010, Route Part Master

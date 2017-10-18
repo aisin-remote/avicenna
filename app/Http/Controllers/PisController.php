@@ -250,7 +250,40 @@ class PisController extends Controller
                                         // return $avi_part_piss;       
         return view('pis.ViewMasterPis',compact('avi_part_piss'));
     }
+    public function AddNewPis()
+     {
+         
+            $input = Input::all();
+            $avi_part_pis                        = new avi_part_pis;
+            $avi_part_pis->part_number           =$input['part_number'];
+            $avi_part_pis->part_number_customer  =$input['part_number_customer'];
+            $avi_part_pis->customer_code_ag      =$input['customer_code_ag'];
+            $avi_part_pis->part_kind             =$input['part_kind'];
+            $avi_part_pis->part_dock             =$input['part_dock'];
+            $avi_part_pis->back_number           =$input['back_number'];
+            $avi_part_pis->qty_kanban            =$input['qty_kanban'];
 
+            $avi_part_pis->save();
+        
+            \Session::flash('flash_type','alert-success');
+            \Session::flash('flash_message','New part was successfully created');
+            return redirect('/part/master');
+
+        
+     }
+
+    function GetAjaxPart(){
+        $term=\Request::all();
+        if(!isset($term['q'])){
+            return [];
+        }
+        $term=$term['q'];
+        if(strlen($term) < 2){
+            return [];
+        }
+        return avi_parts::where('part_number','like','%'.$term.'%')
+            ->get()->toArray();
+    }
     
     /**
      * Show the form for creating a new resource.

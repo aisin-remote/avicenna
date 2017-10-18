@@ -118,64 +118,103 @@
               <!-- /.box-body -->
           </div>
              <!-- /.box -->
-          <div id="myModal" class="modal fade" role="dialog">
+
+
+      <!-- /.box-body-add-part -->
+      <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><font face='calibri'><b>CREATE PIS</b></font></h4>
+                    <h4 class="modal-title"><font face='calibri'><b>CREATE PART</b></font></h4>
                 </div>
-                <div class="modal-body">
-          <form role="form" action = "{{ url('pis/add/') }}" method = "post" enctype="multipart/form-data">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="img_path" value="{{ $avp->img_path }}">
-                <input type="hidden" name="id" value="{{ $avp->id }}">
-                <div class="box-body">
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="part_number" name = "part_number" placeholder="Part Number" value = "{{ $avp->part_number }}">
-                    <label for="exampleInputEmail1">Part Number Customer</label>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Part Name</label>
-                    <input type="text" class="form-control" id="part_name" name = "part_name" placeholder="Part Name" value = "{{$avp->part_name }}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Back No</label>
-                    <input type="text" class="form-control" id="exampleInput1" name = "back_no" placeholder="Back No" value = "{{$avp->back_number }}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Qty</label>
-                    <input type="text" class="form-control" id="qty" name = "qty" placeholder="Qty" value = "{{$avp->qty_kanban }}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Type</label>
-                    <input type="text" class="form-control" id="type" name = "type" placeholder="Type" value = "{{$avp->part_kind }}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Destination</label>
-                    <input type="text" class="form-control" id="part_dock" name = "part_dock" placeholder="Destination" value = "{{$avp->part_dock }}">
-                  </div>
-                  
+                      <div class="modal-body">
+                      <form role="form" action = "{{ url('pis/add/') }}" method = "post" enctype="multipart/form-data">
+                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input type="hidden" name="img_path" value="{{ $avp->img_path }}">
+                          <input type="hidden" name="id" value="{{ $avp->id }}">
+                          <div class="box-body">
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Part Number AIIA</label>
+                                <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
+                                <option value="" selected="" disabled="" required>--Choose Part Number--</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputEmail1">Part Number Customer</label>
+                              <input type="text" class="form-control" id="part_number" name = "part_number_customer" placeholder="Part Number Customer" >
+                            </div>
+<!--                             <div class="col-xs-4">
+                              <label for="exampleInputEmail1">@lang('avicenna/pis.part_numb')</label>
+                                <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
+                                <option value="" selected="" disabled="" required>--Choose Part Number--</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="form-group">
+                              <label for="exampleInput1">Part Name</label>
+                              <input type="text" class="form-control" id="part_name" name = "part_name" placeholder="Part Name" >
+                            </div> -->
+                            <div class="form-group">
+                              <label for="exampleInput1">Customer Code</label>
+                              <input type="text" class="form-control" id="customer_code" name = "customer_code_ag" placeholder="Customer Code" >
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInput1">Customer Code AG</label>
+                              <input type="text" class="form-control" id="customer_code_ag" name = "customer_code_ag" placeholder="Customer Code AG" >
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInput1">Back No</label>
+                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" >
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInput1">Qty</label>
+                              <input type="text" class="form-control" id="qty_kanban" name = "qty_kanban" placeholder="Qty" >
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInput1">Type</label>
+                              <select type="text" class="form-control" id="part_kind" name = "part_kind" >
+                                <option>OEM</option>
+                                <option>GNP</option>
+                          
+                              </select>
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInput1">Destination</label>
+                              <select type="text" class="form-control" id="part_dock" name = "part_dock" placeholder="Destination" >
+                                <option>43</option>
+                                <option>53</option>
+                                <option>1L</option>
+                                <option>1N</option>
+                                <option>1S</option>
+                                <option>6I</option>
+                                <option>TAMTAM</option>
+                                <option>TAMADM</option>
+                                <option>TAMHINO</option>
+                                <option>OTHER</option>
+                              </select>
+                            </div>  
+                            <div class="col-md-8">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                              <span class='glyphicon glyphicon-floppy-saved'></span>&nbsp;
+                              <font face='calibri'><b>SAVE</b></font>
+                            </button>&nbsp;&nbsp;
+                            <button type="reset" class="btn btn-sm btn-danger">
+                              <span class='glyphicon glyphicon-repeat'></span>&nbsp;
+                              <font face='calibri'><b>RESET</b></font>
+                            </button>
+                            </div>
+                          </div> 
+                      </form>
+                      </div>
                 </div>
-                <div class="col-md-8">
-                <button type="submit" class="btn btn-sm btn-primary">
-                  <span class='glyphicon glyphicon-floppy-saved'></span>&nbsp;
-                  <font face='calibri'><b>SAVE</b></font>
-                </button>&nbsp;&nbsp;
-                <button type="reset" class="btn btn-sm btn-danger">
-                  <span class='glyphicon glyphicon-repeat'></span>&nbsp;
-                  <font face='calibri'><b>RESET</b></font>
-                </button>
-              </div>
-            </div>
-                
-              </form>
-        </div>
-    </div>   
+          </div>
+    </div>
+    <!-- /.end-box-body-add-part -->  
   @endsection
 
   @section('scripts')
   @parent
+  <link rel="stylesheet" type="text/css" href="{{url('/css/select2.min.css')}}">
   <script type="text/javascript" src="{{url('/plugins/select2.js')}}"></script>
   <script type="text/javascript">
   	var pa="";
@@ -183,7 +222,7 @@
   		$("#part_number").select2({
   			ajax:{
           data    : function(params){
-  				url			: "{{url('/getajaxpart')}}",
+  				url			: "{{url('/getajaxpartPis')}}",
   				dataType	: 'json',
   				delay		: 250,
   					return {
