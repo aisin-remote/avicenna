@@ -271,8 +271,8 @@ class PisController extends Controller
 
         
      }
-
-    function GetAjaxPart(){
+     
+    function GetAjaxPartPis(){
         $term=\Request::all();
         if(!isset($term['q'])){
             return [];

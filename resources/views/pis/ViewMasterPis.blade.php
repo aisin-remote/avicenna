@@ -141,6 +141,19 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                              <label class="checkbox-inline" for="manual">
+                              <input type="checkbox" id="manual" value="option1"> Manual Input
+                              </label>
+                            </div>
+                            <div class="form-group" id="hidden_part_no_aiia" for="hidden_part_no_aiia" style="display: none;">
+                              <label for="hidden_part_no_aiia">Part Number AIIA</label>
+                              <input type="text" class="form-control" id="hidden_part_no_aiia" name = "part_number_customer" placeholder="Part Number AIIA" >
+                            </div>
+                            <div class="form-group" id="hidden_part_name" for="hidden_part_name" style="display: none;">
+                              <label for="hidden_part_name">Part Name</label>
+                              <input type="text" class="form-control" id="hidden_part_name" name = "part_number_customer" placeholder="Part Name" >
+                            </div>
+                            <div class="form-group">
                               <label for="exampleInputEmail1">Part Number Customer</label>
                               <input type="text" class="form-control" id="part_number" name = "part_number_customer" placeholder="Part Number Customer" >
                             </div>
@@ -261,5 +274,64 @@
       'autoWidth'   : false
     })
   })
+</script>
+<script type="text/javascript">
+  var pa="";
+  $(document).ready(function() {
+    $("#part_number").select2({
+      ajax:{
+        url     : "{{url('/getajaxpartPis')}}",
+        dataType  : 'json',
+        delay   : 250,
+        data    : function(params){
+          return {
+            q   : params.term,
+            page  : params.page
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                text: item.part_number,
+                id: item.part_number
+              }
+            })
+          };
+        }
+      },
+      minimumresultsForSearch:10,
+      cache : true,
+      minimumInputLength  : 2,
+    })
+})
+  
+      // alert('test');
+    </script>
+<script>
+$(function(){
+
+var manual = $("#manual");
+var hidden = $("#hidden");
+var hidden_a = $("#hidden_part_no_aiia");
+var hidden_b = $("#hidden_part_name");
+
+hidden.hide();
+manual.click(function ()
+{
+    if ($(this).is(":checked"))
+    {
+        hidden.show();
+        hidden_a.show();
+        hidden_b.show();
+    }
+    else
+    {
+        hidden.hide();
+        hidden_a.hide();
+        hidden_b.hide();
+    }              
+});
+});
 </script>
   		@endsection
