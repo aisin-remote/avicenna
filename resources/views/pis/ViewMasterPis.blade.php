@@ -136,76 +136,70 @@
                           <div class="box-body">
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number AIIA</label>
-                                <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
+                                <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" >
                                 <option value="" selected="" disabled="" required>--Choose Part Number--</option>
                                 </select>
                             </div>
                             <div class="form-group">
                               <label class="checkbox-inline" for="manual">
-                              <input type="checkbox" id="manual" value="option1"> Manual Input
+                              <input type="checkbox" id="manual" name="manual" value="option1"> Manual Input
                               </label>
                             </div>
                             <div class="form-group" id="hidden_part_no_aiia" for="hidden_part_no_aiia" style="display: none;">
                               <label for="hidden_part_no_aiia">Part Number AIIA</label>
-                              <input type="text" class="form-control" id="hidden_part_no_aiia" name = "part_number_customer" placeholder="Part Number AIIA" >
+                              <input type="text" class="form-control" id="hidden_part_no_aiia" name = "hidden_part_no_aiia" placeholder="Part Number AIIA" onkeyup="this.value = this.value.toUpperCase()" >
                             </div>
                             <div class="form-group" id="hidden_part_name" for="hidden_part_name" style="display: none;">
                               <label for="hidden_part_name">Part Name</label>
-                              <input type="text" class="form-control" id="hidden_part_name" name = "part_number_customer" placeholder="Part Name" >
+                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()" >
                             </div>
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number Customer</label>
-                              <input type="text" class="form-control" id="part_number" name = "part_number_customer" placeholder="Part Number Customer" >
-                            </div>
-<!--                             <div class="col-xs-4">
-                              <label for="exampleInputEmail1">@lang('avicenna/pis.part_numb')</label>
-                                <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" required>
-                                <option value="" selected="" disabled="" required>--Choose Part Number--</option>
-                                </select>
-                            </div> -->
-                            <!-- <div class="form-group">
-                              <label for="exampleInput1">Part Name</label>
-                              <input type="text" class="form-control" id="part_name" name = "part_name" placeholder="Part Name" >
-                            </div> -->
-                            <div class="form-group">
-                              <label for="exampleInput1">Customer Code</label>
-                              <input type="text" class="form-control" id="customer_code" name = "customer_code_ag" placeholder="Customer Code" >
-                            </div>
-                            <div class="form-group">
-                              <label for="exampleInput1">Customer Code AG</label>
-                              <input type="text" class="form-control" id="customer_code_ag" name = "customer_code_ag" placeholder="Customer Code AG" >
+                              <input type="text" class="form-control" id="part_number_customer" name = "part_number_customer" placeholder="Part Number Customer" onkeyup="this.value = this.value.toUpperCase()" >
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Back No</label>
-                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" >
+                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" onkeyup="this.value = this.value.toUpperCase()" >
+                            </div>
+                            <div class="form-group" id="hidden_min" for="hidden_min" style="display: none;">
+                              <label for="exampleInput1">Min Stock</label>
+                              <input type="Number" class="form-control" id="min_stock" name = "min_stock" placeholder="Min Stock" >
+                            </div>
+                            <div class="form-group" id="hidden_max" for="hidden_max" style="display: none;">
+                              <label for="exampleInput1" id="hidden_max" for="hidden_max">Max Stock</label>
+                              <input type="Number" class="form-control" id="max_stock" name = "max_stock" placeholder="Max Stock" >
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Qty</label>
-                              <input type="text" class="form-control" id="qty_kanban" name = "qty_kanban" placeholder="Qty" >
+                              <input type="Number" class="form-control" id="qty_kanban" name = "qty_kanban" placeholder="Qty" >
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Type</label>
                               <select type="text" class="form-control" id="part_kind" name = "part_kind" >
-                                <option>OEM</option>
-                                <option>GNP</option>
+                                <option value="OEM">OEM</option>
+                                <option value="GNP">GNP</option>
                           
                               </select>
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Destination</label>
                               <select type="text" class="form-control" id="part_dock" name = "part_dock" placeholder="Destination" >
-                                <option>43</option>
-                                <option>53</option>
-                                <option>1L</option>
-                                <option>1N</option>
-                                <option>1S</option>
-                                <option>6I</option>
-                                <option>TAMTAM</option>
-                                <option>TAMADM</option>
-                                <option>TAMHINO</option>
-                                <option>OTHER</option>
+                                <option value="43">43</option>
+                                <option value="53">53</option>
+                                <option value="1L">1L</option>
+                                <option value="1N">1N</option>
+                                <option value="1S">1S</option>
+                                <option value="6I">6I</option>
+                                <option value="TAMTAM">TAMTAM</option>
+                                <option value="TAMADM">TAMADM</option>
+                                <option value="TAMHINO">TAMHINO</option>
+                                <option value="OTHER">OTHER</option>
                               </select>
-                            </div>  
+                            </div>
+                            <div class="form-group">
+                              <label for="exampleInputFile">Picture (.JPG)</label>
+                              <input type="file" id="pis_picture" name = "pis_picture" >
+                            </div> 
                             <div class="col-md-8">
                             <button type="submit" class="btn btn-sm btn-primary">
                               <span class='glyphicon glyphicon-floppy-saved'></span>&nbsp;
@@ -315,6 +309,8 @@ var manual = $("#manual");
 var hidden = $("#hidden");
 var hidden_a = $("#hidden_part_no_aiia");
 var hidden_b = $("#hidden_part_name");
+var hidden_c = $("#hidden_max");
+var hidden_d = $("#hidden_min");
 
 hidden.hide();
 manual.click(function ()
@@ -324,12 +320,16 @@ manual.click(function ()
         hidden.show();
         hidden_a.show();
         hidden_b.show();
+        hidden_c.show();
+        hidden_d.show();
     }
     else
     {
         hidden.hide();
         hidden_a.hide();
         hidden_b.hide();
+        hidden_c.hide();
+        hidden_d.hide();
     }              
 });
 });

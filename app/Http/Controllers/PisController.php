@@ -36,7 +36,7 @@ class PisController extends Controller
     public function getAjaxImage($image, $type, $dock)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
-        $image  = strlen($image) == 208 ? substr($image, 53, 16) : $image;  // dev-1.0, Ferry, 20170926, Cust SIM
+        $image  = strlen($image) == 208 ? substr($image, 53, 15) : $image;  // dev-1.0, Handika, 20171020, Cust SIM change numb substr
         $image  = str_replace("-","", $image);
         $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
         $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
@@ -250,29 +250,58 @@ class PisController extends Controller
                                         // return $avi_part_piss;       
         return view('pis.ViewMasterPis',compact('avi_part_piss'));
     }
-    public function AddNewPis()
+    public function AddNewPis() //dev-1.0, Handika, 20171020 , add pis
      {
-         
-            $input = Input::all();
+        $input = Input::all();
+        $hidden_part_name = $input['hidden_part_name'];
+        if ( $hidden_part_name =is_null($hidden_part_name)){  //avi_parts_pis
+
             $avi_part_pis                        = new avi_part_pis;
             $avi_part_pis->part_number           =$input['part_number'];
             $avi_part_pis->part_number_customer  =$input['part_number_customer'];
-            $avi_part_pis->customer_code_ag      =$input['customer_code_ag'];
-            $avi_part_pis->part_kind             =$input['part_kind'];
-            $avi_part_pis->part_dock             =$input['part_dock'];
             $avi_part_pis->back_number           =$input['back_number'];
             $avi_part_pis->qty_kanban            =$input['qty_kanban'];
+            $avi_part_pis->part_kind             =$input['part_kind'];
+            $avi_part_pis->part_dock             =$input['part_dock'];
 
             $avi_part_pis->save();
         
             \Session::flash('flash_type','alert-success');
-            \Session::flash('flash_message','New part was successfully created');
-            return redirect('/part/master');
+            \Session::flash('flash_message','New Pis was successfully created');
+            return redirect('/pis/master');
 
+
+        }
+        else{ //avi_parts
+            $avi_part_pis                        = new avi_part_pis;
+            $avi_parts                           = new avi_parts;
+
+            $avi_part_pis->part_number           =$input['hidden_part_no_aiia'];
+            $avi_part_pis->part_number_customer  =$input['part_number_customer'];
+            $avi_part_pis->back_number           =$input['back_number'];
+            $avi_part_pis->qty_kanban            =$input['qty_kanban'];
+            $avi_part_pis->part_kind             =$input['part_kind'];
+            $avi_part_pis->part_dock             =$input['part_dock'];
+
+            $avi_parts->part_number               =$input['hidden_part_no_aiia'];
+            $avi_parts->part_number_nostrip       =$input['hidden_part_no_aiia'];
+            $avi_parts->part_name                 =$input['hidden_part_name'];
+            $avi_parts->min_stock                 =$input['min_stock'];
+            $avi_parts->max_stock                 =$input['max_stock'];
+
+            $avi_part_pis->save();
+            $avi_parts->save();
+        
+            \Session::flash('flash_type','alert-success');
+            \Session::flash('flash_message','New part was successfully created');
+            return redirect('/pis/master');
+
+
+        }
         
      }
-     
-    function GetAjaxPartPis(){
+
+    function GetAjaxPartPis(){  // dev-1.0 ,Handika, 20171019, get data part no in pis form 
         $term=\Request::all();
         if(!isset($term['q'])){
             return [];
