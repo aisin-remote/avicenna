@@ -76,6 +76,9 @@
                
               <!-- /.box-header -->
               <div class="box-body">
+              @if(Session::has('flash_message'))
+                      <div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span><em> {!! session('flash_message') !!}</em></div>
+              @endif
 
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
@@ -149,7 +152,7 @@
             <div class="form-group">
               <div class="col-md-8">
                 <font face='calibri'><b>Part Name</b></font><br/>
-                <input type="text" class="form-control" name="part_name" id="part_name" required>
+                <input type="text" class="form-control" name="part_name" id="part_name" onkeyup="this.value = this.value.toUpperCase()" required>
               </div>
             </div>
 
@@ -202,6 +205,7 @@
   @parent
   <script type="text/javascript" src="{{url('/plugins/select2.js')}}"></script>
   <script type="text/javascript">
+
   	var pa="";
   	$(document).ready(function() {
   		$("#part_number").select2({
@@ -247,4 +251,20 @@
     })
   })
 </script>
+<script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
+
+  <script>
+    $(document).ready(function(){
+        $('input[type="search"]').removeClass('form-control').removeClass('input-sm');
+        $('.dataTables_filter').addClass('pull-right');
+        $('.pagination').addClass('pull-right');
+    });
+
+    $('table').dataTable({
+        "searching": true,
+        //hotfix-2.0.4, by Yudo Maryanto, Mengubah paging menjadi 100
+        "iDisplayLength": 100
+    });
+  </script>
   		@endsection

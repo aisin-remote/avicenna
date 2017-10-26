@@ -75,6 +75,9 @@
               </div>
               <!-- /.box-header -->
               <div class="box-body">
+              @if(Session::has('flash_message'))
+                      <div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span><em> {!! session('flash_message') !!}</em></div>
+              @endif
 
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
@@ -111,6 +114,7 @@
                      <!--  <a class = "btn btn-danger" href="{{url('/pis/delete/'.$avp->id)}}" ><span class="glyphicon glyphicon-trash"></span> </a> -->
                     </td>
                   </tr>
+
                   @endforeach
                   @endif
                 </table>
@@ -137,7 +141,7 @@
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number AIIA</label>
                                 <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" >
-                                <option value="" selected="" disabled="" required>--Choose Part Number--</option>
+                                <option value="" selected="" disabled="" required>Choose Part Number</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -147,19 +151,19 @@
                             </div>
                             <div class="form-group" id="hidden_part_no_aiia" for="hidden_part_no_aiia" style="display: none;">
                               <label for="hidden_part_no_aiia">Part Number AIIA</label>
-                              <input type="text" class="form-control" id="hidden_part_no_aiia" name = "hidden_part_no_aiia" placeholder="Part Number AIIA" onkeyup="this.value = this.value.toUpperCase()" >
+                              <input type="text" class="form-control" id="hidden_part_no_aiia" name = "hidden_part_no_aiia" placeholder="Part Number AIIA" onkeyup="this.value = this.value.toUpperCase()">
                             </div>
                             <div class="form-group" id="hidden_part_name" for="hidden_part_name" style="display: none;">
                               <label for="hidden_part_name">Part Name</label>
-                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()" >
+                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()">
                             </div>
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number Customer</label>
-                              <input type="text" class="form-control" id="part_number_customer" name = "part_number_customer" placeholder="Part Number Customer" onkeyup="this.value = this.value.toUpperCase()" >
+                              <input type="text" class="form-control" id="part_number_customer" name = "part_number_customer" placeholder="Part Number Customer" >
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Back No</label>
-                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" onkeyup="this.value = this.value.toUpperCase()" >
+                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" >
                             </div>
                             <div class="form-group" id="hidden_min" for="hidden_min" style="display: none;">
                               <label for="exampleInput1">Min Stock</label>
@@ -196,6 +200,7 @@
                                 <option value="OTHER">OTHER</option>
                               </select>
                             </div>
+
                             <div class="form-group">
                               <label for="exampleInputFile">Picture (.JPG)</label>
                               <input type="file" id="pis_picture" name = "pis_picture" >
@@ -223,6 +228,23 @@
   @parent
   <link rel="stylesheet" type="text/css" href="{{url('/css/select2.min.css')}}">
   <script type="text/javascript" src="{{url('/plugins/select2.js')}}"></script>
+  <script src="{{asset('/js/jquery.dataTables.min.js')}}"></script>
+  <script src="{{asset('/js/dataTables.bootstrap.js')}}"></script>
+
+  <script>
+    $(document).ready(function(){
+        $('input[type="search"]').removeClass('form-control').removeClass('input-sm');
+        $('.dataTables_filter').addClass('pull-right');
+        $('.pagination').addClass('pull-right');
+    });
+
+    $('table').dataTable({
+        "searching": true,
+        //hotfix-2.0.4, by Yudo Maryanto, Mengubah paging menjadi 100
+        "iDisplayLength": 100
+    });
+  </script>
+
   <script type="text/javascript">
   	var pa="";
   	$(document).ready(function() {
@@ -334,4 +356,4 @@ manual.click(function ()
 });
 });
 </script>
-  		@endsection
+@endsection
