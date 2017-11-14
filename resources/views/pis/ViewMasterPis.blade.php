@@ -106,7 +106,7 @@
                    
                     <td>
                        
-                        <a href="{{ url('pis/preview/'.$avp->img_path) }}" target="_blank" onclick="window.open('{{ url('pis/preview/'.$avp->img_path) }}', 'popup', 'height=540, width=650, top = 120, left= 350 '); return false;">{{$avp->img_path}}</a>
+                      <a href="{{ url('pis/preview/'.$avp->img_path) }}" target="_blank" onclick="window.open('{{ url('pis/preview/'.$avp->img_path) }}', 'popup', 'height=540, width=650, top = 120, left= 350 '); return false;">{{$avp->img_path}}</a>
                     </td>
                     <td bgcolor="{{ $avp->validasi == 'Ada' ? 'green' : 'red' }}" align = 'center'><strong><font color="white"> {{$avp->validasi}}</font></strong></td>
                     <td>
@@ -134,14 +134,15 @@
                 </div>
                       <div class="modal-body">
                       <form role="form" action = "{{ url('pis/add/') }}" method = "post" enctype="multipart/form-data">
+                        <!-- <form role="form" action = "{{ url('pis/validasi/') }}" method = "post" enctype="multipart/form-data"> -->
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                           <input type="hidden" name="img_path" value="{{ $avp->img_path }}">
                           <input type="hidden" name="id" value="{{ $avp->id }}">
                           <div class="box-body">
-                            <div class="form-group">
+                            <div class="form-group" id="part_number_show">
                               <label for="exampleInputEmail1">Part Number AIIA</label>
                                 <select id="part_number" class="form-control select2" style="width: 100%;" name="part_number" >
-                                <option value="" selected="" disabled="" required>Choose Part Number</option>
+                                <option value="" selected="" disabled="" required >Choose Part Number</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -155,39 +156,39 @@
                             </div>
                             <div class="form-group" id="hidden_part_name" for="hidden_part_name" style="display: none;">
                               <label for="hidden_part_name">Part Name</label>
-                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()">
+                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()" required>
                             </div>
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number Customer</label>
-                              <input type="text" class="form-control" id="part_number_customer" name = "part_number_customer" placeholder="Part Number Customer" >
+                              <input type="text" class="form-control" id="part_number_customer" name = "part_number_customer" placeholder="Part Number Customer" onkeyup="this.value = this.value.toUpperCase()" required>
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Back No</label>
-                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" >
+                              <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" onkeyup="this.value = this.value.toUpperCase()" required>
                             </div>
                             <div class="form-group" id="hidden_min" for="hidden_min" style="display: none;">
                               <label for="exampleInput1">Min Stock</label>
-                              <input type="Number" class="form-control" id="min_stock" name = "min_stock" placeholder="Min Stock" >
+                              <input type="Number" class="form-control" id="min_stock" name = "min_stock" placeholder="Min Stock" required>
                             </div>
                             <div class="form-group" id="hidden_max" for="hidden_max" style="display: none;">
                               <label for="exampleInput1" id="hidden_max" for="hidden_max">Max Stock</label>
-                              <input type="Number" class="form-control" id="max_stock" name = "max_stock" placeholder="Max Stock" >
+                              <input type="Number" class="form-control" id="max_stock" name = "max_stock" placeholder="Max Stock" required>
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Qty</label>
-                              <input type="Number" class="form-control" id="qty_kanban" name = "qty_kanban" placeholder="Qty" >
+                              <input type="Number" class="form-control" id="qty_kanban" name = "qty_kanban" placeholder="Qty" required>
                             </div>
                             <div class="form-group">
                               <label for="exampleInput1">Type</label>
-                              <select type="text" class="form-control" id="part_kind" name = "part_kind" >
+                              <select type="text" class="form-control" id="part_kind" name = "part_kind" required>
                                 <option value="OEM">OEM</option>
                                 <option value="GNP">GNP</option>
                           
                               </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" id="part_dock_show">
                               <label for="exampleInput1">Destination</label>
-                              <select type="text" class="form-control" id="part_dock" name = "part_dock" placeholder="Destination" >
+                              <select type="text" class="form-control" id="part_dock" name = "part_dock" placeholder="Destination" required>
                                 <option value="43">43</option>
                                 <option value="53">53</option>
                                 <option value="1L">1L</option>
@@ -203,10 +204,10 @@
 
                             <div class="form-group">
                               <label for="exampleInputFile">Picture (.JPG)</label>
-                              <input type="file" id="pis_picture" name = "pis_picture" >
+                              <input type="file" id="pis_picture" name = "pis_picture" required>
                             </div> 
                             <div class="col-md-8">
-                            <button type="submit" class="btn btn-sm btn-primary">
+                            <button type="submit" class="btn btn-sm btn-primary" onclick="cekData()" >
                               <span class='glyphicon glyphicon-floppy-saved'></span>&nbsp;
                               <font face='calibri'><b>SAVE</b></font>
                             </button>&nbsp;&nbsp;
@@ -301,7 +302,7 @@
         delay   : 250,
         data    : function(params){
           return {
-            q   : params.term,
+            q     : params.term,
             page  : params.page
           };
         },
@@ -333,6 +334,7 @@ var hidden_a = $("#hidden_part_no_aiia");
 var hidden_b = $("#hidden_part_name");
 var hidden_c = $("#hidden_max");
 var hidden_d = $("#hidden_min");
+var hidden_e = $("#part_number_show");
 
 hidden.hide();
 manual.click(function ()
@@ -344,6 +346,7 @@ manual.click(function ()
         hidden_b.show();
         hidden_c.show();
         hidden_d.show();
+        hidden_e.hide();
     }
     else
     {
@@ -352,8 +355,54 @@ manual.click(function ()
         hidden_b.hide();
         hidden_c.hide();
         hidden_d.hide();
+        hidden_e.show();
+        
     }              
 });
 });
+</script>
+
+<script>
+
+  function cekData(){
+  var part_number_aiia     = $('#hidden_part_no_aiia').val();
+  var part_number          = $('#part_number').val();
+  var part_number_customer = $('#part_number_customer').val();
+  var part_kind            = $('#part_kind').val();
+  var part_dock            = $('#part_dock').val();
+  var part_name            = $('#hidden_part_name').val();
+  var back_number          = $('#back_number').val();
+  var min_stock            = $('#min_stock').val();
+  var max_stock            = $('#max_stock').val();
+  var qty_kanban           = $('#qty_kanban').val();
+
+    $.ajax({
+      url     : "{{url('/pis/validasi')}}",
+      type    : "get",
+      data    : {
+        part_number_aiia     : part_number_aiia,
+        part_number          : part_number,
+        part_number_customer : part_number_customer,
+        part_kind            : part_kind,
+        part_dock            : part_dock,
+        part_name            : part_name,
+        back_number          : back_number,
+        min_stock            : min_stock,
+        max_stock            : max_stock,
+        qty_kanban           : qty_kanban,
+      },
+      success : function(data){
+        if (data == "sukses"){
+            alert('Sukses Menyimpan Data');
+        }else{
+            // $("#partnumbercustomer").val('');
+            // $("#partdock").val('');
+            // $("#partkind").val('');
+            // $("#part_number").val('');
+            alert('Data Gagal Ditambahkan');
+        }
+      }
+    });
+  }
 </script>
 @endsection

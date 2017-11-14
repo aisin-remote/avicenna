@@ -258,58 +258,70 @@ class PisController extends Controller
         $part_number      = $input['hidden_part_no_aiia'];
         $dock             = $input['part_dock'];
         $type             = $input['part_kind'];
+
         $img_path         = $input['pis_picture'];
         $destinationPath  = asset('storage/pis');
         
-        
-        if ($part_name =is_null($part_name)){  //avi_parts_pis
+        try {
+            \DB::beginTransaction();
+            if ($part_name =is_null($part_name)){  //avi_parts_pis
 
-            $avi_part_pis                        = new avi_part_pis;
-            $avi_part_pis->part_number           = $input['part_number'];
-            $avi_part_pis->part_number_customer  = $input['part_number_customer'];
-            $avi_part_pis->back_number           = $input['back_number'];
-            $avi_part_pis->qty_kanban            = $input['qty_kanban'];
-            $avi_part_pis->part_kind             = $input['part_kind'];
-            $avi_part_pis->part_dock             = $input['part_dock'];
+                $avi_part_pis                        = new avi_part_pis;
+                $avi_part_pis->part_number           = $input['part_number'];
+                $avi_part_pis->part_number_customer  = $input['part_number_customer'];
+                $avi_part_pis->back_number           = $input['back_number'];
+                $avi_part_pis->qty_kanban            = $input['qty_kanban'];
+                $avi_part_pis->part_kind             = $input['part_kind'];
+                $avi_part_pis->part_dock             = $input['part_dock'];
 
-            $avi_part_pis->save();
-        
-            \Session::flash('flash_type','alert-success');
-            \Session::flash('flash_message','New Pis was successfully created');
-            return redirect('/pis/master');
+                $file      = $request->file('pis_picture');
+                $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
+                $file->move(public_path('storage/pis/'),$filesName);
+
+                $avi_part_pis->save();
+
+                \DB::commit();
+                \Session::flash('flash_type','alert-success');
+                \Session::flash('flash_message','New Pis was successfully created');
+                return redirect('/pis/master');       
+            } 
+            else{ //avi_parts
+                $avi_part_pis                        = new avi_part_pis;
+                $avi_parts                           = new avi_parts;
+
+                $avi_part_pis->part_number           = $input['hidden_part_no_aiia'];
+                $avi_part_pis->part_number_customer  = $input['part_number_customer'];
+                $avi_part_pis->back_number           = $input['back_number'];
+                $avi_part_pis->qty_kanban            = $input['qty_kanban'];
+                $avi_part_pis->part_kind             = $input['part_kind'];
+                $avi_part_pis->part_dock             = $input['part_dock'];
+
+                $avi_parts->part_number              = $input['hidden_part_no_aiia'];
+                $avi_parts->part_number_nostrip      = $input['hidden_part_no_aiia'];
+                $avi_parts->part_name                = $input['hidden_part_name'];
+                $avi_parts->min_stock                = $input['min_stock'];
+                $avi_parts->max_stock                = $input['max_stock'];
+
+                $file      = $request->file('pis_picture');
+                $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
+                $file->move(public_path('storage/pis/'),$filesName);
+
+                $avi_part_pis->save();
+                $avi_parts->save();
+
+                \DB::commit();
+                \Session::flash('flash_type','alert-success');
+                \Session::flash('flash_message','New part was successfully created');
+                return redirect('/pis/master');
+            }
             
-
+        } catch (Exception $e) {
+            \DB::rollback();
+            \Session::flash('flash_type', 'alert-danger');
+            \Session::flash('flash_message', 'Data Gagal Ditambahkan');
+            return \Redirect::Back();
+            
         }
-        else{ //avi_parts
-            $avi_part_pis                        = new avi_part_pis;
-            $avi_parts                           = new avi_parts;
-
-            $avi_part_pis->part_number           = $input['hidden_part_no_aiia'];
-            $avi_part_pis->part_number_customer  = $input['part_number_customer'];
-            $avi_part_pis->back_number           = $input['back_number'];
-            $avi_part_pis->qty_kanban            = $input['qty_kanban'];
-            $avi_part_pis->part_kind             = $input['part_kind'];
-            $avi_part_pis->part_dock             = $input['part_dock'];
-
-            $avi_parts->part_number              = $input['hidden_part_no_aiia'];
-            $avi_parts->part_number_nostrip      = $input['hidden_part_no_aiia'];
-            $avi_parts->part_name                = $input['hidden_part_name'];
-            $avi_parts->min_stock                = $input['min_stock'];
-            $avi_parts->max_stock                = $input['max_stock'];
-
-            $file      = $request->file('pis_picture');
-            $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
-            $file->move(public_path('storage/pis/'),$filesName);
-
-            $avi_part_pis->save();
-            $avi_parts->save();
-        
-            \Session::flash('flash_type','alert-success');
-            \Session::flash('flash_message','New part was successfully created');
-            return redirect('/pis/master');
-
-        }
-        
      }
 
     function GetAjaxPartPis(){  // dev-1.0 ,Handika, 20171019, get data part no in pis form 
@@ -324,7 +336,84 @@ class PisController extends Controller
         return avi_parts::where('part_number','like','%'.$term.'%')
             ->get()->toArray();
     }
+
+    function Validasi(){ // dev-1.0 ,Fahrul, 20171031, validasi form with ajax
+
+        $input                  = Input::all();
+        $part_number            = $input['part_number'];
+        $part_number_customer   = $input['part_number_customer'];
+        $back_number            = $input['back_number'];        
+        $part_kind              = $input['part_kind'];
+        $qty_kanban             = $input['qty_kanban'];
+        $part_dock              = $input['part_dock'];
+        $part_number_aiia       = $input['part_number_aiia'];
+        $part_name              = $input['part_name'];
+        $min_stock              = $input['min_stock'];
+        $max_stock              = $input['max_stock'];
+
+        
+            
+        if ($part_number_aiiia = "" || $part_number_aiia = null) {
+             $jumlah = avi_part_pis::where('part_number_aiia',$part_number_aiia)->count();
+
+            if ($jumlah == "" || $jumlah == null) {
+                $part                         = new avi_parts;
+                $pis                          = new avi_part_pis;
+                $pis->part_number             = $part_number;
+                $pis->part_number_customer    = $part_number_customer;
+                $pis->back_number             = $back_number;
+                $pis->qty_kanban              = $qty_kanban;
+                $pis->part_kind               = $part_kind;
+                $pis->part_dock               = $part_dock;;
+
+                $part->part_number_aiia       = $part_number_aiia;
+                $part->part_name              = $part_name;
+                $part->min_stock              = $min_stock;
+                $part->max_stock              = $max_stock;
+
+                $part->save();
+                $pis ->save();
+                return "sukses";
+            }else{
+                return "gagal";
+            }
+        }else{
+            $jumlah = avi_part_pis::where('part_number_customer',$part_number_customer) //berhasil
+            ->where('part_kind',$part_kind)
+            ->where('part_dock',$part_dock)
+            ->count();
+
+            if ($jumlah == 0) {
+
+                $pis                        = new avi_part_pis;
+                $pis->part_number           = $part_number;
+                $pis->part_number_customer  = $part_number_customer;
+                $pis->back_number           = $back_number;
+                $pis->part_kind             = $part_kind;
+                $pis->part_dock             = $part_dock;
+                $pis->qty_kanban            = $qty_kanban;
+
+                $pis->save();
+                return "sukses";
+            }else{
+                return "gagal";
+            } //berhasil
+        }
+    }
+
     
+    // public function Validasi(){
+    //     $input                  = Input::all();
+    //     $angka             = $input['part_number_customer'];
+    //     $angka2            = $input['qty_kanban'];
+
+    //     if($angka2>$angka){
+    //         return $angka2;
+    //     }else{
+    //         return $angka;
+    //     }
+
+    // }
     /**
      * Show the form for creating a new resource.
      *
