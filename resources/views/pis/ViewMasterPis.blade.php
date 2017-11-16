@@ -71,7 +71,7 @@
         
               <div class="box-header">
                 <h3 class="box-title">Data Master PIS</h3> <br><br>
-                <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a>
+                <!-- <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a> -->
               </div>
               <!-- /.box-header -->
               <div class="box-body">
