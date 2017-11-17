@@ -21,4 +21,19 @@ class avi_parts extends Model
     						->where('part_kind', $part_kind)
     						->where('part_dock', $part_dock)->first();
     }
+
+    // dev-1.0,
+	protected $fillable = [
+        'part_number',
+        'part_number_nostrip',
+        'part_number_ag',
+        'part_name',
+        'product_grup',
+        'product_line',
+        'min_stock',
+        'max_stock',
+        'qty_kanban'
+
+    ];
+    protected $table='avi_parts';
 }

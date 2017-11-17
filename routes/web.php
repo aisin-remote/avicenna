@@ -40,13 +40,26 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/pis', 'PisController@index')->name('pis');
 	// dev-1.0, Ferry, 20170822, Merged
 	Route::get('/pis/master', 'PisController@PisMasterView'); //dev-1.0, 20170926, view master pis
+	Route::get('/pis/add', 'PisController@add_new_part'); //dev-1.0, 20171018, add part no
 	Route::get('/pis/preview/{img}', 'PisController@PisPreview'); //dev-1.0, 20170926, view 
 	Route::get('/pis/edit/{id}', 'PisController@UpdatePis'); //dev-1.0, 20170926, view update pis
 	Route::get('/pis/update/{id}', 'PisController@UpdatePisProses'); //dev-1.0, 20170926, view update pis
 	Route::post('/updatepis','PisController@UpdatePisProses');
 	Route::post('/pis/search','PisController@PisSearch');
 	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
+	Route::post('/pis/add', 'PisController@AddNewPis'); //dev-1.0, 20170926, view master pis
+	Route::get('/pis/add', 'PisController@AddNewPis');
+	Route::get('pis/validasi/', 'PisController@Validasi'); //dev-1.0, 20171031, validasi
+	Route::get('/getajaxpartPis','PisController@GetAjaxPartPis');
+
+
 	//end of modul pis
+
+	// dev-1.0, Ario, 20171010, Route Part Master
+	Route::get('/part/master','PartController@index');
+	Route::post('/part/master','PartController@AddNewParts');
+	Route::get('/part/edit/{id}', 'PartController@UpdateParts'); //dev-1.0, 20170926, view update pis
+	Route::post('/updatepart','PartController@UpdatePartProses');
 	//
 	//
 	//
