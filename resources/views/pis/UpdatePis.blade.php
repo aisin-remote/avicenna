@@ -41,10 +41,6 @@
                     <input type="text" class="form-control" id="part_number" name = "part_number" placeholder="Part Number" value = "{{ $avp->part_number }}">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInput1">Part Name</label>
-                    <input type="text" class="form-control" id="part_name" name = "part_name" placeholder="Part Name" value = "{{$avp->part_name }}">
-                  </div>
-                  <div class="form-group">
                     <label for="exampleInput1">Back No</label>
                     <input type="text" class="form-control" id="exampleInput1" name = "back_no" placeholder="Back No" value = "{{$avp->back_number }}">
                   </div>

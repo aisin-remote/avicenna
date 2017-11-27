@@ -71,7 +71,7 @@
         
               <div class="box-header">
                 <h3 class="box-title">Data Master PIS</h3> <br><br>
-                <!-- <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a> -->
+                <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a>
               </div>
               <!-- /.box-header -->
               <div class="box-body">
@@ -133,8 +133,8 @@
                     <h4 class="modal-title"><font face='calibri'><b>CREATE PART</b></font></h4>
                 </div>
                       <div class="modal-body">
-                      <form role="form" action = "{{ url('pis/add/') }}" method = "post" enctype="multipart/form-data">
-                        <!-- <form role="form" action = "{{ url('pis/validasi/') }}" method = "post" enctype="multipart/form-data"> -->
+                        <div class="modal-body">
+                      <!-- <form role="form" action = "{{ url('pis/add/') }}" method = "post" enctype="multipart/form-data"> -->
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                           <input type="hidden" name="img_path" value="{{ $avp->img_path }}">
                           <input type="hidden" name="id" value="{{ $avp->id }}">
@@ -150,13 +150,13 @@
                               <input type="checkbox" id="manual" name="manual" value="option1"> Manual Input
                               </label>
                             </div>
-                            <div class="form-group" id="hidden_part_no_aiia" for="hidden_part_no_aiia" style="display: none;">
+                            <div class="form-group" id="div_hidden_part_no_aiia" for="hidden_part_no_aiia" style="display: none;">
                               <label for="hidden_part_no_aiia">Part Number AIIA</label>
                               <input type="text" class="form-control" id="hidden_part_no_aiia" name = "hidden_part_no_aiia" placeholder="Part Number AIIA" onkeyup="this.value = this.value.toUpperCase()">
                             </div>
-                            <div class="form-group" id="hidden_part_name" for="hidden_part_name" style="display: none;">
+                            <div class="form-group" id="div_hidden_part_name" for="hidden_part_name" style="display: none;">
                               <label for="hidden_part_name">Part Name</label>
-                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name" onkeyup="this.value = this.value.toUpperCase()" required>
+                              <input type="text" class="form-control" id="hidden_part_name" name = "hidden_part_name" placeholder="Part Name"  required>
                             </div>
                             <div class="form-group">
                               <label for="exampleInputEmail1">Part Number Customer</label>
@@ -166,11 +166,11 @@
                               <label for="exampleInput1">Back No</label>
                               <input type="text" class="form-control" id="back_number" name = "back_number" placeholder="Back No" onkeyup="this.value = this.value.toUpperCase()" required>
                             </div>
-                            <div class="form-group" id="hidden_min" for="hidden_min" style="display: none;">
+                            <div class="form-group" id="div_hidden_min" for="hidden_min" style="display: none;">
                               <label for="exampleInput1">Min Stock</label>
                               <input type="Number" class="form-control" id="min_stock" name = "min_stock" placeholder="Min Stock" required>
                             </div>
-                            <div class="form-group" id="hidden_max" for="hidden_max" style="display: none;">
+                            <div class="form-group" id="div_hidden_max" for="hidden_max" style="display: none;">
                               <label for="exampleInput1" id="hidden_max" for="hidden_max">Max Stock</label>
                               <input type="Number" class="form-control" id="max_stock" name = "max_stock" placeholder="Max Stock" required>
                             </div>
@@ -207,7 +207,7 @@
                               <input type="file" id="pis_picture" name = "pis_picture" required>
                             </div> 
                             <div class="col-md-8">
-                            <button type="submit" class="btn btn-sm btn-primary" onclick="cekData()" >
+                            <button type="" class="btn btn-sm btn-primary" onclick="cekData()" >
                               <span class='glyphicon glyphicon-floppy-saved'></span>&nbsp;
                               <font face='calibri'><b>SAVE</b></font>
                             </button>&nbsp;&nbsp;
@@ -216,8 +216,9 @@
                               <font face='calibri'><b>RESET</b></font>
                             </button>
                             </div>
+                          </div>
                           </div> 
-                      </form>
+                      <!-- </form> -->
                       </div>
                 </div>
           </div>
@@ -246,39 +247,7 @@
     });
   </script>
 
-  <script type="text/javascript">
-  	var pa="";
-  	$(document).ready(function() {
-  		$("#part_number").select2({
-  			ajax:{
-          data    : function(params){
-  				url			: "{{url('/getajaxpartPis')}}",
-  				dataType	: 'json',
-  				delay		: 250,
-  					return {
-  						q		: params.term,
-  						page	: params.page
-  					};
-  				},
-  				processResults: function (data) {
-  					return {
-  						results: $.map(data, function (item) {
-  							return {
-  								text: item.part_number,
-  								id: item.part_number
-  							}
-  						})
-  					};
-  				}
-  			},
-  			minimumresultsForSearch:10,
-  			cache	: true,
-  			minimumInputLength	: 2,
-  		})
-  })
-  	
-  			// alert('test');
-  		</script>
+
       <script>
   $(function () {
     $('#example1').DataTable()
@@ -330,10 +299,10 @@ $(function(){
 
 var manual = $("#manual");
 var hidden = $("#hidden");
-var hidden_a = $("#hidden_part_no_aiia");
-var hidden_b = $("#hidden_part_name");
-var hidden_c = $("#hidden_max");
-var hidden_d = $("#hidden_min");
+var hidden_a = $("#div_hidden_part_no_aiia");
+var hidden_b = $("#div_hidden_part_name");
+var hidden_c = $("#div_hidden_max");
+var hidden_d = $("#div_hidden_min");
 var hidden_e = $("#part_number_show");
 
 hidden.hide();
@@ -356,7 +325,6 @@ manual.click(function ()
         hidden_c.hide();
         hidden_d.hide();
         hidden_e.show();
-        
     }              
 });
 });
@@ -392,15 +360,49 @@ manual.click(function ()
         qty_kanban           : qty_kanban,
       },
       success : function(data){
-        if (data == "sukses"){
-            alert('Sukses Menyimpan Data');
-        }else{
-            // $("#partnumbercustomer").val('');
-            // $("#partdock").val('');
-            // $("#partkind").val('');
-            // $("#part_number").val('');
-            alert('Data Gagal Ditambahkan');
+        if(data == "save"){
+            alert('Sukses Menyimpan Data PIS');
+
+            var path="{{ url('/pis/addpis') }}";
+            document.body.innerHTML += '<form id="pis" action='+path+' method="post">'+
+            '<input type="hidden" name="part_number_customer" value="'+part_number_customer+'">'+
+            '<input type="hidden" name="back_number" value="'+back_number+'">'+
+            '<input type="hidden" name="qty_kanban" value="'+qty_kanban+'">'+
+            '<input type="hidden" name="part_kind" value="'+part_kind+'">'+
+            '<input type="hidden" name="part_dock" value="'+part_dock+'">'+
+            '<input type="hidden" name="part_number" value="'+part_number+'">'+
+            '<input type="hidden" name="_token" value="{{csrf_token() }}">'+
+            '</form>';
+            $("#pis").submit().remove();
         }
+        if(data == "save1"){
+            alert('Sukses Menyimpan Data Part dan PIS');
+
+            var path="{{ url('/pis/addpart') }}";
+            document.body.innerHTML += '<form id="part" action='+path+' method="post">'+
+            '<input type="hidden" name="part_number_aiia" value="'+part_number_aiia+'">'+
+            '<input type="hidden" name="part_name" value="'+part_name+'">'+
+            '<input type="hidden" name="part_number_customer" value="'+part_number_customer+'">'+
+            '<input type="hidden" name="back_number" value="'+back_number+'">'+
+            '<input type="hidden" name="min_stock" value="'+min_stock+'">'+
+            '<input type="hidden" name="max_stock" value="'+max_stock+'">'+
+            '<input type="hidden" name="qty_kanban" value="'+qty_kanban+'">'+
+            '<input type="hidden" name="part_kind" value="'+part_kind+'">'+
+            '<input type="hidden" name="part_dock" value="'+part_dock+'">'+
+            '<input type="hidden" name="_token" value="{{csrf_token() }}">'+
+            '</form>';
+            $("#part").submit().remove();
+
+        }
+        if(data == "error"){
+           alert('Masukan part number AIIA dahulu');
+
+        }
+        if(data == "ada"){
+            alert('Data Gagal Ditambahkan');
+            
+        }
+        
       }
     });
   }
