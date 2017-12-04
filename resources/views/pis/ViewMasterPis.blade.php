@@ -71,7 +71,7 @@
         
               <div class="box-header">
                 <h3 class="box-title">Data Master PIS</h3> <br><br>
-                <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a>
+              <!-- <a class = "btn btn-success" href="" data-toggle="modal" data-target="#myModal"><span class=""></span> Add New PIS</a> -->
               </div>
               <!-- /.box-header -->
               <div class="box-body">
@@ -343,6 +343,7 @@ manual.click(function ()
   var min_stock            = $('#min_stock').val();
   var max_stock            = $('#max_stock').val();
   var qty_kanban           = $('#qty_kanban').val();
+  var pis_picture          = $('#pis_picture').val();
 
     $.ajax({
       url     : "{{url('/pis/validasi')}}",

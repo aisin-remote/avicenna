@@ -304,17 +304,19 @@ class PisController extends Controller
             }
         }
     }
-    function addpis(){ //fungsi bukan manual input 
+    function addpis(Request $request){ //fungsi bukan manual input 
 
-        $input                  = Input::all();
+        $input                  = \Request::all();
         $part_number_customer   = $input['part_number_customer'];
         $back_number            = $input['back_number'];
         $part_kind              = $input['part_kind'];
         $qty_kanban             = $input['qty_kanban'];
         $part_dock              = $input['part_dock'];
         $part_number            = $input['part_number'];
-        $part_name_pis          = avi_part::where('part_name', $part_number)
-                                ->first();
+        // $part_name_pis          = avi_parts::where('part_name', $part_number)
+        //                         ->first();
+        // $img_path               = $input['pis_picture'];
+        // $destinationPath        = asset('storage/pis');
 
         $pis                        = new avi_part_pis;
         $pis->part_number           = $part_number;
@@ -323,16 +325,17 @@ class PisController extends Controller
         $pis->part_kind             = $part_kind;
         $pis->part_dock             = $part_dock;
         $pis->qty_kanban            = $qty_kanban;
-        $pis->
 
         $pis->save();
-
+        // $file                   = $request->file('part_picture');
+        // $filesName              = $part_number_customer.'-'.$part_kind.'-'.$part_dock.'.JPG';
+        // $file->move(public_path('storage/pis/'),$filesName);
 
         return redirect('/pis/master');
     }
     function addpart(){ //fungsi manual input
 
-        $input                  = Input::all();
+        $input                  = \Input::all();
         $part_number_aiia       = $input['part_number_aiia'];
         $part_name              = $input['part_name'];
         $part_number_customer   = $input['part_number_customer'];
