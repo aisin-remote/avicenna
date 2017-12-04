@@ -37,12 +37,8 @@
                 <input type="hidden" name="id" value="{{ $avp->id }}">
                 <div class="box-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Part Number</label>
-                    <input type="text" class="form-control" id="part_number" name = "part_number" placeholder="Part Number" value = "{{ $avp->part_number }}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInput1">Part Name</label>
-                    <input type="text" class="form-control" id="part_name" name = "part_name" placeholder="Part Name" value = "{{$avp->part_name }}">
+                    <label for="exampleInputEmail1">Part Number Customer</label>
+                    <input type="text" class="form-control" id="part_number" name = "part_number" placeholder="Part Number" value = "{{ $avp->part_number_customer }}">
                   </div>
                   <div class="form-group">
                     <label for="exampleInput1">Back No</label>

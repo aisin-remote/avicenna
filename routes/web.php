@@ -49,7 +49,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
 	Route::post('/pis/add', 'PisController@AddNewPis'); //dev-1.0, 20170926, view master pis
 	Route::get('/pis/add', 'PisController@AddNewPis');
-	Route::get('pis/validasi/', 'PisController@Validasi'); //dev-1.0, 20171031, validasi
+	Route::post('/pis/addpis', 'PisController@addpis');
+	Route::post('/pis/addpart', 'PisController@addpart');
+	Route::get('pis/validasi/', 'PisController@validasi'); //dev-1.0, 20171031, validasi
 	Route::get('/getajaxpartPis','PisController@GetAjaxPartPis');
 
 
