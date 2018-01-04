@@ -10,10 +10,12 @@ class avi_running_model extends Model
 
     protected $fillable =[
     	'ip_address',
-    	'line_name',
+    	'line_number',
     	'back_number',
     	'part_number',
     	'quantity',
-    	'dandori_date'
+    	'dandori_date',
+    	'id_handled',
+    	'buffer'
     ];
 }

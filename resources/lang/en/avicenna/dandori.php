@@ -27,7 +27,11 @@ return [
     'modal_title_txt'   => 'Confirmation',
     'modal_body_txt' => 'Do you really want to Save changes ?',
     'success_msg'   => 'Success Saving Data',
-    'failed_msg'   => 'Failed Saving Data',
+
+    //==============================================
+    'default_title'     => 'Dandori Model',
+    'subtitle_1'        => 'MODEL ILUSTRATION',
+    'subtitle_2'        => 'INFORMATION'
 
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
