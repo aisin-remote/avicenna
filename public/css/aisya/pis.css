@@ -125,3 +125,10 @@ button, input, optgroup, select, textarea {
 .fa-exclamation-triangle:before {
   content: "\f071";
 }
+
+.fa-bars:before {
+  content: "";
+}
+.fa-arrow-left:before {
+  content: "";
+}
