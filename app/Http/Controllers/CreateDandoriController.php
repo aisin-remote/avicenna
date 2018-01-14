@@ -34,6 +34,8 @@ class CreateDandoriController extends Controller
 		$is_start=\Request::all()['is_start'];
 		$back_number=\Request::all()['back_number'];
 		$line_number=\Request::all()['line_number'];
+		$qty_ng=\Request::all()['qty_ng'];
+		$qty_seteuchi=\Request::all()['qty_ng'];
 		
 		$mutation_date=Carbon::now();
 		if($mutation_date->hour <= 6){
@@ -45,7 +47,7 @@ class CreateDandoriController extends Controller
 			$model=avi_part_production::where('back_number',$back_number)->first();
 			$mutasi=new avi_mutations();
 			$mutasi->mutation_date=$mutation_date;
-			$mutasi->mutation_code='141';
+			$mutasi->mutation_code='133';
 			$mutasi->part_number=$model->part_number;
 			$mutasi->back_number=$model->back_number;
 			$mutasi->store_location='FG01';
@@ -54,10 +56,35 @@ class CreateDandoriController extends Controller
 			$mutasi->npk=$line_number;
 			$mutasi->save();
 
+			if($qty_seteuchi > 0){
+				$mutasi_seteuchi=new avi_mutations();
+				$mutasi_seteuchi->mutation_date=$mutation_date;
+				$mutasi_seteuchi->mutation_code='143';
+				$mutasi_seteuchi->part_number=$model->part_number;
+				$mutasi_seteuchi->back_number=$model->back_number;
+				$mutasi_seteuchi->store_location='FG01';
+				$mutasi_seteuchi->quantity=$qty_seteuchi;
+				$mutasi_seteuchi->uom_code='PCS';
+				$mutasi_seteuchi->npk=$line_number;
+				$mutasi_seteuchi->save();
+			}
+			if($qty_ng > 0){
+				$mutasi_ng=new avi_mutations();
+				$mutasi_ng->mutation_date=$mutation_date;
+				$mutasi_ng->mutation_code='141';
+				$mutasi_ng->part_number=$model->part_number;
+				$mutasi_ng->back_number=$model->back_number;
+				$mutasi_ng->store_location='FG01';
+				$mutasi_ng->quantity=$qty_seteuchi;
+				$mutasi_ng->uom_code='PCS';
+				$mutasi_ng->npk=$line_number;
+				$mutasi_ng->save();
+			}
+
 			$running_model=avi_running_model::where('line_number',$line_number)->first();	
 			//Update
 			if($is_start=='true'){
-				$running_model->buffer=15;
+				$running_model->buffer=0;
 			}else{
 				$qty_before=$running_model->quantity;
 				$buffer_before=$running_model->buffer;
@@ -70,9 +97,18 @@ class CreateDandoriController extends Controller
 			$running_model->dandori_date=$mutation_date;	
 			$running_model->save();
 			\DB::commit();
+			$data=[
+				'type'=>'success',
+				'message' => 'successfully dandori'
+			];
+			return $data;
 		}catch(Exception $e){
 			\DB::rollback();
-			return "failed because: ".$e->getMessage();
+			$data=[
+				'type'=>'failed',
+				'message' => $e->getMessage()
+			];
+			return $data;
 		}
 	}
 

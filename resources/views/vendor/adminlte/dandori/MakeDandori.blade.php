@@ -32,6 +32,9 @@
     <div class="modal-dialog" style="width:800px;">
       <div class="modal-content">
         <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
           <center><h3>MENU DANDORI</h3></center>
           <hr/>
           <center>
@@ -64,12 +67,12 @@
           <div class="row" id="control-button" hidden>
             <div class="col-md-6">
               <center>
-                <button class="btn btn-warning"  style="width:350px;" id="start" onclick="this.id"><h4>Awal Shift</h4></button>
+                <button class="btn btn-warning"  style="width:350px;" id="start" onclick="Simpan(this.id)"><h4>Awal Shift</h4></button>
               </center>
             </div>
             <div class="col-md-6">
               <center>
-                <button class="btn btn-success" style="width:350px;" id="change" onclick="this.id"><h4>Tengah Shift</h4></button>
+                <button class="btn btn-success" style="width:350px;" id="change" onclick="Simpan(this.id)"><h4>Tengah Shift</h4></button>
               </center>
             </div>
           </div>
@@ -135,18 +138,15 @@ function Simpan(id){
       qty_seteuchi:qty_seteuchi,
       qty_ng:qty_ng
     },
-    success: function(result){
-      $('.btn-model').removeClass('btn-primary');
-      $('.btn-model').addClass('btn-default');
-      $('#'+back_number).removeClass('btn-default');
-      $('#'+back_number).addClass('btn-primary');
-      $('#running-model').html(back_number);
-
-      $('#loading').hide();
-      $('#btn-dandori-start').removeAttr('disabled');
-      $('#btn-dandori-change').removeAttr('disabled');
-
+    success: function(data){
+      // if(data.)
       closeModal();
+      if(data.type=="success"){
+        alert(data.message);
+      }else{
+       alert(data.message); 
+      }
+      // alert(data.type);
     }
   });
 
