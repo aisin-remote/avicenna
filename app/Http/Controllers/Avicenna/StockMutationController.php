@@ -13,6 +13,7 @@ use App\Models\Avicenna\avi_mutations;
 use App\Models\Avicenna\avi_parts;
 use App\Models\Avicenna\avi_opname;
 
+use DB;
 class StockMutationController extends Controller
 {
     //
@@ -63,8 +64,10 @@ class StockMutationController extends Controller
 	public function getAjaxHeader()
 	{
 
-	    $mutation = avi_mutations::select();
-
+	    $mutation = avi_mutations::select('part_number', DB::raw('sum(if(quantity > 0,quantity,0)) as stock_in'), DB::raw('sum(if(quantity < 0,quantity,0)) as stock_out'), DB::raw('Sum(quantity) as end_stock'))
+	    				->groupby('part_number');
+	    				// ->get();
+	    				// return $mutation;
 	    return Datatables::of($mutation)
 	        ->addColumn('details_url', function($mutation) {
 	            return url('avicenna/stock/mutation/ajax/getDetail/' . $mutation->part_number);
@@ -75,9 +78,14 @@ class StockMutationController extends Controller
 
 	public function getAjaxDetail($part_number)
 	{
-	    $part = avi_parts::select('part_number', 'part_name')
-	    					->where('part_number', $part_number);
-
-	    return Datatables::of($part)->make(true);
+	    // $part = avi_parts::select('part_number', 'part_name')
+	    // 					->where('part_number', $part_number);
+	    $part = avi_mutations::select('back_number','part_number','part_name','desc', DB::raw('sum(quantity) as total_qty'))
+	    			->join('avi_mutation_types','code','mutation_code')
+	    			->where('avi_mutations.part_number',$part_number)
+	    			->groupby('back_number','mutation_code');
+	    // return $part;
+	    return Datatables::of($part)
+	    ->make(true);
 	}
 }
