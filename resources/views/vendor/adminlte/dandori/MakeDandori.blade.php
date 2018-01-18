@@ -10,16 +10,33 @@
           <div class="clearfix"></div>
         </div>
         <div class="panel-body">
-        <div class="row">
-          <div class="col-md-10">
-            <span class="border border-default">
-              <div class="img-dandori"></div>
-              <br/><br/><br/>
-            </span>
-          </div>
-          <div class="col-md-2">
-            <br/><br/><br/>
-          </div>
+        <div class="row" style="padding: 10px;">
+          <table class="table table-condensed table-bordered">
+            <thead >
+              <th class="col-md-8">  MODEL PART </th>
+              <th class="col-md-4"> INFORMATION </th>
+            </thead>
+            <tr>
+             <td class="col-md-8" style="padding: 15px;">
+               <div class="img-dandori" id="img-dandori"></div>
+             </td>
+             <td class="col-md-4" style="padding: 15px;">
+                <table id="data_table" class="table-bordered">
+                            <thead>
+                                <tr>
+                                    <td class="col-md-2" >BACK NUMBER</td> <td class="col-md-2" id="lbl_back_number">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-2" >QTY</td> <td class="col-md-2" id="running-model-qty">&nbsp;</td>
+                                </tr> 
+                            </thead>
+
+                        </table>
+             </td>
+
+            </tr>
+
+          </table>
         </div>
         </div>
       </div>
@@ -101,11 +118,11 @@
   var dandori = $('#img-dandori');
   var modal = $('myModal');
 
-    // $(document).ready(function(){
-    //    setInterval(function(){
-    //     GetQuantity();
-    //    },3000);
-    // });
+    $(document).ready(function(){
+       setInterval(function(){
+        GetQuantity();
+       },3000);
+    });
 $('#input-seteuchi').keyboard({type:'numpad'});;
 $('#input-ng').keyboard({type:'numpad'});;
 function ShowButtonControl(id){
@@ -144,7 +161,8 @@ function Simpan(id){
     success: function(data){
       // if(data.)
       closeModal();
-      dandori.html("<img src='"+data.img_path+"' width='990px' height='560px' />");
+      $('#img-dandori').html("<img src='"+data.img_path+"' width='100%' height='100%' />");
+      $('#lbl_back_number').html(data.back_number);
       // if(data.type=="success"){
       //   // alert(data.message);
         

@@ -8,6 +8,7 @@ use App\Models\Avicenna\avi_running_model;
 use App\Models\Avicenna\avi_andon_dandori;
 use App\Models\Avicenna\avi_mutations;
 use Carbon\Carbon;
+use Storage;
 
 class CreateDandoriController extends Controller
 {    
@@ -101,9 +102,9 @@ class CreateDandoriController extends Controller
 			\DB::commit();
 			$img = $back_number.'.png';
 			$arr = array(
-
+			"back_number" => $back_number,
             "img"   => $back_number.'.png', 
-            "img_path" => Storage::asset('/public/storage/dandori/'.$img));
+            "img_path" => asset('/storage/dandori/'.$img));
 			return $arr;
 		}catch(Exception $e){
 			\DB::rollback();
