@@ -83,7 +83,7 @@ class StockMutationController extends Controller
 	    $part = avi_mutations::select('back_number','part_number','part_name','desc', DB::raw('sum(quantity) as total_qty'))
 	    			->join('avi_mutation_types','code','mutation_code')
 	    			->where('avi_mutations.part_number',$part_number)
-	    			->groupby('back_number','mutation_code');
+	    			->groupby('back_number','mutation_code','part_number','part_name','desc');
 	    // return $part;
 	    return Datatables::of($part)
 	    ->make(true);
