@@ -96,19 +96,18 @@ class CreateDandoriController extends Controller
 			$running_model->back_number=$model->back_number;
 			$running_model->dandori_date=$mutation_date;	
 			$running_model->save();
+
+			
 			\DB::commit();
-			$data=[
-				'type'=>'success',
-				'message' => 'successfully dandori'
-			];
-			return $data;
+			$img = $back_number.'.png';
+			$arr = array(
+
+            "img"   => $back_number.'.png', 
+            "img_path" => Storage::asset('/public/storage/dandori/'.$img));
+			return $arr;
 		}catch(Exception $e){
 			\DB::rollback();
-			$data=[
-				'type'=>'failed',
-				'message' => $e->getMessage()
-			];
-			return $data;
+			
 		}
 	}
 

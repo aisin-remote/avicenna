@@ -13,6 +13,7 @@
         <div class="row">
           <div class="col-md-10">
             <span class="border border-default">
+              <div class="img-dandori"></div>
               <br/><br/><br/>
             </span>
           </div>
@@ -97,6 +98,8 @@
   var back_number='';
   var qty_ng=0;
   var qty_seteuchi=0;
+  var dandori = $('#img-dandori');
+  var modal = $('myModal');
 
     // $(document).ready(function(){
     //    setInterval(function(){
@@ -141,11 +144,17 @@ function Simpan(id){
     success: function(data){
       // if(data.)
       closeModal();
-      if(data.type=="success"){
-        alert(data.message);
-      }else{
-       alert(data.message); 
-      }
+      dandori.html("<img src='"+data.img_path+"' width='990px' height='560px' />");
+      // if(data.type=="success"){
+      //   // alert(data.message);
+        
+      //   dandori.html("<img src='"+data.img_path+"' width='990px' height='560px' />");
+      //   modal.modal('hide');
+      // }else{
+      //  // alert(data.message);
+      //  modal.modal('hide'); 
+      // }
+      
       // alert(data.type);
     }
   });
