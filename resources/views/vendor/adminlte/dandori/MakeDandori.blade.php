@@ -13,26 +13,32 @@
         <div class="row" style="padding: 10px;">
           <table class="table table-condensed table-bordered">
             <thead >
-              <th class="col-md-8">  MODEL PART </th>
-              <th class="col-md-4"> INFORMATION </th>
+              <th class="col-md-8"><h4> <b>MODEL PART</b></h4></th>
+              <th class="col-md-4"><h4><b> INFORMATION </b></h4></th>
             </thead>
             <tr>
              <td class="col-md-8" style="padding: 15px;">
-               <div class="img-dandori" id="img-dandori"></div>
+               <div class="img-dandori" id="img-dandori"><img src="{{ asset('/storage/dandori/'.$running_model->back_number.'.png') }}" width='100%' height='100%'/></div>
              </td>
              <td class="col-md-4" style="padding: 15px;">
-                <table id="data_table" class="table-bordered">
-                            <thead>
-                                <tr>
-                                    <td class="col-md-2" >BACK NUMBER</td> <td class="col-md-2" id="lbl_back_number">&nbsp;</td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-2" >QTY</td> <td class="col-md-2" id="running-model-qty">&nbsp;</td>
-                                </tr> 
-                            </thead>
+              <table id="data_table" class="table-bordered">
+                <thead>
+                  <tr>
+                    <td class="col-md-2" id="lbl_part_number" style="background-color:#f9f9f9;"><h3>{{$running_model->part_number}}</h3></td>
+                  </tr>
+                  <tr>
+                    <td class="col-md-2" id="lbl_back_number" style="background-color:#f9f9f9;"><h3>{{$running_model->back_number}}</h3></td>
+                  </tr>
+                  <tr>
+                    <td class="col-md-2"><center><h1><span style="font-size:100pt;" id="running-model-qty">{{$running_model->quantity}}</span></h1></center></td>
+                  </tr>
+                  <tr>
+                    <td class="col-md-2" id=""><center><h3><a href="javascript:location.reload();" class="btn btn-primary">REFRESH PAGE</a></h3></center></td>
+                  </tr> 
+                </thead>
 
-                        </table>
-             </td>
+              </table>
+            </td>
 
             </tr>
 
@@ -84,13 +90,13 @@
           <hr/>
           <div class="row" id="control-button" hidden>
             <div class="col-md-6">
-              <center>
+              <!-- <center>
                 <button class="btn btn-warning"  style="width:350px;" id="start" onclick="Simpan(this.id)"><h4>Awal Shift</h4></button>
-              </center>
+              </center> -->
             </div>
             <div class="col-md-6">
               <center>
-                <button class="btn btn-success" style="width:350px;" id="change" onclick="Simpan(this.id)"><h4>Tengah Shift</h4></button>
+                <button class="btn btn-success" style="width:350px;" id="change" onclick="Simpan(this.id)"><h4>DANDORI</h4></button>
               </center>
             </div>
           </div>
@@ -161,50 +167,12 @@ function Simpan(id){
     success: function(data){
       // if(data.)
       closeModal();
+
       $('#img-dandori').html("<img src='"+data.img_path+"' width='100%' height='100%' />");
-      $('#lbl_back_number').html(data.back_number);
-      // if(data.type=="success"){
-      //   // alert(data.message);
-        
-      //   dandori.html("<img src='"+data.img_path+"' width='990px' height='560px' />");
-      //   modal.modal('hide');
-      // }else{
-      //  // alert(data.message);
-      //  modal.modal('hide'); 
-      // }
-      
-      // alert(data.type);
+      $('#lbl_back_number').html('<h3>'+data.back_number+'</h3>');
+      $('#lbl_part_number').html('<h3>'+data.part_number+'</h3>');
     }
   });
-
-        // if(id=='btn-dandori-start'){
-        //     is_start=true;
-        // }else{
-        //     is_start=false;
-        // }
-        // $.ajax({
-        //   url: "{{url('/dandori/make')}}",
-        //   method :'POST',
-        //   data: {
-        //     back_number:back_number,
-        //     _token: "{{csrf_token()}}",
-        //     is_start:is_start,
-        //     line_number:'{{$line_number}}'
-        //   },
-        //   success: function(result){
-        //     $('.btn-model').removeClass('btn-primary');
-        //     $('.btn-model').addClass('btn-default');
-        //     $('#'+back_number).removeClass('btn-default');
-        //     $('#'+back_number).addClass('btn-primary');
-        //     $('#running-model').html(back_number);
-
-        //     $('#loading').hide();
-        //     $('#btn-dandori-start').removeAttr('disabled');
-        //     $('#btn-dandori-change').removeAttr('disabled');
-
-        //     closeModal();
-        //   }
-        // });
 }
 
 function SetClass (id) {

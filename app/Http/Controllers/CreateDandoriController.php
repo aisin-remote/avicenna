@@ -17,6 +17,7 @@ class CreateDandoriController extends Controller
 			$running_model=avi_running_model::where('line_number',$line_number)->first();
 			$models=avi_part_production::where('line_number',$line_number)->get();
 			// return $running_model;
+			// return $running_model;
 			return view('adminlte::dandori.MakeDandori',compact(['models','running_model','line_number']));
 		}else{
 			return "error page";
@@ -103,6 +104,7 @@ class CreateDandoriController extends Controller
 			$img = $back_number.'.png';
 			$arr = array(
 			"back_number" => $back_number,
+			"part_number" => $model->part_number,
             "img"   => $back_number.'.png', 
             "img_path" => asset('/storage/dandori/'.$img));
 			return $arr;
