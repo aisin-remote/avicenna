@@ -59,8 +59,6 @@
                     <th></th>
                     <th>No</th>
                     <th>Part Number</th>
-                    <th>Location</th>
-                    <th>Beginning Stock</th>
                     <th>Stock In</th>
                     <th>Stock Out</th>
                     <th>Ending Stock</th>
@@ -84,12 +82,14 @@
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 
 <script id="details-template" type="text/x-handlebars-template">
-    <div class="label label-info">Info Part @{{ part_number }} </div>
+    <div class="label label-info" style="font-size:15pt;">PART NUMBER:  @{{ part_number }} </div>
     <table class="table table-bordered table-striped" style="width: 100%" id="part-@{{ part_number }}">
         <thead>
         <tr>
-            <th>Part No</th>
-            <th>Part Name</th>
+            <th>Back No</th>
+            <th>Nama Model</th>
+            <th>Mutasi</th>
+            <th>Total</th>
         </tr>
         </thead>
     </table>
@@ -118,11 +118,9 @@
                 "data"            : 'DT_Row_Index',
             },
             {data: 'part_number', name: 'part_number'},
-            {data: 'store_location', name: 'store_location'},
-            {data: 'mutation_code', name: 'mutation_code'},
-            {data: 'quantity', name: 'quantity'},
-            {data: 'quantity', name: 'quantity'},
-            {data: 'quantity', name: 'quantity'},
+            {data: 'stock_in', name: 'stock_in', searchable:false},
+            {data: 'stock_out', name: 'stock_out', searchable:false},
+            {data: 'end_stock', name: 'end_stock', searchable:false},
         ],
 
     });
@@ -151,9 +149,13 @@
             processing: true,
             serverSide: true,
             ajax: data.details_url,
+            "bInfo": false,
+            "bLengthChange":false,
             columns: [
-                { data: 'part_number', name: 'part_number' },
-                { data: 'part_name', name: 'part_name' }
+                { data: 'back_number', name: 'back_number' },
+                { data: 'part_name', name: 'part_name' },
+                { data: 'desc', name: 'avi_mutation_types.desc' },
+                { data: 'total_qty', name: 'total_qty', searchable:false }
             ]
         })
     }
