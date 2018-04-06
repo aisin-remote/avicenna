@@ -12,6 +12,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\Avicenna\avi_mutations;
 use App\Models\Avicenna\avi_parts;
 use App\Models\Avicenna\avi_opname;
+use \Carbon;
 
 use DB;
 class StockMutationController extends Controller
@@ -64,28 +65,111 @@ class StockMutationController extends Controller
 	public function getAjaxHeader()
 	{
 
-	    $mutation = avi_mutations::select('part_number', DB::raw('sum(if(quantity > 0,quantity,0)) as stock_in'), DB::raw('sum(if(quantity < 0,quantity,0)) as stock_out'), DB::raw('Sum(quantity) as end_stock'))
-	    				->groupby('part_number');
-	    				// ->get();
-	    				// return $mutation;
+		$date = \Carbon\Carbon::now()->format('Y-m-d');
+	    $mutation = avi_mutations::select('part_number','store_location')
+	    				->groupby('part_number')
+	    				->groupby('store_location');
+
 	    return Datatables::of($mutation)
 	        ->addColumn('details_url', function($mutation) {
 	            return url('avicenna/stock/mutation/ajax/getDetail/' . $mutation->part_number);
 	        })
+	        ->addColumn('stock_initial', function($mutation) use($date) {
+	        	$stock_initial = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '<' , $date)->first();
+	            if ( is_null($stock_initial['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_initial['qty'];
+	        	}
+	        })
+	        ->addColumn('stock_in', function($mutation) use($date) {
+	        	$stock_in = avi_mutations::select( DB::raw('Sum(if(quantity > 0,quantity,0)) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', $date)->first();
+	        	if ( is_null($stock_in['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_in['qty'];
+	        	}
+	        })
+	        ->addColumn('stock_out', function($mutation) use($date) {
+	        	$stock_out = avi_mutations::select( DB::raw('Sum(if(quantity < 0,quantity,0)) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', $date)->first();
+	            if ( is_null($stock_out['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_out['qty'];
+	        	}
+	        })
+	        ->addColumn('end_stock', function($mutation) {
+	        	$end_stock = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->first();
+	            return  $end_stock['qty'] ;
+	        })
+	       
 	        ->addIndexColumn()
 	        ->make(true);
 	}
 
 	public function getAjaxDetail($part_number)
-	{
+	{	
+
+		$date1='2018-03-07';
 	    // $part = avi_parts::select('part_number', 'part_name')
 	    // 					->where('part_number', $part_number);
-	    $part = avi_mutations::select('back_number','part_number','part_name','desc', DB::raw('sum(quantity) as total_qty'))
+	    $part = avi_mutations::select('back_number','part_number','part_name','desc')
 	    			->join('avi_mutation_types','code','mutation_code')
 	    			->where('avi_mutations.part_number',$part_number)
-	    			->groupby('back_number','mutation_code','part_number','part_name','desc');
+	    			->groupby('back_number','mutation_code','part_number','part_name','desc')
+	    			->where('mutation_date' ,  $date1 );
 	    // return $part;
 	    return Datatables::of($part)
+	    ->addColumn('total_qty', function($part) use($date1) {
+	        	$total_qty = avi_mutations::select( DB::raw('sum(quantity) as total_qty'))->where('part_number' , $part->part_number)->where('mutation_date', $date1)->first();
+	            if ( is_null($total_qty['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $total_qty['qty'];
+	        	}
+	        })
 	    ->make(true);
+	}
+	public function getAjaxFilter($start_date, $end_date)
+	{	
+	    $mutation = avi_mutations::select('part_number','store_location')
+	    				->groupby('part_number')
+	    				->groupby('store_location');
+
+	    return Datatables::of($mutation)
+	        ->addColumn('details_url', function($mutation) {
+	            return url('avicenna/stock/mutation/ajax/getDetail/' . $mutation->part_number);
+	        })
+	        ->addColumn('stock_initial', function($mutation) use($start_date) {
+	        	$stock_initial = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '<' , $start_date)->first();
+	            if ( is_null($stock_initial['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_initial['qty'];
+	        	}
+	        })
+	        ->addColumn('stock_in', function($mutation) use($start_date , $end_date) {
+	        	$stock_in = avi_mutations::select( DB::raw('Sum(if(quantity > 0,quantity,0)) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '>=' , $start_date)->where('mutation_date', '<=' , $end_date)->first();
+	        	if ( is_null($stock_in['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_in['qty'];
+	        	}
+	        })
+	        ->addColumn('stock_out', function($mutation) use($start_date , $end_date) {
+	        	$stock_out = avi_mutations::select( DB::raw('Sum(if(quantity < 0,quantity,0)) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '>=' , $start_date)->where('mutation_date', '<=' , $end_date)->first();
+	            if ( is_null($stock_out['qty'])){
+	        		return '0';
+	        	}else{
+	            	return  $stock_out['qty'];
+	        	}
+	        })
+	        ->addColumn('end_stock', function($mutation) {
+	        	$end_stock = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->first();
+	            return  $end_stock['qty'] ;
+	        })
+	       
+	        ->addIndexColumn()
+	        ->make(true);
 	}
 }

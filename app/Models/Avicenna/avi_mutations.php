@@ -12,3 +12,4 @@ class avi_mutations extends Model
     ];
 
 }
+

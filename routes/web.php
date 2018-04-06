@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
 	Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
 	Route::get('/avicenna/stock/mutation/ajax/getDetail/{part_number}','Avicenna\StockMutationController@getAjaxDetail');
+	Route::get('/avicenna/stock/mutation/filter/{star_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
 	//
 	//
 	//
