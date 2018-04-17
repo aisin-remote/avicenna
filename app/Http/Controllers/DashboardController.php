@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
 use App\Models\Avicenna\avi_dashboard_genbas;
+use App\Models\Avicenna\avi_andon_target;
 
 class DashboardController extends Controller
 {
@@ -20,8 +21,7 @@ class DashboardController extends Controller
     function viewDashboardGenba(){
 
         return view('adminlte::dashboard.genba');
-    } 
-
+    }
 
     function getAjaxGenba(){ 
 
@@ -29,86 +29,21 @@ class DashboardController extends Controller
         return $arr_result;
     } 
 
-       function viewDashboardModel(){
+    function viewDashboardModel(){
 
         return view('adminlte::dashboard.model');
     } 
-
 
     function getAjaxModel(){ 
 
         $arr_result = avi_dashboard_models::all();
         return $arr_result;
-    } 
-
-    public function index()
-    {
-        //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    function andon(){
+        $andons = avi_andon_target::with('actual')->get();
+
+        return view('adminlte::dashboard.andon', compact('andons'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
