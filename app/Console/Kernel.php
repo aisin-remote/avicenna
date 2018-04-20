@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        '\App\Console\Commands\DeleteEveryMonth',
+        '\App\Console\Commands\CopyValueAndon',
+        '\App\Console\Commands\CopyValueToMutation',
     ];
 
     /**
@@ -24,8 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('DeleteEveryMonth:DeleteMutations')
+                 ->hourly();
+
+        $schedule->command('CopyValueAndon:CopyAndon');
+        $schedule->command('CopyValueToMutation:CopyToMutation');
+
     }
 
     /**

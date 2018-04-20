@@ -125,6 +125,8 @@
     });
 
     // {{-- dev-1.0, Ferry, 20171004, Atur tampilan datatable --}}
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
     var template = Handlebars.compile($("#details-template").html());
     var table = $('#tblMutation').DataTable({
         processing: true,
@@ -174,9 +176,15 @@
     $('#buttonfilter').on('click', function(e){
            var start_date = $('#start_date').val();
            var end_date = $('#end_date').val();
-
+           var d1 = Date.parse(start_date);
+           var d2 = Date.parse(end_date);
+           if (start_date == '' || end_date == '') {
+            alert('Isi Tanggal Filter');
+           }else if(d1 > d2){
+            alert('Start date harus lebih lampau dari end date');
+           }else{
            table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date).load(); 
-           // alert('KANCA MESRA');
+            }
         });
 
     function initTable(tableId, data) {
