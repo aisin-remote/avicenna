@@ -38,18 +38,15 @@ class CopyValueToMutation extends Command
      * @return mixed
      */
     public function handle()
-    {
+    {   
         //dev-1.0.0 : By Handika, Copy data dari avi_running_model ke avi_mutation
-        $running          = avi_running_model::select('back_number','quantity','id_handled')->where('line_number' , '=' , 'AS600')
-                            ->first();
-        $update           = avi_mutations::where('id' ,'=' , $running->id_handled )->first();
-        $update->quantity = $running->quantity;
-        $update->save();
-
-        $running          = avi_running_model::select('back_number','quantity','id_handled')->where('line_number' , '=' , 'AS731')
-                            ->first();
-        $update           = avi_mutations::where('id' ,'=' , $running->id_handled )->first();
-        $update->quantity = $running->quantity;
-        $update->save();
+        $lines = avi_running_model::select('line_number')->get();
+        foreach ($lines as $line) {
+            $running          = avi_running_model::select('back_number','quantity','id_handled')->where('line_number' , '=' , $line->line_number)
+                                ->first();
+            $update           = avi_mutations::where('id' ,'=' , $running->id_handled )->first();
+            $update->quantity = $running->quantity;
+            $update->save();
+        }
     }
 }
