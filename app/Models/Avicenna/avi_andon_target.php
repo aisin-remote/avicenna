@@ -14,4 +14,8 @@ class avi_andon_target extends Model
         return $this->belongsTo('App\Models\Avicenna\avi_andon_actual', 'line', 'line');
     }
 
+    public function running() {
+        return $this->belongsTo('App\Models\Avicenna\avi_running_model', 'line', 'line_number');
+    }
+
 }

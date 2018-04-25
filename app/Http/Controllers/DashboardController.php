@@ -41,9 +41,15 @@ class DashboardController extends Controller
     }
 
     function andon(){
-        $andons = avi_andon_target::with('actual')->get();
+        $andons = avi_andon_target::with('actual', 'running')->get();
 
         return view('adminlte::dashboard.andon', compact('andons'));
+    }
+
+    function direct_andon(){
+        $andons = avi_andon_target::with('actual', 'running')->get();
+
+        return view('adminlte::dashboard.direct.andon', compact('andons'));
     }
 
 }

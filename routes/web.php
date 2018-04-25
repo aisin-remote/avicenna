@@ -88,3 +88,5 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 Route::get('/dandori/make/{line_number}','CreateDandoriController@viewpage');
 Route::post('/dandori/make','CreateDandoriController@Create');
 Route::get('/dandori/quantity','CreateDandoriController@GetQuantityRunningModel');
+
+Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring

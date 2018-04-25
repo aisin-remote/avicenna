@@ -1,6 +1,6 @@
-@extends('adminlte::layouts.app')
+@extends('layouts.app')
 
-@section('main-content')
+@section('content')
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 
   <div class="row">
@@ -109,14 +109,6 @@
         <!-- /.col -->
       @endforeach
   </div>
-@endsection
-
-@section('contentheader_title')
-  @lang('avicenna/dashboard.default_title')
-@endsection
-
-@section('contentheader_description')
-  @lang('avicenna/dashboard.dashboard_andon')
 @endsection
 
 @section('scripts')
