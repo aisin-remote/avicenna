@@ -101,13 +101,14 @@
                 <button id="btn53" value="53" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">53</button>
                 <button id="btn1L" value="1L" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1L</button>
                 <button id="btn1N" value="1N" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1N</button>
-                <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1S</button>
+                <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">S1</button>
                 <button id="btn6I" value="6I" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">6I</button>
                 <button id="btnTAMTAM" value="TAMTAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-TAM</button>
                 <button id="btnTAMADM" value="TAMADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-ADM</button>
                 <button id="btnTAMHINO" value="TAMHINO" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-HINO</button>
                 <button id="btnADMAS" value="ADMAS" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-AS</button>
                 <button id="btnADMKP" value="ADMKP" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-KP</button>
+                <button id="btnADMKP" value="YHA" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">YHA</button>
                 <input id="dock_type" value="OTHER" type="hidden"></input>
             </div>
 
