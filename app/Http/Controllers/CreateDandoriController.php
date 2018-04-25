@@ -16,8 +16,6 @@ class CreateDandoriController extends Controller
 		if ($line_number!=''){
 			$running_model=avi_running_model::where('line_number',$line_number)->first();
 			$models=avi_part_production::where('line_number',$line_number)->get();
-			// return $running_model;
-			// return $running_model;
 			return view('adminlte::dandori.MakeDandori',compact(['models','running_model','line_number']));
 		}else{
 			return "error page";
@@ -29,7 +27,7 @@ class CreateDandoriController extends Controller
 		$line_number=\Request::all()['line_number'];
 		// $line_number='AS600';
 		$model=avi_running_model::where('line_number',$line_number)->first();
-		return $model->quantity;
+		return $model->running_qty;
 	}
 
 	function Create(){
@@ -58,7 +56,8 @@ class CreateDandoriController extends Controller
 			$mutasi->npk=$line_number;
 			$mutasi->save();
 
-			if($qty_seteuchi > 0){
+			//JIKA ADA SETEUCHI
+			if($qty_seteuchi != "0"){
 				$mutasi_seteuchi=new avi_mutations();
 				$mutasi_seteuchi->mutation_date=$mutation_date;
 				$mutasi_seteuchi->mutation_code='143';
@@ -70,7 +69,9 @@ class CreateDandoriController extends Controller
 				$mutasi_seteuchi->npk=$line_number;
 				$mutasi_seteuchi->save();
 			}
-			if($qty_ng > 0){
+
+			//JIKA ADA NG
+			if($qty_ng != "0"){
 				$mutasi_ng=new avi_mutations();
 				$mutasi_ng->mutation_date=$mutation_date;
 				$mutasi_ng->mutation_code='141';
@@ -83,24 +84,20 @@ class CreateDandoriController extends Controller
 				$mutasi_ng->save();
 			}
 
-			$running_model=avi_running_model::where('line_number',$line_number)->first();	
-			//Update
-			if($is_start=='true'){
-				$running_model->buffer=0;
-			}else{
-				$qty_before=$running_model->quantity;
-				$buffer_before=$running_model->buffer;
-				$running_model->buffer=$qty_before+$buffer_before;
-			}
-			$running_model->quantity=0;
-			$running_model->id_handled=$mutasi->id;
+			//==============UPDATE AVI RUNNING MODEL
+			$running_model=avi_running_model::where('line_number',$line_number)->first();
+			$running_model->cumulative_qty=$running_model->cumulative_qty+$running_model->running_qty;
+			$running_model->running_qty=0;
+			$running_model->back_number=$back_number;
 			$running_model->part_number=$model->part_number;
-			$running_model->back_number=$model->back_number;
-			$running_model->dandori_date=$mutation_date;	
+			$running_model->dandori_date=Carbon::now();
+			$running_model->id_mutation=$mutasi->id;
 			$running_model->save();
-
 			
+			//COMMIT DATABSE
 			\DB::commit();
+
+			//CHANGE IMAGE TO NEW MODEL
 			$img = $back_number.'.png';
 			$arr = array(
 			"back_number" => $back_number,
@@ -109,6 +106,7 @@ class CreateDandoriController extends Controller
             "img_path" => asset('/storage/dandori/'.$img));
 			return $arr;
 		}catch(Exception $e){
+			//ROLLBACK TRANSACTION
 			\DB::rollback();
 			
 		}

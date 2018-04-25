@@ -44,8 +44,8 @@ class CopyValueToMutation extends Command
         foreach ($lines as $line) {
             $running          = avi_running_model::select('back_number','quantity','id_handled')->where('line_number' , '=' , $line->line_number)
                                 ->first();
-            $update           = avi_mutations::where('id' ,'=' , $running->id_handled )->first();
-            $update->quantity = $running->quantity;
+            $update           = avi_mutations::where('id' ,'=' , $running->id_mutation )->first();
+            $update->quantity = $running->running_qty;
             $update->save();
         }
     }

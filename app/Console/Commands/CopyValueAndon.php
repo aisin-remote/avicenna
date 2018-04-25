@@ -45,8 +45,8 @@ class CopyValueAndon extends Command
             $andon  = avi_andon::select('line', 'value_reg')->where('line' , '=' , $line->line)
                     ->first();
             $update = avi_running_model::where('line_number' , '=' , $line->line )->first();
-            $qty = $andon->value_reg - $update->buffer ;
-            $update->quantity =  $qty;
+            $qty = $andon->value_reg - $update->cumulative_qty ;
+            $update->running_qty = $qty;
             $update->save();
         }
     }
