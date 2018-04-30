@@ -8,7 +8,7 @@
 
         <?php
           // special manipulation in looping
-          $productivity = round($andon->actual->value_reg / $andon->value_reg, 2) * 100;
+          $productivity = (empty($andon->value_reg) || ($andon->value_reg==0)) ? 0 : round($andon->actual->value_reg / $andon->value_reg, 2) * 100;
           if ($productivity < 60) {
             $badge = "bg-red";
             $callout = "callout-danger";
@@ -70,7 +70,7 @@
                         <td>
                             {{ $andon->actual->value_reg }}
                         </td>
-                        <td><span class="badge {{ $badge }}">{{  round($andon->actual->value_reg / $andon->value_reg, 2) * 100 }}%</span></td>
+                        <td><span class="badge {{ $badge }}">{{  $productivity }}%</span></td>
                       </tr>
                       <tr>
                         <th colspan="3" style="text-align: center">Running Model</th>
