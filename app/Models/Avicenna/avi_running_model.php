@@ -9,13 +9,12 @@ class avi_running_model extends Model
     protected $table = 'avi_running_model';
 
     protected $fillable =[
-    	'ip_address',
     	'line_number',
     	'back_number',
     	'part_number',
-    	'quantity',
+    	'running_qty',
     	'dandori_date',
-    	'id_handled',
-    	'buffer'
+    	'id_mutation',
+    	'cumulative_qty'
     ];
 }

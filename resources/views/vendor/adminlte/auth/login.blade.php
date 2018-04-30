@@ -33,7 +33,8 @@
             @endif
 
             <div class="login-box-body">
-                <p class="login-box-msg"> @lang('aisya/body.login_title') </p>
+                <p class="login-box-msg"> <a href="{{ route('direct.andon') }}" class="text-center">Click Here To Dashboard</a> <br>
+                                            <b>-- OR --</b> <br>@lang('aisya/body.login_title') </p>
                 
                 <form action="{{ url('/login') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}"/>
@@ -63,7 +64,7 @@
                 {{-- dev-1.0, Ferry, 20170823, menghilangkan social facebook login ## @include('adminlte::auth.partials.social_login') --}}
 
                 <a href="{{ url('/password/reset') }}">@lang('aisya/body.login_forgot')</a><br>
-                <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>
+                <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a><br>
 
             </div><!-- /.login-box-body -->
 

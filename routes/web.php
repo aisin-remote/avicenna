@@ -32,7 +32,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
 	Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
-	Route::get('/avicenna/stock/mutation/ajax/getDetail/{part_number}','Avicenna\StockMutationController@getAjaxDetail');
+	Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna\StockMutationController@getAjaxDetailHead');
+	Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
+	Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
 	//
 	//
 	//
@@ -73,6 +75,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/dashboard/getAjaxGenba', 'DashboardController@getAjaxGenba'); //dev-1.0, 20170904, ajax genba
 	Route::get('/dashboard/viewDashboardModel', 'DashboardController@viewDashboardModel'); //dev-1.0, 20170905, view Model
 	Route::get('/dashboard/getAjaxModel', 'DashboardController@getAjaxModel'); //dev-1.0, 20170905, ajax Model
+
+	Route::get('/dashboard/andon', 'DashboardController@andon'); //dev-1.0, 20180416, Andon Monitoring
 	//end of dashboard
 	
 
@@ -84,3 +88,5 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 Route::get('/dandori/make/{line_number}','CreateDandoriController@viewpage');
 Route::post('/dandori/make','CreateDandoriController@Create');
 Route::get('/dandori/quantity','CreateDandoriController@GetQuantityRunningModel');
+
+Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring

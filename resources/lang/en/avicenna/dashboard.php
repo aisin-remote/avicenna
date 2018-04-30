@@ -15,8 +15,9 @@ return [
 
     'default_title'      => 'Dashboard',
     'dashboard_genba'    => 'Summary Part Model',
-    'dashboard_model'    => 'Part Per Model'
+    'dashboard_model'    => 'Part Per Model',
 
+    'dashboard_andon'    => 'Andon Monitoring'
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
