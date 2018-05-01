@@ -17,7 +17,8 @@ return [
     'dashboard_genba'    => 'Summary Part Model',
     'dashboard_model'    => 'Part Per Model',
 
-    'dashboard_andon'    => 'Andon Monitoring'
+    'dashboard_andon'    => 'Andon Monitoring',
+    'dashboard_unit_tools'=> 'Tools Machining Unit Plant',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

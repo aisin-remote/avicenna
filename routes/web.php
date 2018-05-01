@@ -84,9 +84,16 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
     #adminlte_routes
 });
 
-//Dandori Page
+//Dandori Page===============================================================
 Route::get('/dandori/make/{line_number}','CreateDandoriController@viewpage');
 Route::post('/dandori/make','CreateDandoriController@Create');
 Route::get('/dandori/quantity','CreateDandoriController@GetQuantityRunningModel');
+//End Dandori Page ============================================================================
+
+//Unit Plant Dashboard=======================================================
+Route::get('/dashboard/unittools','Avicenna\UnitDashboardController@viewpage');
+Route::get('/dashboard/dataunittools','Avicenna\UnitDashboardController@getAjaxData');
+
+//End Unit Plant Dashboard
 
 Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring
