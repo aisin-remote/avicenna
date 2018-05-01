@@ -13,9 +13,8 @@ class AddAddressToAviMachiningTable extends Migration
      */
     public function up()
     {
-         Schema::table('avi_machining', function (Blueprint $table) {
-            // dev-1.0, Alliq 20180501
-            $table->string('reg_address','6')->after('id');
+          Schema::table('avi_machining', function (Blueprint $table) {
+            $table->string('reg_address','6')->after('tools_no')->unique();
         });
     }
 
