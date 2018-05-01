@@ -22,13 +22,41 @@
         </div>
     </div>
     <div class="row">
-        <center><h1>UNIT PLANT MACHINING TOOLS STATUS</h1></center>
+        <center><h2>UNIT PLANT MACHINING TOOLS STATUS</h2></center>
     </div>
     <div class="row">
         <div class="col-sm-12">
            <div id="container" style="min-width: 200px; height: 400px;"></div>   
        </div>
    </div>
+   <br/>
+   <div class="row">
+       <div class="col-sm-4">
+       <div class="panel panel-default">
+         <div class="panel-heading" style="background-color:#F5F5F5 ;"><b>OVER</b></div>
+         <div class="panel-body">
+           <center><h1>3</h1></center>
+         </div>
+       </div>
+       </div>
+       <div class="col-sm-4">
+       <div class="panel panel-default">
+         <div class="panel-heading" style="background-color:#F5F5F5"><b>WARNING</b></div>
+         <div class="panel-body">
+           <center><h1>0</h1></center>
+         </div>
+       </div>
+       </div>
+       <div class="col-sm-4">
+       <div class="panel panel-default">
+         <div class="panel-heading" style="background-color:#F5F5F5"><b>NORMAL</b></div>
+         <div class="panel-body">
+           <center><h1>15</h1></center>
+         </div>
+       </div>
+       </div>
+   </div>
+   
 @endsection
 
 @section('scripts')
@@ -42,7 +70,7 @@
     setInterval(function(){
         $.get("{{ url('dashboard/datatools/') }}"+"/"+x, data, function (dataJSON) {
             x=x+1;
-            if (x==30){
+            if (x==3){
                 x=1;
             }
             var categories   =[];

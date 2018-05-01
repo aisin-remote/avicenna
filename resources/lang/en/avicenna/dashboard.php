@@ -19,6 +19,8 @@ return [
 
     'dashboard_andon'    => 'Andon Monitoring',
     'dashboard_unit_tools'=> 'Tools Machining Unit Plant',
+    'dashboard_choose_line' => 'Choose Line No',
+    'dashboard_choose_machine' => 'Choose Machine No',
     // '' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];
