@@ -36,7 +36,7 @@ class UnitDashboardController extends Controller
         $warning=\DB::table('avi_machining')
                             ->where('machine_no',$id_mesin)
                             ->where('std_life_time','>=','actual_life_time')
-                            ->where('std_life_time','<','actual+100')
+                            ->where('std_life_time','<','actual_life_time+100')
                             ->count();
         $over=\DB::table('avi_machining')
                             ->where('machine_no',$id_mesin)

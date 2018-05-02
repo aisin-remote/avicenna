@@ -86,7 +86,12 @@
                 type: 'column',
             },
             title: {
-                text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name']
+                text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name'],
+                style:{
+                    fontSize:'22px',
+                    fontFamily:'Arial',
+                    fontWeight: 'Bold'
+                }
             },
             xAxis: {
                 categories: categories
@@ -141,7 +146,12 @@
                     type: 'column',
                 },
                 title: {
-                    text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name']
+                    text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name'],
+                    style:{
+                        fontSize:'22px',
+                        fontFamily:'Arial',
+                        fontWeight: 'Bold'
+                    }
                 },
                 xAxis: {
                     categories: categories
