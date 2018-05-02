@@ -25,4 +25,19 @@ class UnitDashboardController extends Controller
         $data= array($allmesin,$mesin_data);
     	return $data;
     }
+
+    function getAjaxMesin2($id_mesin){
+        $allmesin=avi_machining::where('machine_no',$id_mesin)->get();
+        $mesin_data=avi_machining_master::find($id_mesin);
+        $normal=\DB::table('avi_machining')
+                            ->where('machine_no',$id_mesin)
+                            ->where('std_life_time','>','actual_life_time')
+                            ->count();
+        $over=\DB::table('avi_machining')
+                            ->where('machine_no',$id_mesin)
+                            ->where('std_life_time','<','actual_life_time')
+                            ->count();
+        $data= array($allmesin,$mesin_data,$normal,$over);
+        return $data;
+    }
 }

@@ -35,7 +35,7 @@
        <div class="panel panel-default">
          <div class="panel-heading" style="background-color:#F5F5F5 ;"><b>OVER</b></div>
          <div class="panel-body">
-           <center><h1>3</h1></center>
+           <center><h1><span id="text-over">-</span></h1></center>
          </div>
        </div>
        </div>
@@ -43,7 +43,7 @@
        <div class="panel panel-default">
          <div class="panel-heading" style="background-color:#F5F5F5"><b>WARNING</b></div>
          <div class="panel-body">
-           <center><h1>0</h1></center>
+           <center><h1><span id="text-warning">-</span></h1></center>
          </div>
        </div>
        </div>
@@ -51,7 +51,7 @@
        <div class="panel panel-default">
          <div class="panel-heading" style="background-color:#F5F5F5"><b>NORMAL</b></div>
          <div class="panel-body">
-           <center><h1>15</h1></center>
+           <center><h1><span id="text-normal">-</span></h1></center>
          </div>
        </div>
        </div>
@@ -68,7 +68,7 @@
     var i = 0;
     var x=1;
     setInterval(function(){
-        $.get("{{ url('dashboard/datatools/') }}"+"/"+x, data, function (dataJSON) {
+        $.get("{{ url('dashboard/datatools2/') }}"+"/"+x, data, function (dataJSON) {
             x=x+1;
             if (x==3){
                 x=1;
@@ -83,6 +83,9 @@
                std.push(parseInt(dataJSON[0][i].std_life_time));
                actual.push(parseInt(dataJSON[0][i].actual_life_time));
             }
+
+            $('#text-normal').html(dataJSON[2]);
+            $('#text-over').html(dataJSON[3]);
 
             $('#container').highcharts({
                chart: {
