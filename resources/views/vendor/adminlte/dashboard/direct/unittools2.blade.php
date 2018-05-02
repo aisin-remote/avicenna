@@ -65,12 +65,60 @@
     <script src="{{ url('/js/highcharts/modules/exporting.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
     var data = {  _token: "{{ csrf_token() }}" };   // keep csrf token for session
+    $.get("{{ url('dashboard/datatools2/1') }}", data, function (dataJSON) {
+        var categories   =[];
+        var std          =[];
+        var actual       =[];
+        var myseries     =[];
+
+        for(var i=0;i<dataJSON[0].length;i++){
+           categories.push(dataJSON[0][i].tools_no);
+           std.push(parseInt(dataJSON[0][i].std_life_time));
+           actual.push(parseInt(dataJSON[0][i].actual_life_time));
+        }
+
+        $('#text-normal').html(dataJSON[2]);
+        $('#text-warning').html(dataJSON[3]);
+        $('#text-over').html(dataJSON[4]);
+
+        $('#container').highcharts({
+           chart: {
+                type: 'column',
+            },
+            title: {
+                text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name']
+            },
+            xAxis: {
+                categories: categories
+            },
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                        style :{
+                            fontSize: "15px"
+                        },
+                    }
+                }
+            },
+            series: [{
+                name: 'Standard Life Time',
+                data: std,
+                color: '#639af2'
+            }, {
+                name: 'Actual Life Time',
+                data: actual,
+                color: '#ef8534'
+            }]
+            });
+    });
     var i = 0;
-    var x=1;
+    var x=2;
+
     setInterval(function(){
         $.get("{{ url('dashboard/datatools2/') }}"+"/"+x, data, function (dataJSON) {
             x=x+1;
-            if (x==3){
+            if (x=={{count($mesins)}}){
                 x=1;
             }
             var categories   =[];
@@ -85,7 +133,8 @@
             }
 
             $('#text-normal').html(dataJSON[2]);
-            $('#text-over').html(dataJSON[3]);
+            $('#text-warning').html(dataJSON[3]);
+            $('#text-over').html(dataJSON[4]);
 
             $('#container').highcharts({
                chart: {
@@ -110,15 +159,17 @@
                 series: [{
                     name: 'Standard Life Time',
                     data: std,
-                    color: '#d9534f'
+                    //color: '#d9534f'
+                    color: '#639af2'
                 }, {
                     name: 'Actual Life Time',
                     data: actual,
-                    color: '#5cb85c'
+                    // color: '#5cb85c'
+                    color: '#ef8534'
                 }]
                 });
         });
-    },5000);
+    },10000);
         
   </script>
 

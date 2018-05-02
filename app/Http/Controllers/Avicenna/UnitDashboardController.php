@@ -10,7 +10,7 @@ use App\Models\Avicenna\avi_machining_master;
 class UnitDashboardController extends Controller
 {
     function viewpage(){
-    	$mesins=avi_machining::all();
+    	$mesins=avi_machining_master::all();
     	return view('adminlte::dashboard.direct.unittools2',compact('mesins'));
     }
 
@@ -31,13 +31,18 @@ class UnitDashboardController extends Controller
         $mesin_data=avi_machining_master::find($id_mesin);
         $normal=\DB::table('avi_machining')
                             ->where('machine_no',$id_mesin)
-                            ->where('std_life_time','>','actual_life_time')
+                            ->where('std_life_time','>','actual_life_time+100')
+                            ->count();
+        $warning=\DB::table('avi_machining')
+                            ->where('machine_no',$id_mesin)
+                            ->where('std_life_time','>=','actual_life_time')
+                            ->where('std_life_time','<','actual+100')
                             ->count();
         $over=\DB::table('avi_machining')
                             ->where('machine_no',$id_mesin)
                             ->where('std_life_time','<','actual_life_time')
                             ->count();
-        $data= array($allmesin,$mesin_data,$normal,$over);
+        $data= array($allmesin,$mesin_data,$normal,$warning,$over);
         return $data;
     }
 }
