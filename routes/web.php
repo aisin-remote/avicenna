@@ -93,6 +93,8 @@ Route::get('/dandori/quantity','CreateDandoriController@GetQuantityRunningModel'
 //Unit Plant Dashboard=======================================================
 Route::get('/dashboard/unittools','Avicenna\UnitDashboardController@viewpage');
 Route::get('/dashboard/dataunittools','Avicenna\UnitDashboardController@getAjaxData');
+Route::get('/dashboard/datatools/{id_mesin}','Avicenna\UnitDashboardController@getAjaxMesin');
+Route::get('/dashboard/datatools2/{id_mesin}','Avicenna\UnitDashboardController@getAjaxMesin2');
 
 //End Unit Plant Dashboard
 

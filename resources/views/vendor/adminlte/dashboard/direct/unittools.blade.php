@@ -2,10 +2,33 @@
 
 @section('content')
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
-
-  <div class="row">
-     <div id="container" style="min-width: 200px; height: 400px;"></div>
-  </div>
+    <div class="form-horizontal" hidden>
+        <div class="row">
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><b>@lang('avicenna/dashboard.dashboard_choose_line')</b></label>
+                <div class="col-sm-2">
+                    <select name="line_no" id="line_no" class="form-control">
+                        <option>-- Choose --</option>
+                    </select>
+                </div>
+                <label class="col-sm-2 control-label"><b>@lang('avicenna/dashboard.dashboard_choose_machine')</b></label>
+                <div class="col-sm-2">
+                    <select name="machine_no" id="machine_no" class="form-control">
+                        <option>-- Choose --</option>
+                    </select>
+                </div>
+                <button class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Display Dashboard</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <center><h1>UNIT PLANT MACHINING TOOLS STATUS</h1></center>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+           <div id="container" style="min-width: 200px; height: 400px;"></div>   
+       </div>
+   </div>
 @endsection
 
 @section('scripts')
@@ -15,63 +38,57 @@
     <script type="text/javascript">
     var data = {  _token: "{{ csrf_token() }}" };   // keep csrf token for session
     var i = 0;
-        $.get("{{ url('dashboard/dataunittools') }}", data, function (dataJSON) {
-                var categories   =[];
-                var std          =[];
-                var actual       =[];
-                var myseries     =[];
+    var x=1;
+    setInterval(function(){
+        $.get("{{ url('dashboard/datatools/') }}"+"/"+x, data, function (dataJSON) {
+            x=x+1;
+            if (x==30){
+                x=1;
+            }
+            var categories   =[];
+            var std          =[];
+            var actual       =[];
+            var myseries     =[];
 
-                for(var i=0;i<dataJSON.length;i++){
-                   categories.push(dataJSON[i].tools_no);
-                   std.push(parseInt(dataJSON[i].std_life_time));
-                   actual.push(parseInt(dataJSON[i].actual_life_time));
-                }
+            for(var i=0;i<dataJSON[0].length;i++){
+               categories.push(dataJSON[0][i].tools_no);
+               std.push(parseInt(dataJSON[0][i].std_life_time));
+               actual.push(parseInt(dataJSON[0][i].actual_life_time));
+            }
 
-                $('#container').highcharts({
-                   chart: {
-                        type: 'column',
-                        events: {
-                            load: function() {
-                                // set up the updating of the chart each second
-                                setInterval(function(){
-                                    var chart = $("#container").highcharts();
-
-                                    $.get("{{ url('dashboard/dataunittools') }}", data, function(dataJSON) {  //dev-1.0, 20170905, by yudo, modify $getJSON
-                                       
-                                        var categories   =[];
-                                        var std          =[];
-                                        var actual       =[];
-                                        var myseries = [];
-
-                                        for(var i=0;i<dataJSON.length;i++){
-                                         categories.push(dataJSON[i].tools_no);
-                                         std.push(parseInt(dataJSON[i].std_life_time));
-                                         actual.push(parseInt(dataJSON[i].actual_life_time));
-                                        }
-                                        chart.series[0].update({data : std});
-                                        chart.series[1].update({data : actual});
-                                    });
-                                }, 5000);
-                            }              
+            $('#container').highcharts({
+               chart: {
+                    type: 'column',
+                },
+                title: {
+                    text: 'Line No: '+ dataJSON[1]["line_no"]+' Machine No: '+dataJSON[1]['machine_name']
+                },
+                xAxis: {
+                    categories: categories
+                },
+                plotOptions: {
+                    column: {
+                        dataLabels: {
+                            enabled: true,
+                            style :{
+                                fontSize: "15px"
+                            },
                         }
-                    },
-                    title: {
-                        text: 'Tools Machining Status'
-                    },
-                    xAxis: {
-                        categories: categories
-                    },
-                    series: [{
-                        name: 'Standard Life Time',
-                        data: std,
-                        color: '#5cb85c'
-                    }, {
-                        name: 'Actual Life Time',
-                        data: actual,
-                        color: '#d9534f'
-                    }]
-                    });
+                    }
+                },
+                series: [{
+                    name: 'Standard Life Time',
+                    data: std,
+                    color: '#d9534f'
+                }, {
+                    name: 'Actual Life Time',
+                    data: actual,
+                    color: '#5cb85c'
+                }]
                 });
+        });
+    },5000);
+        
   </script>
 
 @endsection
