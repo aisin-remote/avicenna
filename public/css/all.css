@@ -20512,6 +20512,21 @@ a:focus {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
+.table-bordered-red {
+  border: 1px solid #f2000c;
+}
+.table-bordered-red > thead > tr > th,
+.table-bordered-red > tbody > tr > th,
+.table-bordered-red > tfoot > tr > th,
+.table-bordered-red > thead > tr > td,
+.table-bordered-red > tbody > tr > td,
+.table-bordered-red > tfoot > tr > td {
+  border: 1px solid #f2000c;
+}
+.table-bordered-red > thead > tr > th,
+.table-bordered-red > thead > tr > td {
+  border-bottom-width: 2px;
+}
 .table.no-border,
 .table.no-border td,
 .table.no-border th {
@@ -23674,3 +23689,42 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+.tag{
+    font-family: 'Times New Roman';
+    color:white;
+    padding: 3px 3px 3px 3px;
+    font-weight: bold;
+  }
+  .tag-yellow{
+    font-family: 'Times New Roman';
+    color:yellow;
+    padding: 3px 3px 3px 3px;
+    font-weight: bold;
+  }
+  .tag-red{
+    font-family: 'Times New Roman';
+    color:red;
+    padding: 3px 3px 3px 3px;
+    font-weight: bold;
+  }
+  .tag-green{
+    font-family: 'Times New Roman';
+    color:green;
+    padding: 3px 3px 3px 3px;
+    font-weight: bold;
+  }
+  .tag-cyan{
+    font-family: 'Times New Roman';
+    color:'#16f7e0';
+    padding: 3px 3px 3px 3px;
+    font-weight: bold;
+  }
+  .value{
+    font-family: 'Digital-7';
+    src: url(Digita-7.ttf)
+    padding: 3px 3px 3px 3px;
+    text-align: right;
+    min-width:100px;
+    font-weight: bold; 
+  }
