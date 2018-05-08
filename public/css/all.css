@@ -23691,40 +23691,38 @@ button.toast-close-button {
 }
 
 .tag{
-    font-family: 'Times New Roman';
+    font-family: 'Arial';
     color:white;
-    padding: 3px 3px 3px 3px;
-    font-weight: bold;
+    padding: 1px 1px 1px 20px;
   }
   .tag-yellow{
-    font-family: 'Times New Roman';
+    font-family: 'Arial';
     color:yellow;
-    padding: 3px 3px 3px 3px;
-    font-weight: bold;
+    padding: 1px 1px 1px 20px;
   }
   .tag-red{
-    font-family: 'Times New Roman';
+    font-family: 'Arial';
     color:red;
-    padding: 3px 3px 3px 3px;
-    font-weight: bold;
-  }
+    padding: 1px 1px 1px 20px;  }
   .tag-green{
-    font-family: 'Times New Roman';
+    font-family: 'Arial';
     color:green;
-    padding: 3px 3px 3px 3px;
-    font-weight: bold;
+    padding: 1px 1px 1px 20px;
   }
   .tag-cyan{
-    font-family: 'Times New Roman';
+    font-family: 'Arial';
     color:'#16f7e0';
-    padding: 3px 3px 3px 3px;
-    font-weight: bold;
+    padding: 1px 1px 1px 1px;
   }
   .value{
     font-family: 'Digital-7';
-    src: url(Digita-7.ttf)
-    padding: 3px 3px 3px 3px;
     text-align: right;
-    min-width:100px;
-    font-weight: bold; 
+    font-size: 30px ;
+    color: #ffff00 ; 
+    padding: 0px 20px 0px 0px;
   }
+  .box.box-black {
+  border-top-color: #000;
+}
+.table-bordered-black {
+  border: 1px solid #000000;
