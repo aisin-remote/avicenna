@@ -23694,20 +23694,25 @@ button.toast-close-button {
     font-family: 'Arial';
     color:white;
     padding: 1px 1px 1px 20px;
+    font-weight: bold;
   }
   .tag-yellow{
     font-family: 'Arial';
     color:yellow;
     padding: 1px 1px 1px 20px;
+    font-weight: bold;
   }
   .tag-red{
     font-family: 'Arial';
     color:red;
-    padding: 1px 1px 1px 20px;  }
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+  }
   .tag-green{
     font-family: 'Arial';
     color:green;
     padding: 1px 1px 1px 20px;
+    font-weight: bold;
   }
   .tag-cyan{
     font-family: 'Arial';
@@ -23715,9 +23720,9 @@ button.toast-close-button {
     padding: 1px 1px 1px 1px;
   }
   .value{
-    font-family: 'Digital-7';
+    font-family: 'DS-Digital';
     text-align: right;
-    font-size: 30px ;
+    font-size: 35px ;
     color: #ffff00 ; 
     padding: 0px 20px 0px 0px;
   }

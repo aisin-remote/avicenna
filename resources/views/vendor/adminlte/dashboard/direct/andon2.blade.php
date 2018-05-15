@@ -66,8 +66,8 @@
               <!-- Conversations are loaded here -->
               <div class="direct-chat-messages" style="height: 100%">
                 <!-- Message. Default to the left -->
-                <div >
-                  <div>
+                <div class="table-bordered" >
+                  <div  border="1" style="border-color: white ">
                     <table style="background-color: #000000 ;" class="table table-bordered">
                       <tr>
                         <th style="text-align: center; width: 25% ; font-size: 11px"><span>07-05-2018<br>09:10:59</th>
@@ -143,6 +143,181 @@
           </div>
           <!--/.direct-chat -->
         </div>
+<div  class="col-md-4">
+
+          <!-- DIRECT CHAT PRIMARY -->
+          <div style="background-color: #000000 ; color : #ffffff " >
+            <!-- /.box-header -->
+
+            <div>
+              <!-- Conversations are loaded here -->
+              <div class="direct-chat-messages" style="height: 100%">
+                <!-- Message. Default to the left -->
+                <div class="table-bordered" >
+                  <div  border="1" style="border-color: white ">
+                    <table style="background-color: #000000 ;" class="table table-bordered">
+                      <tr>
+                        <th style="text-align: center; width: 25% ; font-size: 11px"><span>07-05-2018<br>09:10:59</th>
+                        <th style="text-align: center; width: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 "><span class="direct-chat-name pull-center">AS751</span></th>
+                        <th style="text-align: center; width: 25%"><span style="text-align: center;" >SHIFT 1</th>
+                      </tr>
+                    </table>
+                    <table border="0" style="border-color:#ffffff; background-color: #000000 ; padding: 10px " width="100%" >
+                      <tr>
+                        <td class="tag" style="width: 50%">TARGET<br>標的</td>
+                        <td class="value" style="width: 50%">100</td>
+                      </tr>
+                      <tr>
+                        <td class="tag">TARGET QTY<br>目標量</td>
+                        <td class="value">100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag">ACTUAL QTY<br>実際の数量</td>
+                        <td class="value">1000</td>
+                      </tr>
+                      <tr>
+                        <td class="tag">BALANCE<br>残高</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag">ACHIVE (%)<br>達成する</td>
+                        <td class="value">
+                            100 %
+                        </td>
+                      </tr>
+                      <tr><!-- 
+                        <td class="tag-green">LOSS TIME(sec)<br/>(QA)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag-yellow">LOSS TIME(sec)<br/>(PART)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag-red">LOSS TIME(sec)<br/>(M/C)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr> -->
+                      <tr>
+                        <td class="tag">DANDORI(sec)<br>段取り</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background-color: #000000 ; width: 100% ; text-align: center; color: #000000 " colspan="2">A</td>
+                      </tr>
+                      <tr>
+                        <td style=" background-color: #ffff00 ; width: 100% ; text-align: center; color: #000000" colspan="2">PT AISIN INDONESIA AUTOMOTIVE</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.direct-chat-msg -->
+              </div>
+              <!--/.direct-chat-messages-->
+
+            </div>
+            <!-- /.box-footer-->
+          </div>
+          <!--/.direct-chat -->
+        </div>
+<div  class="col-md-4">
+
+          <!-- DIRECT CHAT PRIMARY -->
+          <div style="background-color: #000000 ; color : #ffffff " >
+            <!-- /.box-header -->
+
+            <div>
+              <!-- Conversations are loaded here -->
+              <div class="direct-chat-messages" style="height: 100%">
+                <!-- Message. Default to the left -->
+                <div class="table-bordered" >
+                  <div  border="1" style="border-color: white ">
+                    <table style="background-color: #000000 ;" class="table table-bordered">
+                      <tr>
+                        <th style="text-align: center; width: 25% ; font-size: 11px"><span>07-05-2018<br>09:10:59</th>
+                        <th style="text-align: center; width: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 "><span class="direct-chat-name pull-center">AS523</span></th>
+                        <th style="text-align: center; width: 25%"><span style="text-align: center;" >SHIFT 1</th>
+                      </tr>
+                    </table>
+                    <table border="0" style="border-color:#ffffff; background-color: #000000 ; padding: 10px " width="100%" >
+                      <tr>
+                        <td class="tag" style="width: 50%">TARGET<br>標的</td>
+                        <td class="value" style="width: 50%">100</td>
+                      </tr>
+                      <tr>
+                        <td class="tag">TARGET QTY<br>目標量</td>
+                        <td class="value">100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag">ACTUAL QTY<br>実際の数量</td>
+                        <td class="value">1000</td>
+                      </tr>
+                      <tr>
+                        <td class="tag">BALANCE<br>残高</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag">ACHIVE (%)<br>達成する</td>
+                        <td class="value">
+                            100 %
+                        </td>
+                      </tr>
+                      <tr><!-- 
+                        <td class="tag-green">LOSS TIME(sec)<br/>(QA)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag-yellow">LOSS TIME(sec)<br/>(PART)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="tag-red">LOSS TIME(sec)<br/>(M/C)</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr> -->
+                      <tr>
+                        <td class="tag">DANDORI(sec)<br>段取り</td>
+                        <td class="value">
+                            100
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="background-color: #000000 ; width: 100% ; text-align: center; color: #000000 " colspan="2">A</td>
+                      </tr>
+                      <tr>
+                        <td style=" background-color: #ffff00 ; width: 100% ; text-align: center; color: #000000" colspan="2">PT AISIN INDONESIA AUTOMOTIVE</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.direct-chat-msg -->
+              </div>
+              <!--/.direct-chat-messages-->
+
+            </div>
+            <!-- /.box-footer-->
+          </div>
+          <!--/.direct-chat -->
+        </div>
+
 
 @endsection
 
