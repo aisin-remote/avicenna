@@ -67,10 +67,10 @@ class StockMutationController extends Controller
 
 		$date = \Carbon\Carbon::now()->format('Y-m-d');
 		$date2 = \Carbon\Carbon::yesterday()->format('Y-m-d');
-	    $mutation = avi_mutations::select('part_number','store_location')
-	    				->groupby('part_number')
-	    				->groupby('store_location');
-
+	    $mutation = avi_mutations::select('avi_mutations.part_number','avi_mutations.store_location')
+	    				->join('avi_part_dashboard', 'avi_mutations.part_number', '=', 'avi_part_dashboard.part_number')
+	    				->groupby('avi_mutations.part_number')
+	    				->groupby('avi_mutations.store_location');
 	    return Datatables::of($mutation)
 	        ->addColumn('details_url', function($mutation) {
 	            return url('avicenna/stock/mutation/ajax/getDetailHead/'.$mutation->part_number);
@@ -118,7 +118,7 @@ class StockMutationController extends Controller
 	    			->join('avi_mutation_types','code','mutation_code')
 	    			->where('avi_mutations.part_number',$part_number)
 	    			->where('mutation_date' , '<=' ,  $date )
-	    			->where('mutation_date' , '>=' ,  $date2 )
+	    			->where('mutation_date' , '>' ,  $date2 )
 	    			->groupby('back_number','mutation_code','part_number','part_name','desc');
 	    			
 	    // return $part;
@@ -127,9 +127,10 @@ class StockMutationController extends Controller
 	}
 	public function getAjaxFilter($start_date, $end_date)
 	{	
-		    $mutation = avi_mutations::select('part_number','store_location')
-		    				->groupby('part_number')
-		    				->groupby('store_location');
+		    $mutation = avi_mutations::select('avi_mutations.part_number','avi_mutations.store_location')
+	    				->join('avi_part_dashboard', 'avi_mutations.part_number', '=', 'avi_part_dashboard.part_number')
+	    				->groupby('avi_mutations.part_number')
+	    				->groupby('avi_mutations.store_location');
 
 		    return Datatables::of($mutation)
 		        ->addColumn('details_url', function($mutation) use($start_date , $end_date) {

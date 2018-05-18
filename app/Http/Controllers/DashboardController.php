@@ -52,4 +52,9 @@ class DashboardController extends Controller
         return view('adminlte::dashboard.direct.andon', compact('andons'));
     }
 
+    function direct_andon2(){
+
+        return view('adminlte::dashboard.direct.andon2');
+    }
+
 }

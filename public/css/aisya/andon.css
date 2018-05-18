@@ -1,0 +1,15 @@
+/* latin-ext */
+@font-face {
+	font-family: 'DS-Digital';
+	font-style: normal;
+	font-weight: 300;
+	src: local('DS Digital'), local('DS-Digital'), url('../../fonts/DS-Digital.ttf') format('truetype');
+}
+
+.value{
+	font-family: 'DS-Digital';
+	text-align: right;
+	font-size: 35px ;
+	color: #ffff00 ; 
+	padding: 0px 20px 0px 0px;
+}

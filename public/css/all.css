@@ -1,7 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@charset "UTF-8";
 
-
-
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.
@@ -20512,6 +20510,21 @@ a:focus {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
+.table-bordered-red {
+  border: 1px solid #f2000c;
+}
+.table-bordered-red > thead > tr > th,
+.table-bordered-red > tbody > tr > th,
+.table-bordered-red > tfoot > tr > th,
+.table-bordered-red > thead > tr > td,
+.table-bordered-red > tbody > tr > td,
+.table-bordered-red > tfoot > tr > td {
+  border: 1px solid #f2000c;
+}
+.table-bordered-red > thead > tr > th,
+.table-bordered-red > thead > tr > td {
+  border-bottom-width: 2px;
+}
 .table.no-border,
 .table.no-border td,
 .table.no-border th {
@@ -23674,3 +23687,38 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+.tag{
+    font-family: 'Arial';
+    color:white;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+  }
+  .tag-yellow{
+    font-family: 'Arial';
+    color:yellow;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+  }
+  .tag-red{
+    font-family: 'Arial';
+    color:red;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+  }
+  .tag-green{
+    font-family: 'Arial';
+    color:green;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+  }
+  .tag-cyan{
+    font-family: 'Arial';
+    color:'#16f7e0';
+    padding: 1px 1px 1px 1px;
+  }
+  .box.box-black {
+  border-top-color: #000;
+}
+.table-bordered-black {
+  border: 1px solid #000000;

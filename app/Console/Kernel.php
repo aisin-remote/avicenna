@@ -28,9 +28,10 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('DeleteEveryMonth:DeleteMutations')
                  ->hourly();
-
-        $schedule->command('CopyValueAndon:CopyAndon');
-        $schedule->command('CopyValueToMutation:CopyToMutation');
+        $schedule->command('CopyValueAndon:CopyAndon')
+                 ->everyMinute();
+        $schedule->command('CopyValueToMutation:CopyToMutation')
+                 ->everyMinute();
 
     }
 
