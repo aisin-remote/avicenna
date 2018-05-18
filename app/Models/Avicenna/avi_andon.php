@@ -8,8 +8,14 @@ class avi_andon extends Model
 {
     protected $fillable =[
     	'line',
-    	'reg_address',
-    	'name_reg',
-    	'value_reg'
+    	'target',
+    	'target_qty',
+    	'actual_qty',
+    	'balance',
+    	'achive',
+    	'dandori',
+    	'loss_time_qa',
+    	'loss_time_parts',
+    	'loss_time_mc'
     ];
 }
