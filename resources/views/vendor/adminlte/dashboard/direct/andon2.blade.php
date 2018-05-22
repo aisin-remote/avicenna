@@ -27,7 +27,7 @@
                     <table border="0" style="border-color:#ffffff; background-color: #000000 ; padding: 10px " width="100%" >
                       <tr>
                         <td class="tag" style="width: 50%">TARGET<br>標的</td>
-                        <td class="value" style="width: 50%">100</td>
+                        <td class="value" style="width: 50%">{{ $andon->target }}</td>
                       </tr>
                       <tr>
                         <td class="tag">TARGET QTY<br>目標量</td>
@@ -50,7 +50,7 @@
                       <tr>
                         <td class="tag">ACHIVE (%)<br>達成する</td>
                         <td class="value">
-                            {{ number_format($andon->actual_qty / $andon->target_qty * 100  , 1) }} %
+                            {{ number_format((empty($andon->actual_qty) || ($andon->actual_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1) }} %
                         </td>
                       </tr>
                       <tr>
