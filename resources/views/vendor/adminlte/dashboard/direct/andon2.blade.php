@@ -50,7 +50,7 @@
                       <tr>
                         <td class="tag">ACHIVE (%)<br>達成する</td>
                         <td class="value">
-                            {{ number_format((empty($andon->actual_qty) || ($andon->actual_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1) }} %
+                            {{ number_format((empty($andon->target_qty) || ($andon->target_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1) }} %
                         </td>
                       </tr>
                       <tr>
