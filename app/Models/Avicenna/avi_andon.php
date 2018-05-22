@@ -18,4 +18,8 @@ class avi_andon extends Model
     	'loss_time_parts',
     	'loss_time_mc'
     ];
+    
+    public function running() {
+        return $this->belongsTo('App\Models\Avicenna\avi_running_model', 'line', 'line_number');
+    }
 }

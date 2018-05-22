@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class customizing sendiri
 use App\Models\Avicenna\avi_dashboard_genbas;
 use App\Models\Avicenna\avi_andon_target;
+use App\Models\Avicenna\avi_andon;
+
+
 
 class DashboardController extends Controller
 {
@@ -54,7 +57,8 @@ class DashboardController extends Controller
 
     function direct_andon2(){
 
-        return view('adminlte::dashboard.direct.andon2');
+        $andons = avi_andon::with('running')->get();
+        return view('adminlte::dashboard.direct.andon2' , compact('andons'));
     }
 
 }
