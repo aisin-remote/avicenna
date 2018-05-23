@@ -5,6 +5,24 @@
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
 
         @foreach ($andons as $andon)
+
+        <?php
+          // special manipulation in looping
+          $productivity = number_format((empty($andon->target_qty) || ($andon->target_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1);
+          if ($productivity < 60) {
+            $class= "status-abnormal";
+            $text = "ABNORMAL";
+          }
+          elseif (($productivity >= 60) && ($productivity < 80)) {
+            $class = "status-warning";
+            $text = "WARNING";
+          }
+          elseif ($productivity > 80) {
+            $class = "status-normal";
+            $text = "NORMAL";
+          }
+        ?>
+
         <div  class="col-md-4" style="margin-bottom: 10px">
 
           <!-- DIRECT CHAT PRIMARY -->
@@ -19,7 +37,7 @@
                   <div  border="1" style="border-color: white ">
                     <table style="background-color: #000000 ;" class="table table-bordered">
                       <tr>
-                        <th style="text-align: center; width: 25% ; font-size: 11px"><div class="jam"></div></th>
+                        <th style="text-align: center; width: 25% ; font-size: 9px"><div class="jam"></div>AIIA</th>
                         <th style="text-align: center; width: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 ; padding-right: : 20px ; padding-left: 20px "><span class="direct-chat-name pull-center">{{ $andon->line }}</span></th>
                         <th style="text-align: center; width: 25%"><span style="text-align: center;" >MODEL<br>{{$andon->running->back_number}}</th>
                       </tr>
@@ -50,7 +68,7 @@
                       <tr>
                         <td class="tag">ACHIVE (%)<br>達成する</td>
                         <td class="value">
-                            {{ number_format((empty($andon->target_qty) || ($andon->target_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1) }} %
+                            {{ $productivity }} %
                         </td>
                       </tr>
                       <tr>
@@ -61,10 +79,10 @@
                         </td>
                       </tr>
                       <tr>
-                        <td style="background-color: #000000 ; width: 100% ; text-align: center; color: #000000 " colspan="2">A</td>
+                        <td style="background-color: #000000 ; width: 100% ; text-align: center; color: #000000 " colspan="2"><br></td>
                       </tr>
                       <tr>
-                        <td style=" background-color: #ffff00 ; width: 100% ; text-align: center; color: #000000" colspan="2">PT AISIN INDONESIA AUTOMOTIVE</td>
+                        <td class="{{$class}}" colspan="2">{{$text}}</td>
                       </tr>
                     </table>
                   </div>
