@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class avi_running_hours extends Model
 {
-    protected $table = 'avi_running_model';
+    protected $table = 'avi_running_hours';
 
     protected $fillable =[
     	'line',
