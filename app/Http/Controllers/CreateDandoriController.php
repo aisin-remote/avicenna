@@ -38,7 +38,7 @@ class CreateDandoriController extends Controller
 		$qty_seteuchi=\Request::all()['qty_ng'];
 		
 		$mutation_date=Carbon::now();
-		if($mutation_date->hour <= 6){
+		if($mutation_date->hour <= 5){
 			$mutation_date=Carbon::yesterday();
 		}
 

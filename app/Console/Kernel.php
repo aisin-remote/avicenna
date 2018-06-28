@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\DeleteEveryMonth',
         '\App\Console\Commands\CopyValueAndon',
         '\App\Console\Commands\CopyValueToMutation',
+        '\App\Console\Commands\CopyAndonHourly',
     ];
 
     /**
@@ -32,6 +33,9 @@ class Kernel extends ConsoleKernel
                  ->everyMinute();
         $schedule->command('CopyValueToMutation:CopyToMutation')
                  ->everyMinute();
+        $schedule->command('CopyAndonHourly:CopyAndon')
+                 ->everyFiveMinutes();
+
 
     }
 
