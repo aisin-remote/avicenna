@@ -80,6 +80,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//end of dashboard
 	
 
+	// dev-1.0, Handika, 20180702, Route TRACEBILITY ======================================================
+	Route::get('/trace/view/part', 'viewTraceController@index');
+	Route::get('/trace/view/part/{id_product}', 'viewTraceController@getAjaxData');
+
+
+
+	//end of tracebility
+
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
