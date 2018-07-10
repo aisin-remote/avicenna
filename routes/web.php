@@ -82,7 +82,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// dev-1.0, Handika, 20180702, Route TRACEBILITY ======================================================
 	Route::get('/trace/view/part', 'viewTraceController@index');
+	Route::get('/trace/view/part/index', 'viewTraceController@getAjaxIndex');
 	Route::get('/trace/view/part/{id_product}', 'viewTraceController@getAjaxData');
+	Route::get('/trace/view/product/{id_product}', 'viewTraceController@getAjaxProduct');
 
 
 
