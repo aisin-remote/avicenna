@@ -80,7 +80,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//end of dashboard
 	
 
-	// dev-1.0, Handika, 20180702, Route TRACEBILITY ======================================================
+	// dev-1.0, Handika, 20180702, Route TRACEBILITY =========================================================================
+
 	// view trace product
 	Route::get('/trace/view/part', 'viewTraceController@index');
 	Route::get('/trace/view/part/index', 'viewTraceController@getAjaxIndex');
@@ -92,8 +93,15 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
 
+	//SCAN PART
+		//Casting
+	Route::get('/trace/scan/casting', 'TraceScanController@scan');
+	Route::get('/trace/scan/casting/getAjax/{number}', 'TraceScanController@getAjax');
+	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 
-	//end of tracebility
+
+
+	//end of tracebility ====================================================================================================
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
