@@ -99,6 +99,17 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getAjax/{number}', 'TraceScanController@getAjax');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 
+		//Machining
+	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
+	Route::get('/trace/scan/machining/getAjax/{number}', 'TraceScanController@getAjaxmachining');
+	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
+
+		//Delivery
+	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
+	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
+
+	Route::get('/trace/logout', 'Auth\LoginController@logout');
+
 
 
 	//end of tracebility ====================================================================================================
