@@ -100,8 +100,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 
 		//Machining
-	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
-	Route::get('/trace/scan/machining/getAjax/{number}', 'TraceScanController@getAjaxmachining');
+	Route::get('/trace/scan/machining/{line}', 'TraceScanController@scanmachining');
+	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
 
 		//Delivery

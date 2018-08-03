@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div id="line" class="panel panel-default" >
                 
-                <span style="font-size : 50px "> <center> LINE MACHINING </center> </span>
+                <span style="font-size : 50px "> <center> LINE MACHINING {{$line}} </center> </span>
                 <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
             </div>
         </div>
@@ -103,6 +103,7 @@
 <script type="text/javascript">
   
   var barcode   ="";
+  var line      = "{{$line}}" ;
   var rep2      = "";
   var detail_no = $('#detail_no');
   
@@ -117,7 +118,7 @@
             $('#detail_no').val('');
             $.ajax({
                     type: 'get',           // {{-- POST Request --}}
-                    url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete,  
+                    url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line,  
                     _token: "{{ csrf_token() }}",
                     dataType: 'json',       // {{-- Data Type of the Transmit --}}
                     success: function (data) {

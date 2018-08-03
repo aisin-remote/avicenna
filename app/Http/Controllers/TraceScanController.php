@@ -130,14 +130,12 @@ class TraceScanController extends Controller
         
 
     }
-    public function scanmachining()
+    public function scanmachining($line)
     {
-        //
-        // $customer = avi_customers::all();
-        return view('tracebility/machining/scan');
+        return view('tracebility/machining/scan',compact('line'));
     }
 
-    public function getAjaxmachining($number)
+    public function getAjaxmachining($number, $line)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
@@ -171,9 +169,9 @@ class TraceScanController extends Controller
                                 "last_scan" => $last_scan
                         );
 
-                $printer                    = avi_trace_printer::where('line', 'MA006')->first();
+                $printer                    = avi_trace_printer::where('line', $line)->first();
                 $printer->part_code         = $number;
-                $printer->flag              = 0;
+                $printer->flag              = 1;
                 $printer->save();
 
                 // $fd = $data;
