@@ -149,6 +149,7 @@ class TraceScanController extends Controller
                 $scan                       = new avi_trace_machining;
                 $scan->code                 = $number;
                 $scan->date                 = date('Y-m-d');
+                $scan->line                 = $line;
                 $scan->npk                  = $user->npk;
                 $scan->save();
                 DB::commit();
