@@ -1,0 +1,74 @@
+/* latin-ext */
+@font-face {
+	font-family: 'DS-Digital';
+	font-style: normal;
+	font-weight: 300;
+	src: local('DS Digital'), local('DS-Digital'), url('../../fonts/DS-Digital.ttf') format('truetype');
+}
+
+.value{
+	font-family: 'DS-Digital';
+	text-align: right;
+	font-size: 35px ;
+	color: #ffff00 ; 
+	padding: 0px 20px 0px 0px;
+}
+.tag{
+    font-family: 'Arial';
+    color:white;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+}
+.tag-yellow{
+    font-family: 'Arial';
+    color:yellow;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+}
+.tag-red{
+    font-family: 'Arial';
+    color:red;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+}
+.tag-green{
+    font-family: 'Arial';
+    color:green;
+    padding: 1px 1px 1px 20px;
+    font-weight: bold;
+}
+.tag-cyan{
+    font-family: 'Arial';
+    color:'#16f7e0';
+    padding: 1px 1px 1px 1px;
+}
+.box.box-black {
+  border-top-color: #000;
+}
+.table-bordered-black {
+  border: 1px solid #000000;
+}
+.status-normal{
+	background-color: #1cff60 ;
+	text-align: center;
+	color: black;
+	width: 100%;
+	font-weight: bold;
+	font-size: 20px ;
+}
+.status-warning{
+	background-color: #ffff00 ;
+	text-align: center;
+	color: black;
+	width: 100%;
+	font-weight: bold;
+	font-size: 20px ;
+}
+.status-abnormal{
+	background-color: #ff1c1c ;
+	text-align: center;
+	color: white;
+	width: 100%;
+	font-weight: bold;
+	font-size: 20px ;
+}
