@@ -188,6 +188,7 @@ return [
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         App\Providers\AisyaMenuServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -251,6 +252,9 @@ return [
          */
         'AdminLTE'  => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
         'AisyaApps' => App\Models\Aisya\ais_apps::class,        // dev-1.0, Ferry, 20180821, Helper untuk AISYA
+        'Input' => Illuminate\Support\Facades\Input::class,
+        'Excel' => Maatwebsite\Excel\ExcelServiceProvider::class,
+
 
     ],
 

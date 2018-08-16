@@ -80,6 +80,20 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//end of dashboard
 	
 
+
+	// dev-1.0, Handika, 20180707, Route Production Report =========================================================================
+
+	Route::get('/production/report', 'ProductionReportController@index');
+	Route::get('/production/report/getindex', 'ProductionReportController@getindex');
+	Route::post('/production/report/filter', 'ProductionReportController@filter');
+	Route::post('/production/report/export', 'ProductionReportController@exportexcel');
+
+
+
+	// End of Route Production Report ==============================================================================================
+
+
+
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
