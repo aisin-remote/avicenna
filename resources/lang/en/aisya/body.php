@@ -7,5 +7,6 @@ return [
 	'login_title'	=> 'Sign in to start a wonderful life in <b> our AIIA <b>',
     'login_welcome' => 'Aisin <b>BISA</b>',
     'login_forgot'	=> 'I forgot my password!',
+    'login_version'	=> 'Version: '.env('APP_VER'),
 
 ];

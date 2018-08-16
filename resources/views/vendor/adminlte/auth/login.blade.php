@@ -67,7 +67,7 @@
                 <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a><br>
 
             </div><!-- /.login-box-body -->
-
+            <div align="right" style="font-size:11px">@lang('aisya/body.login_version')</div>
         </div><!-- /.login-box -->
     </div>
     @include('adminlte::layouts.partials.scripts_auth')
