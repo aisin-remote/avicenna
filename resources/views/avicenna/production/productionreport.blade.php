@@ -236,6 +236,9 @@ PRODUCTION REPORT
 <script type="text/javascript">
     // {{-- dev-1.0, Ferry, 20171004, Init all input --}}
     $( document ).ready(function() {
+        document.getElementById("myText").placeholder = $.cookie("date");
+        document.getElementById("myText").placeholder = $.cookie("date");
+        
 
     });
 
