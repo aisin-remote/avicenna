@@ -37,7 +37,13 @@ PRODUCTION REPORT
                             <div class="input-group">
                                 <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
                                 <select class="form-control" id="line" name="line">
-                                    <option>AS600</option>
+                                    <option value="AS600">AS600</option>
+                                    <option value="AS751">AS751</option>
+                                    <option value="AS523">AS523</option>
+                                    <option value="AS731">AS731</option>
+                                    <option value="AS721">AS721</option>
+                                    <option value="AS546">AS546</option>
+                                    <option value="AS547">AS547</option>
                                 </select>
                                 
                             </div>
@@ -238,7 +244,7 @@ PRODUCTION REPORT
     $( document ).ready(function() {
         document.getElementById("myText").placeholder = $.cookie("date");
         document.getElementById("myText").placeholder = $.cookie("date");
-        
+
 
     });
 
