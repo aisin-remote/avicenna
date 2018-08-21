@@ -142,7 +142,7 @@ class TraceScanController extends Controller
 
         $cek    = avi_trace_machining::where('code', $number)->first();
 
-        if (is_null($cek)) {
+        if (!$cek) {
 
             DB::beginTransaction();
                 $user                       = Auth::user();
@@ -172,7 +172,7 @@ class TraceScanController extends Controller
 
                 $printer                    = avi_trace_printer::where('line', $line)->first();
                 $printer->part_code         = $number;
-                $printer->flag              = 1;
+                $printer->flag              = 0;
                 $printer->save();
 
                 // $fd = $data;
