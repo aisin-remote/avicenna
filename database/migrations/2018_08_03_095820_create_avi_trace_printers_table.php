@@ -18,7 +18,7 @@ class CreateAviTracePrintersTable extends Migration
             $table->string('ip_printer');
             $table->string('line');
             $table->string('part_code');
-            $table->integer('flag');
+            $table->boolean('flag');
             $table->timestamps();
         });
     }
