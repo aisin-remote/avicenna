@@ -10,6 +10,7 @@ use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_printer;
+use App\Models\Avicenna\avi_trace_program_number;
 
 class TraceScanController extends Controller
 {
@@ -94,7 +95,6 @@ class TraceScanController extends Controller
 
     public function getAjaxdelivery($number, $wimcycle, $customer)
     {
-        // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
 
         $cek    = avi_trace_delivery::where('code', $number)->first();
@@ -130,6 +130,7 @@ class TraceScanController extends Controller
         
 
     }
+
     public function scanmachining($line)
     {
         return view('tracebility/machining/scan',compact('line'));
@@ -137,12 +138,11 @@ class TraceScanController extends Controller
 
     public function getAjaxmachining($number, $line)
     {
-        // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
 
         $cek    = avi_trace_machining::where('code', $number)->first();
 
-        if (!$cek) {
+        if (is_null($cek)) {
 
             DB::beginTransaction();
                 $user                       = Auth::user();
@@ -152,7 +152,6 @@ class TraceScanController extends Controller
                 $scan->line                 = $line;
                 $scan->npk                  = $user->npk;
                 $scan->save();
-                DB::commit();
 
                 // dev-1.0.0, Handika, 20180724, counter
                 $counter = avi_trace_machining::where('date', date('Y-m-d'))
@@ -164,22 +163,29 @@ class TraceScanController extends Controller
                                             ->orderBy('created_at', 'desc')
                                             ->take(10)
                                             ->get();
+                                        $last_scan = "0";
                 $arrJSON = array(
                                 "code"      => $number,
                                 "counter"   => $counter,
                                 "last_scan" => $last_scan
                         );
-
+                
+                $a                          = substr($number, 0, 2);
+                $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
+                    if (is_null($product)){
+                            $product                = new avi_trace_program_number();
+                            $product->part_number   = "No Data";
+                            $product->back_number   = "No Data";
+                            $product->part_name     = "No Data";
+                    }
                 $printer                    = avi_trace_printer::where('line', $line)->first();
                 $printer->part_code         = $number;
+                $printer->part_number       = $product->part_number;
+                $printer->back_number       = $product->back_number;
+                $printer->part_name         = $product->part_name;
                 $printer->flag              = 0;
                 $printer->save();
-
-                // $fd = $data;
-                // $hn = printer_open("HP LaserJet P2050 Series PCL6");
-                // printer_set_option($hn, PRINTER_MODE, "RAW");
-                // printer_write($hn, $fd);
-                // printer_close($hn);
+                DB::commit();
 
                 return $arrJSON;        
         }else{ 
