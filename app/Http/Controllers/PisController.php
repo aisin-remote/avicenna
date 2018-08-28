@@ -37,6 +37,7 @@ class PisController extends Controller
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         $image  = strlen($image) == 208 ? substr($image, 53, 15) : $image;  // dev-1.0, Handika, 20171020, Cust SIM change numb substr
+        $image  = strlen($image) == 220 ? substr($image, 158, 10) : $image;  // hotfix-1.0.1, Handika, 20180827, Cust TTI change numb substr
         $image  = str_replace("-","", $image);
         $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
         $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
@@ -47,6 +48,7 @@ class PisController extends Controller
                             ->where('part_kind', $type)
                             ->where('part_dock', $dock)
                             ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
+
         try{    
 
             if(! $part_pis)
@@ -59,7 +61,7 @@ class PisController extends Controller
                 DB::beginTransaction();
 
                 $user           = Auth::user();
-                $part = $part_pis->hasPart;    // dev-1.0, Ferry, 20170927, Ambil info master avi_part nya
+                $part           = $part_pis->hasPart;    // dev-1.0, Ferry, 20170927, Ambil info master avi_part nya
 
                 // for($i = 0 ; $i <= 1 ; $i++){ //akitfkan jika prioritas 2 dijalankan
                 $scan = new avi_mutations;
