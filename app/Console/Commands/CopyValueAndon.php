@@ -42,12 +42,15 @@ class CopyValueAndon extends Command
         //dev-1.`0.0 : By Handika, Copy data dari avi_andon ke avi_running_model
         $lines = avi_andon::select('line')->get();
         foreach ($lines as $line) {
-            $andon  = avi_andon::select('line', 'actual_qty')->where('line' , '=' , $line->line)
+            $andon  = avi_andon::select('line', 'actual_qty')->where('line', $line->line)
                     ->first();
-            $update = avi_running_model::where('line_number' , '=' , $line->line )->first();
-            $qty = $andon->actual_qty - $update->cumulative_qty ;
-            $update->running_qty = $qty;
-            $update->save();
+            $update = avi_running_model::where('line_number', $line->line )->first();
+
+            if ($andon && $update) {
+                $qty = $andon->actual_qty - $update->cumulative_qty ;
+                $update->running_qty = $qty;
+                $update->save();
+            }
         }
     }
 }
