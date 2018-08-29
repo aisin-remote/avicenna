@@ -80,7 +80,6 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//end of dashboard
 	
 
-
 	// dev-1.0, Handika, 20180707, Route Production Report =========================================================================
 
 	Route::get('/production/report', 'ProductionReportController@index');
@@ -92,7 +91,39 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// End of Route Production Report ==============================================================================================
 
+	// dev-1.0, Handika, 20180702, Route TRACEBILITY =========================================================================
 
+	// view trace product
+	Route::get('/trace/view/part', 'viewTraceController@index');
+	Route::get('/trace/view/part/index', 'viewTraceController@getAjaxIndex');
+	Route::get('/trace/view/part/{id_product}', 'viewTraceController@getAjaxData');
+	Route::get('/trace/view/product/{id_product}', 'viewTraceController@getAjaxProduct');
+
+	// view delivered product
+	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');
+	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
+	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
+
+	//SCAN PART
+		//Casting
+	Route::get('/trace/scan/casting', 'TraceScanController@scan');
+	Route::get('/trace/scan/casting/getAjax/{number}', 'TraceScanController@getAjax');
+	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
+
+		//Machining
+	Route::get('/trace/scan/machining/{line}', 'TraceScanController@scanmachining');
+	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
+	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
+
+		//Delivery
+	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
+	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
+
+	Route::get('/trace/logout', 'Auth\LoginController@logout');
+
+
+
+	//end of tracebility ====================================================================================================
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes

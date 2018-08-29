@@ -91,6 +91,9 @@
 
 @section('scripts')
 @parent
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>

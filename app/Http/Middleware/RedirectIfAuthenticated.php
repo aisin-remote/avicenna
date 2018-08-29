@@ -27,6 +27,9 @@ class RedirectIfAuthenticated
 
                 $role = Role::findByName('avi_pis_scan');
                 return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            }elseif (Auth::user()->hasRole('trace_delivery')) {
+                $role = Role::findByName('trace_delivery');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
             }
             else {
                 return redirect('home');
