@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\avicenna\avi_trace_casting;
-use App\Models\avicenna\avi_trace_machining;
-use App\Models\avicenna\avi_trace_delivery;
-use App\Models\avicenna\avi_trace_program_number;
-use App\Models\avicenna\avi_trace_cycle;
+use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_machining;
+use App\Models\Avicenna\avi_trace_delivery;
+use App\Models\Avicenna\avi_trace_program_number;
+use App\Models\Avicenna\avi_trace_cycle;
 use Yajra\Datatables\Datatables;
 use Storage;
 
