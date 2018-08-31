@@ -92,6 +92,9 @@
                   <tr>
                     <td>Cycle</td><td id="cycle"></td>
                   </tr>
+                  <tr>
+                    <td>Customer</td><td id="customer"></td>
+                  </tr>
                 </thead>
               </table>
             </div>
@@ -171,6 +174,7 @@
                success:function(data){
                   document.getElementById("product").innerHTML  = data.product;
                   document.getElementById("cycle").innerHTML  = data.cycle;
+                  document.getElementById("customer").innerHTML  = data.customer;
                   $("#imageDiv").html("<img src='"+data.img_path+"' style='width: 100%'/>");
                }
             });

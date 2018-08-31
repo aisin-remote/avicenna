@@ -61,9 +61,14 @@ class ViewTraceController extends Controller
 			$cycle->name 	= "No Data" ;
 		}
 
+		$customer = avi_trace_delivery::select('customer')
+					->where('code', $id_product)
+					->first();
+
 		return array(	"img_path" =>  asset('storage/tracebility/'.$product->product.'.JPG') ,
 						"product" => $product->product ,
-						"cycle" => $cycle->name );
+						"cycle" => $cycle->name ,
+						"customer"=>$customer->customer);
 		// return $cycle ;
 
 	}
