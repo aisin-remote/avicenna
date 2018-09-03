@@ -48,6 +48,11 @@ class CopyAndonHourly extends Command
       foreach ($running_models as $model) {
               $carbon             = Carbon::now(); //mengambil tanggal dan jam sekarang
               $jam                = $carbon->hour; // mengambil format jam saja
+
+              if ($jam == '0') {
+                $jam = '24';
+              }
+
               $qty                = 'qty_'.$jam; // membuat variable untuk mengetahui table qty yang akan disi
               $time               = 'time_'.$jam; // membuat variable untuk mengetahui table time yang akan disi
               $models             = avi_running_model::select('line_number','back_number','part_number','running_qty')
@@ -60,13 +65,16 @@ class CopyAndonHourly extends Command
                 $ct       = new avi_part_production ;
                 $ct->ct   = 1 ;
               }
+              
               $mutation_date      = Carbon::now(); // tanggal pengakuan aisin per shift
-                  if($mutation_date->hour <= 5){ 
-                      $mutation_date=Carbon::yesterday();
-                  }
-              $andon_hours        = avi_running_hours::select('part_number','date')->where(function($query) use ($model,$mutation_date,$carbon) {
+              if($mutation_date->hour <= 5){ 
+                  $mutation_date=Carbon::yesterday();
+              }
+
+              $andon_hours        = avi_running_hours::select('part_number','date')->where(function($query) use ($model,$mutation_date) {
                                   $query->where('part_number', $model->part_number)
-                                        ->where('date',$carbon->format('Y-m-d'));})->first(); // ambil data part dan tanggal dari avi running hours
+                                        ->where('date', $mutation_date->format('Y-m-d'));})->first(); // ambil data part dan tanggal dari avi running hours
+
               if ( ! $andon_hours ) { // jika tidak ada pencatatan hari ini
                   $hours              = new avi_running_hours ; // select semua data dari avi_running_hours
                   $hours->line        = $models->line_number; // isi data line avi_running_hours dari avi_running_model
@@ -78,10 +86,13 @@ class CopyAndonHourly extends Command
                   $hours->buffer      = 0 ; //mengisi buffer
                   $hours->date        = $mutation_date; //mengisi date
                   $hours->save(); // save ke database
-              }else{ // jika sudah ada pencatatan hari ini
-                  $hours              = avi_running_hours::select('*')->where(function($query) use ($model,$mutation_date,$carbon) {
+              }
+              else{ // jika sudah ada pencatatan hari ini
+
+                  $hours              = avi_running_hours::where(function($query) use ($model,$mutation_date) {
                                       $query->where('part_number', $model->part_number)
-                                        ->where('date', $carbon->format('Y-m-d'));})->first(); // ambil data dari avi running hours yang sesuai part
+                                        ->where('date', $mutation_date->format('Y-m-d'));})->first(); // ambil data dari avi running hours yang sesuai part
+
                       if ( is_null($hours->{$qty})) { // jika kolom qty pada jam sekarang null atau kosong
                           $a              = $jam-1; // variabel jam sebelumnya
                           $qty2           = 'qty_'.$a; // variabel qty jam kemarin
