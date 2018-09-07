@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div id="line" class="panel panel-default" >
                 
-                <span style="font-size : 50px "> <center> LINE CASTING </center> </span>
+                <span style="font-size : 50px "> <center> LINE CASTING {{$line}} </center> </span>
                 <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
             </div>
         </div>
@@ -81,8 +81,22 @@
                                     <th>CODE</th> <th>NPK</th> <th>DATE</th>
                                 </tr>
                             </thead>
-                            <tbody id="data_table">
-                                
+                            <tbody>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -176,18 +190,13 @@
                     type : "GET",
                     data : "",
                     url : "{{ url('/trace/scan/casting/getAjax2') }}", // Mengakses query pada tabel
-                    success : function(result){  // Menyimpan parameter url pada result
-                        var hasilDtt = JSON.parse(result);  // Memanggil result dengan json
-                        var dataHandler = $("#data_table");  // Pemanggilan id muat-data-disini
-                                
-                        $.each(hasilDtt, function(key,val){  // Menampung hasilDtt dalam variable val
-                            var newRow = $("<tr>");
-                                
-                                            // Menyimpan elemen data kedalam tabel
-                            newRow.html("<td>"+val.code+"</td><td>"+val.npk+"</td><td>"+val.date+"</td>");
-                            dataHandler.append(newRow);
-                                
-                            });
+                    success : function(data){
+                            $('[id^=last_scan]').html('&nbsp;');
+                                for (var i=0; i < data.last_scan.length; i++) {
+                                    $('[id^=code]').eq(i).text(data.last_scan[i].code);
+                                    $('[id^=npk]').eq(i).text(data.last_scan[i].npk);
+                                    $('[id^=date]').eq(i).text(data.last_scan[i].date);
+                            };
                         }
                     });
                

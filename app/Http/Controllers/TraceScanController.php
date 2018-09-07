@@ -15,14 +15,14 @@ use App\Models\Avicenna\avi_trace_program_number;
 class TraceScanController extends Controller
 {
     //
-    public function scan()
+    public function scancasting($line)
     {
         //
         // $customer = avi_customers::all();
-        return view('tracebility/casting/scan');
+        return view('tracebility/casting/scan',compact('line'));
     }
 
-    public function getAjax($number)
+    public function getAjaxcasting($number, $line)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
@@ -36,6 +36,7 @@ class TraceScanController extends Controller
                 $scan 						= new avi_trace_casting;
                 $scan->code 		        = $number;
                 $scan->date 		        = date('Y-m-d');
+                $scan->line                 = $line;
                 $scan->npk     		        = $user->npk;
                 $scan->save();
                 DB::commit();
@@ -77,10 +78,10 @@ class TraceScanController extends Controller
                 // dev-1.0.0, Handika, 20180724, 10 last scan
 
                 $user      = Auth::user();
-                $last_scan = avi_trace_casting::selectRaw('*')
+                $last_scan = avi_trace_casting::selectRaw('code','npk','date')
                 							->where('npk', $user->npk)
                                             ->orderBy('created_at', 'desc')
-                                            ->take(10)
+                                            ->take(5)
                                             ->get();
 
                 return $last_scan;       	
