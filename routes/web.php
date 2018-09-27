@@ -110,16 +110,17 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 		//NG
-	Route::get('/trace/scan/casting/ng/{line}', 'TraceScanController@getAjax2');
-	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
+	Route::get('/trace/scan/casting/ng/{line}', 'TraceScanController@castingng');
+	Route::get('/trace/scan/casting/ng/{id_product}/{date}/{line}', 'TraceScanController@getAjaxcastingng');
+	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
 
 		//Machining
 	Route::get('/trace/scan/machining/{line}', 'TraceScanController@scanmachining');
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
 		//NG
-	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@getAjax2');
-	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
+	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
+	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
 
 		//Delivery
 	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
