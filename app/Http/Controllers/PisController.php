@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;   //pemecah error tokenmismatch
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 use DB;
+use File;
 use Auth;
 use Storage;
 use Yajra\Datatables\Datatables;
@@ -32,6 +33,12 @@ class PisController extends Controller
         return view('pis/index', compact('customer'));
     }
 
+    public function packing()
+    {
+        $customer = avi_customers::all();
+        return view('pis/indexpacking', compact('customer'));
+    }
+
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
     public function getAjaxImage($image, $type, $dock)
     {
@@ -41,6 +48,7 @@ class PisController extends Controller
         $image  = str_replace("-","", $image);
         $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
         $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
+        $image  = strlen($image) == 13 ? (substr($image, 11, 1) == " " ? substr($image, 0, 10) : substr($image, 0, 12)) : $image; // hotfix-1.0.1, Handika, 20180827, validasi 13 karakter untuk pis packing
 
         $path_suffix = '-'.$type.'-'.$dock.'.JPG';
 
@@ -189,7 +197,9 @@ class PisController extends Controller
             //upload gambar ke 
             $file = $request->file('part_picture');
             $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
-            $file->move(public_path('storage/pis/'),$filesName);
+            $temp = Storage::putFile('temp', $file);
+
+            // $file->move(public_path('storage/pis/'),$filesName);
             \DB::commit();
             \Session::flash('flash_type', 'alert-success');
             \Session::flash('flash_message', 'Sukses simpan atur ulang data');
