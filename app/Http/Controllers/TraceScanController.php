@@ -7,6 +7,7 @@ use DB;
 use Auth;
 use Storage;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_printer;
@@ -76,21 +77,7 @@ class TraceScanController extends Controller
         
 
     }
-    public function getAjax2()
-    {
-        
-
-                // dev-1.0.0, Handika, 20180724, 10 last scan
-
-                $user      = Auth::user();
-                $last_scan = avi_trace_casting::selectRaw('code','npk','date')
-                							->where('npk', $user->npk)
-                                            ->orderBy('created_at', 'desc')
-                                            ->take(5)
-                                            ->get();
-
-                return $last_scan;       	
-    }
+    
     public function castingng($line)
     {
         return view('tracebility/casting/ng',compact('line'));
@@ -198,6 +185,15 @@ class TraceScanController extends Controller
         }
         
 
+    }
+    public function getAjaxcycle($code)
+    {
+                // dev-1.0.0, Handika, 20180724, cycle
+                $user      = Auth::user();
+
+                $code = avi_trace_cycle::where('code', $code)->first();
+
+                return array( "cycle" => $code->name ); 
     }
 
 

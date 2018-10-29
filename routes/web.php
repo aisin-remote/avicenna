@@ -125,7 +125,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 		//Delivery
 	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
 	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
-
+	Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
 	Route::get('/trace/logout', 'Auth\LoginController@logout');
 
 
