@@ -7,22 +7,27 @@ use DB;
 use Auth;
 use Storage;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_printer;
 use App\Models\Avicenna\avi_trace_program_number;
+use App\Models\Avicenna\avi_trace_ng_casting_temp;
+use Illuminate\Support\Facades\Cache;
+use Datatables;
 
 class TraceScanController extends Controller
 {
-    //
-    public function scan()
+
+// MODUL CASTING
+
+    public function scancasting($line)
     {
-        //
         // $customer = avi_customers::all();
-        return view('tracebility/casting/scan');
+        return view('tracebility/casting/scan',compact('line'));
     }
 
-    public function getAjax($number)
+    public function getAjaxcasting($number, $line)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
@@ -36,7 +41,9 @@ class TraceScanController extends Controller
                 $scan 						= new avi_trace_casting;
                 $scan->code 		        = $number;
                 $scan->date 		        = date('Y-m-d');
+                $scan->line                 = $line;
                 $scan->npk     		        = $user->npk;
+                $scan->status               = 1;
                 $scan->save();
                 DB::commit();
 
@@ -70,21 +77,70 @@ class TraceScanController extends Controller
         
 
     }
-    public function getAjax2()
+    
+    public function castingng($line)
     {
+        return view('tracebility/casting/ng',compact('line'));
+    }
+
+    public function getAjaxcastingng($number, $date, $line)
+    {
+        try{
+            \DB::beginTransaction();
+
+            $user = Auth::user();
+            $npk  = $user->npk;
+
+            $temp               = new avi_trace_ng_casting_temp ;
+            $temp->code         = $number ;
+            $temp->npk          = $npk ;
+            $temp->line         = $line ;
+            $temp->date         = $date ;
+            $temp->save();
+
+            \DB::commit();
+            $arrJSON = array(
+                                "code"      => $number,
+                        );
+
+            return $arrJSON;
+                    
+        }catch(\Exception $e){
+
+         DB::rollBack();
+            return array( "code" => "", "error" => $e->getMessage() );
+        }
         
 
-                // dev-1.0.0, Handika, 20180724, 10 last scan
-
-                $user      = Auth::user();
-                $last_scan = avi_trace_casting::selectRaw('*')
-                							->where('npk', $user->npk)
-                                            ->orderBy('created_at', 'desc')
-                                            ->take(10)
-                                            ->get();
-
-                return $last_scan;       	
     }
+    public function getDatacastingng()
+    {
+        $npk        =   Auth::user()->npk;
+        // $data       =   avi_trace_ng_casting_temp::select('id','code','npk','date')
+        //                 ->where('npk', $npk)->get();
+        $data = avi_trace_ng_casting_temp::all();
+        return Datatables::of($data)
+        ->make();
+        // return Datatables::of($data)
+        //         ->addColumn('action', function($data) {
+        //             $btn_action = 
+        //                             '<div style="text-align:center;">
+        //                                 <span type="button" class="btn btn-sm bg-maroon" 
+        //                                         data-toggle="modal" data-target="#modal-delete" 
+        //                                         onclick="$(\'#btn-delete\').val(' . $data->id . ')">
+        //                                     <i class="fa fa-times"></i> Delete
+        //                                 </span>
+        //                             </div>';
+        //                         return $btn_action;
+        //         })
+               
+        //         ->addIndexColumn()
+        //         ->make(true);
+
+    }
+
+
+// MODUL DELIVERY
 
     public function scandelivery()
     {
@@ -130,6 +186,18 @@ class TraceScanController extends Controller
         
 
     }
+    public function getAjaxcycle($code)
+    {
+                // dev-1.0.0, Handika, 20180724, cycle
+                $user      = Auth::user();
+
+                $code = avi_trace_cycle::where('code', $code)->first();
+
+                return array( "cycle" => $code->name ); 
+    }
+
+
+// MODULE MACHINING
 
     public function scanmachining($line)
     {

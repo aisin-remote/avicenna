@@ -27,7 +27,6 @@
                                 <div class="col-md-12">
                                     <form>
                                     <input height=60 id="detail_no" class="form-control" name="detail_no" required >
-                                    <input type="hidden" name="line" id="line" value="{{$line}}">
                                     </form>
                                 </div>
 
@@ -83,6 +82,21 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
+                                <tr> 
+                                    <td id="code">&nbsp;</td> <td id="npk"></td> <td id="date"></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -100,13 +114,11 @@
 @section('scripts')
 @parent
 
-<script src="{{ asset('/js/jquery-cookie.js') }}"></script>
 <script type="text/javascript">
   
   var barcode   ="";
   var rep2      = "";
   var detail_no = $('#detail_no');
-  var line      = "{{$line}}";
   
   $(document).keypress(function(e) {
 
@@ -116,7 +128,7 @@
             $('#detail_no').val('');
             $.ajax({
                     type: 'get',           // {{-- POST Request --}}
-                    url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcode+'/'+line,  
+                    url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcode,  
                     _token: "{{ csrf_token() }}",
                     dataType: 'json',       // {{-- Data Type of the Transmit --}}
                     success: function (data) {
@@ -170,6 +182,23 @@
                     }
                                       
                 });
+
+
+
+
+             $.ajax({
+                    type : "GET",
+                    data : "",
+                    url : "{{ url('/trace/scan/casting/getAjax2') }}", // Mengakses query pada tabel
+                    success : function(data){
+                            $('[id^=last_scan]').html('&nbsp;');
+                                for (var i=0; i < data.last_scan.length; i++) {
+                                    $('[id^=code]').eq(i).text(data.last_scan[i].code);
+                                    $('[id^=npk]').eq(i).text(data.last_scan[i].npk);
+                                    $('[id^=date]').eq(i).text(data.last_scan[i].date);
+                            };
+                        }
+                    });
                
                 
         }

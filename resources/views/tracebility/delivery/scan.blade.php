@@ -2,17 +2,6 @@
 
 @section('content')
 <div class="container">
-<!--     <div class="row">
-        <div class="col-md-12">
-            <div id="line" class="panel panel-default" >
-                
-                <span style="font-size : 50px "> <center> LINE CASTING </center> </span>
-                <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
-            </div>
-        </div>
-
-
-    </div> -->
     <br/>
     <div class="row">
         <div class="col-md-12">
@@ -87,12 +76,24 @@
                     $('#alert-body').text('SCAN CYCLE DAN CUSTOMER');
                     $('#alert-body').text('SELESAI');
                 }else{
-                    $('#alert').removeClass('alert-danger');
-                    $('#alert').addClass('alert-success');
-                    // $('#alert-header').html('SCAN CYCLE OK !!');
-                    $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
-                    $.cookie("wimcycle",""+barcodecomplete+"");
-                    $("#wimcycle").html(barcodecomplete);
+                    $.ajax({
+                        type: 'get',           // {{-- POST Request --}}
+                        url: "{{ url('/trace/scan/delivery/getAjaxcycle') }}"+'/'+barcodecomplete,  
+                        _token: "{{ csrf_token() }}",
+                        dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                        success: function (data) {
+                            code = data.cycle; 
+                            $('#alert').removeClass('alert-danger');
+                            $('#alert').addClass('alert-success');
+                            // $('#alert-header').html('SCAN CYCLE OK !!');
+                            $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
+                            $.cookie("wimcycle",""+barcodecomplete+"");
+                            $("#wimcycle").html(code); 
+                        },
+                        error: function (xhr) {
+                        }
+                                          
+                    });
                 }
 
             }else if(barcodecomplete.length > 2 && barcodecomplete.length < 10){
