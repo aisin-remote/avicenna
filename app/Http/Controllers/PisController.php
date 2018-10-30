@@ -152,10 +152,7 @@ class PisController extends Controller
                                         ->get();    
                                         // return $avi_part_piss;
         foreach ($avi_part_piss as $avi_part_pis) {
-                                        $avi_part_pis->validasi = Storage::exists('/public/pis/'.$avi_part_pis->img_path) ? 
-                                                "Ada" :
-                                                "Belum Ada"; 
-
+                                        $avi_part_pis->validasi = Storage::exists('/public/pis/'.$avi_part_pis->img_path) ? "Ada" : "Belum Ada"; 
                                         }                                
                                    // return $avi_part_piss;
         return view('pis.ViewMasterPis',compact('avi_part_piss'));
@@ -172,15 +169,16 @@ class PisController extends Controller
 
     function UpdatePisProses(Request $request){
        
-        $input=\Request::all();
-        $id=$input['id'];
-        $part_number=$input['part_number'];
-        $back_no=$input['back_no']; 
-        $dock=$input['part_dock'];
-        $type=$input['type']; 
-        $qty=$input['qty'];
-        $img_path  = $input['part_picture'];
-        $destinationPath = asset('storage/pis');
+        $input              =\Request::all();
+
+        $id                 =$input['id'];
+        $part_number        =$input['part_number'];
+        $back_no            =$input['back_no']; 
+        $dock               =$input['part_dock'];
+        $type               =$input['type']; 
+        $qty                =$input['qty'];
+        $img_path           =$input['part_picture'];
+        $destinationPath    =asset('storage/pis');
 
         try{
             \DB::beginTransaction();
@@ -197,7 +195,14 @@ class PisController extends Controller
             //upload gambar ke 
             $file = $request->file('part_picture');
             $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
-            $temp = Storage::putFile('temp', $file);
+            if (Storage::exists('/public/pis/'.$filesName)) {
+                $delete = Storage::disk('pis')->delete($filesName);
+            }
+            // return $file ;
+            // $temp = Storage::put('pis/'.$filesName , $file);
+            $temp = Storage::disk('pis') -> put($filesName, file_get_contents($file->getRealPath()));
+            // $temp = Storage::move($file, asset('storage/pis/'.$filesName));
+            // return $temp ;
 
             // $file->move(public_path('storage/pis/'),$filesName);
             \DB::commit();
