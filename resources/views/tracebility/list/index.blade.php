@@ -31,7 +31,6 @@
                   <div class="input-group">
                   <div class='input-group-addon'>
                     <select id="myselect" name="myselect" onchange="checkList()">
-                      <option value="all" id="all" selected="selected">ALL</option>
                       <option value="casting" id="casting">Casting</option>
                       <option value="machining" id="machining">Machining</option>
                       <option value="delivery" id="delivery">Delivery</option>
@@ -92,21 +91,24 @@
     var table = $('#tabel_all').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ url ("/trace/view/list") }}',
+        ajax: '{{ url ("/trace/view/list/casting") }}',
         columns: [
           {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
                  return meta.row + meta.settings._iDisplayStart + 1;
           }},
-          {data: 'code', name: 'code', searchable:false,
+          {data: 'code', name: 'code',
             render: function ( data, type, row, meta ) {
               return '<a href="{{ url ("trace/view/part/search") }}/'+data+'">'+data+'</a>';
             }
           },
-          {data: 'part_number', name: 'part_number', searchable:false},
-          {data: 'part_name', name: 'part_name', searchable:false},
-          {data: 'back_number', name: 'back_number', searchable:false},
-          {data: 'created_at', name: 'created_at', searchable:false},
+          {data: 'part_number', name: 'part_number'},
+          {data: 'part_name', name: 'part_name'},
+          {data: 'back_number', name: 'back_number'},
+          {data: 'created_at', name: 'created_at'},
         ],
+        language: {
+          search: "Search :"
+        },
       });
 
     function checkList(){

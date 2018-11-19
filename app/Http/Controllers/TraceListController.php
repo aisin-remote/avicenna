@@ -41,7 +41,7 @@ class TraceListController extends Controller
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models ? $models->part_name : '--No Part Name';
+			            	return $models ? $models->part_name : '--No Part Name--';
 			            })
 
 	        ->addIndexColumn()
