@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// view trace product
 	Route::get('/trace/view/part', 'ViewTraceController@index');
+	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@index');
 	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
 	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
@@ -103,9 +104,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	//View Trace List
 	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
-	Route::get('/trace/view/list/pulling', 'TraceListController@getAjaxDataPulling');
+	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
 	// =====================================================================================================================
 	// view delivered product
 	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');

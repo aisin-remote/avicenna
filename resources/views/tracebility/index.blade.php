@@ -29,7 +29,7 @@
                     <div id="searchform">
                     <label>Input Id Produk:</label>
                     <div>
-                        <input type="text" class="form-control pull-right" id="id_product" placeholder="Id produk harus 15 karakter" > 
+                        <input type="text" class="form-control pull-right" value="{{ $barcode }}" id="id_product" placeholder="Id produk harus 15 karakter" > 
                     </div>
                     <br><br>
                     <button type="button" class="btn btn-success" id="buttonsearch"> Search </button>
@@ -182,8 +182,9 @@
 
     });
       
-    
-
+    $(document).ready(function () {
+      $('#buttonsearch').click();
+    });
 </script>
 
 @endsection

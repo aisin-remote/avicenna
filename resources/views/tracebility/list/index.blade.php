@@ -34,7 +34,7 @@
                       <option value="all" id="all" selected="selected">ALL</option>
                       <option value="casting" id="casting">Casting</option>
                       <option value="machining" id="machining">Machining</option>
-                      <option value="pulling" id="pulling">Pulling</option>
+                      <option value="delivery" id="delivery">Delivery</option>
                     </select>  
                   </div>
                   </div>
@@ -45,7 +45,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="tabel_part" class="table table-bordered table-striped" style="width: 100%">
+              <table id="tabel_all" class="table table-bordered table-striped" style="width: 100%">
                 <thead>
                   <tr>
                     <th>No</th>
@@ -87,40 +87,21 @@
 
 
 <script type="text/javascript">
-    // {{-- dev-1.0.0, Handika, 20180703, datatable filter --}}
-
-    // function func1()
-    // {
-    //   if(document.getElementById('myselect').value == "machining") {
-    //     var table = $('#tabel_part').DataTable({
-    //       processing: true,
-    //       serverSide: true,
-    //       searching: false,
-    //       paging: false,
-    //       ajax: '{{ url ("/trace/view/list/machining") }}',
-    //       columns: [
-    //         {data: 'no', name: 'no'},
-    //         {data: 'code', name: 'code', searchable:false},
-    //         {data: 'part_number', name: 'part_number', searchable:false},
-    //         {data: 'part_name', name: 'part_name', searchable:false},
-    //         {data: 'back_number', name: 'back_number', searchable:false},
-    //         {data: 'created_at', name: 'created_at', searchable:false},
-    //       ],
-    //     });
-    //   }else if(document.getElementById('myselect').value == "machining"){
-    //     // table.ajax.url("/trace/view/list/machining").load(); 
-    //     table.ajax.url("{{ url('/trace/view/list/machining')}}").load(); 
-    //   }
-    // }
-    var table = $('#tabel_part').DataTable({
+    // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
+ 
+    var table = $('#tabel_all').DataTable({
         processing: true,
         serverSide: true,
-        searching: false,
-        paging: false,
-        ajax: '{{ url ("/trace/view/list/casting") }}',
+        ajax: '{{ url ("/trace/view/list") }}',
         columns: [
-          {data: 'no', name: 'no'},
-          {data: 'code', name: 'code', searchable:false},
+          {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
+                 return meta.row + meta.settings._iDisplayStart + 1;
+          }},
+          {data: 'code', name: 'code', searchable:false,
+            render: function ( data, type, row, meta ) {
+              return '<a href="{{ url ("trace/view/part/search") }}/'+data+'">'+data+'</a>';
+            }
+          },
           {data: 'part_number', name: 'part_number', searchable:false},
           {data: 'part_name', name: 'part_name', searchable:false},
           {data: 'back_number', name: 'back_number', searchable:false},
@@ -128,48 +109,10 @@
         ],
       });
 
-    
-
     function checkList(){
-      var dropdown = document.getElementById('myselect').value;
-      // console.log(document.getElementById('myselect').value);
-      // alert(dropdown);
-      table.ajax.url( "{{ url('/trace/view/list/') }}/"+dropdown ).load();
-
-      
+      var dropdown = document.getElementById('myselect').value
+      table.ajax.url( "{{ url('/trace/view/list') }}/"+dropdown ).load();
     }
-
-    // $(document).ready(function(){
-    //   $("myselect").on("change", function(){
-    //     if(document.getElementById('myselect').value == "machining") {
-    //       table.ajax.url("{{ url('/trace/view/list/machining')}}").load(); 
-    //     }
-    //   })
-    // })
-
-    
-
-    
-    
-      
-    
-
-
-    // function func1(e){
-    //   e.preventDefault();
-    //   if(document.getElementById('myselect').value == "machining") {
-    //     table.ajax.url("/trace/view/list/machining").load(); 
-    //   }
-    // }    
-    // $('#buttonfilter').on('click', function(e){
-    //   e.preventDefault();
-    //   var date = $('#date').val();
-    //   table.ajax.url("{{ url('/trace/view/delivered/filter').'/'}}"+date).load();      
-    // });
-    // $('.date').datepicker({
-    //   autoclose: true,
-    //   format: 'yyyy-mm-dd'
-    // });
 </script>
 
 @endsection

@@ -7,6 +7,8 @@ use App\Models\avicenna\avi_trace_casting;
 use App\Models\avicenna\avi_trace_delivery;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
+use Response;
+use DB;
 
 use Illuminate\Http\Request;
 
@@ -17,45 +19,29 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataCasting(){
 
-	$date      		= Carbon::now()->format('Y-m-d');
-	$list 			= avi_trace_casting::select('*')->get();
-	$a 				= 0 ;
-	$models			= avi_trace_program_number::select('part_number','part_name','back_number')->get();
+	$list 			= avi_trace_casting::select('*');
 
 	return Datatables::of($list)
-			->addColumn('no', function($list) use($a) {
-							$z = $a+1;
-							$x = $z++;
-							return $x;
-						
-			            })
-			->addColumn('part_number', function($list) use($models) {
+			->addColumn('part_number', function($list) {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_number')->where('code', $code)->first();
-			            	return $models->part_number;
+			            	return $models ? $models->part_number : '--No Part Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
-
-							$codes 	= $list->code ;
-							$code 	= substr($list->code, 0, 2);
-							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
-			            })
-			->addColumn('back_number', function($list) use($models) {
+			->addColumn('back_number', function($list)  {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('back_number')->where('code', $code)->first();
-			            	return $models->back_number;
+			            	return $models ? $models->back_number : '--No Back Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
+			->addColumn('part_name', function($list) {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
+			            	return $models ? $models->part_name : '--No Part Name';
 			            })
 
 	        ->addIndexColumn()
@@ -64,45 +50,29 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataMachining(){
 
-	$date      		= Carbon::now()->format('Y-m-d');
-	$list 			= avi_trace_machining::select('*')->get();
-	$a 				= 0 ;
-	$models			= avi_trace_program_number::select('part_number','part_name','back_number')->get();
+	$list 			= avi_trace_machining::select('*');
 
 	return Datatables::of($list)
-			->addColumn('no', function($list) use($a) {
-							$z = $a+1;
-							$x = $z++;
-							return $x;
-						
-			            })
-			->addColumn('part_number', function($list) use($models) {
+			->addColumn('part_number', function($list) {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_number')->where('code', $code)->first();
-			            	return $models->part_number;
+			            	return $models ? $models->part_number : '--No Part Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
-
-							$codes 	= $list->code ;
-							$code 	= substr($list->code, 0, 2);
-							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
-			            })
-			->addColumn('back_number', function($list) use($models) {
+			->addColumn('back_number', function($list){
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('back_number')->where('code', $code)->first();
-			            	return $models->back_number;
+			            	return $models ? $models->back_number : '--No Back Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
+			->addColumn('part_name', function($list){
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
+			            	return $models ? $models->part_name : '--No Part Name';
 			            })
 
 	        ->addIndexColumn()
@@ -111,49 +81,68 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataPulling(){
 
-	$date      		= Carbon::now()->format('Y-m-d');
-	$list 			= avi_trace_delivery::select('*')->get();
-	$a 				= 0 ;
-	$models			= avi_trace_program_number::select('part_number','part_name','back_number')->get();
+	$list 			= avi_trace_delivery::select('*');
 
 	return Datatables::of($list)
-			->addColumn('no', function($list) use($a) {
-							$z = $a+1;
-							$x = $z++;
-							return $x;
-						
-			            })
-			->addColumn('part_number', function($list) use($models) {
+			->addColumn('part_number', function($list) {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_number')->where('code', $code)->first();
-			            	return $models->part_number;
+			            	return $models ? $models->part_number : '--No Part Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
-
-							$codes 	= $list->code ;
-							$code 	= substr($list->code, 0, 2);
-							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
-			            })
-			->addColumn('back_number', function($list) use($models) {
+			->addColumn('back_number', function($list)  {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('back_number')->where('code', $code)->first();
-			            	return $models->back_number;
+			            	return $models ? $models->back_number : '--No Back Number--';
 			            })
-			->addColumn('part_name', function($list) use($models) {
+			->addColumn('part_name', function($list) {
 
 							$codes 	= $list->code ;
 							$code 	= substr($list->code, 0, 2);
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
-			            	return $models->part_name;
+			            	return $models ? $models->part_name : '--No Part Name--';
 			            })
 
 	        ->addIndexColumn()
 	        ->make(true);
 		
+	}
+	function getDataAll(){ 
+			
+		$casting 	= avi_trace_casting::select('*');
+		$machining 	= avi_trace_machining::select('*');
+		$delivery 	= avi_trace_delivery::select('*');
+		// $models		= avi_trace_program_number::select('part_number','part_name','back_number')->where('code', $code)->first();
+
+	    $arrayku	= array($casting, $machining, $delivery);
+
+	   // return $arrayku;
+
+	   return Datatables::of($arrayku)
+	        ->addColumn('part_number', function($arrayku){
+	        		$codes 	= $arrayku->code ;
+					$code 	= substr($arrayku->code, 0, 2);
+					$models	= avi_trace_program_number::select('part_number')->where('code', $code)->first();
+	            	return $models->part_number;
+	            })
+			->addColumn('back_number', function($arrayku){
+
+					$codes 	= $arrayku->code ;
+					$code 	= substr($arrayku->code, 0, 2);
+					$models	= avi_trace_program_number::select('back_number')->where('code', $code)->first();
+	            	return $models->back_number;
+	            })
+			->addColumn('part_name', function($arrayku){
+
+					$codes 	= $arrayku->code ;
+					$code 	= substr($arrayku->code, 0, 2);
+					$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
+	            	return $models->part_name;
+	            })
+	        ->addIndexColumn()
+	        ->make(true);
 	}
 }
