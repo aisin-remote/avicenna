@@ -6,7 +6,8 @@
 
 @section('htmlheader')
   @parent
-  <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap.min.css') }}">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/dataTable.bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="{{ url('/plugins/daterangepicker.css') }}">
 @endsection
 
@@ -30,7 +31,7 @@
                   <label>Start Date:</label>
                   <div class="input-group">
                   <div class='input-group-addon'>
-                    <select id="myselect" name="myselect" onchange="checkList()">
+                    <select id="mySelect" name="mySelect" onchange="checkList()">
                       <option value="casting" id="casting">Casting</option>
                       <option value="machining" id="machining">Machining</option>
                       <option value="delivery" id="delivery">Delivery</option>
@@ -68,21 +69,30 @@
 
 @section('scripts')
 @parent
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"> -->
+
+<!-- <link rel="stylesheet" type="text/css" href="{{ url('/css/daterangepicker.css') }}"> -->
+
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+<!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script> -->
+<script src="{{ asset('js/jquery-3.3.1.js') }}"></script>
+<script src="{{ asset('js/jquery.dataTables2.min.js') }}"></script>
+<script src="{{ asset('js/dataTables2.bootstrap.min.js') }}"></script>
+<!-- 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script> -->
+<!-- <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script> -->
 
 
 <script type="text/javascript">
@@ -112,7 +122,7 @@
       });
 
     function checkList(){
-      var dropdown = document.getElementById('myselect').value
+      var dropdown = document.getElementById('mySelect').value
       table.ajax.url( "{{ url('/trace/view/list') }}/"+dropdown ).load();
     }
 </script>
