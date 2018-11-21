@@ -28,10 +28,10 @@
               <h3 class="box-title">List Product Today</h3>
                 <br><br>
                 <div>
-                  <label>Start Date:</label>
+                  <label>Select Menu list:</label>
                   <div class="input-group">
                   <div class='input-group-addon'>
-                    <select id="mySelect" name="mySelect" onchange="checkList()">
+                    <select id="mySelect" name="mySelect" onchange="checkList()" class="form-control select2">
                       <option value="casting" id="casting">Casting</option>
                       <option value="machining" id="machining">Machining</option>
                       <option value="delivery" id="delivery">Delivery</option>
@@ -79,8 +79,8 @@
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
 
 <!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
