@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\avicenna\avi_trace_delivery;
-use App\Models\avicenna\avi_trace_program_number;
+use App\Models\Avicenna\avi_trace_delivery;
+use App\Models\Avicenna\avi_trace_program_number;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 
