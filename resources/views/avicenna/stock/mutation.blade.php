@@ -92,14 +92,22 @@
 @section('scripts')
 @parent
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css">
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css"> -->
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"></script>
+
+
+<script src="{{ asset('/css/bootstrap-datepicker3.css') }}"></script>
+<!-- <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script> -->
+<!-- <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script> -->
+<!-- <script src="{{ asset('/plugins/moment.min.js') }}"></script> -->
+<!-- <script src="{{ asset('/plugins/daterangepicker.js') }}"></script> -->
+<!-- <script src="{{ asset('/js/bootstrap-datepicker.js') }}"></script> -->
+<!-- <script src="{{ asset('/css/bootstrap-datepicker.css') }}"></script> -->
 
 
 <script id="details-template" type="text/x-handlebars-template">
