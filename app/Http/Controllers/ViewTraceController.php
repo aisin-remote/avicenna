@@ -13,8 +13,11 @@ use Storage;
 
 class ViewTraceController extends Controller
 {
-    function index($barcode = null){
-		return view('tracebility.index', compact('barcode'));
+    function index(){
+		return view('tracebility.index');
+	}
+	function search($barcode = null){
+		return view('tracebility.list.search', compact('barcode'));
 	}
 
 	function getAjaxIndex(){
@@ -64,6 +67,10 @@ class ViewTraceController extends Controller
 		$customer = avi_trace_delivery::select('customer')
 					->where('code', $id_product)
 					->first();
+		if (is_null($customer)){
+			$customer 			= new avi_trace_cycle();
+			$customer->customer	= "No Data" ;
+		}
 
 		return array(	"img_path" =>  asset('storage/tracebility/'.$product->product.'.JPG') ,
 						"product" => $product->product ,
@@ -102,7 +109,7 @@ class ViewTraceController extends Controller
 				$machining->date = "--";
 				$machining->location = "03 Last Machining" ;
 			}
-			$delivery 		=avi_trace_delivery::select('*', \DB::raw('"04 Delivery" as location'))->where('code','like','%'.$id_product.'%')->first();
+			$delivery 		=avi_trace_delivery::select('*', \DB::raw('"04 Pulling" as location'))->where('code','like','%'.$id_product.'%')->first();
 			if (is_null($delivery)){
 				$delivery= new avi_trace_delivery();
 				$delivery->code = "--";
@@ -127,8 +134,6 @@ class ViewTraceController extends Controller
 		        			$a = '--';
 		        		}
 		            	return $a;
-
-
 		            })
 		        ->addIndexColumn()
 		        ->make(true);

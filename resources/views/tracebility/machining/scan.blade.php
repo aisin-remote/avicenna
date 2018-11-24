@@ -116,53 +116,62 @@
             barcodecomplete = barcode;
             barcode = "";
             $('#detail_no').val('');
-            $.ajax({
-                    type: 'get',           // {{-- POST Request --}}
-                    url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line,  
-                    _token: "{{ csrf_token() }}",
-                    dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                    success: function (data) {
-                        code = data.code;                       
-                        if(code == "" ){
-                            $('#detail_no').prop('readonly', false);
-                            $('#detail_no').val(barcode);
+            if (barcodecomplete.length == 15) {
+                $.ajax({
+                        type: 'get',           // {{-- POST Request --}}
+                        url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line,  
+                        _token: "{{ csrf_token() }}",
+                        dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                        success: function (data) {
+                            code = data.code;                       
+                            if(code == "" ){
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(barcode);
 
-                            {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
-                            $('#alert').removeClass('alert-success');
-                            $('#alert').addClass('alert-danger');
-                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
-                            $('#alert-body').text('Data sudah ada');
-                            
-                            $('#detail_no').prop('readonly', true);
+                                {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                $('#alert-body').text('Data sudah ada');
+                                
+                                $('#detail_no').prop('readonly', true);
 
+                            }
+                            else{
+                                $('#alert').removeClass('alert-danger');
+                                $('#alert').addClass('alert-success');
+                                $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
+                                $('#alert-body').text(barcodecomplete);
+
+                                $('#detail_no').val(rep2);
+                                $('#detail_no').prop('readonly', true);
+
+                                // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
+                                $('#counter').text(data.counter);
+
+                                $('[id^=last_scan]').html('&nbsp;');
+
+
+                            }
+                        },
+                        error: function (xhr) {
+
+                                // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                                $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                         }
-                        else{
-                            $('#alert').removeClass('alert-danger');
-                            $('#alert').addClass('alert-success');
-                            $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
-                            $('#alert-body').text(barcodecomplete);
+                                          
+                    });
+            }else{
+                $('#alert').removeClass('alert-success');
+                $('#alert').addClass('alert-danger');
+                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                $('#alert-body').text('Mohon Scan Ulang');
+                $('#detail_no').prop('readonly', true);
 
-                            $('#detail_no').val(rep2);
-                            $('#detail_no').prop('readonly', true);
-
-                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
-                            $('#counter').text(data.counter);
-
-                            $('[id^=last_scan]').html('&nbsp;');
-
-
-                        }
-                    },
-                    error: function (xhr) {
-
-                            // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
-                            $('#alert').removeClass('alert-success');
-                            $('#alert').addClass('alert-danger');
-                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
-                    }
-                                      
-                });
+            }
                
                 
         }

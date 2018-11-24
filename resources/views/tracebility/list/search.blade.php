@@ -24,12 +24,12 @@
     <div class="col-xs-8">
 
         <div class="box box-primary">
-            <div class="box-body">
-                <div class="form-group">
+            <div class="box-body" style="display: none;">
+                <div class="form-group" >
                     <div id="searchform">
                     <label>Input Id Produk:</label>
                     <div>
-                        <input type="text" class="form-control pull-right" id="id_product" placeholder="Id produk harus 15 karakter" > 
+                        <input type="text" class="form-control pull-right" value="{{ $barcode }}" id="id_product" placeholder="Id produk harus 15 karakter" > 
                     </div>
                     <br><br>
                     <button type="button" class="btn btn-success" id="buttonsearch"> Search </button>
@@ -38,7 +38,8 @@
             </div>
 
             <div class="box-header">
-              <h3 class="box-title">Summary</h3>
+              <h3 class="box-title">Detail of</h3>
+              <h1> <b>{{ $barcode }}</b> </h1>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -183,6 +184,7 @@
     });
       
     $(document).ready(function () {
+      $('#buttonsearch').click();
     });
 </script>
 

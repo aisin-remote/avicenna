@@ -103,73 +103,76 @@
 <script src="{{ asset('/js/jquery-cookie.js') }}"></script>
 <script type="text/javascript">
   
-  var barcode   ="";
+var barcode   ="";
+  var line      = "{{$line}}" ;
   var rep2      = "";
   var detail_no = $('#detail_no');
-  var line      = "{{$line}}";
   
   $(document).keypress(function(e) {
 
         var code = (e.keyCode ? e.keyCode : e.which);
         if(code==13)// Enter key hit
         {
+
+            barcodecomplete = barcode;
+            barcode = "";
             $('#detail_no').val('');
-            $.ajax({
-                    type: 'get',           // {{-- POST Request --}}
-                    url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcode+'/'+line,  
-                    _token: "{{ csrf_token() }}",
-                    dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                    success: function (data) {
-                        code = data.code;                       
-                        if(code == "" ){
-                            $('#detail_no').prop('readonly', false);
-                            $('#detail_no').val(barcode);
+            if (barcodecomplete.length == 15) {
+                $.ajax({
+                        type: 'get',           // {{-- POST Request --}}
+                        url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcodecomplete+'/'+line,  
+                        _token: "{{ csrf_token() }}",
+                        dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                        success: function (data) {
+                            code = data.code;                       
+                            if(code == "" ){
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(barcode);
 
-                            {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
-                            $('#alert').removeClass('alert-success');
-                            $('#alert').addClass('alert-danger');
-                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
-                            $('#alert-body').text('Data sudah ada');
-                            
-                            $('#detail_no').prop('readonly', true);
-                            barcode = "";
-                            rep2    = "";
+                                {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                $('#alert-body').text('Data sudah ada');
+                                
+                                $('#detail_no').prop('readonly', true);
 
+                            }
+                            else{
+                                $('#alert').removeClass('alert-danger');
+                                $('#alert').addClass('alert-success');
+                                $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
+                                $('#alert-body').text(barcodecomplete);
+
+                                $('#detail_no').val(rep2);
+                                $('#detail_no').prop('readonly', true);
+
+                                // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
+                                $('#counter').text(data.counter);
+
+                                $('[id^=last_scan]').html('&nbsp;');
+
+
+                            }
+                        },
+                        error: function (xhr) {
+
+                                // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+                                $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
                         }
-                        else{
-                            $('#alert').removeClass('alert-danger');
-                            $('#alert').addClass('alert-success');
-                            $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
-                            $('#alert-body').text(barcode);
+                                          
+                    });
+            }else{
+                $('#alert').removeClass('alert-success');
+                $('#alert').addClass('alert-danger');
+                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                $('#alert-body').text('Mohon Scan Ulang');
+                $('#detail_no').prop('readonly', true);
 
-                            $('#detail_no').val(rep2);
-                            $('#detail_no').prop('readonly', true);
-
-                            // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
-                            $('#counter').text(data.counter);
-
-                            $('[id^=last_scan]').html('&nbsp;');
-
-                            barcode = "";
-                            rep2    = "";
-
-
-
-                        }
-                    },
-                    error: function (xhr) {
-
-                            // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
-                            $('#alert').removeClass('alert-success');
-                            $('#alert').addClass('alert-danger');
-                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                            $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
-                            
-                            barcode = "";
-                            rep2    = "";
-                    }
-                                      
-                });
+            }
                
                 
         }
