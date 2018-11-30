@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.app')
+@extends('layouts.app')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -19,7 +19,7 @@
   LIST PRODUCT
 @endsection
 
-@section('main-content')
+@section('content')
 
 <div class="row">
     <div class="col-xs-12">
@@ -62,6 +62,7 @@
         </div>
         <!-- /.box -->
     </div>
+  </div>
 
 </div>
 

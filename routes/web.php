@@ -17,11 +17,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//    });
 
 	// dev-1.0, Ferry, 20170830, Route AISYA ==========================================================
-	Route::get('/', 'HomeController@index');
+	// Route::get('/', 'HomeController@choose');
 	Route::get('/home', 'HomeController@index');
 	//
 	//
 	//
+
 	// dev-1.0, Ferry, 20170830, Route STOCK OPNAME ===================================================
 	Route::get('opname2',function(){
 		return view('opname.CreateOpname');
@@ -64,9 +65,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::post('/part/master','PartController@AddNewParts');
 	Route::get('/part/edit/{id}', 'PartController@UpdateParts'); //dev-1.0, 20170926, view update pis
 	Route::post('/updatepart','PartController@UpdatePartProses');
-	//
-	//
-	//
+	
+
+	
 	// dev-1.0, Ferry, 20170830, Route DASHBOARD ======================================================
 	//dev-1.0, by Yudo, 20170824, Dashboard
 	Route::get('/dashboard/viewDashboardMutation', 'PisController@viewDashboardMutation');
@@ -136,13 +137,13 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
 	Route::get('/trace/logout', 'Auth\LoginController@logout');
 
-
+});
 
 	//end of tracebility ====================================================================================================
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
-});
+// });
 
 //Dandori Page===============================================================
 Route::get('/dandori/make/{line_number}','CreateDandoriController@viewpage');
@@ -158,5 +159,24 @@ Route::get('/dashboard/datatools2/{id_mesin}','Avicenna\UnitDashboardController@
 
 //End Unit Plant Dashboard
 
+
+//Dashboard andon
+Route::get('/', 'DashboardController@choose');
 Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.andon2'); //dev-1.0, 20180416, Andon Monitoring
+
+//List Traceability
+
+	// view trace product
+	Route::get('/trace/view/part', 'ViewTraceController@index');
+	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
+	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
+	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
+	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
+
+	//dev-1.1.0, Audi, 20180702 View Trace List
+	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
+	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
+	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
+	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');

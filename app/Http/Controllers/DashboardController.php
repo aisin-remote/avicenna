@@ -20,7 +20,10 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
+    public function choose()
+    {
+        return view('welcome');
+    }
     function viewDashboardGenba(){
 
         return view('adminlte::dashboard.genba');

@@ -77,10 +77,10 @@
     <!-- Scripts -->
 @section('scripts')
     <!-- laravel mix -->
-    <link href="{{ asset ('/css/aisya/pis.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
     <!-- laravel mix  -->
 @show
+
 
 </body>
 </html>
