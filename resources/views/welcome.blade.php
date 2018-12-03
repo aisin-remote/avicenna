@@ -32,33 +32,36 @@
 
 			.title {
 				font-size: 120px;
+				font-style: bold;
 				margin-top: 40px;
-				color: #000000 ;
+				color: #ffffff ;
 			}
 
 			.quote {
 				font-size: 40px;
+				color: #ffffff ;
 			}
 			.rectangle {
 			 	height: 400px;
 			 	width: 600px;
 			 	/*background-color: rgba(255,255,255,0.2);*/
 			 	border-style: groove;
+			 	border-color: #ffffff;
 			}
 			.plant {
 				font-size: 120px;
-				color: #000000;
+				color: #ffffff;
 				margin-top: 90px;
 			}
 			.mon {
 				font-size: 80px;
-				color: #000000;
+				color: #ffffff;
 				margin-top: 90px;
 			}
 		</style>
 	</head>
-	<body>
-		<div class="container">
+	<body background="images/2.jpg">
+		<div class="container" >
 			<div class="content">
 				<div class="title">AVICENNA</div>
 				<div class="quote">Please Choose Dashboard First</div>
