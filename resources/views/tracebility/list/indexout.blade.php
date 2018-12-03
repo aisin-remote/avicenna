@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.app')
+@extends('adminlte::layouts.out')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -101,7 +101,7 @@
           }},
           {data: 'code', name: 'code',
             render: function ( data, type, row, meta ) {
-              return '<a href="{{ url ("trace/view/part/search") }}/'+data+'">'+data+'</a>';
+              return '<a href="{{ url ("trace/view/part/searchout") }}/'+data+'">'+data+'</a>';
             }
           },
           {data: 'part_number', name: 'part_number'},

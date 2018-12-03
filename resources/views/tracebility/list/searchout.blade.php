@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.app')
+@extends('adminlte::layouts.out')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -24,12 +24,12 @@
     <div class="col-xs-8">
 
         <div class="box box-primary">
-            <div class="box-body">
-                <div class="form-group">
+            <div class="box-body" style="display: none;">
+                <div class="form-group" >
                     <div id="searchform">
                     <label>Input Id Produk:</label>
                     <div>
-                        <input type="text" class="form-control pull-right" id="id_product" placeholder="Id produk harus 15 karakter" > 
+                        <input type="text" class="form-control pull-right" value="{{ $barcode }}" id="id_product" placeholder="Id produk harus 15 karakter" > 
                     </div>
                     <br><br>
                     <button type="button" class="btn btn-success" id="buttonsearch"> Search </button>
@@ -38,7 +38,8 @@
             </div>
 
             <div class="box-header">
-              <h3 class="box-title">Summary</h3>
+              <h3 class="box-title">Detail of</h3>
+              <h1> <b>{{ $barcode }}</b> </h1>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -72,7 +73,10 @@
               <table id="table" class="table table-bordered table-striped" style="width: 100%">
                 <thead>
                   <tr>
-                    <td style="width: 50% ">Model</td><td id="product"></td>
+                    <td style="width: 50% ">Product Name</td><td id="product"></td>
+                  </tr>
+                  <tr>
+                    <td>Program</td><td id="prog"></td>
                   </tr>
                   <tr>
                     <td>Dies</td><td id="dies"></td>
@@ -81,10 +85,7 @@
                     <td>Shot</td><td id="shot"></td>
                   </tr>
                   <tr>
-                    <td>Tonase Mesin</td><td id="tonase_mesin"></td>
-                  </tr>
-                  <tr>
-                    <td>No Mesin</td><td id="mesin"></td>
+                    <td>Mesin</td><td id="mesin"></td>
                   </tr>
                   <tr>
                     <td>Shift</td><td id="shift"></td>
@@ -150,14 +151,8 @@
            }else{
             var prog  = id_product.substr(0, 2);
             var dies  = id_product.substr(2, 2);
-            var mesin = id_product.substr(5, 1);
+            var mesin = id_product.substr(4, 2);
             var shift = id_product.substr(11, 1);
-            var mesin1= "DCAA0"+id_product.substr(6, 1);
-            if (mesin == "A") {
-              var mesin1= "DCAA10";
-            }
-
-
             if (shift == "A") {
               shift = " Shift 1" ;
             }if (shift == "B") {
@@ -166,10 +161,11 @@
               shift = " Shift 3" ;
             }
             
-            var shot  = id_product.substr(12, 3);
+            var shot  = id_product.substr(12, 3);      
+            document.getElementById("prog").innerHTML  = prog;
             document.getElementById("dies").innerHTML  = dies;
             document.getElementById("shot").innerHTML  = shot;
-            document.getElementById("mesin").innerHTML = mesin1;
+            document.getElementById("mesin").innerHTML = mesin;
             document.getElementById("shift").innerHTML = shift;
 
             table.ajax.url("{{ url ('trace/view/part').'/'}}"+id_product).load();
@@ -180,7 +176,6 @@
                   document.getElementById("product").innerHTML  = data.product;
                   document.getElementById("cycle").innerHTML  = data.cycle;
                   document.getElementById("customer").innerHTML  = data.customer;
-                  document.getElementById("tonase_mesin").innerHTML  = data.tonase;
                   $("#imageDiv").html("<img src='"+data.img_path+"' style='width: 100%'/>");
                }
             });
@@ -189,6 +184,7 @@
     });
       
     $(document).ready(function () {
+      $('#buttonsearch').click();
     });
 </script>
 

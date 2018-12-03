@@ -170,12 +170,14 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	// view trace product
 	Route::get('/trace/view/part', 'ViewTraceController@index');
 	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
+	Route::get('/trace/view/part/searchout/{barcode}', 'ViewTraceController@searchout');
 	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
 	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
 	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/listout', 'TraceListController@indexout');
 	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');

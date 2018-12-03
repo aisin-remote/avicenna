@@ -17,6 +17,9 @@ class TraceListController extends Controller
     function index(){
 		return view('tracebility.list.index');
 	}
+	function indexout(){
+		return view('tracebility.list.indexout');
+	}
 	function getAjaxDataCasting(){
 
 	$list 			= avi_trace_casting::select('*');

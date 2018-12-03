@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
+use App\Models\Avicenna\avi_trace_machine_tonase;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
 use Yajra\Datatables\Datatables;
@@ -18,6 +19,9 @@ class ViewTraceController extends Controller
 	}
 	function search($barcode = null){
 		return view('tracebility.list.search', compact('barcode'));
+	}
+	function searchout($barcode = null){
+		return view('tracebility.list.searchout', compact('barcode'));
 	}
 
 	function getAjaxIndex(){
@@ -71,11 +75,20 @@ class ViewTraceController extends Controller
 			$customer 			= new avi_trace_cycle();
 			$customer->customer	= "No Data" ;
 		}
+		$b = substr($id_product, 5, 1);
+		$tonase = avi_trace_machine_tonase::select('tonase')
+					->where('code', $b)
+					->first();
+		if (is_null($tonase)){
+			$tonase 			= new avi_trace_machine_tonase();
+			$tonase->tonase		= "No Data" ;
+		}
 
 		return array(	"img_path" =>  asset('storage/tracebility/'.$product->product.'.JPG') ,
 						"product" => $product->product ,
 						"cycle" => $cycle->name ,
-						"customer"=>$customer->customer);
+						"customer"=>$customer->customer,
+						"tonase"=>$tonase->tonase);
 		// return $cycle ;
 
 	}
@@ -84,7 +97,12 @@ class ViewTraceController extends Controller
 	{
 
 		$code 			= $id_product;
-		$npk 			= substr($id_product, 4, 2);
+		$a 				= substr($id_product, 6, 1);
+		$npk 			= "DCAA0".$a."";
+		if ($a == "A") {
+			$npk 			= "DCAA10";
+		}
+
 			$a = substr($id_product, 8, 1) ;
 			if ($a == "A") {
 				$a = "10";
@@ -117,13 +135,13 @@ class ViewTraceController extends Controller
 				$delivery->date = "--";
 				$delivery->location = "04 Delivery" ;
 			}
-			$casting 		=avi_trace_casting::select('*', \DB::raw('"02 QA Casting" as location'))->where('code','like','%'.$id_product."%")->first();
+			$casting 		=avi_trace_casting::select('*', \DB::raw('"02 Lastman Casting" as location'))->where('code','like','%'.$id_product."%")->first();
 			if (is_null($casting)){
 				$casting= new avi_trace_casting();
 				$casting->code = "--";
 				$casting->npk = "--";
 				$casting->date = "--";
-				$casting->location = "02 QA Casting" ;
+				$casting->location = "02 Lastman Casting" ;
 			}
 		   $arrayku=array($create, $casting, $machining, $delivery); 
 		   return Datatables::of($arrayku)

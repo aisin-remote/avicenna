@@ -1,7 +1,24 @@
-@extends('layouts.app')
+@extends('adminlte::layouts.app')
+
+@section('htmlheader_title')
+{{ trans('adminlte_lang::message.home') }}
+@endsection
+
+@section('htmlheader')
+  @parent
   <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url('/plugins/daterangepicker.css') }}">
-@section('content')
+@endsection
+
+@section('contentheader_title')
+  Tracebility
+@endsection
+
+@section('contentheader_description')
+  Jejak para produk
+@endsection
+
+@section('main-content')
 
 <div class="row">
     <div class="col-xs-8">

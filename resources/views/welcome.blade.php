@@ -50,6 +50,11 @@
 				color: #000000;
 				margin-top: 90px;
 			}
+			.mon {
+				font-size: 80px;
+				color: #000000;
+				margin-top: 90px;
+			}
 		</style>
 	</head>
 	<body>
@@ -61,7 +66,7 @@
 					<div class="col-md-12" >
 						<div class="row">
 							<div class="col-md-6">
-								<a href="trace/view/list" style="text-decoration:none">
+								<a href="trace/view/listout" style="text-decoration:none">
 								<div class="rectangle" >
 									<div class="plant">
 										Traceability
@@ -74,6 +79,8 @@
 								<div class="rectangle">
 									<div class="plant">
 										Andon
+										<div class="quote">Monitoring</div>
+										
 									</div>
 								</div>
 								</a>
