@@ -30,6 +30,6 @@ class TraceReportController extends Controller
     		$file->setActiveSheetIndex(0)->setCellValue('C11', $model);
     		$file->setActiveSheetIndex(0)->setCellValue('A12', $part_name);
 
-		})->export('xlsx');
+		})->setFilename($id_product)->export('xlsx');
     }
 }

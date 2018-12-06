@@ -55,7 +55,7 @@
               </table>
             </div>
             <div class="box-body">
-              <button id="print" class="btn btn-success">Print Report</button>
+              <button id="print" class="btn btn-success">Print</button>
             </div>
             <!-- /.box-body -->
         </div>
@@ -189,14 +189,9 @@
     $('#print').on('click', function(e){
       e.preventDefault();
         var id_product = $('#id_product').val();
-        
-            $.ajax({
-               url:"{{ url('trace/report/list').'/'}}"+id_product,
-               success:function(data){
-               }
-            });
+        window.location = "{{ url('trace/report/list').'/'}}"+id_product;
 
-    });
+      });
       
     $(document).ready(function () {
       $('#buttonsearch').click();
