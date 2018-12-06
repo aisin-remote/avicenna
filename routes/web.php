@@ -182,3 +182,6 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
 	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
+
+	//Export
+	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');

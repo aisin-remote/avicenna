@@ -188,6 +188,8 @@ return [
          */
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         App\Providers\AisyaMenuServiceProvider::class,
+        // Maatwebsite\Excel\ExcelServiceProvider::class,
+
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],

@@ -91,7 +91,9 @@
 						</div>
 					</div>
 				</div>
-				</div>		
+				</div>
+				<br><br><br><br><br>
+				<div class="quote"> <a href="login" style="text-decoration:none">Login</a></div>		
 			</div>
 		</div>
 	</body>

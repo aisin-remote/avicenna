@@ -54,6 +54,9 @@
                 </thead>
               </table>
             </div>
+            <div class="box-body">
+              <button id="print" class="btn btn-success">Print Report</button>
+            </div>
             <!-- /.box-body -->
         </div>
         <!-- /.box -->
@@ -180,6 +183,18 @@
                }
             });
             }
+
+    });
+
+    $('#print').on('click', function(e){
+      e.preventDefault();
+        var id_product = $('#id_product').val();
+        
+            $.ajax({
+               url:"{{ url('trace/report/list').'/'}}"+id_product,
+               success:function(data){
+               }
+            });
 
     });
       
