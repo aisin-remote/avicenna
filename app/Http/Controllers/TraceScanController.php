@@ -164,7 +164,7 @@ class TraceScanController extends Controller
                 $scan->cycle                = $wimcycle;
                 $scan->customer             = $customer;
                 $scan->date                 = date('Y-m-d');
-                $scan->npk                  = $user->npk;
+                $scan->status               = 1;
                 $scan->save();
                 DB::commit();
 
@@ -194,6 +194,78 @@ class TraceScanController extends Controller
                 $code = avi_trace_cycle::where('code', $code)->first();
 
                 return array( "cycle" => $code->name ); 
+    }
+
+
+// MODUL TUKAR GULING
+
+    public function scandeliveryng()
+    {
+
+        return view('tracebility/delivery/ng');
+    }
+
+    public function getAjaxdeliveryng($number)
+    {
+        try{
+
+        $cek    = avi_trace_delivery::where('code', $number)->first();
+
+        if ($cek) {
+
+            DB::beginTransaction();
+                $user                       = Auth::user();
+                $scan                       = avi_trace_delivery::where('code', $number)->first();
+                $scan->date_ng              = date('Y-m-d');
+                $scan->status               = 0;
+                $scan->npk_ng               = $user->npk;
+                $scan->save();
+                DB::commit();
+
+                // dev-1.0.0, Handika, 20180724, counter
+                $counter = avi_trace_delivery::where('date_ng', date('Y-m-d'))
+                                        ->where('npk_ng', $user->npk)
+                                        ->count();
+
+                $arrJSON = array(
+                                "code"      => $number,
+                                "counter"    => $counter,
+                        );
+
+                return $arrJSON;        
+        }else{ 
+                // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
+                return array("code" => "");         
+        }               
+           
+        }catch(\Exception $e){
+
+         DB::rollBack();
+            return array( "code" => "", "error" => $e->getMessage() );
+        }
+        
+
+    }
+    public function getAjaxdeliveryngtable(){
+            $create= New avi_trace_delivery();
+            $create->code = 'No Data';
+            $create->npk_ng = 'No Data';
+            $create->date_ng = 'No Data';
+            $arrayku=array($create);
+            return Datatables::of($arrayku)
+                    ->addIndexColumn()
+                    ->make(true);   
+    }
+    public function getAjaxdeliveryngupdate(){
+        $user                       = Auth::user();
+        $create= avi_trace_delivery::select('code','npk_ng','date_ng')
+                ->where('npk_ng', $user->npk)
+                ->where('date_ng', date('Y-m-d'))
+                ->get();
+        return Datatables::of($create)
+                ->addIndexColumn()
+                ->make(true);
+        
     }
 
 
