@@ -112,12 +112,22 @@
 
 @section('scripts')
 @parent
+<script type="text/javascript" src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.dataTables2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/dataTables2.bootstrap.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
 <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 
 
 <script type="text/javascript">
@@ -190,12 +200,7 @@
       e.preventDefault();
         var id_product = $('#id_product').val();
         
-            $.ajax({
-               url:"{{ url('trace/report/list').'/'}}"+id_product,
-               success:function(data){
-               }
-            });
-
+        window.location = "{{ url('trace/report/list').'/'}}"+id_product;
     });
       
     $(document).ready(function () {
