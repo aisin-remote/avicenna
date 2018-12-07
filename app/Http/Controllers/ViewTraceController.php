@@ -75,7 +75,7 @@ class ViewTraceController extends Controller
 			$customer 			= new avi_trace_cycle();
 			$customer->customer	= "No Data" ;
 		}
-		$b = substr($id_product, 5, 1);
+		$b = substr($id_product, 4, 1);
 		$tonase = avi_trace_machine_tonase::select('tonase')
 					->where('code', $b)
 					->first();
