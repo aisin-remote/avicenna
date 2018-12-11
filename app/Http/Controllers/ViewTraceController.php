@@ -51,7 +51,14 @@ class ViewTraceController extends Controller
 
 
 	public function getAjaxProduct($id_product)
-	{
+	{	
+
+		$b 				= substr($id_product, 5, 1);
+		$npk 			= "DCAA0".$b."";
+		if ($b == "A") {
+			$npk 			= "DCAA10";
+		}
+
 		$a = substr($id_product, 0, 2);
 		$product = avi_trace_program_number::select('product')->where('code', $a)->first();
 		if (is_null($product)){
@@ -88,6 +95,7 @@ class ViewTraceController extends Controller
 						"product" => $product->product ,
 						"cycle" => $cycle->name ,
 						"customer"=>$customer->customer,
+						"mesin"=>$npk,
 						"tonase"=>$tonase->tonase);
 		// return $cycle ;
 

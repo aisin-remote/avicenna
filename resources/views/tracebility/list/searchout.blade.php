@@ -91,6 +91,9 @@
                     <td>Mesin</td><td id="mesin"></td>
                   </tr>
                   <tr>
+                    <td>Tonase</td><td id="tonase"></td>
+                  </tr>
+                  <tr>
                     <td>Shift</td><td id="shift"></td>
                   </tr>
                   <tr>
@@ -178,7 +181,6 @@
             document.getElementById("prog").innerHTML  = prog;
             document.getElementById("dies").innerHTML  = dies;
             document.getElementById("shot").innerHTML  = shot;
-            document.getElementById("mesin").innerHTML = mesin;
             document.getElementById("shift").innerHTML = shift;
 
             table.ajax.url("{{ url ('trace/view/part').'/'}}"+id_product).load();
@@ -188,7 +190,9 @@
                success:function(data){
                   document.getElementById("product").innerHTML  = data.product;
                   document.getElementById("cycle").innerHTML  = data.cycle;
+                  document.getElementById("tonase").innerHTML  = data.tonase;
                   document.getElementById("customer").innerHTML  = data.customer;
+                  document.getElementById("mesin").innerHTML = data.mesin;
                   $("#imageDiv").html("<img src='"+data.img_path+"' style='width: 100%'/>");
                }
             });
