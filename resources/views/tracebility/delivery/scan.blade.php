@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading"><b>DELIVERY</b>&nbsp&nbsp >> Total Scan :<span id="total-scan"></span></div>
+                <div class="panel-heading"><b>DELIVERY</b>&nbsp&nbsp >> Total Scan :    <b><span style="font-size: 20pt " id="total-scan"></span></b></div>
                 
                     <div class="panel-body">
                        <center> <span id="wimcycle"></span> - <span id="customer"> </span></center>
@@ -142,7 +142,6 @@
                                 // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                                 $('#total-scan').html(data.counter);
                                 $('#batman').html(data.code);
-                                $('[id^=last_scan]').html('&nbsp;');
                             }
 
                         },

@@ -20,6 +20,7 @@ class TraceScanController extends Controller
 {
 
 // MODUL CASTING
+//=======================================================================================================================================================
 
     public function scancasting($line)
     {
@@ -141,6 +142,7 @@ class TraceScanController extends Controller
 
 
 // MODUL DELIVERY
+//=======================================================================================================================================================
 
     public function scandelivery()
     {
@@ -166,10 +168,14 @@ class TraceScanController extends Controller
                 $scan->date                 = date('Y-m-d');
                 $scan->status               = 1;
                 $scan->save();
-                DB::commit();
+            DB::commit();
+            $counter = avi_trace_delivery::where('date', date('Y-m-d'))
+                                        ->where('cycle', $wimcycle)
+                                        ->count();
 
                 $arrJSON = array(
                                 "code"      => $number,
+                                "counter"   => $counter
                         );
 
                 return $arrJSON;        
@@ -197,7 +203,7 @@ class TraceScanController extends Controller
     }
 
 
-// MODUL TUKAR GULING
+// MODUL NG DELIVERY
 
     public function scandeliveryng()
     {
@@ -270,6 +276,7 @@ class TraceScanController extends Controller
 
 
 // MODULE MACHINING
+//=======================================================================================================================================================
 
     public function scanmachining($line)
     {
@@ -290,6 +297,7 @@ class TraceScanController extends Controller
                 $scan->code                 = $number;
                 $scan->date                 = date('Y-m-d');
                 $scan->line                 = $line;
+                $scan->status               = 1;
                 $scan->npk                  = $user->npk;
                 $scan->save();
 
@@ -297,17 +305,9 @@ class TraceScanController extends Controller
                 $counter = avi_trace_machining::where('date', date('Y-m-d'))
                                         ->where('npk', $user->npk)
                                         ->count();
-
-                // dev-1.0.0, Handika, 20180724, 10 last scan
-                $last_scan = avi_trace_machining::selectRaw('code')
-                                            ->orderBy('created_at', 'desc')
-                                            ->take(10)
-                                            ->get();
-                                        $last_scan = "0";
                 $arrJSON = array(
                                 "code"      => $number,
                                 "counter"   => $counter,
-                                "last_scan" => $last_scan
                         );
                 
                 $a                          = substr($number, 0, 2);
@@ -339,6 +339,33 @@ class TraceScanController extends Controller
             return array( "code" => "", "error" => $e->getMessage() );
         }
         
-
     }
+     public function getAjaxmachiningtable(){
+            $create= New avi_trace_machining();
+            $create->code = 'No Data';
+            $create->npk = 'No Data';
+            $create->date = 'No Data';
+            $arrayku=array($create);
+            return Datatables::of($arrayku)
+                    ->addIndexColumn()
+                    ->make(true);   
+    }
+    public function getAjaxmachiningupdate(){
+        $user                       = Auth::user();
+        $create= avi_trace_machining::select('code','npk','date')
+                ->where('npk', $user->npk)
+                ->where('date', date('Y-m-d'))
+                ->take(5)
+                ->orderBy('id', 'DESC')
+                ->get();
+        return Datatables::of($create)
+                ->addIndexColumn()
+                ->make(true);
+        
+    }
+
+
+
+
+
 }

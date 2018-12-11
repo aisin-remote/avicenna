@@ -24,7 +24,7 @@
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header">
-              <h3 class="box-title">List Product Today</h3>
+              <h3 class="box-title">List Product</h3>
                 <br><br>
                 <div>
                   <label>Select Menu list:</label>
@@ -37,10 +37,11 @@
                     </select>  
                   </div>
                   </div>
-              <div> <br>
+                  <br>
               <!-- <button type="button" class="btn btn-success" id="buttonfilter"> Filter </button> -->
           <!-- /.input group -->
               </div>
+              <button id="detailreport" class="btn btn-primary">View Detail report</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -52,6 +53,8 @@
                     <th>Part Number</th>
                     <th>Part Name</th>
                     <th>Back Number</th>
+                    <th>Line</th>
+                    <th>Status</th>
                     <th>Date Scan</th>
                   </tr>
                 </thead>
@@ -107,6 +110,8 @@
           {data: 'part_number', name: 'part_number'},
           {data: 'part_name', name: 'part_name'},
           {data: 'back_number', name: 'back_number'},
+          {data: 'line', name: 'line'},
+          {data: 'status', name: 'status'},
           {data: 'created_at', name: 'created_at'},
         ],
         language: {
@@ -118,6 +123,13 @@
       var dropdown = document.getElementById('mySelect').value
       table.ajax.url( "{{ url('/trace/view/list') }}/"+dropdown ).load();
     }
+
+    $('#detailreport').on('click', function(e){
+      e.preventDefault();
+        var type = $('#mySelect').val();
+        window.open("{{ url('trace/reportdetail/list').'/'}}"+type);
+
+      });
 </script>
 
 @endsection

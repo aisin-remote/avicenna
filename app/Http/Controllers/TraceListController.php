@@ -46,8 +46,16 @@ class TraceListController extends Controller
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
 			            	return $models ? $models->part_name : '--No Part Name--';
 			            })
+			->addColumn('status', function($list) {
+							if ($list->status == 1) {
+                                return '<span class="label label-success">OK</span>';
+                            } else {
+                                return '<span class="label label-danger">NG</span>';
+                            }
+			            })
 
 	        ->addIndexColumn()
+	        ->rawColumns(['status'])
 	        ->make(true);
 		
 	}
@@ -77,8 +85,16 @@ class TraceListController extends Controller
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
 			            	return $models ? $models->part_name : '--No Part Name';
 			            })
+			->addColumn('status', function($list) {
+							if ($list->status == 1) {
+                                return '<span class="label label-success">OK</span>';
+                            } else {
+                                return '<span class="label label-danger">NG</span>';
+                            }
+			            })
 
 	        ->addIndexColumn()
+	        ->rawColumns(['status'])
 	        ->make(true);
 		
 	}
@@ -108,8 +124,24 @@ class TraceListController extends Controller
 							$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
 			            	return $models ? $models->part_name : '--No Part Name--';
 			            })
+			->addColumn('status', function($list) {
+							if ($list->status == 1) {
+                                return '<span class="label label-success">OK</span>';
+                            } else {
+                                return '<span class="label label-danger">NG</span>';
+                            }
+			            })
+			->addColumn('line', function($list) {
+
+							if ($list->status == 1) {
+                                return $list->npk;
+                            } else {
+                                return $list->npk_ng;
+                            }
+			            })
 
 	        ->addIndexColumn()
+	        ->rawColumns(['status'])
 	        ->make(true);
 		
 	}

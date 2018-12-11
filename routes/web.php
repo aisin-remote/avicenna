@@ -126,7 +126,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 		//Machining
 	Route::get('/trace/scan/machining/{line}', 'TraceScanController@scanmachining');
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
-	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
+	// Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
+	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
+	Route::get('/trace/machining/update', 'TraceScanController@getAjaxmachiningupdate');
 		//NG Machining
 	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
@@ -189,6 +191,11 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
 	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
+
+	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
+	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
+	Route::get('/trace/reportdetail/machining', 'TraceReportController@machiningAjaxdata');
+	Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
 
 	//Export
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');

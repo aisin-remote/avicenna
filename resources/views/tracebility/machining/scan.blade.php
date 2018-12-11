@@ -75,13 +75,13 @@
                 <div class="panel-heading">LAST SCAN</div>
                 <div class="panel-body">       
                     <div class="form-group">
-                        <table  class="table table-bordered responsive-utilities jambo_table">
+                        <table  id="data" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
                                     <th>CODE</th> <th>NPK</th> <th>DATE</th>
                                 </tr>
                             </thead>
-                            <tbody id="data_table">
+                            <tbody>
                                 
                             </tbody>
                         </table>
@@ -99,8 +99,30 @@
 
 @section('scripts')
 @parent
-
+<script type="text/javascript" src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.dataTables2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/dataTables2.bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
+<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script type="text/javascript">
+    // {{-- dev-1.1.0, Handika, 20180703, datatable filter --}}
+    var table = $('#data').DataTable({
+        "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+        processing: true,
+        serverSide: true,
+        searching: false,
+        paging: false,
+        ajax: '{{ url ("trace/machining/index") }}',
+        columns: [
+            
+            {data: 'code', name: 'code'},
+            {data: 'npk', name: 'npk', searchable:false},
+            {data: 'date', name: 'date', searchable:false},
+        ],
+
+    });
   
   var barcode   ="";
   var line      = "{{$line}}" ;
@@ -127,8 +149,6 @@
                             if(code == "" ){
                                 $('#detail_no').prop('readonly', false);
                                 $('#detail_no').val(barcode);
-
-                                {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
@@ -138,6 +158,7 @@
 
                             }
                             else{
+                                table.ajax.url("{{ url ('trace/machining/update')}}").load();
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').addClass('alert-success');
                                 $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
@@ -148,8 +169,6 @@
 
                                 // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                                 $('#counter').text(data.counter);
-
-                                $('[id^=last_scan]').html('&nbsp;');
 
 
                             }
@@ -184,6 +203,7 @@
     $(document).ready(function() {
         $('#detail_no').prop('readonly', true);
         document.body.style.backgroundColor = '#dddddd';
+
     } );
 
 </script>
