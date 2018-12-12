@@ -180,19 +180,25 @@
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
                                 $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
-                        }
-                                          
+                        }                     
                     });
-            }else{
+
+            }
+            else if (barcodecomplete.length == 13)
+            {
+                    window.location.replace("{{url('/trace/logout')}}");
+
+            }
+            else
+            {
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
                 $('#alert-body').text('Mohon Scan Ulang');
                 $('#detail_no').prop('readonly', true);
-
             }
                
-                
+        
         }
         else
         {

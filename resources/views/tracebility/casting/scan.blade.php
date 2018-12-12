@@ -165,7 +165,13 @@ var barcode   ="";
                         }
                                           
                     });
-            }else{
+            }
+            else if (barcodecomplete.length == 13)
+            {
+                    window.location.replace("{{url('/trace/logout')}}");
+
+            }
+            else{
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');

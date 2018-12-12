@@ -27,9 +27,37 @@ class RedirectIfAuthenticated
 
                 $role = Role::findByName('avi_pis_scan');
                 return redirect($role->route_redirect ? $role->route_redirect : 'home');
-            }elseif (Auth::user()->hasRole('trace_delivery')) {
+
+            }
+            elseif (Auth::user()->hasRole('trace_casting_dcaa04')) {
+                $role = Role::findByName('trace_casting_dcaa04');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+
+            }
+            elseif (Auth::user()->hasRole('trace_casting_dcaa05')) {
+                $role = Role::findByName('trace_casting_dcaa05');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+
+            }
+            elseif (Auth::user()->hasRole('trace_casting_dcaa08')) {
+                $role = Role::findByName('trace_casting_dcaa08');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+
+            }
+            elseif (Auth::user()->hasRole('trace_machining_ma006')) {
+                $role = Role::findByName('trace_machining_ma006');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            
+            }
+            elseif (Auth::user()->hasRole('trace_machining_ma007')) {
+                $role = Role::findByName('trace_machining_ma007');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            
+            }
+            elseif (Auth::user()->hasRole('trace_delivery')) {
                 $role = Role::findByName('trace_delivery');
                 return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            
             }
             else {
                 return redirect('home');
