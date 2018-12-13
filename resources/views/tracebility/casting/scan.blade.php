@@ -171,6 +171,11 @@ var barcode   ="";
                     window.location.replace("{{url('/trace/logout')}}");
 
             }
+            else if (barcodecomplete == "RELOAD")
+            {
+                    location.reload();
+
+            }
             else{
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
