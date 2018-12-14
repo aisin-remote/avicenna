@@ -33,7 +33,7 @@ class TraceScanController extends Controller
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
 
-        $cek 	= avi_trace_casting::where('code', $number)->first();
+        $cek        = avi_trace_casting::where('code', $number)->first();
 
         if (is_null($cek)) {
 
@@ -45,7 +45,22 @@ class TraceScanController extends Controller
                 $scan->line                 = $line;
                 $scan->npk     		        = $user->npk;
                 $scan->status               = 1;
+                
+                // $b = substr($scan->code, 0,2);
+                // if($b != 10){
+                //     return "Not OPN 889F Model";
+                // }
+                $a                          = substr($number, 0, 2);
+                $product                    = avi_trace_program_number::where('code', $a)->first();
+                if (is_null($product)){
+                        // $product                = new avi_trace_program_number();
+                        return "Not OPN 889F Model";
+                }
+
                 $scan->save();
+
+                
+
                 DB::commit();
 
                 // dev-1.0.0, Handika, 20180724, counter
@@ -343,6 +358,13 @@ class TraceScanController extends Controller
                 $scan->line                 = $line;
                 $scan->status               = 1;
                 $scan->npk                  = $user->npk;
+
+                $a                          = substr($number, 0, 2);
+                $product                    = avi_trace_program_number::where('code', $a)->first();
+                if (is_null($product)){
+                        return "Not OPN 889F Model";
+                }
+                
                 $scan->save();
 
                 // dev-1.0.0, Handika, 20180724, counter
@@ -428,6 +450,29 @@ class TraceScanController extends Controller
                 ->make(true);
         
     }
+    //  public function getAjaxcastingtable(){
+    //         $create= New avi_trace_casting();
+    //         $create->code = 'No Data';
+    //         $create->npk = 'No Data';
+    //         $create->date = 'No Data';
+    //         $arrayku=array($create);
+    //         return Datatables::of($arrayku)
+    //                 ->addIndexColumn()
+    //                 ->make(true);   
+    // }
+    // public function getAjaxcastingupdate(){
+    //     $user                       = Auth::user();
+    //     $create= avi_trace_casting::select('code','npk','date')
+    //             ->where('npk', $user->npk)
+    //             ->where('date', date('Y-m-d'))
+    //             ->take(5)
+    //             ->orderBy('id', 'DESC')
+    //             ->get();
+    //     return Datatables::of($create)
+    //             ->addIndexColumn()
+    //             ->make(true);
+        
+    // }
 
 
 

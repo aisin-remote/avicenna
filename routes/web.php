@@ -118,7 +118,6 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/{line}', 'TraceScanController@scancasting');
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
-
 	Route::get('/trace/casting/index', 'TraceScanController@getAjaxcastingtable');
 	Route::get('/trace/casting/update', 'TraceScanController@getAjaxcastingupdate');
 		//NG Casting

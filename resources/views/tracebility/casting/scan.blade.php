@@ -76,13 +76,14 @@
                 <div class="panel-heading">LAST SCAN</div>
                 <div class="panel-body">       
                     <div class="form-group">
-                        <table id="data"  class="table table-bordered responsive-utilities jambo_table">
+                        <table  id="data" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
                                     <th>CODE</th> <th>PRODUCT</th> <th>MODEL</th> <th>NPK</th> <th>DATE</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -152,8 +153,6 @@
                             if(code == "" ){
                                 $('#detail_no').prop('readonly', false);
                                 $('#detail_no').val(barcode);
-
-                                {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
@@ -175,8 +174,6 @@
                                 // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                                 $('#counter').text(data.counter);
 
-                                $('[id^=last_scan]').html('&nbsp;');
-
 
                             }
                         },
@@ -186,7 +183,7 @@
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                                $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
+                                $('#alert-body').text('@lang("avicenna/pis.err889")');
                         }
                                           
                     });

@@ -181,7 +181,7 @@
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                                $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
+                                $('#alert-body').text('@lang("avicenna/pis.err889")');
                         }                     
                     });
 
