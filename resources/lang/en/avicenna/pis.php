@@ -15,6 +15,7 @@ return [
 
     // dev-1.0, 20170928, Ferry|Merge|Handika terjamahan english
     'part_not_found' => 'Part Not Found!!! Please check PIS Master Data',
+    'err889'         => 'Not OPN 889F Model',
     'part_found'     => ' successfully scanned!',
 
     'error_scan'     => 'Error scan occured : ',
