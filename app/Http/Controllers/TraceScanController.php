@@ -139,6 +139,50 @@ class TraceScanController extends Controller
         //         ->make(true);
 
     }
+    public function getAjaxcastingtable(){
+            $create= New avi_trace_casting();
+            $create->code = 'No Data';
+            $create->npk = 'No Data';
+            $create->date = 'No Data';
+            $arrayku=array($create);
+            return Datatables::of($arrayku)
+                ->addColumn('product', function($create) {
+                    return 'No Data';
+                })
+                ->addColumn('model', function($create) {
+
+                    return 'No Data';
+                })
+                    ->addIndexColumn()
+                    ->make(true);   
+    }
+    public function getAjaxcastingupdate(){
+        $user                       = Auth::user();
+        $create= avi_trace_casting::select('code','npk','date')
+                ->where('npk', $user->npk)
+                ->where('date', date('Y-m-d'))
+                ->take(5)
+                ->orderBy('id', 'DESC')
+                ->get();
+        return Datatables::of($create)
+                ->addColumn('product', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('product')->where('code', $code)->first();
+                    return $models ? $models->product : '--No Product--';
+                })
+                ->addColumn('model', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('back_number')->where('code', $code)->first();
+                    return $models ? $models->back_number : '--No Back Number--';
+                })
+                ->addIndexColumn()
+                ->make(true);
+        
+    }
 
 
 // MODUL DELIVERY
@@ -347,6 +391,13 @@ class TraceScanController extends Controller
             $create->date = 'No Data';
             $arrayku=array($create);
             return Datatables::of($arrayku)
+            ->addColumn('product', function($create) {
+                    return 'No Data';
+                })
+                ->addColumn('model', function($create) {
+
+                    return 'No Data';
+                })
                     ->addIndexColumn()
                     ->make(true);   
     }
@@ -359,6 +410,20 @@ class TraceScanController extends Controller
                 ->orderBy('id', 'DESC')
                 ->get();
         return Datatables::of($create)
+                ->addColumn('product', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('product')->where('code', $code)->first();
+                    return $models ? $models->product : '--No Product--';
+                })
+                ->addColumn('model', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('back_number')->where('code', $code)->first();
+                    return $models ? $models->back_number : '--No Back Number--';
+                })
                 ->addIndexColumn()
                 ->make(true);
         

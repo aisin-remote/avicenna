@@ -76,10 +76,10 @@
                 <div class="panel-heading">LAST SCAN</div>
                 <div class="panel-body">       
                     <div class="form-group">
-                        <table  class="table table-bordered responsive-utilities jambo_table">
+                        <table id="data"  class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
-                                    <th>CODE</th> <th>NPK</th> <th>DATE</th>
+                                    <th>CODE</th> <th>PRODUCT</th> <th>MODEL</th> <th>NPK</th> <th>DATE</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,11 +99,35 @@
 
 @section('scripts')
 @parent
-
+<script type="text/javascript" src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery.dataTables2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/dataTables2.bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
+<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script src="{{ asset('/js/jquery-cookie.js') }}"></script>
 <script type="text/javascript">
+
+    var table = $('#data').DataTable({
+        "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+        processing: true,
+        serverSide: true,
+        searching: false,
+        paging: false,
+        ajax: '{{ url ("trace/casting/index") }}',
+        columns: [
+            
+            {data: 'code', name: 'code'},
+            {data: 'product', name: 'product'},
+            {data: 'model', name: 'model'},
+            {data: 'npk', name: 'npk', searchable:false},
+            {data: 'date', name: 'date', searchable:false},
+        ],
+
+    });
   
-var barcode   ="";
+  var barcode   ="";
   var line      = "{{$line}}" ;
   var rep2      = "";
   var detail_no = $('#detail_no');
@@ -139,6 +163,7 @@ var barcode   ="";
 
                             }
                             else{
+                                table.ajax.url("{{ url ('trace/casting/update')}}").load();
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').addClass('alert-success');
                                 $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');

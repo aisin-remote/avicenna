@@ -78,7 +78,7 @@
                         <table  id="data" class="table table-bordered responsive-utilities jambo_table">
                             <thead>
                                 <tr> 
-                                    <th>CODE</th> <th>NPK</th> <th>DATE</th>
+                                    <th>CODE</th> <th>PRODUCT</th> <th>MODEL</th> <th>NPK</th>  <th>DATE</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,6 +118,8 @@
         columns: [
             
             {data: 'code', name: 'code'},
+            {data: 'product', name: 'product'},
+            {data: 'model', name: 'model'},
             {data: 'npk', name: 'npk', searchable:false},
             {data: 'date', name: 'date', searchable:false},
         ],
