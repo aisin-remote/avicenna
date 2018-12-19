@@ -224,6 +224,7 @@ class TraceScanController extends Controller
                 $scan->code                 = $number;
                 $scan->cycle                = $wimcycle;
                 $scan->customer             = $customer;
+                $scan->npk                  = $user->npk;
                 $scan->date                 = date('Y-m-d');
                 $scan->status               = 1;
                 $scan->save();
