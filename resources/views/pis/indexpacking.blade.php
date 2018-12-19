@@ -91,27 +91,24 @@
             <div id="delivery" class="form-group">
                 <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">OEM</button>
                 <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
+                <button id="btnGNP" value="DANDORI" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">DANDORI</button>
                 <input id="delivery_type" value="OEM" type="hidden"></input>
             </div>
 
             <div id="dock" class="form-group">
                 <label>Dock :</label>
                 <button id="btnOTHER" value="OTHER" type="button" class="btn btn-block btn-primary" onclick="func_change_dock(this);">OTHER</button>
-                <button id="btn43" value="43" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">43</button>
-                <button id="btn53" value="53" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">53</button>
                 <button id="btn1L" value="1L" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1L</button>
                 <button id="btn1N" value="1N" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">1N</button>
                 <button id="btn1S" value="1S" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">S1</button>
-                <button id="btn6I" value="6I" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">6I</button>
                 <button id="btnTAMTAM" value="TAMTAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-TAM</button>
                 <button id="btnTAMADM" value="TAMADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-ADM</button>
                 <button id="btnTAMHINO" value="TAMHINO" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TAM-HINO</button>
-                <button id="btnADMAS" value="ADMAS" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-AS</button>
-                <button id="btnADMKP" value="ADMKP" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM-KP</button>
                 <button id="btnADMKP" value="YHA" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">YHA</button>
                 <button id="btnADMAS" value="ADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM</button>
                 <button id="btnADMKP" value="TTI" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TTI</button>
                 <button id="btnADMKP" value="S1-TAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">S1-TAM</button>
+                <button id="btnADMKP" value="MMKI" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">MMKI</button>
                 <input id="dock_type" value="OTHER" type="hidden"></input>
             </div>
 

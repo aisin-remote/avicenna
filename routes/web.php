@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//
 	// dev-1.0, Ferry, 20170830, Route PIS ============================================================
 	Route::get('/pis', 'PisController@index')->name('pis');
+	Route::get('/pis/packing', 'PisController@packing')->name('packing');
 	// dev-1.0, Ferry, 20170822, Merged
 	Route::get('/pis/master', 'PisController@PisMasterView'); //dev-1.0, 20170926, view master pis
 	Route::get('/pis/add', 'PisController@add_new_part'); //dev-1.0, 20171018, add part no

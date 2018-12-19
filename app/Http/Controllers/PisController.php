@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;   //pemecah error tokenmismatch
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 use DB;
+use File;
 use Auth;
 use Storage;
 use Yajra\Datatables\Datatables;
@@ -32,14 +33,24 @@ class PisController extends Controller
         return view('pis/index', compact('customer'));
     }
 
+    public function packing()
+    {
+        $customer = avi_customers::all();
+        return view('pis/indexpacking', compact('customer'));
+    }
+
     //dev-1.0, 20170824, by  yudo, getajax image sekaligus insert ke table mutation
     public function getAjaxImage($image, $type, $dock)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         $image  = strlen($image) == 208 ? substr($image, 53, 15) : $image;  // dev-1.0, Handika, 20171020, Cust SIM change numb substr
+        $image  = strlen($image) == 220 ? substr($image, 158, 10) : $image;  // hotfix-1.0.1, Handika, 20180827, Cust TTI change numb substr
+        $image  = strlen($image) == 106 ? substr($image, 12, 10) : $image;  // hotfix-1.0.2, Handika, 20180827, Cust change numb substr
+        return $image ;
         $image  = str_replace("-","", $image);
         $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
         $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
+        $image  = strlen($image) == 13 ? (substr($image, 11, 1) == " " ? substr($image, 0, 10) : substr($image, 0, 12)) : $image; // hotfix-1.0.2, Handika, 20180827, validasi 13 karakter untuk pis packing
 
         $path_suffix = '-'.$type.'-'.$dock.'.JPG';
 
@@ -47,6 +58,7 @@ class PisController extends Controller
                             ->where('part_kind', $type)
                             ->where('part_dock', $dock)
                             ->first(); // dev-1.0, Ferry, 20170908, set to first //dev-1.0, by yudo, 20170609, change part number customer
+
         try{    
 
             if(! $part_pis)
@@ -59,7 +71,7 @@ class PisController extends Controller
                 DB::beginTransaction();
 
                 $user           = Auth::user();
-                $part = $part_pis->hasPart;    // dev-1.0, Ferry, 20170927, Ambil info master avi_part nya
+                $part           = $part_pis->hasPart;    // dev-1.0, Ferry, 20170927, Ambil info master avi_part nya
 
                 // for($i = 0 ; $i <= 1 ; $i++){ //akitfkan jika prioritas 2 dijalankan
                 $scan = new avi_mutations;
@@ -142,10 +154,7 @@ class PisController extends Controller
                                         ->get();    
                                         // return $avi_part_piss;
         foreach ($avi_part_piss as $avi_part_pis) {
-                                        $avi_part_pis->validasi = Storage::exists('/public/pis/'.$avi_part_pis->img_path) ? 
-                                                "Ada" :
-                                                "Belum Ada"; 
-
+                                        $avi_part_pis->validasi = Storage::exists('/public/pis/'.$avi_part_pis->img_path) ? "Ada" : "Belum Ada"; 
                                         }                                
                                    // return $avi_part_piss;
         return view('pis.ViewMasterPis',compact('avi_part_piss'));
@@ -162,15 +171,16 @@ class PisController extends Controller
 
     function UpdatePisProses(Request $request){
        
-        $input=\Request::all();
-        $id=$input['id'];
-        $part_number=$input['part_number'];
-        $back_no=$input['back_no']; 
-        $dock=$input['part_dock'];
-        $type=$input['type']; 
-        $qty=$input['qty'];
-        $img_path  = $input['part_picture'];
-        $destinationPath = asset('storage/pis');
+        $input              =\Request::all();
+
+        $id                 =$input['id'];
+        $part_number        =$input['part_number'];
+        $back_no            =$input['back_no']; 
+        $dock               =$input['part_dock'];
+        $type               =$input['type']; 
+        $qty                =$input['qty'];
+        $img_path           =$input['part_picture'];
+        $destinationPath    =asset('storage/pis');
 
         try{
             \DB::beginTransaction();
@@ -187,7 +197,16 @@ class PisController extends Controller
             //upload gambar ke 
             $file = $request->file('part_picture');
             $filesName = $part_number.'-'.$type.'-'.$dock.'.JPG';
-            $file->move(public_path('storage/pis/'),$filesName);
+            if (Storage::exists('/public/pis/'.$filesName)) {
+                $delete = Storage::disk('pis')->delete($filesName);
+            }
+            // return $file ;
+            // $temp = Storage::put('pis/'.$filesName , $file);
+            $temp = Storage::disk('pis') -> put($filesName, file_get_contents($file->getRealPath()));
+            // $temp = Storage::move($file, asset('storage/pis/'.$filesName));
+            // return $temp ;
+
+            // $file->move(public_path('storage/pis/'),$filesName);
             \DB::commit();
             \Session::flash('flash_type', 'alert-success');
             \Session::flash('flash_message', 'Sukses simpan atur ulang data');
