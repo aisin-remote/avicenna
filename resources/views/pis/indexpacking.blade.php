@@ -108,6 +108,7 @@
                 <button id="btnADMAS" value="ADM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">ADM</button>
                 <button id="btnADMKP" value="TTI" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">TTI</button>
                 <button id="btnADMKP" value="S1-TAM" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">S1-TAM</button>
+                <button id="btnADMKP" value="MMKI" type="button" class="btn btn-block btn-default" onclick="func_change_dock(this);">MMKI</button>
                 <input id="dock_type" value="OTHER" type="hidden"></input>
             </div>
 
