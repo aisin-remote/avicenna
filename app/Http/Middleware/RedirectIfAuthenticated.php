@@ -59,6 +59,11 @@ class RedirectIfAuthenticated
                 return redirect($role->route_redirect ? $role->route_redirect : 'home');
             
             }
+            elseif (Auth::user()->hasRole('trace_delivery_ng')) {
+                $role = Role::findByName('trace_delivery_ng');
+                return redirect($role->route_redirect ? $role->route_redirect : 'home');
+            
+            }
             else {
                 return redirect('home');
             }
