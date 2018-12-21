@@ -22,7 +22,7 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataCasting(){
 
-	$list 			= avi_trace_casting::select('*')->orderBy('created_at', 'DESC')->get();
+	$list 			= avi_trace_casting::select('*')->orderBy('created_at', 'DESC');
 
 	return Datatables::of($list)
 			->addColumn('part_number', function($list) {
@@ -61,7 +61,7 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataMachining(){
 
-	$list 			= avi_trace_machining::select('*')->orderBy('created_at', 'DESC')->get();
+	$list 			= avi_trace_machining::select('*')->orderBy('created_at', 'DESC');
 
 	return Datatables::of($list)
 			->addColumn('part_number', function($list) {
@@ -100,7 +100,7 @@ class TraceListController extends Controller
 	}
 	function getAjaxDataPulling(){
 
-	$list 			= avi_trace_delivery::select('*')->orderBy('created_at', 'DESC')->get();
+	$list 			= avi_trace_delivery::select('*')->orderBy('created_at', 'DESC');
 
 	return Datatables::of($list)
 			->addColumn('part_number', function($list) {
