@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class avi_andon extends Model
 {
+    protected $primaryKey = 'line';
     protected $fillable =[
     	'line',
     	'target',
