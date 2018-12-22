@@ -66,8 +66,8 @@ class MutasiAndon extends Command
         $end3       = \Carbon\Carbon::createFromTimestamp(strtotime($now1 . '22:15:00'));
 
         if ($start1 <= $now && $now <= $end1 || $start2 <= $now && $now <= $end2 || $start3 <= $now && $now <= $end3 ) {
-            $detail = DB::table('avi_andon_details')->where('line', '=', 'AS600')->update(array('buffer' => 0));
-            $andon  = DB::table('avi_andons')->where('line', '=', 'AS600')->update(array('buffer' => 0));
+            $detail = DB::table('avi_andon_details')->where('line', '=', 'AS600')->update(array('buffer' => 0, 'updated_at' => NULL));
+            $andon  = DB::table('avi_andons')->where('line', '=', 'AS600')->update(array('buffer' => 0, 'updated_at' => NULL));
             echo "reset";
             return;
         }
