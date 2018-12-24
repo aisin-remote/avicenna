@@ -75,9 +75,9 @@ class StockMutationController extends Controller
 	        ->addColumn('details_url', function($mutation) {
 	            return url('avicenna/stock/mutation/ajax/getDetailHead/'.$mutation->part_number);
 	        })
-	        ->addColumn('stock_initial', function($mutation) use($date2) {
+	        ->addColumn('stock_initial', function($mutation) use($date) {
 
-	        	$stock_initial = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '<' , $date2)->first();
+	        	$stock_initial = avi_mutations::select( DB::raw('Sum(quantity) as qty'))->where('part_number' , $mutation->part_number)->where('mutation_date', '<' , $date)->first();
 	            if ( is_null($stock_initial['qty'])){
 	        		return '0';
 	        	}else{
