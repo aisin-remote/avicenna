@@ -38,18 +38,18 @@
 			}
 
 			.quote {
-				font-size: 40px;
+				font-size: 20px;
 				color: #ffffff ;
 			}
 			.rectangle {
-			 	height: 400px;
-			 	width: 600px;
+			 	height: 300px;
+			 	width: 450px;
 			 	/*background-color: rgba(255,255,255,0.2);*/
 			 	border-style: groove;
 			 	border-color: #ffffff;
 			}
 			.plant {
-				font-size: 120px;
+				font-size: 80px;
 				color: #ffffff;
 				margin-top: 90px;
 			}
@@ -68,7 +68,7 @@
 				<div class="panel-body">
 					<div class="col-md-12" >
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<a href="trace/view/listout" style="text-decoration:none">
 								<div class="rectangle" >
 									<div class="plant">
@@ -77,7 +77,7 @@
 								</div>
 								</a>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<a href="direct/andon2" style="text-decoration:none">
 								<div class="rectangle">
 									<div class="plant">
@@ -87,8 +87,18 @@
 									</div>
 								</div>
 								</a>
-							
-						</div>
+							</div>
+							<div class="col-md-4">
+								<a href="avicenna/stock/mutation" style="text-decoration:none">
+								<div class="rectangle">
+									<div class="plant">
+										Stock
+										<div class="quote">Monitoring</div>
+										
+									</div>
+								</div>
+								</a>
+							</div>
 					</div>
 				</div>
 				</div>
