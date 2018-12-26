@@ -52,8 +52,7 @@ class MutasiAndon extends Command
         $andon      = avi_andon::where('line','AS600')->first();
         $part_number = avi_part_production::select('*')
         ->join('avi_andon_details','avi_part_productions.back_number', '=', 'avi_andon_details.back_no')
-        ->join('avi_andons','avi_andon_details.word', '=', 'avi_andons.word')
-        ->where('avi_andons.word', $andon->word)
+        ->where('avi_andon_details.word', $andon->word)
         ->first();
 
         // //reset buffer
