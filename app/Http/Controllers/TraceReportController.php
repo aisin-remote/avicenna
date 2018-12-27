@@ -81,8 +81,31 @@ class TraceReportController extends Controller
                             }
                         })
             ->addColumn('total', function($list) {
-                            $total = avi_trace_casting::where('line', $list->line)->where('date', date('Y-m-d'))->count();
-                            return $total;
+
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            $yesterday  = \Carbon\Carbon::yesterday()->format('Y-m-d');
+                            $now        = \Carbon\Carbon::now();
+
+                            $start1     = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
+                            $end1       = \Carbon\Carbon::createFromTimestamp(strtotime($date . '23:59:59'));
+
+                            $start2     = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '06:00:00'));
+                            $end2       = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '23:59:59'));
+
+                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '00:00:00'));
+                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '05:59:59'));
+
+                            if ($now > $start && $now < $end ) {
+
+                                $shift_a    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start2)->where('created_at','<',$end2)->count();
+                                $shift_b    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+
+                                return  $shift_a + $shift_b ;
+                            }else{
+                                $shift_3    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start1)->where('created_at','<',$end1)->count();
+                                return  $shift_3 ;
+                            }
+
                         })
 
             ->addIndexColumn()
@@ -132,8 +155,29 @@ class TraceReportController extends Controller
                             }
                         })
             ->addColumn('total', function($list) {
-                            $total = avi_trace_machining::where('line', $list->line)->where('date', date('Y-m-d'))->count();
-                            return $total;
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            $yesterday  = \Carbon\Carbon::yesterday()->format('Y-m-d');
+                            $now        = \Carbon\Carbon::now();
+
+                            $start1     = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
+                            $end1       = \Carbon\Carbon::createFromTimestamp(strtotime($date . '23:59:59'));
+
+                            $start2     = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '06:00:00'));
+                            $end2       = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '23:59:59'));
+
+                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '00:00:00'));
+                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '05:59:59'));
+
+                            if ($now > $start && $now < $end ) {
+
+                                $shift_a    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start2)->where('created_at','<',$end2)->count();
+                                $shift_b    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+
+                                return  $shift_a + $shift_b ;
+                            }else{
+                                $shift_3    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start1)->where('created_at','<',$end1)->count();
+                                return  $shift_3 ;
+                            }
                         })
             ->addIndexColumn()
             ->make(true);
