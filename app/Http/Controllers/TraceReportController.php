@@ -160,4 +160,77 @@ class TraceReportController extends Controller
             ->make(true);
         
     }
+
+    public function getAjaxFilterCastingDetail($start_date, $end_date){
+
+        $list = avi_trace_casting::select('line')
+        ->where('date' , '>=' ,  $start_date )
+        ->where('date' , '<=' ,  $end_date )
+        ->groupby('line')
+        ->get();
+
+        $datesss           = avi_trace_casting::select('date');
+
+    return Datatables::of($list)
+
+            ->addColumn('shift_1', function($list) use($datesss) {
+                            $shift_1 = 0;
+                            foreach ($datesss as $key) 
+                            {
+                                $date       = $key->date;
+                                $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
+                                $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '14:14:59'));
+                                $temp       = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+                                $shift_1 +=  $temp;        
+                            } 
+                            return  $shift_1;
+                        })
+            ->addColumn('shift_2', function($list) use($datesss) {
+                            $shift_2 = 0;
+                            foreach ($datesss as $key) 
+                            {
+                                $date       = $key->date;
+                                $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '14:15:00'));
+                                $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '22:14:59'));
+                                $temp    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+                                $shift_2 +=  $temp;        
+                            }
+                           
+                            return  $shift_2;
+                        })
+            ->addColumn('shift_3', function($list) use($datesss){
+                            $shift_3 = 0;
+                            foreach ($datesss as $key) 
+                            {
+                                $date       = $key->date;
+                                $yesterday  = \Carbon\Carbon::yesterday()->format('Y-m-d');
+                                // $y          = $date->addDays(1);
+                                // $t          = $date->addDays(1);
+                                $y = date('d-m-Y', strtotime($date.' - 1 days'));
+                                $t = date('d-m-Y', strtotime($date.' + 1 days'));
+                                $now        = \Carbon\Carbon::now()->format('Y-m-d');
+
+                                $start1     = \Carbon\Carbon::createFromTimestamp(strtotime($y . '22:14:59'));
+                                $end1       = \Carbon\Carbon::createFromTimestamp(strtotime($date . '05:59:59'));
+
+                                $start2     = \Carbon\Carbon::createFromTimestamp(strtotime($date . '22:14:59'));
+                                $end2       = \Carbon\Carbon::createFromTimestamp(strtotime($t . '23:59:59'));
+
+                                $shift_a    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start1)->where('created_at','<',$end1)->count();
+                                $shift_b    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start2)->where('created_at','<',$end2)->count();
+                                $temp =  $shift_a + $shift_b ; 
+
+                                $shift_3 +=  $temp;        
+                            }
+                           
+                            return  $shift_3;
+                        })
+            ->addColumn('total', function($list) {
+                            $total = avi_trace_casting::where('line', $list->line)->where('date', date('Y-m-d'))->count();
+                            return $total;
+                        })
+
+            ->addIndexColumn()
+            ->make(true);
+    }
 }
