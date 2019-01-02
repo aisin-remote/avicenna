@@ -200,8 +200,8 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/reportdetail/machining', 'TraceReportController@machiningAjaxdata');
 	Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
 
-	//export detail - Casting
-	Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterCastingDetail');
+	//export detail - Machining
+	Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterMachiningDetail');
 
 	//Export
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
