@@ -46,6 +46,7 @@
                     </div>
                     <br>
                     <button type="button" class="btn btn-success" id="buttonfilter"> Filter </button>
+                    <button type="button" class="btn btn-default" onclick="ClearFields();" id="buttonfilter"> Reset </button>
                 <!-- /.input group -->
                 </form>
                 </div>
@@ -154,6 +155,12 @@
             }
         });
 
+    function ClearFields() {
+
+        document.getElementById("start_date").value = "";
+        document.getElementById("end_date").value = "";
+        // window.location.reload(true);
+    }
 </script>
 
 @endsection

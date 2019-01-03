@@ -46,6 +46,7 @@
                     </div>
                     <br>
                     <button type="button" class="btn btn-success" id="buttonfilter"> Filter </button>
+                    <button type="button" class="btn btn-default" onclick="ClearFields();"> Reset </button>
                 <!-- /.input group -->
                 </form>
                 </div>
@@ -74,6 +75,7 @@
                     <th colspan="4" style="text-align: center;">SHIFT</th>
                   </tr>
                   <tr>
+                    <th style="text-align: center;">DATE</th>
                     <th style="text-align: center;">SHIFT 1</th>
                     <th style="text-align: center;">SHIFT 2</th>
                     <th style="text-align: center;">SHIFT 3</th>
@@ -123,11 +125,9 @@
         serverSide: true,
         ajax: '{{ url ("/trace/reportdetail/casting") }}',
         columns: [
-          {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
-                 return meta.row + meta.settings._iDisplayStart + 1;
-          }},
-          {data: 'line', name: 'line'
-          },
+          {data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false},
+          {data: 'line', name: 'line'},
+          {data: 'date', name: 'date'},
           {data: 'shift_1', name: 'shift_1'},
           {data: 'shift_2', name: 'shift_2'},
           {data: 'shift_3', name: 'shift_3'},
@@ -153,6 +153,13 @@
            table.ajax.url("{{ url('/trace/reportdetail/list/casting/filter').'/'}}"+start_date+'/'+end_date).load(); 
             }
         });
+
+    function ClearFields() {
+
+        document.getElementById("start_date").value = "";
+        document.getElementById("end_date").value = "";
+        // window.location.reload(true);
+    }
 
 </script>
 
