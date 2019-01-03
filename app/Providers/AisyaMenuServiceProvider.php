@@ -26,21 +26,28 @@ class AisyaMenuServiceProvider extends ServiceProvider
         View::composer('*.sidebar', function($view) {
 
             $user = Auth::user();
-            $view->with('user', $user);
+            if ($user) {    // dev-1.1.0, Ferry, 20190103, View template (sidebar) jika user dengan otentikasi
+                $view->with('user', $user);
 
-            // Aisya level 0
-            $aisya_root_menu = ais_apps::select('ais_apps.*')
-                                        ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
-                                        ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
-                                        ->where('apps_level', 0)->distinct()->get();
-            $view->with('aisya_root_menu', $aisya_root_menu);
+                // Aisya level 0
+                $aisya_root_menu = ais_apps::select('ais_apps.*')
+                                            ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                            ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())
+                                            ->where('apps_level', 0)->distinct()->get();
+                $view->with('aisya_root_menu', $aisya_root_menu);
 
-            // Aisya level 0
-            $aisya_menu_1 = ais_apps::select('ais_apps.*')
-                                        ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
-                                        ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())    
-                                        ->where('apps_level', 1)->distinct()->get();
-            $view->with('aisya_menu_1', $aisya_menu_1);
+                // Aisya level 0
+                $aisya_menu_1 = ais_apps::select('ais_apps.*')
+                                            ->join('role_has_apps', 'ais_apps.id', '=', 'role_has_apps.apps_id')
+                                            ->whereIn('role_has_apps.role_id', $user->roles->pluck('id')->toArray())    
+                                            ->where('apps_level', 1)->distinct()->get();
+                $view->with('aisya_menu_1', $aisya_menu_1);
+            }
+            else {  // dev-1.1.0, Ferry, 20190103, View template (sidebar) jika user tanpa otentikasi
+                $view->with('user', null);
+                $view->with('aisya_root_menu', []);
+                $view->with('aisya_menu_1', []);
+            }
         });
     }
 

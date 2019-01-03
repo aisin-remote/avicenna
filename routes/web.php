@@ -11,6 +11,14 @@
 |
 */
 
+// dev-1.1.0, Ferry, 20190103, Tanpa otentikasi
+Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
+Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
+Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna\StockMutationController@getAjaxDetailHead');
+Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
+Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
+
+// dev-1.1.0, Ferry, 20190103, Dengan otentikasi
 Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
     //    Route::get('/link1', function ()    {
 	//        // Uses Auth Middleware
@@ -31,13 +39,6 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
 	Route::post('/saveopname',"CreateOpnameController@SaveOpname");
 
-	Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
-	Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
-	Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna\StockMutationController@getAjaxDetailHead');
-	Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
-	Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
-	//
-	//
 	//
 	// dev-1.0, Ferry, 20170830, Route PIS ============================================================
 	Route::get('/pis', 'PisController@index')->name('pis');

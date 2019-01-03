@@ -6,8 +6,9 @@
 
 @section('htmlheader')
   @parent
-  <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url('/plugins/daterangepicker.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/dataTables.bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/plugins/daterangepicker.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
 @endsection
 
 @section('contentheader_title')
@@ -35,13 +36,13 @@
 
                     <div class="input-group">
                         <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                        <input type="text" class="form-control pull-right" id="start_date">
+                        <input type="text" class="form-control pull-right" id="start_date" value="{{ date('Y-m-d') }}">
                         
                     </div>
                     <label>End Date:</label>
                     <div class="input-group">
                         <div class="input-group-addon"> <i class="fa fa-calendar"></i> </div>
-                        <input type="text" class="form-control pull-right" id="end_date">
+                        <input type="text" class="form-control pull-right" id="end_date" value="{{ date('Y-m-d') }}">
                         
                     </div>
                     <br>
@@ -62,7 +63,7 @@
     <div class="col-xs-12">
         <div class="box box-primary">
             <div class="box-header">
-              <h3 class="box-title">Inventory Summary</h3>
+              <h3 class="box-title" id="box-title">Inventory Summary - Today ({{ date('Y-m-d') }})</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -92,29 +93,19 @@
 @section('scripts')
 @parent
 
-<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.css" rel="stylesheet" id="bootstrap-css"> -->
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
-<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/plugins/moment.min.js') }}"></script>
-<script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"></script>
-
-
-<script src="{{ asset('/css/bootstrap-datepicker3.css') }}"></script>
-<!-- <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script> -->
-<!-- <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script> -->
-<!-- <script src="{{ asset('/plugins/moment.min.js') }}"></script> -->
-<!-- <script src="{{ asset('/plugins/daterangepicker.js') }}"></script> -->
-<!-- <script src="{{ asset('/js/bootstrap-datepicker.js') }}"></script> -->
-<!-- <script src="{{ asset('/css/bootstrap-datepicker.css') }}"></script> -->
-
+<script type="text/javascript" src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/daterangepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
 
 <script id="details-template" type="text/x-handlebars-template">
     <div class="label label-info" style="font-size:15pt;">PART NUMBER:  @{{ part_number }} </div>
     <table class="table table-bordered table-striped" style="width: 100%" id="part-@{{ part_number }}">
         <thead>
         <tr>
+            <th>Tgl Mutasi</th>
             <th>Back No</th>
             <th>Nama Model</th>
             <th>Mutasi</th>
@@ -193,8 +184,10 @@
             alert('Isi Tanggal Filter');
            }else if(d1 > d2){
             alert('Start date harus lebih lampau dari end date');
-           }else{
-           table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date).load(); 
+           }
+           else {
+                table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date).load(); 
+                $("#box-title")[0].innerHTML = "Inventory Summary - From <strong>"+start_date+"</strong> To <strong>"+end_date+"</strong>";
             }
         });
 
@@ -206,6 +199,7 @@
             "bInfo": false,
             "bLengthChange":false,
             columns: [
+                { data: 'mutation_date', name: 'mutation_date' },
                 { data: 'back_number', name: 'back_number' },
                 { data: 'part_name', name: 'part_name' },
                 { data: 'desc', name: 'avi_mutation_types.desc' },
