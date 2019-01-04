@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.out')
+@extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -6,8 +6,8 @@
 
 @section('htmlheader')
   @parent
-  <link rel="stylesheet" type="text/css" href="{{ url('/css/dataTables.bootstrap.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url('/plugins/daterangepicker.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/dataTables.bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/css/bootstrap-datepicker.min.css') }}">
 @endsection
 
 @section('contentheader_title')
@@ -97,15 +97,10 @@
 @parent
 
 <script type="text/javascript" src="{{ asset('/js/handlebars.js') }}"></script>
-<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/plugins/moment.min.js') }}"></script>
-<script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css"></script>
-
-
-<script src="{{ asset('/css/bootstrap-datepicker3.css') }}"></script>
-
+<script type="text/javascript" src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/plugins/moment.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>
 
 <script type="text/javascript">
 
@@ -120,7 +115,6 @@
     // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
  
     var table = $('#tabel_all').DataTable({
-        "dom":'t',
         processing: true,
         serverSide: true,
         ajax: '{{ url ("/trace/reportdetail/casting") }}',

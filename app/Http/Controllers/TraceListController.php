@@ -14,9 +14,6 @@ use Illuminate\Http\Request;
 
 class TraceListController extends Controller
 {
-    function index(){
-		return view('tracebility.list.index');
-	}
 	function indexout(){
 		return view('tracebility.list.indexout');
 	}

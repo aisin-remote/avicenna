@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.out')
+@extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -67,7 +67,6 @@
     // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
  
     var table = $('#tabel_all').DataTable({
-        "dom":'t',
         processing: true,
         serverSide: true,
         ajax: '{{ url ("/trace/reportdetail/delivery") }}',

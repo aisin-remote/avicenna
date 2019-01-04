@@ -104,7 +104,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
-	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/list', 'TraceListController@indexout');
 	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');

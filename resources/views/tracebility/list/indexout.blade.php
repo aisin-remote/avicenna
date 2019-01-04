@@ -1,4 +1,4 @@
-@extends('adminlte::layouts.out')
+@extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
 {{ trans('adminlte_lang::message.home') }}
@@ -99,9 +99,7 @@
         serverSide: true,
         ajax: '{{ url ("/trace/view/list/casting") }}',
         columns: [
-          {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
-                 return meta.row + meta.settings._iDisplayStart + 1;
-          }},
+          {data: 'DT_Row_Index', name: 'DT_Row_Index', orderable: false, searchable: false},
           {data: 'code', name: 'code',
             render: function ( data, type, row, meta ) {
               return '<a href="{{ url ("trace/view/part/searchout") }}/'+data+'">'+data+'</a>';
