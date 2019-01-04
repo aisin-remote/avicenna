@@ -41,7 +41,11 @@ class TraceReportController extends Controller
 
     $list           = avi_trace_casting::select('line')->groupby('line');
     return Datatables::of($list)
+            ->addColumn('date', function($list) {
 
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            return  $date;
+                        })
             ->addColumn('shift_1', function($list) {
                             $date       = \Carbon\Carbon::now()->format('Y-m-d');
                             $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
@@ -81,8 +85,31 @@ class TraceReportController extends Controller
                             }
                         })
             ->addColumn('total', function($list) {
-                            $total = avi_trace_casting::where('line', $list->line)->where('date', date('Y-m-d'))->count();
-                            return $total;
+
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            $yesterday  = \Carbon\Carbon::yesterday()->format('Y-m-d');
+                            $now        = \Carbon\Carbon::now();
+
+                            $start1     = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
+                            $end1       = \Carbon\Carbon::createFromTimestamp(strtotime($date . '23:59:59'));
+
+                            $start2     = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '06:00:00'));
+                            $end2       = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '23:59:59'));
+
+                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '00:00:00'));
+                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '05:59:59'));
+
+                            if ($now > $start && $now < $end ) {
+
+                                $shift_a    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start2)->where('created_at','<',$end2)->count();
+                                $shift_b    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+
+                                return  $shift_a + $shift_b ;
+                            }else{
+                                $shift_3    = avi_trace_casting::where('line', $list->line)->where('created_at','>',$start1)->where('created_at','<',$end1)->count();
+                                return  $shift_3 ;
+                            }
+
                         })
 
             ->addIndexColumn()
@@ -92,11 +119,17 @@ class TraceReportController extends Controller
     public function machiningAjaxdata(){
 
     $list           = avi_trace_machining::select('line')->groupby('line');
+
     return Datatables::of($list)
+            ->addColumn('date', function($list) {
+
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            return  $date;
+                        })
             ->addColumn('shift_1', function($list) {
                             $date       = \Carbon\Carbon::now()->format('Y-m-d');
-                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
-                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '14:14:59'));
+                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date  . ' 06:00:00'));
+                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date  . ' 14:14:59'));
                             $shift_1    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
                             return  $shift_1;
                         })
@@ -132,8 +165,29 @@ class TraceReportController extends Controller
                             }
                         })
             ->addColumn('total', function($list) {
-                            $total = avi_trace_machining::where('line', $list->line)->where('date', date('Y-m-d'))->count();
-                            return $total;
+                            $date       = \Carbon\Carbon::now()->format('Y-m-d');
+                            $yesterday  = \Carbon\Carbon::yesterday()->format('Y-m-d');
+                            $now        = \Carbon\Carbon::now();
+
+                            $start1     = \Carbon\Carbon::createFromTimestamp(strtotime($date . '06:00:00'));
+                            $end1       = \Carbon\Carbon::createFromTimestamp(strtotime($date . '23:59:59'));
+
+                            $start2     = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '06:00:00'));
+                            $end2       = \Carbon\Carbon::createFromTimestamp(strtotime($yesterday . '23:59:59'));
+
+                            $start      = \Carbon\Carbon::createFromTimestamp(strtotime($date . '00:00:00'));
+                            $end        = \Carbon\Carbon::createFromTimestamp(strtotime($date . '05:59:59'));
+
+                            if ($now > $start && $now < $end ) {
+
+                                $shift_a    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start2)->where('created_at','<',$end2)->count();
+                                $shift_b    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start)->where('created_at','<',$end)->count();
+
+                                return  $shift_a + $shift_b ;
+                            }else{
+                                $shift_3    = avi_trace_machining::where('line', $list->line)->where('created_at','>',$start1)->where('created_at','<',$end1)->count();
+                                return  $shift_3 ;
+                            }
                         })
             ->addIndexColumn()
             ->make(true);
@@ -159,5 +213,103 @@ class TraceReportController extends Controller
             ->addIndexColumn()
             ->make(true);
         
+    }
+
+    public function getAjaxFilterMachiningDetail($start_date, $end_date){
+
+    $list           = avi_trace_machining::select('line','date')
+    ->where('date' , '>=' ,  $start_date )
+    ->where('date' , '<=' ,  $end_date )
+    ->groupby('line','date')
+    ->orderby('line')
+    ->orderby('date')
+    ->get();
+
+    return Datatables::of($list)
+                
+            ->addColumn('shift_1', function($list){
+                                
+                            $temp       = avi_trace_machining::where('line', $list->line)->where('created_at','>=',$list->date.' 06:00:00')->where('created_at','<=',$list->date. ' 14:14:59')->count();      
+                            
+                            return  $temp;
+                        })
+            ->addColumn('shift_2', function($list){
+                            $temp       = avi_trace_machining::where('line', $list->line)->where('created_at','>=',$list->date.' 14:15:00')->where('created_at','<=',$list->date. ' 22:14:59')->count();        
+                            
+                            return  $temp;
+                        })
+            ->addColumn('shift_3', function($list){
+                           
+                            $besok = new \DateTime($list->date. ' 05:59:59');
+
+                            $besok->modify('+1 day');
+
+                            $temp       = avi_trace_machining::where('line', $list->line)->where('created_at','>=',$list->date.' 22:15:00')->where('created_at','<=',$besok)->count();       
+                            
+                            return  $temp;
+                        })
+            ->addColumn('total', function($list) {
+                            $besok = new \DateTime($list->date. ' 05:59:59');
+
+                            $besok->modify('+1 day');
+
+                            $total = avi_trace_machining::where('line', $list->line)
+                            ->where('created_at','>=',$list->date.' 06:00:00')
+                            ->where('created_at','<=',$besok)
+                            ->count();
+                            return $total;
+                        })
+
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function getAjaxFilterCastingDetail($start_date, $end_date){
+
+    $list           = avi_trace_casting::select('line','date')
+    ->where('date' , '>=' ,  $start_date )
+    ->where('date' , '<=' ,  $end_date )
+    ->groupby('line','date')
+    ->orderby('line')
+    ->orderby('date')
+    ->get();
+
+    return Datatables::of($list)
+                
+            ->addColumn('shift_1', function($list){
+                                
+                            $temp       = avi_trace_casting::where('line', $list->line)->where('created_at','>=',$list->date.' 06:00:00')->where('created_at','<=',$list->date. ' 14:14:59')->count();      
+                            
+                            return  $temp;
+                        })
+            ->addColumn('shift_2', function($list){
+                            $temp       = avi_trace_casting::where('line', $list->line)->where('created_at','>=',$list->date.' 14:15:00')->where('created_at','<=',$list->date. ' 22:14:59')->count();        
+                            
+                            return  $temp;
+                        })
+            ->addColumn('shift_3', function($list){
+                           
+                            $besok = new \DateTime($list->date. ' 05:59:59');
+
+                            $besok->modify('+1 day');
+
+                            $temp       = avi_trace_casting::where('line', $list->line)->where('created_at','>=',$list->date.' 22:15:00')->where('created_at','<=',$besok)->count();       
+                            
+                            return  $temp;
+                        })
+            ->addColumn('total', function($list) use($start_date, $end_date){
+                    $besok = new \DateTime($list->date. ' 05:59:59');
+
+                    $besok->modify('+1 day');
+
+                    $total = avi_trace_casting::where('line', $list->line)
+                    ->where('created_at','>=',$list->date.' 06:00:00')
+                    ->where('created_at','<=',$besok)
+                    ->count();
+                    return $total;
+                })
+
+            ->addIndexColumn()
+            ->make(true);
     }
 }

@@ -114,12 +114,13 @@ class StockMutationController extends Controller
 
 	    $date = \Carbon\Carbon::now()->format('Y-m-d');
 	    $date2 = \Carbon\Carbon::yesterday()->format('Y-m-d');
-	    $part = avi_mutations::select('back_number','part_number','part_name','desc', DB::raw('Sum(quantity) as total_qty'))
+	    $part = avi_mutations::select('back_number','mutation_date','part_number','part_name','desc', DB::raw('Sum(quantity) as total_qty'))
 	    			->join('avi_mutation_types','code','mutation_code')
 	    			->where('avi_mutations.part_number',$part_number)
 	    			->where('mutation_date' , '<=' ,  $date )
 	    			->where('mutation_date' , '>' ,  $date2 )
-	    			->groupby('back_number','mutation_code','part_number','part_name','desc');
+	    			->groupby('back_number','mutation_date', 'mutation_code', 'part_number','part_name','desc')
+	    			->orderBy('mutation_date');
 	    			
 	    // return $part;
 	    return Datatables::of($part)
@@ -172,12 +173,13 @@ class StockMutationController extends Controller
 	public function getAjaxDetailFilter($part_number, $start_date, $end_date)
 	{	
 	    $date = \Carbon\Carbon::now()->format('Y-m-d');
-	    $part = avi_mutations::select('back_number','part_number','part_name','desc', DB::raw('Sum(quantity) as total_qty'))
+	    $part = avi_mutations::select('back_number','mutation_date','part_number','part_name','desc', DB::raw('Sum(quantity) as total_qty'))
 	    			->join('avi_mutation_types','code','mutation_code')
 	    			->where('avi_mutations.part_number',$part_number)
 	    			->where('mutation_date' , '>=' ,  $start_date )
 	    			->where('mutation_date' , '<=' ,  $end_date )
-	    			->groupby('back_number','mutation_code','part_number','part_name','desc');
+	    			->groupby('back_number','mutation_date','mutation_code','part_number','part_name','desc')
+	    			->orderBy('mutation_date');
 	    			
 	    // return $start_date;
 	    return Datatables::of($part)
