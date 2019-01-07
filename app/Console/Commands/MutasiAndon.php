@@ -52,6 +52,7 @@ class MutasiAndon extends Command
         $andon      = avi_andon::where('line','AS600')->first();
         $part_number = avi_part_production::select('*')
         ->join('avi_andon_details','avi_part_productions.back_number', '=', 'avi_andon_details.back_no')
+        ->join('avi_parts','avi_part_productions.part_number','=','avi_parts.part_number')
         ->where('avi_andon_details.word', $andon->word)
         ->first();
 
@@ -82,6 +83,7 @@ class MutasiAndon extends Command
                 $mutation->mutation_code     = '133';
                 $mutation->part_number       = $part_number->part_number;
                 $mutation->back_number       = $part_number->back_number;
+                $mutation->part_name         = $part_number->part_name;
                 $mutation->store_location    = 'FG01';
                 $mutation->quantity          = $andon->actual_qty;
                 if ($mutation->quantity == 0) {
@@ -112,6 +114,7 @@ class MutasiAndon extends Command
                     $mutation->mutation_code     = '133';
                     $mutation->part_number       = $part_number->part_number;
                     $mutation->back_number       = $part_number->back_number;
+                    $mutation->part_name         = $part_number->part_name;
                     $mutation->store_location    = 'FG01';
                     $mutation->quantity          = $andon->actual_qty - $andon->buffer;
                     if ($mutation->quantity == 0) {
@@ -137,6 +140,7 @@ class MutasiAndon extends Command
                     echo "kondisi beda";
                     $part_number1 = avi_part_production::select('*')
                     ->join('avi_andon_details','avi_part_productions.back_number', '=', 'avi_andon_details.back_no')
+                    ->join('avi_parts','avi_part_productions.part_number','=','avi_parts.part_number')
                     ->where('avi_andon_details.word', $detail->word)
                     ->first();
 
@@ -145,6 +149,7 @@ class MutasiAndon extends Command
                     $mutation->mutation_code     = '133';
                     $mutation->part_number       = $part_number1->part_number;
                     $mutation->back_number       = $part_number1->back_number;
+                    $mutation->part_name         = $part_number1->part_name;
                     $mutation->store_location    = 'FG01';
                     $mutation->quantity          = $detail->value_reg - $detail->buffer;
                     $mutation->uom_code          = 'PCS';
@@ -168,6 +173,7 @@ class MutasiAndon extends Command
                     $mutation2->mutation_code     = '133';
                     $mutation2->part_number       = $part_number->part_number;
                     $mutation2->back_number       = $part_number->back_number;
+                    $mutation2->part_name         = $part_number->part_name;
                     $mutation2->store_location    = 'FG01';
                     $mutation2->quantity          = $back_no->value_reg - $back_no->buffer ;
                     $mutation2->uom_code          = 'PCS';
