@@ -23,4 +23,9 @@ class avi_andon extends Model
     public function running() {
         return $this->belongsTo('App\Models\Avicenna\avi_running_model', 'line', 'line_number');
     }
+    public function test() {
+        $line = avi_andon_detail::select('*')
+        ->join('avi_andons','avi_andon_details.word', '=', 'avi_andons.word');
+        return $line ; 
+    }
 }
