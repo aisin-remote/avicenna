@@ -91,7 +91,7 @@
             <div id="delivery" class="form-group">
                 <button id="btnOEM" value="OEM" type="button" class="btn btn-block btn-primary" onclick="func_change_delivery(this);">OEM</button>
                 <button id="btnGNP" value="GNP" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">GNP</button>
-                <button id="btnGNP" value="DANDORI" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">DANDORI</button>
+                <button id="btnDAN" value="DANDORY" type="button" class="btn btn-block btn-default" onclick="func_change_delivery(this);">DANDORY</button>
                 <input id="delivery_type" value="OEM" type="hidden"></input>
             </div>
 
