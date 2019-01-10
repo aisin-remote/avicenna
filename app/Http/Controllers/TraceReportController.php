@@ -26,7 +26,7 @@ class TraceReportController extends Controller
     		$model 			= $part->product;
     		$part_name 		= $part->part_name;
 
-    		$file->setActiveSheetIndex(0)->setCellValue('A2', $id_product);
+    		$file->setActiveSheetIndex(0)->setCellValue('A2', '*'.$id_product.'*');
     		$file->setActiveSheetIndex(0)->setCellValue('C9', $id_product);
     		$file->setActiveSheetIndex(0)->setCellValue('C10', $part_number);
     		$file->setActiveSheetIndex(0)->setCellValue('C11', $model);
