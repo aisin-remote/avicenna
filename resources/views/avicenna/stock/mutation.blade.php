@@ -45,6 +45,16 @@
                         <input type="text" class="form-control pull-right" id="end_date" value="{{ date('Y-m-d') }}">
                         
                     </div>
+                    <label>Line:</label>
+                    <div class="input-group">
+                        <select id="line" class="form-control">
+                            
+                                    <option value="ALL"> ALL </option>
+                                    <option value="AS600"> AS600 </option>
+                                    <option value="AS523"> AS523 </option>
+                            
+                        </select>
+                    </div>
                     <br>
                     <button type="button" class="btn btn-success" id="buttonfilter"> Filter </button>
                 <!-- /.input group -->
@@ -178,6 +188,7 @@
     $('#buttonfilter').on('click', function(e){
            var start_date = $('#start_date').val();
            var end_date = $('#end_date').val();
+           var line = $('#line' ).val();
            var d1 = Date.parse(start_date);
            var d2 = Date.parse(end_date);
            if (start_date == '' || end_date == '') {
@@ -186,7 +197,7 @@
             alert('Start date harus lebih lampau dari end date');
            }
            else {
-                table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date).load(); 
+                table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date+'/'+line).load(); 
                 $("#box-title")[0].innerHTML = "Inventory Summary - From <strong>"+start_date+"</strong> To <strong>"+end_date+"</strong>";
             }
         });

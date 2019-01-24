@@ -15,7 +15,7 @@
 Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
 Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
 Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna\StockMutationController@getAjaxDetailHead');
-Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
+Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}/{line}','Avicenna\StockMutationController@getAjaxFilter');
 Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
 
 // dev-1.1.0, Ferry, 20190103, Dengan otentikasi
