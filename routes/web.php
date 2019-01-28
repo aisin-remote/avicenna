@@ -208,3 +208,4 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 
 	//Export
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
+	Route::get('/test', 'HomeController@test');
