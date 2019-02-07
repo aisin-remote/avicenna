@@ -104,6 +104,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
+	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/listout', 'TraceListController@indexout');
 	Route::get('/trace/view/list', 'TraceListController@indexout');
 	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
@@ -189,12 +191,7 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
-	Route::get('/trace/view/list', 'TraceListController@index');
-	Route::get('/trace/view/listout', 'TraceListController@indexout');
-	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
-	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
-	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
-	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
+	
 
 	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
 	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
@@ -208,3 +205,8 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 
 	//Export
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
+
+	//trial
+	Route::get('/andon/view', 'AndonTrial@index');
+	Route::get('/andon/view/list', 'AndonTrial@getData');
+	// Route::get('/andon/view/list/all', 'DashboardController@getDataAll');
