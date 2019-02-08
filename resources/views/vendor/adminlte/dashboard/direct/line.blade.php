@@ -11,14 +11,24 @@
 
         <?php
           // special manipulation in looping
-          if ($andon->actual_qty > 5) {
-            $class= '#bf4848';
+          if ($andon->status == 1) {
+            $class= '#bf4848'; //merah
+            $text= '#ffffff'; //putih
           }
-          elseif ($andon->actual_qty == 5) {
-            $class = '#5daa68';
+          elseif ($andon->status == 2) {
+            $class = '#5daa68'; //hijau
+            $text= '#ffffff'; //putih
           }
-          elseif ($andon->actual_qty < 5) {
-            $class = '#ffff00' ;
+          elseif ($andon->status == 3) {
+            $class = '#ffff00' ; //kuning
+            $text= '#000000'; //hitam
+          }elseif ($andon->status == 4) {
+            $class = '#ffffff'; //putih
+            $text= '#000000'; //hitam
+          }
+          elseif ($andon->status == 5) {
+            $class = '#000000'; //hitam
+            $text = '#ffffff'; //putih
           }
         ?>
 
@@ -34,7 +44,7 @@
                 <!-- Message. Default to the left -->
                 <div class="table-bordered" >
                   <div  border="1" style="border-color: white ">
-                    <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: {{$class}} ; color: #ffffff ; padding-right: : 10px ; padding-left: 10px; "> {{ $andon->line }} </div>
+                    <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 10px ; padding-left: 10px; "> {{ $andon->line }} </div>
                   </div>
                 </div>
                 <!-- /.direct-chat-msg -->

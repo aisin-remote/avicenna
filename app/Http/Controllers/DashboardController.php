@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Avicenna\avi_dashboard_genbas;
 use App\Models\Avicenna\avi_andon_target;
 use App\Models\Avicenna\avi_andon;
+use App\Models\Avicenna\avi_andon_color;
+use App\Models\Avicenna\avi_andon_status;
 
 
 
@@ -68,7 +70,7 @@ class DashboardController extends Controller
         return view('adminlte::dashboard.direct.andon2' , compact('andons'));
     }
     function direct_line(){
-        $lines = avi_andon::select('*')->get();
+        $lines = avi_andon_status::select('*')->get();
         return view('adminlte::dashboard.direct.line' , compact('lines'));
     }
 
