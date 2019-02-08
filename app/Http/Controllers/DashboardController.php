@@ -67,5 +67,9 @@ class DashboardController extends Controller
 
         return view('adminlte::dashboard.direct.andon2' , compact('andons'));
     }
+    function direct_line(){
+        $lines = avi_andon::select('*')->get();
+        return view('adminlte::dashboard.direct.line' , compact('lines'));
+    }
 
 }
