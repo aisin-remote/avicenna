@@ -207,6 +207,7 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
 
 	//trial
-	Route::get('/andon/view', 'AndonTrial@index');
+	Route::get('/andon/view', 'AndonTrial@index2');
 	Route::get('/andon/view/list', 'AndonTrial@getData');
+	Route::get('/andon/view/status', 'AndonTrial@getStatus');
 	// Route::get('/andon/view/list/all', 'DashboardController@getDataAll');

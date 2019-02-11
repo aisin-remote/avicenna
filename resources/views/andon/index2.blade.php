@@ -43,7 +43,7 @@
 </div>
 <div class="modal fade" id="modal-insert" role="dialog">
   <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
-    <div class="modal-content" style="height: 450px; position: sticky;">
+    <div class="modal-content" style="height: 100%">
       <div class="modal-header" style="background-color: #bf1007;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -60,23 +60,25 @@
                     <div class="col-md-3" >
                       <div class="row">
                         <div>
-                          <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Emergency_Light.gif" />
+                          <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Emergency_Light.gif">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
-                        <table id="tabel_status" class="table table-bordered table-striped" style="width: 100%">
-                          <thead>
-                            <tr>
-                              <th>LINE</th>
-                              <th>Status</th>
-                              <th>PIC LDR</th>
-                              <th>PIC SPV</th>
-                              <th>PIC MGR</th>
-                              <th>PIC GM</th>
-                            </tr>
-                          </thead>
-                        </table>
+                      @foreach ($p as $view)
+                        <b><font size="3" color="#bf1007">LINE : {{ $view->line }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font size="3" color="#bf1007">STATUS : {{ $view->status }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font size="3" color="#bf1007">PIC LDR : {{ $view->pic_ldr }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font size="3" color="#bf1007">PIC SPV : {{ $view->pic_spv }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font size="3" color="#bf1007">PIC MGR : {{ $view->pic_mgr }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font size="3" color="#bf1007">PIC GM : {{ $view->pic_gm }}</font></b>
+                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                      @endforeach
                     </div>
                 </div>
               </div>
