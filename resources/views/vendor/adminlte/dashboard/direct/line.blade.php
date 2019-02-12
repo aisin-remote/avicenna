@@ -117,7 +117,7 @@
                     <div class="col-md-3" >
                       <div class="row">
                         <div>
-                          <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Emergency_Light.gif">
+                          <img src="/images/emergency.gif">
                         </div>
                       </div>
                     </div>
@@ -190,11 +190,6 @@
       x[slideIndex-1].style.display = "block"; 
       setTimeout(carousel, 2000); 
     }
-    // var modal = $("$modal-insert");
-    // var select = document.getElementById('test');
-    // select.onchange = function(){
-    //     modal.modal('show');
-    // };
 
   </script>
 
