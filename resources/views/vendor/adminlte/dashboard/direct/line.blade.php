@@ -103,7 +103,9 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <center><b><font size="7" color="white">WARNING !</font></b></center>          
+        <center><b><font size="7" color="white">WARNING !</font></b><br>
+              <b><font size="4" color="white" face="Courier New">BODY PLANT</font></b>
+        </center>          
       </div>
       <div class="modal-body">
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
@@ -120,20 +122,23 @@
                       </div>
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
-                      @foreach ($warning_status as $status)
-                        <b><font size="3" color="#bf1007">LINE : {{ $status->line }}</font></b>
+                      <!-- @foreach ($warning_status as $status) -->
+                      <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
+                        <b><font size="4" color="#bf1007">LINE : {{ $status->line }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="3" color="#bf1007">STATUS : {{ $status->status }}</font></b>
+                        <b><font size="4" color="#bf1007">STATUS : STOP LINE</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="3" color="#bf1007">PIC LDR : {{ $status->pic_ldr }}</font></b>
+                        <b><font size="4" color="#bf1007">PIC LDR : {{ $status->pic_ldr }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="3" color="#bf1007">PIC SPV : {{ $status->pic_spv }}</font></b>
+                        <b><font size="4" color="#bf1007">PIC SPV : {{ $status->pic_spv }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="3" color="#bf1007">PIC MGR : {{ $status->pic_mgr }}</font></b>
+                        <b><font size="4" color="#bf1007">PIC MGR : {{ $status->pic_mgr }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="3" color="#bf1007">PIC GM : {{ $status->pic_gm }}</font></b>
+                        <b><font size="4" color="#bf1007">PIC GM : {{ $status->pic_gm }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                      @endforeach
+                      </div>
+                        
+                      <!-- @endforeach -->
                     </div>
                 </div>
               </div>
@@ -171,6 +176,20 @@
         });
     });
 
+    var slideIndex = 0;
+    carousel();
+
+    function carousel() {
+      var i;
+      var x = document.getElementsByClassName("mySlides");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none"; 
+      }
+      slideIndex++;
+      if (slideIndex > x.length) {slideIndex = 1} 
+      x[slideIndex-1].style.display = "block"; 
+      setTimeout(carousel, 2000); 
+    }
     // var modal = $("$modal-insert");
     // var select = document.getElementById('test');
     // select.onchange = function(){
