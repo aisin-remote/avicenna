@@ -43,21 +43,19 @@ class MutasiAndon extends Command
      */
     public function handle()
     {
-        $lines = avi_andon::select('back_number')->get();
-
+        $lines = avi_andon::select('line as garis')->get();
         foreach ($lines as $line) {
             
                 $now        = \Carbon\Carbon::now();
                 if($now->hour <= 5){ 
                     $now = \Carbon\Carbon::yesterday()->format('Y-m-d');
                 }
-                $detail     = avi_andon_detail::where('line', $line->back_number)->whereRaw('DATE(updated_at)', $now)->orderBy('updated_at', 'DESC')->first();
-
-                $andon      = avi_andon::where('line', $line->back_number)->first();
+                $detail     = avi_andon_detail::where('line', $line->garis)->whereRaw('DATE(updated_at)', $now)->orderBy('updated_at', 'DESC')->first();
+                $andon      = avi_andon::select('*','line as garis')->where('line', $line->garis)->first();
                 $part_number = avi_part_production::select('*')
                 ->join('avi_andon_details','avi_part_productions.back_number', '=', 'avi_andon_details.back_no')
                 ->join('avi_parts','avi_part_productions.part_number','=','avi_parts.part_number')
-                ->where('avi_andon_details.word', ''.$andon->word_awal.''.$andon->word.'')
+                ->where('avi_andon_details.back_no', $andon->back_number)
                 ->first();
 
                 //reset buffer
@@ -70,8 +68,8 @@ class MutasiAndon extends Command
                 $end3       = \Carbon\Carbon::createFromTimestamp(strtotime($now1 . '22:15:00'));
 
                 if ($start1 <= $now && $now <= $end1 || $start2 <= $now && $now <= $end2 || $start3 <= $now && $now <= $end3 ) {
-                    $detail = DB::table('avi_andon_details')->where('line', $line->back_number )->update(array('buffer' => 0, 'updated_at' => NULL));
-                    $andon  = DB::table('avi_andons')->where('line', $line->back_number )->update(array('buffer' => 0, 'updated_at' => NULL));
+                    $detail = DB::table('avi_andon_details')->where('line', $line->garis )->update(array('buffer' => 0, 'updated_at' => NULL));
+                    $andon  = DB::table('avi_andons')->where('line', $line->garis )->update(array('buffer' => 0, 'updated_at' => NULL));
                     echo "reset";
                     return;
                 }
@@ -80,8 +78,7 @@ class MutasiAndon extends Command
                     DB::beginTransaction();
 
                     if (!$detail) { //element kosong
-                        echo "".$line->back_number." kondisi satu ";
-
+                        echo "".$line->garis." kondisi satu ";
                         $mutation                    = new avi_mutations();
                         $mutation->mutation_date     = $now;
                         $mutation->mutation_code     = '133';
@@ -90,28 +87,32 @@ class MutasiAndon extends Command
                         $mutation->part_name         = $part_number->part_name ? $part_number->part_name : 'Part Name Not Found';
                         $mutation->store_location    = 'FG01';
                         $mutation->quantity          = $andon->actual_qty;
-                        if ($mutation->quantity == 0) {
-                            DB::rollBack();
-                            return "qty 0";
-                        }
                         $mutation->uom_code          = 'PCS';
                         $mutation->npk               = '000000';
                         $mutation->flag_confirm      = 0;
-                        $mutation->save();
+                        if ($mutation->quantity == 0) {
+                                echo "qty 0";
+                        }else{
+                                $mutation->save();
+                        }
 
                         $andon->buffer               = $andon->actual_qty;
                         $andon->save();
 
-                        $dtl                         = avi_andon_detail::where('word', ''.$andon->word_awal.''.$andon->word.'')->first();
-                        $dtl->updated_at             = \Carbon\Carbon::now();
+                        $dtl                         = avi_andon_detail::where('back_no', $andon->back_number)->first();
                         $dtl->buffer                 = $dtl->value_reg;
+                        if ($mutation->quantity == 0) {
+                            echo "qty 0";
+                        }else{
+                            $dtl->updated_at         = \Carbon\Carbon::now();
+                        }
                         $dtl->save();
                     }
                     else{ //ketemu back no di detail
-                        echo "".$line->back_number." kondisi dua";
+                        echo "".$line->garis." kondisi dua";
 
-                        if ($detail->word == ''.$andon->word_awal.''.$andon->word.'' ) {
-                            echo "".$line->back_number." kondisi sama";
+                        if ($detail->back_no == $andon->back_number ) {
+                            echo "".$line->garis." kondisi sama";
 
                             $mutation                    = new avi_mutations();
                             $mutation->mutation_date     = $now;
@@ -121,19 +122,19 @@ class MutasiAndon extends Command
                             $mutation->part_name         = $part_number->part_name ? $part_number->part_name : 'Part Name Not Found';
                             $mutation->store_location    = 'FG01';
                             $mutation->quantity          = $andon->actual_qty - $andon->buffer;
-                            if ($mutation->quantity == 0) {
-                                DB::rollBack();
-                                return "qty 0";
-                            }
                             $mutation->uom_code          = 'PCS';
                             $mutation->npk               = '000000';
                             $mutation->flag_confirm      = 0;
-                            $mutation->save();
+                            if ($mutation->quantity == 0) {
+                                echo "qty 0";
+                            }else{
+                                $mutation->save();
+                            }
 
                             $andon->buffer               = $andon->actual_qty;
                             $andon->save();
 
-                            $dtl                         = avi_andon_detail::where('word',''.$andon->word_awal.''.$andon->word.'')->first();
+                            $dtl                         = avi_andon_detail::where('back_no',$andon->back_number)->first();
                             $dtl->updated_at             = \Carbon\Carbon::now();
                             $dtl->buffer                 = $dtl->value_reg;
                             $dtl->save();
@@ -141,11 +142,11 @@ class MutasiAndon extends Command
 
                         }
                         else{
-                            echo "".$line->back_number." kondisi beda";
+                            echo "".$line->garis." kondisi beda";
                             $part_number1 = avi_part_production::select('*')
                             ->join('avi_andon_details','avi_part_productions.back_number', '=', 'avi_andon_details.back_no')
                             ->join('avi_parts','avi_part_productions.part_number','=','avi_parts.part_number')
-                            ->where('avi_andon_details.word', $detail->word)
+                            ->where('avi_andon_details.back_no', $detail->back_no)
                             ->first();
 
                             $mutation                    = new avi_mutations();
@@ -156,12 +157,17 @@ class MutasiAndon extends Command
                             $mutation->part_name         = $part_number1->part_name ? $part_number1->part_name : 'Part Name Not Found';
                             $mutation->store_location    = 'FG01';
                             $mutation->quantity          = $detail->value_reg - $detail->buffer;
+                            if ($mutation->quantity == 0) {
+                                echo "qty 0";
+                            }else{
+                                $mutation->save();
+                            }
                             $mutation->uom_code          = 'PCS';
                             $mutation->npk               = '000000';
                             $mutation->flag_confirm      = 0;
                             $mutation->save();
 
-                            $dtl                         = avi_andon_detail::where('word', $detail->word)->first();
+                            $dtl                         = avi_andon_detail::where('back_no', $detail->back_no)->first();
                             $dtl->updated_at             = \Carbon\Carbon::now();
                             $dtl->buffer                 = $dtl->value_reg;
                             $dtl->save();
@@ -170,7 +176,7 @@ class MutasiAndon extends Command
                             $andon->save();
 
 
-                            $back_no                     = avi_andon_detail::where('word', ''.$andon->word_awal.''.$andon->word.'')->first();
+                            $back_no                     = avi_andon_detail::where('back_no', $andon->back_number)->first();
 
                             $mutation2                    = new avi_mutations();
                             $mutation2->mutation_date     = $now;
@@ -183,9 +189,13 @@ class MutasiAndon extends Command
                             $mutation2->uom_code          = 'PCS';
                             $mutation2->npk               = '000000';
                             $mutation2->flag_confirm      = 0;
-                            $mutation2->save();
+                            if ($mutation2->quantity == 0) {
+                                return "qty 0";
+                            }else{
+                                $mutation2->save();
+                            }
 
-                            $dtl                         = avi_andon_detail::where('word', ''.$andon->word_awal.''.$andon->word.'')->first();
+                            $dtl                         = avi_andon_detail::where('back_no', $andon->back_number)->first();
                             $dtl->updated_at             = \Carbon\Carbon::now()->addSecond();
                             $dtl->buffer                 = $dtl->value_reg;
                             $dtl->save();
