@@ -22,7 +22,7 @@ class StockMutationController extends Controller
     function getView(){
     	$lines = avi_part_dashboard::select('line')->groupby('line')->get();
     	// return $lines;
-		return view('avicenna.stock.mutation')->with('lines');
+		return view('avicenna.stock.mutation', compact('lines'));
 	}
 
     function getViewFilter($part_number, $store_location, $date_from, $date_to){

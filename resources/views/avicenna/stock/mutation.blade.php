@@ -46,16 +46,17 @@
                         
                     </div>
                     <label>Line:</label>
-                    <div class="input-group">
-                        <select id="line" class="form-control">
+                    <div>
+                        <select id="line" class="form-control pull-right" style="width: 100% ">
                             
                                     <option value="ALL"> ALL </option>
-                                    <option value="AS600"> AS600 </option>
-                                    <option value="AS523"> AS523 </option>
+                                    @foreach( $lines as $line)
+                                    <option value="{{$line->line}}"> {{$line->line}} </option>
+                                    @endforeach
                             
                         </select>
                     </div>
-                    <br>
+                    <br><br><br>
                     <button type="button" class="btn btn-success" id="buttonfilter"> Filter </button>
                 <!-- /.input group -->
                 </form>
