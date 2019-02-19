@@ -12,14 +12,17 @@ use Yajra\Datatables\Datatables;
 use App\Models\Avicenna\avi_mutations;
 use App\Models\Avicenna\avi_parts;
 use App\Models\Avicenna\avi_opname;
-use \Carbon;
-
+use App\Models\Avicenna\avi_andon_detail;
+use App\Models\Avicenna\avi_part_dashboard;
+use \Carbon; 
 use DB;
 class StockMutationController extends Controller
 {
     //
     function getView(){
-		return view('avicenna.stock.mutation');
+    	$lines = avi_part_dashboard::select('line')->groupby('line')->get();
+    	// return $lines;
+		return view('avicenna.stock.mutation', compact('lines'));
 	}
 
     function getViewFilter($part_number, $store_location, $date_from, $date_to){
@@ -126,12 +129,20 @@ class StockMutationController extends Controller
 	    return Datatables::of($part)
 	    ->make(true);
 	}
-	public function getAjaxFilter($start_date, $end_date)
+	public function getAjaxFilter($start_date, $end_date, $line)
 	{	
-		    $mutation = avi_mutations::select('avi_mutations.part_number','avi_mutations.store_location')
+			if ($line == '' || $line == 'ALL') {
+				$mutation = avi_mutations::select('avi_mutations.part_number','avi_mutations.store_location')
 	    				->join('avi_part_dashboard', 'avi_mutations.part_number', '=', 'avi_part_dashboard.part_number')
 	    				->groupby('avi_mutations.part_number')
 	    				->groupby('avi_mutations.store_location');
+			}else{
+				$mutation = avi_mutations::select('avi_mutations.part_number','avi_mutations.store_location')
+	    				->join('avi_part_dashboard', 'avi_mutations.part_number', '=', 'avi_part_dashboard.part_number')
+	    				->where('avi_part_dashboard.line', $line)
+	    				->groupby('avi_mutations.part_number')
+	    				->groupby('avi_mutations.store_location');
+			}
 
 		    return Datatables::of($mutation)
 		        ->addColumn('details_url', function($mutation) use($start_date , $end_date) {

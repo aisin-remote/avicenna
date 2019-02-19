@@ -10,6 +10,8 @@ use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
 use Response;
 use DB;
+use App\Mail\TmminReport;
+use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 
@@ -233,15 +235,21 @@ class TraceListController extends Controller
 
     			$a++;
     		}
-    		
-    		
 
-    		// $file->setActiveSheetIndex(0)->setCellValue('A2', '*'.$id_product.'*');
-    		// $file->setActiveSheetIndex(0)->setCellValue('A2', $code);
-    		// $file->setActiveSheetIndex(0)->setCellValue('C10', $part_number);
-    		// $file->setActiveSheetIndex(0)->setCellValue('C11', $model);
-    		// $file->setActiveSheetIndex(0)->setCellValue('A12', $part_name);
-
-		})->setFilename("test")->export('csv');
+		})->setFilename("tracebility")->export('csv');
     }
+
+    function tes(){ 
+			
+		$tmmin = array('name'=>'', 'body' => 'Test mail');
+		$penerima = array('handika@aiia.co.id','alliq@aiia.co.id','audi.r@aiia.co.id','fachrul@aiia.co.id','m.nurbaitullah@aiia.co.id');
+		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima) {
+		$message->to('imam@aiia.co.id')
+					->subject('Traceability')
+					->attach('../storage/traceability/print_part_tmiin.csv');
+		$message->cc($penerima);
+		$message->from('aisinbisa@aiia.co.id');
+		});
+		// Mail::to('handika@aiia.co.id')->send(new TmminReport($tmmin));
+	}
 }
