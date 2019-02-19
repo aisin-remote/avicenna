@@ -151,7 +151,8 @@ class ViewTraceController extends Controller
 				$casting->date = "--";
 				$casting->location = "02 Lastman Casting" ;
 			}
-		   $arrayku=array($create, $casting, $machining, $delivery); 
+		   $arrayku=array($create, $casting, $machining, $delivery);
+		   
 		   return Datatables::of($arrayku)
 		        ->addColumn('time', function($arrayku) {
 		        		$b = $arrayku->created_at;

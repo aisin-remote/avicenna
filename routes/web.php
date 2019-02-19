@@ -208,3 +208,5 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 
 	//Export
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
+
+	Route::get('/trace/export/part', 'TraceListController@tracepartreport'); //dev-1.1.0, Audi 20190218, Export Part
