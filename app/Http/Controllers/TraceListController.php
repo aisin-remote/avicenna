@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_delivery;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
@@ -212,38 +213,41 @@ class TraceListController extends Controller
 
     		$a = "2";
     		foreach ($query as $queries){
-    			$code_casting	= $queries->code_casting;
+    			$code_delivery	= $queries->code_delivery;
     			$line_casting	= $queries->line_casting;
     			$npk_casting	= $queries->npk_casting;
     			$date_casting	= $queries->date_casting;
     			$line_machining	= $queries->line_machining;
     			$npk_machining	= $queries->npk_machining;
     			$date_machining	= $queries->date_machining;
-    			$cycle_delivery	= $queries->cycle_delivery;
+    			$cycle_delivery	= avi_trace_cycle::select('name')->where('code',$queries->cycle_delivery)->first();
     			$npk_delivery	= $queries->npk_delivery;
     			$date_delivery	= $queries->date_delivery;
+    			$c 				= substr($queries->code_delivery, 0, 2);
+    			$part_number	= avi_trace_program_number::where('code',$c)->first();
 
-    			$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', '807J');
-    			$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', '6');
-    			$file->setActiveSheetIndex(0)->setCellValue('C'.$a.'', '5011');
-    			$file->setActiveSheetIndex(0)->setCellValue('D'.$a.'', '2');
-    			$file->setActiveSheetIndex(0)->setCellValue('E'.$a.'', $code_casting);
-    			$file->setActiveSheetIndex(0)->setCellValue('F'.$a.'', 'null');
+
+    			$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', $part_number->company_code);
+    			$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', $part_number->plant_code);
+    			$file->setActiveSheetIndex(0)->setCellValue('C'.$a.'', $part_number->supplier_code);
+    			$file->setActiveSheetIndex(0)->setCellValue('D'.$a.'', $part_number->supplier_plant);
+    			$file->setActiveSheetIndex(0)->setCellValue('E'.$a.'', $code_delivery);
+    			$file->setActiveSheetIndex(0)->setCellValue('F'.$a.'', $part_number->part_name);
     			$file->setActiveSheetIndex(0)->setCellValue('G'.$a.'', $line_casting);
     			$file->setActiveSheetIndex(0)->setCellValue('H'.$a.'', $date_casting);
     			$file->setActiveSheetIndex(0)->setCellValue('I'.$a.'', $npk_casting);
     			$file->setActiveSheetIndex(0)->setCellValue('J'.$a.'', $line_machining);
     			$file->setActiveSheetIndex(0)->setCellValue('K'.$a.'', $date_machining);
     			$file->setActiveSheetIndex(0)->setCellValue('L'.$a.'', $npk_machining);
-    			$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery);
+    			$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery->name);
     			$file->setActiveSheetIndex(0)->setCellValue('N'.$a.'', $date_delivery);
     			$file->setActiveSheetIndex(0)->setCellValue('O'.$a.'', $npk_delivery);
-    			$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', '12101-OYO40');
+    			$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', $part_number->part_number);
 
     			$a++;
     		}
 
-		})->save('csv', storage_path('tracebility'), true);
+		})->save('csv', storage_path('traceability'), true);
 
 	    $this->tes();
 		return view('tracebility.list.indexout');
@@ -252,12 +256,12 @@ class TraceListController extends Controller
     function tes(){ 
 			
 		$tmmin = array('name'=>'', 'body' => 'Test mail');
-		$penerima = array('handika@aiia.co.id','alliq@aiia.co.id','audi.r@aiia.co.id','fachrul@aiia.co.id','m.nurbaitullah@aiia.co.id','audiramadhan28@gmail.com');
-		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima) {
-		$message->to('imam@aiia.co.id')
-					->subject('Traceability');
-					// ->attach('../storage/tracebility/print_part_tmiin.csv');
-		$message->cc($penerima);
+		// $penerima = array('');
+		Mail::send('tracebility.email.index', $tmmin, function($message)  {
+		$message->to('handika@aiia.co.id')
+					->subject('Traceability')
+					->attach('../storage/traceability/print_part_tmiin.csv');
+		// $message->cc($penerima);
 		$message->from('aisinbisa@aiia.co.id');
 		});
 		// Mail::to('handika@aiia.co.id')->send(new TmminReport($tmmin));

@@ -51,7 +51,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('traceability'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL').'/storage/traceability',
             'visibility' => 'public',
         ],
         'pis' => [
