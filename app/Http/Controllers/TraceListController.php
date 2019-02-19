@@ -188,11 +188,18 @@ class TraceListController extends Controller
     	// $delivery = avi_trace_delivery::select('*')->get();
     	// $arrayku = array($casting,$machining,$delivery);
 
-    	$castings = avi_trace_casting::select('avi_trace_casting.code as code_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.line as line_casting','avi_trace_casting.date as date_casting',
-    		'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining',
-    		'avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery','avi_trace_delivery.npk as npk_delivery')
-    	->join('avi_trace_machining', 'avi_trace_casting.code', '=', 'avi_trace_machining.code')
-    	->leftjoin('avi_trace_delivery', 'avi_trace_casting.code', '=', 'avi_trace_delivery.code')
+    	// $castings = avi_trace_casting::select('avi_trace_casting.code as code_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.line as line_casting','avi_trace_casting.date as date_casting',
+    	// 	'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining',
+    	// 	'avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery','avi_trace_delivery.npk as npk_delivery')
+    	// ->join('avi_trace_machining', 'avi_trace_casting.code', '=', 'avi_trace_machining.code')
+    	// ->join('avi_trace_delivery', 'avi_trace_casting.code', '=', 'avi_trace_delivery.code')
+    	// ->get();
+
+    	$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery',
+    		'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.date as date_casting',
+    		'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining')
+    	->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
+    	->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
     	->get();
 
     	// return $castings;
@@ -201,20 +208,20 @@ class TraceListController extends Controller
 		// $a 				= substr($id_product, 0, 2);
 		// $part 			= avi_trace_program_number::select('*')->where('code', $a)->first();
 
-	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($castings){
+	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query){
 
     		$a = "2";
-    		foreach ($castings as $casting){
-    			$code_casting	= $casting->code_casting;
-    			$line_casting	= $casting->line_casting;
-    			$npk_casting	= $casting->npk_casting;
-    			$date_casting	= $casting->date_casting;
-    			$line_machining	= $casting->line_machining;
-    			$npk_machining	= $casting->npk_machining;
-    			$date_machining	= $casting->date_machining;
-    			$line_delivery	= $casting->line_delivery;
-    			$npk_delivery	= $casting->npk_delivery;
-    			$date_delivery	= $casting->date_delivery;
+    		foreach ($query as $queries){
+    			$code_casting	= $queries->code_casting;
+    			$line_casting	= $queries->line_casting;
+    			$npk_casting	= $queries->npk_casting;
+    			$date_casting	= $queries->date_casting;
+    			$line_machining	= $queries->line_machining;
+    			$npk_machining	= $queries->npk_machining;
+    			$date_machining	= $queries->date_machining;
+    			$cycle_delivery	= $queries->cycle_delivery;
+    			$npk_delivery	= $queries->npk_delivery;
+    			$date_delivery	= $queries->date_delivery;
 
     			$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', '807J');
     			$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', '6');
@@ -228,7 +235,7 @@ class TraceListController extends Controller
     			$file->setActiveSheetIndex(0)->setCellValue('J'.$a.'', $line_machining);
     			$file->setActiveSheetIndex(0)->setCellValue('K'.$a.'', $date_machining);
     			$file->setActiveSheetIndex(0)->setCellValue('L'.$a.'', $npk_machining);
-    			$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $line_delivery);
+    			$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery);
     			$file->setActiveSheetIndex(0)->setCellValue('N'.$a.'', $date_delivery);
     			$file->setActiveSheetIndex(0)->setCellValue('O'.$a.'', $npk_delivery);
     			$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', '12101-OYO40');
@@ -236,7 +243,10 @@ class TraceListController extends Controller
     			$a++;
     		}
 
-		})->setFilename("tracebility")->export('csv');
+		})->save('csv', storage_path('tracebility'), true);
+
+	    $this->tes();
+		return view('tracebility.list.indexout');
     }
 
     function tes(){ 
@@ -246,7 +256,7 @@ class TraceListController extends Controller
 		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima) {
 		$message->to('imam@aiia.co.id')
 					->subject('Traceability')
-					->attach('../storage/traceability/print_part_tmiin.csv');
+					->attach('../storage/tracebility/print_part_tmiin.csv');
 		$message->cc($penerima);
 		$message->from('aisinbisa@aiia.co.id');
 		});
