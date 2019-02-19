@@ -256,12 +256,12 @@ class TraceListController extends Controller
     function tes(){ 
 			
 		$tmmin = array('name'=>'', 'body' => 'Test mail');
-		// $penerima = array('');
-		Mail::send('tracebility.email.index', $tmmin, function($message)  {
-		$message->to('handika@aiia.co.id')
+		$penerima = array('handika@aiia.co.id', 'alliq@aiia.co.id', 'm.nurbaitullah@aiia.co.id', 'audi.r@aiia.co.id', 'fachrul@aiia.co.id'););
+		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
+		$message->to('imam@aiia.co.id')
 					->subject('Traceability')
 					->attach('../storage/traceability/print_part_tmiin.csv');
-		// $message->cc($penerima);
+		$message->cc($penerima);
 		$message->from('aisinbisa@aiia.co.id');
 		});
 		// Mail::to('handika@aiia.co.id')->send(new TmminReport($tmmin));
