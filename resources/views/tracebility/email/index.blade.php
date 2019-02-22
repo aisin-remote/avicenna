@@ -49,8 +49,10 @@
 <table class="wrapper" style="border-collapse: collapse;display: inline-block;text-align: left;width: auto;background-color: #fff;padding: 50px;margin: 40px;">
   <tr>
     <td>
-      <p class="title" style="font-weight: bold;font-size: 1.5em;margin-bottom: 30px;">Contoh Auto Email</p>
-    </td>
+      <p class="title" style="font-weight: bold;font-size: 1.5em;margin-bottom: 30px;">Auto Email Traceability</p>
+      <br>
+      <p class="title" style="font-weight: bold;font-size: 1.5em;margin-bottom: 30px;">Part dikirim tanggal {{$tanggal}}</p>
+    </td> 
   </tr>
   <tr>
   </tr>

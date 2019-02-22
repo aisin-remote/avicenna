@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\DeleteEveryMonth',
         '\App\Console\Commands\CopyAndonHourly',
         '\App\Console\Commands\MutasiAndon',
+        '\App\Console\Commands\EmailTraceability',
     ];
 
     /**
@@ -32,6 +33,8 @@ class Kernel extends ConsoleKernel
                  ->everyFiveMinutes();
         $schedule->command('Andon:Mutation')
                  ->everyFiveMinutes();
+        $schedule->command('EmailTraceability')
+                 ->hourly();
     }
 
     /**

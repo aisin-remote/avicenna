@@ -26,9 +26,6 @@
             <div class="box-header">
               <h3 class="box-title">List Product</h3>
                 <br>
-                <br>
-                <button id="exportPart" class="btn btn-success" style="padding-right: 97%;">Export</button>
-                <br><br>
                 <div>
                   <label>Select Menu list:</label>
                   <div class="input-group">
@@ -129,13 +126,6 @@
       e.preventDefault();
         var type = $('#mySelect').val();
         window.open("{{ url('trace/reportdetail/list').'/'}}"+type);
-
-      });
-
-    $('#exportPart').on('click', function(e){
-      e.preventDefault();
-        // var id_product = $('#id_product').val();
-        window.location = "{{ url('trace/export/part') }}";
 
       });
 </script>

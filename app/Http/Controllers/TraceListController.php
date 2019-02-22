@@ -184,30 +184,15 @@ class TraceListController extends Controller
 
 	public function tracepartreport()
     {	
-    	// $casting = avi_trace_casting::select('*')->get();
-    	// $machining = avi_trace_machining::select('*')->get();
-    	// $delivery = avi_trace_delivery::select('*')->get();
-    	// $arrayku = array($casting,$machining,$delivery);
-
-    	// $castings = avi_trace_casting::select('avi_trace_casting.code as code_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.line as line_casting','avi_trace_casting.date as date_casting',
-    	// 	'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining',
-    	// 	'avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery','avi_trace_delivery.npk as npk_delivery')
-    	// ->join('avi_trace_machining', 'avi_trace_casting.code', '=', 'avi_trace_machining.code')
-    	// ->join('avi_trace_delivery', 'avi_trace_casting.code', '=', 'avi_trace_delivery.code')
-    	// ->get();
-
+		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
     	$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery',
     		'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.date as date_casting',
     		'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining')
     	->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
     	->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
+    	->where('avi_trace_delivery.date', $yesterday)
+    	->where('avi_trace_delivery.customer','TMMIN')
     	->get();
-
-    	// return $castings;
-
-  //   	$code 			= $id_product;
-		// $a 				= substr($id_product, 0, 2);
-		// $part 			= avi_trace_program_number::select('*')->where('code', $a)->first();
 
 	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query){
 
@@ -254,16 +239,18 @@ class TraceListController extends Controller
     }
 
     function tes(){ 
-			
-		$tmmin = array('name'=>'', 'body' => 'Test mail');
+		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
+		$tmmin = array('tanggal' => $yesterday);
 		$penerima = array('handika@aiia.co.id', 'alliq@aiia.co.id', 'm.nurbaitullah@aiia.co.id', 'audi.r@aiia.co.id', 'fachrul@aiia.co.id');
+		// $penerima = array('audi.r@aiia.co.id');
+
 		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
-		$message->to('imam@aiia.co.id')
+		$message->to('destya.amifa@toyota.co.id', 'heri.surachman@toyota.co.id', 'harpan@aiia.co.id', 'ferry@aiia.co.id')
+		// $message->to('handika@aiia.co.id')
 					->subject('Traceability')
-					->attach('../storage/traceability/print_part_tmiin.csv');
+					->attach(storage_path('traceability/print_part_tmiin.csv'));
 		$message->cc($penerima);
 		$message->from('aisinbisa@aiia.co.id');
 		});
-		// Mail::to('handika@aiia.co.id')->send(new TmminReport($tmmin));
 	}
 }

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Http\Controllers\TraceListController;
 
 class EmailTraceability extends Command
 {
@@ -37,18 +38,12 @@ class EmailTraceability extends Command
      */
     public function handle()
     {
-        //
-    }
-    public function fire()
-    {
-        $request = Request::create($this->option('uri'), 'GET');
-        $this->info(app()['Illuminate\Contracts\Http\Kernel']->handle($request));
+        $jam_7 = \Carbon\Carbon::now();
+        if ($jam_7->hour == 8) {
+            $tracepartreport = new TraceListController;
+            return $tracepartreport->tracepartreport();
+        }
+        
     }
 
-    protected function getOptions()
-    {
-        return [
-            ['uri', null, InputOption::VALUE_REQUIRED, 'The path of the route to be called', null],
-        ];
-    }
 }
