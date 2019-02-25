@@ -124,7 +124,7 @@
                     <div class="col-md-9" style="padding-left: 100px;">
                       <!-- @foreach ($warning_status as $status) -->
                       <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
-                        <b><font size="4" color="#bf1007">LINE : {{ $status->line }}</font></b>
+                        <b><font id="myfont" size="4" color="#bf1007">LINE : {{ $status->line }}</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
                         <b><font size="4" color="#bf1007">STATUS : STOP LINE</font></b>
                         <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
@@ -169,26 +169,36 @@
         // Start an interval to refresh page every 10 seconds
         setInterval(function(){
           location.reload();
-        }, 15000); // 12 seconds
+        }, 16000); // 12 seconds
 
         jQuery(function(){
            jQuery('#test').click();
         });
     });
 
-    var slideIndex = 0;
+    var slideIndex = 1;
+    var z=0;
     carousel();
-
     function carousel() {
       var i;
       var x = document.getElementsByClassName("mySlides");
+
+      //Blok semua
       for (i = 0; i < x.length; i++) {
         x[i].style.display = "none"; 
       }
-      slideIndex++;
-      if (slideIndex > x.length) {slideIndex = 1} 
-      x[slideIndex-1].style.display = "block"; 
-      setTimeout(carousel, 2000); 
+      
+      if (slideIndex > x.length) {slideIndex = 1}
+      if(z==0){
+        x[slideIndex-1].style.display = "block";
+        z=1;
+      }else{
+        slideIndex++;
+        z=0;
+      }
+      setTimeout(function(){
+       carousel();
+      }, 2000); 
     }
 
   </script>
