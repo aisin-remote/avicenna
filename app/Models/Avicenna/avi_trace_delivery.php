@@ -12,6 +12,8 @@ class avi_trace_delivery extends Model
     	'id',
     	'code',
     	'npk',
-    	'date'
+    	'date',
+    	'customer',
+    	'cycle'
     ];
 }

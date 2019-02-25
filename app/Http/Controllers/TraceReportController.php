@@ -312,4 +312,29 @@ class TraceReportController extends Controller
             ->addIndexColumn()
             ->make(true);
     }
+
+    public function getAjaxFilterDeliveryDetail($start_date, $end_date){
+        $list           = avi_trace_delivery::select('cycle')
+        ->where('date' , '>=' ,  $start_date )
+        ->where('date' , '<=' ,  $end_date )
+        ->groupby('cycle')
+        ->get();
+
+        return Datatables::of($list)
+                ->addColumn('customer', function($list) {
+                                $customer = avi_trace_delivery::select('customer')->where('cycle', $list->cycle)->first();
+                                return $customer->customer;
+                            })
+                ->addColumn('cycle', function($list) {
+                                $cycle = avi_trace_cycle::select('name')->where('code', $list->cycle)->first();
+                                return $cycle->name;
+                            })
+                ->addColumn('total', function($list) {
+                                $total = avi_trace_delivery::where('cycle', $list->cycle)->where('date', date('Y-m-d'))->count();
+                                return $total;
+                            })
+
+                ->addIndexColumn()
+                ->make(true);
+    }
 }
