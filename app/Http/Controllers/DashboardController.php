@@ -12,6 +12,7 @@ use App\Models\Avicenna\avi_andon_target;
 use App\Models\Avicenna\avi_andon;
 use App\Models\Avicenna\avi_andon_color;
 use App\Models\Avicenna\avi_andon_status;
+use Carbon\Carbon;
 
 
 
@@ -71,19 +72,32 @@ class DashboardController extends Controller
     }
     function direct_line(){
         $lines = avi_andon_status::select('*')->get();
-        $a = [];
-        $warning_status = avi_andon_status::select('*')
+        $a = array();
+        $warning_status = avi_andon_status::select('line')
         ->where('status','=', 1)
         ->get();
-        // foreach ($warnings as $warning ) {
-        //     $ac = avi_andon_status::select('*')
-        //         ->where('status','=', 1)
-        //         ->get(); 
-        //     $warning->line
-        // }
 
-        // return $warning_status;
-        return view('adminlte::dashboard.direct.line' , compact('lines','warning_status'));
+        foreach ($warning_status as $warning ) {
+
+            $update_at = avi_andon_status::select('updated_at')
+            ->where('line', $warning->line)->first();
+            $now     = Carbon::now();
+
+            if($update_at->updated_at <= $now && $now <= $update_at->updated_at->addSeconds(300)){
+                $d = avi_andon_status::select('*', 'avi_andon_status.pic_ldr as pic')->where('line', $warning->line)->first();
+            }elseif ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
+                $d = avi_andon_status::select('*', 'avi_andon_status.pic_spv as pic')->where('line', $warning->line)->first();
+            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
+                $d = avi_andon_status::select('*', 'avi_andon_status.pic_mgr as pic')->where('line', $warning->line)->first();
+            }else{
+                $d = avi_andon_status::select('*', 'avi_andon_status.pic_gm as pic')->where('line', $warning->line)->first();
+            }
+            array_push($a, $d);
+            // array_push($a,$d);
+        }
+        // return $a;
+
+        return view('adminlte::dashboard.direct.line' , compact('lines','a'));
     }
 
 }

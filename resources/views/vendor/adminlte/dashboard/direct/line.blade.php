@@ -122,13 +122,12 @@
                       </div>
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
-                      @foreach ($warning_status as $status)
-                      <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
-                        <b><font id="myfont" size="7" >LINE &ensp;&ensp;&nbsp; : {{ $status->line }}</font></b><br>
-                        <b><font size="7" >STATUS : STOP LINE</font></b><br>
-                        <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp; : {{ $status->pic_ldr }}</font></b>
-                      </div>
-                        
+                      @foreach ($a as $status)
+                        <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
+                          <b><font id="myfont" size="7" >LINE &ensp;&ensp;&nbsp; : {{ $status->line }}</font></b><br>
+                          <b><font size="7" >STATUS : STOP LINE</font></b><br>
+                          <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp; : {{ $status->pic }}</font></b>
+                        </div>
                       @endforeach
                     </div>
                 </div>
@@ -160,7 +159,7 @@
         // Start an interval to refresh page every 10 seconds
         setInterval(function(){
           location.reload();
-        }, 16000); // 12 seconds
+        }, 16000); // 16 seconds
 
         jQuery(function(){
            jQuery('#test').click();
@@ -178,10 +177,8 @@
       for (i = 0; i < x.length; i++) {
         x[i].style.display = "none"; 
       }
-      
-      if (slideIndex > x.length) {
-        slideIndex = 1
-      }
+
+      if (slideIndex > x.length) {slideIndex = 1}
       if(z==0){
         x[slideIndex-1].style.display = "block";
         z=1;
