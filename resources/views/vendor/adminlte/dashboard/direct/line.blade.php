@@ -117,28 +117,19 @@
                     <div class="col-md-3" >
                       <div class="row">
                         <div>
-                          <img src="/images/emergency.gif">
+                          <img src="/images/emergency.gif" style="height: 100%;width: 100%">
                         </div>
                       </div>
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
-                      <!-- @foreach ($warning_status as $status) -->
+                      @foreach ($warning_status as $status)
                       <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
-                        <b><font id="myfont" size="4" color="#bf1007">LINE : {{ $status->line }}</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="4" color="#bf1007">STATUS : STOP LINE</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="4" color="#bf1007">PIC LDR : {{ $status->pic_ldr }}</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="4" color="#bf1007">PIC SPV : {{ $status->pic_spv }}</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="4" color="#bf1007">PIC MGR : {{ $status->pic_mgr }}</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
-                        <b><font size="4" color="#bf1007">PIC GM : {{ $status->pic_gm }}</font></b>
-                        <hr style="height:2px;border:none;color:#bf1007;background-color:#bf1007;" />
+                        <b><font id="myfont" size="7" >LINE &ensp;&ensp;&nbsp; : {{ $status->line }}</font></b><br>
+                        <b><font size="7" >STATUS : STOP LINE</font></b><br>
+                        <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp; : {{ $status->pic_ldr }}</font></b>
                       </div>
                         
-                      <!-- @endforeach -->
+                      @endforeach
                     </div>
                 </div>
               </div>
@@ -188,7 +179,9 @@
         x[i].style.display = "none"; 
       }
       
-      if (slideIndex > x.length) {slideIndex = 1}
+      if (slideIndex > x.length) {
+        slideIndex = 1
+      }
       if(z==0){
         x[slideIndex-1].style.display = "block";
         z=1;

@@ -71,16 +71,19 @@ class DashboardController extends Controller
     }
     function direct_line(){
         $lines = avi_andon_status::select('*')->get();
+        $a = [];
         $warning_status = avi_andon_status::select('*')
         ->where('status','=', 1)
         ->get();
+        // foreach ($warnings as $warning ) {
+        //     $ac = avi_andon_status::select('*')
+        //         ->where('status','=', 1)
+        //         ->get(); 
+        //     $warning->line
+        // }
 
         // return $warning_status;
         return view('adminlte::dashboard.direct.line' , compact('lines','warning_status'));
     }
-    // function popup_line(){
-    //     $warning_status = avi_andon_status::select('*')->where('status','==',1);
-    //     return view('adminlte::dashboard.direct.line' , compact('warning_status'));
-    // }
 
 }
