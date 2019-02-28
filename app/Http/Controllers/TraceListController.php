@@ -15,6 +15,7 @@ use App\Mail\TmminReport;
 use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
+use Config;
 
 class TraceListController extends Controller
 {
@@ -194,20 +195,21 @@ class TraceListController extends Controller
     	->where('avi_trace_delivery.customer','TMMIN')
     	->get();
 
-	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query){
+    	$delimiter = config::set('excel.csv.delimiter', ';');
+	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query, $delimiter){
 
     		$a = "2";
     		foreach ($query as $queries){
     			$code_delivery	= $queries->code_delivery;
     			$line_casting	= $queries->line_casting;
     			$npk_casting	= $queries->npk_casting;
-    			$date_casting	= $queries->date_casting;
+    			$date_casting	= date("Y/m/d", strtotime($queries->date_casting));
     			$line_machining	= $queries->line_machining;
     			$npk_machining	= $queries->npk_machining;
-    			$date_machining	= $queries->date_machining;
+    			$date_machining	= date("Y/m/d", strtotime($queries->date_machining));
     			$cycle_delivery	= avi_trace_cycle::select('name')->where('code',$queries->cycle_delivery)->first();
     			$npk_delivery	= $queries->npk_delivery;
-    			$date_delivery	= $queries->date_delivery;
+    			$date_delivery	= date("Y/m/d", strtotime($queries->date_delivery));
     			$c 				= substr($queries->code_delivery, 0, 2);
     			$part_number	= avi_trace_program_number::where('code',$c)->first();
 
@@ -241,11 +243,11 @@ class TraceListController extends Controller
     function tes(){ 
 		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
 		$tmmin = array('tanggal' => $yesterday);
-		$penerima = array('handika@aiia.co.id', 'alliq@aiia.co.id', 'm.nurbaitullah@aiia.co.id', 'audi.r@aiia.co.id', 'fachrul@aiia.co.id');
+		$penerima = array('destya.amifa@toyota.co.id');
 		// $penerima = array('audi.r@aiia.co.id');
 
 		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
-		$message->to('destya.amifa@toyota.co.id', 'heri.surachman@toyota.co.id', 'harpan@aiia.co.id', 'ferry@aiia.co.id')
+		$message->to('heri.surachman@toyota.co.id', 'harpan@aiia.co.id', 'ferry@aiia.co.id', 'imam@aiia.co.id', 'support@aiia.co.id')
 		// $message->to('handika@aiia.co.id')
 					->subject('Traceability')
 					->attach(storage_path('traceability/print_part_tmiin.csv'));
