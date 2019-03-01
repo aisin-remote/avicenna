@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 
 use Illuminate\Http\Request;
 use Config;
+use Storage;
 
 class TraceListController extends Controller
 {
@@ -185,59 +186,66 @@ class TraceListController extends Controller
 
 	public function tracepartreport()
     {	
-		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
-    	$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery',
-    		'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.date as date_casting',
-    		'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining')
-    	->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
-    	->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
-    	->where('avi_trace_delivery.date', $yesterday)
-    	->where('avi_trace_delivery.customer','TMMIN')
-    	->get();
+    	try{
+    		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
+    		$now = \Carbon\Carbon::now()->format('Ymdhis');
+    		$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery',
+    			'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.date as date_casting',
+    			'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining')
+    		->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
+    		->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
+    		->where('avi_trace_delivery.date', $yesterday)
+    		->where('avi_trace_delivery.customer','TMMIN')
+    		->get();
 
-    	$delimiter = config::set('excel.csv.delimiter', ';');
-	    Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query, $delimiter){
+    		$delimiter = config::set('excel.csv.delimiter', ';');
+    		Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query, $delimiter){
 
-    		$a = "2";
-    		foreach ($query as $queries){
-    			$code_delivery	= $queries->code_delivery;
-    			$line_casting	= $queries->line_casting;
-    			$npk_casting	= $queries->npk_casting;
-    			$date_casting	= date("Y/m/d", strtotime($queries->date_casting));
-    			$line_machining	= $queries->line_machining;
-    			$npk_machining	= $queries->npk_machining;
-    			$date_machining	= date("Y/m/d", strtotime($queries->date_machining));
-    			$cycle_delivery	= avi_trace_cycle::select('name')->where('code',$queries->cycle_delivery)->first();
-    			$npk_delivery	= $queries->npk_delivery;
-    			$date_delivery	= date("Y/m/d", strtotime($queries->date_delivery));
-    			$c 				= substr($queries->code_delivery, 0, 2);
-    			$part_number	= avi_trace_program_number::where('code',$c)->first();
+    			$a = "2";
+    			foreach ($query as $queries){
+    				$code_delivery	= $queries->code_delivery;
+    				$line_casting	= $queries->line_casting;
+    				$npk_casting	= $queries->npk_casting;
+    				$date_casting	= date("Y/m/d", strtotime($queries->date_casting));
+    				$line_machining	= $queries->line_machining;
+    				$npk_machining	= $queries->npk_machining;
+    				$date_machining	= date("Y/m/d", strtotime($queries->date_machining));
+    				$cycle_delivery	= avi_trace_cycle::select('name')->where('code',$queries->cycle_delivery)->first();
+    				$npk_delivery	= $queries->npk_delivery;
+    				$date_delivery	= date("Y/m/d", strtotime($queries->date_delivery));
+    				$c 				= substr($queries->code_delivery, 0, 2);
+    				$part_number	= avi_trace_program_number::where('code',$c)->first();
 
 
-    			$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', $part_number->company_code);
-    			$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', $part_number->plant_code);
-    			$file->setActiveSheetIndex(0)->setCellValue('C'.$a.'', $part_number->supplier_code);
-    			$file->setActiveSheetIndex(0)->setCellValue('D'.$a.'', $part_number->supplier_plant);
-    			$file->setActiveSheetIndex(0)->setCellValue('E'.$a.'', $code_delivery);
-    			$file->setActiveSheetIndex(0)->setCellValue('F'.$a.'', $part_number->part_name);
-    			$file->setActiveSheetIndex(0)->setCellValue('G'.$a.'', $line_casting);
-    			$file->setActiveSheetIndex(0)->setCellValue('H'.$a.'', $date_casting);
-    			$file->setActiveSheetIndex(0)->setCellValue('I'.$a.'', $npk_casting);
-    			$file->setActiveSheetIndex(0)->setCellValue('J'.$a.'', $line_machining);
-    			$file->setActiveSheetIndex(0)->setCellValue('K'.$a.'', $date_machining);
-    			$file->setActiveSheetIndex(0)->setCellValue('L'.$a.'', $npk_machining);
-    			$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery->name);
-    			$file->setActiveSheetIndex(0)->setCellValue('N'.$a.'', $date_delivery);
-    			$file->setActiveSheetIndex(0)->setCellValue('O'.$a.'', $npk_delivery);
-    			$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', $part_number->part_number);
+    				$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', $part_number->company_code);
+    				$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', $part_number->plant_code);
+    				$file->setActiveSheetIndex(0)->setCellValue('C'.$a.'', $part_number->supplier_code);
+    				$file->setActiveSheetIndex(0)->setCellValue('D'.$a.'', $part_number->supplier_plant);
+    				$file->setActiveSheetIndex(0)->setCellValue('E'.$a.'', $code_delivery);
+    				$file->setActiveSheetIndex(0)->setCellValue('F'.$a.'', $part_number->part_name);
+    				$file->setActiveSheetIndex(0)->setCellValue('G'.$a.'', $line_casting);
+    				$file->setActiveSheetIndex(0)->setCellValue('H'.$a.'', $date_casting);
+    				$file->setActiveSheetIndex(0)->setCellValue('I'.$a.'', $npk_casting);
+    				$file->setActiveSheetIndex(0)->setCellValue('J'.$a.'', $line_machining);
+    				$file->setActiveSheetIndex(0)->setCellValue('K'.$a.'', $date_machining);
+    				$file->setActiveSheetIndex(0)->setCellValue('L'.$a.'', $npk_machining);
+    				$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery->name);
+    				$file->setActiveSheetIndex(0)->setCellValue('N'.$a.'', $date_delivery);
+    				$file->setActiveSheetIndex(0)->setCellValue('O'.$a.'', $npk_delivery);
+    				$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', $part_number->part_number);
 
-    			$a++;
-    		}
+    				$a++;
+    			}
 
-		})->save('csv', storage_path('traceability'), true);
+    		})->save('csv', storage_path('traceability'), true);
+    		$file = Storage::disk('public')->get('print_part_tmiin.csv');
+    			    Storage::disk('myftp')->put('\data_'.$now.'.csv',$file);
 
-	    $this->tes();
-		return view('tracebility.list.indexout');
+    			    $this->tes();
+    	}catch(\Exception $e){
+    		echo "Error ".$e;
+    	}
+		
     }
 
     function tes(){ 
