@@ -3,7 +3,9 @@
 @section('content')
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
-<div class="col-md-12" style="margin-bottom: 10px; margin-top: 10px; background-color: #2a374f; height: 100% "> 
+
+<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px;">
+<div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
   <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
   <span style="color: white; font-size: 15px "> All line in body plant </span>
 </div>
@@ -11,103 +13,73 @@
 
         <?php
           // special manipulation in looping
-          if ($andon->status == 1) {
+          if ($andon->status == 2) {
             $class= '#bf4848'; //merah
             $text= '#ffffff'; //putih
           }
-          elseif ($andon->status == 2) {
+          elseif ($andon->status == 1) {
             $class = '#5daa68'; //hijau
             $text= '#ffffff'; //putih
           }
-          elseif ($andon->status == 3) {
+          elseif ($andon->status == 5) {
             $class = '#ffff00' ; //kuning
             $text= '#000000'; //hitam
-          }elseif ($andon->status == 4) {
+          }elseif ($andon->status == 3) {
             $class = '#ffffff'; //putih
             $text= '#000000'; //hitam
           }
-          elseif ($andon->status == 5) {
+          elseif ($andon->status == 0) {
             $class = '#000000'; //hitam
             $text = '#ffffff'; //putih
           }
         ?>
-
-        <div  class="col-md-2" style="margin-bottom: 10px">
-
-          <!-- DIRECT CHAT PRIMARY -->
-          <div style="background-color: #2a374f ; color : #ffffff " >
-            <!-- /.box-header -->
-
-            <div>
-              <!-- Conversations are loaded here -->
-              <div class="direct-chat-messages" style="height: 100%">
-                <!-- Message. Default to the left -->
-                <div class="table-bordered" >
-                  <div  border="1" style="border-color: white ">
-                    <!-- <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 10px ; padding-left: 10px; " > {{ $andon->line }}</div> -->
-                    @if($andon->status == 1)
-                    <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 10px ; padding-left: 10px; " > {{ $andon->line }}</div>
-                    <button type="button" class="positive" name="test" id="test" style="display:none;" data-toggle="modal" data-target="#modal-insert">
-                    </button>
-                    @else
-                    <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 10px ; padding-left: 10px; "> {{ $andon->line }}</div>
-                    @endif
+        <div>
+          <div  class="table-bordered col-md-2" style="background-color: {{$class}} ; color: {{$text}} ;">
+                  <div style="padding-top: 30px;padding-bottom: 30px">
+                      @if($andon->status == 2)
+                      <div style="text-align: center; width: 100%; height: 50% ; font-size: 30px ;  padding-right: : 10px ; padding-left: 10px; " > {{ $andon->line }}</div>
+                      <button type="button" class="positive" name="test" id="test" style="display:none;" data-toggle="modal" data-target="#modal-insert">
+                      </button>
+                      @else
+                      <div style="text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 2px ; padding-left: 2px; "> {{ $andon->line }}</div>
+                      @endif
                   </div>
-                </div>
-                <!-- /.direct-chat-msg -->
-              </div>
-              <!--/.direct-chat-messages-->
-
-            </div>
-            <!-- /.box-footer-->
           </div>
-          <!--/.direct-chat -->
         </div>
         @endforeach
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div class="col-md-12" style="margin-bottom: 10px; margin-top: 10px; background-color: #2a374f; height: 100% "> 
-  <span style="color: white; font-size: 25px "> UNIT PLANT </span> <br>
-  <span style="color: white; font-size: 15px "> All line in unit plant </span>
+        <div id="c">
+          
+
+
+        </div>
+        
+
 </div>
-        @foreach ($lines as $andon)
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
+    <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
+      <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
+      <span style="color: white; font-size: 15px "> Ajax Trial </span>
+    </div>
 
-        <div  class="col-md-2" style="margin-bottom: 10px">
-
-          <!-- DIRECT CHAT PRIMARY -->
-          <div style="background-color: #2a374f ; color : #ffffff " >
-            <!-- /.box-header -->
-
-            <div>
-              <!-- Conversations are loaded here -->
-              <div class="direct-chat-messages" style="height: 100%">
-                <!-- Message. Default to the left -->
-                <div class="table-bordered" >
-                  <div  border="1" style="border-color: white ">
-                    <div style="text-align: center; width: 100%; height: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 ; padding-right: : 10px ; padding-left: 10px; "> {{ $andon->line }} </div>
-                  </div>
-                </div>
-                <!-- /.direct-chat-msg -->
-              </div>
-              <!--/.direct-chat-messages-->
-
-            </div>
-            <!-- /.box-footer-->
-          </div>
-          <!--/.direct-chat -->
+        <div id="a" >
+          
         </div>
-        @endforeach
+        
+
+</div>
+
+
+
 <div class="modal fade" id="modal-insert" role="dialog">
   <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
-    <div class="modal-content" style="height: 100%">
-      <div class="modal-header" style="background-color: #bf1007;">
+    <div class="modal-content" style="height: 500px">
+<!--       <div class="modal-header" style="background-color: #bf1007;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <center><b><font size="7" color="white">WARNING !</font></b><br>
-              <b><font size="4" color="white" face="Courier New">BODY PLANT</font></b>
-        </center>          
       </div>
-      <div class="modal-body">
+ -->      <div class="modal-body">
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
         <form id="frm-insert">
           <div class="box-body">
@@ -122,13 +94,33 @@
                       </div>
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
+
                       @foreach ($a as $status)
                         <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
                           <b><font id="myfont" size="7" >LINE &ensp;&ensp;&nbsp; : {{ $status->line }}</font></b><br>
                           <b><font size="7" >STATUS : STOP LINE</font></b><br>
                           <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp; : {{ $status->pic }}</font></b>
                         </div>
+
+                        <div class="carousel-container">
+                          <div id="myCarousel" class="carousel slide">
+                              <!-- Indicators -->
+                              <ol class="carousel-indicators" id="indicators">
+                              </ol>
+                              <div class="carousel-inner" id="homepageItems">
+                              </div>
+                              <div class="carousel-controls"> 
+                                <a class="carousel-control left" href="#myCarousel" data-slide="prev"> 
+                                  <span class="glyphicon glyphicon-chevron-left"></span> 
+                                </a>
+                                <a class="carousel-control right" href="#myCarousel" data-slide="next"> 
+                                  <span class="glyphicon glyphicon-chevron-right"></span> 
+                                </a>
+                              </div>
+                          </div>
+                        </div>
                       @endforeach
+
                     </div>
                 </div>
               </div>
@@ -152,24 +144,77 @@
 @section('scripts')
   @parent
   <script type="text/javascript">
-
+// document ready
     $(document).ready(function(){
-        document.body.style.backgroundColor = '#1f293a';
-    
-        // Start an interval to refresh page every 10 seconds
-        setInterval(function(){
-          location.reload();
-        }, 16000); // 16 seconds
+        document.body.style.backgroundColor = '#000000';
 
         jQuery(function(){
            jQuery('#test').click();
         });
-    });
+          //flagging
+          var jalan = 1 ;
 
+          // ajax per line
+        ajax(); 
+           // Start an interval to refresh page every 10 seconds
+        setInterval(function(){
+          if (jalan == 1) {
+            ajax();
+            console.log("masuk");
+          }else if (jalan == 0) {
+            console.log("keluar");
+          }
+             
+        }, 1000); // 14 seconds
+
+    });
+// end document ready
+
+// ajax status line
+function ajax(){
+            $.ajax( {
+                    type: 'GET',
+                    url: '{{ url ("direct/line/index") }}',
+                    _token: "{{ csrf_token() }}",
+                    dataType: 'json',
+                    async:false,
+                    success: function(data) {
+                      var response = '';
+
+                      for (var a = 0; a < data.length; a++) {
+                        if ( data[a].status == 1 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                        }else if ( data[a].status == 2 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                            var jalan = 0 ;
+                        }else if ( data[a].status == 3 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                        }else if ( data[a].status == 4 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                        }else if ( data[a].status == 5 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                        }else if ( data[a].status == 0 ) {
+                          response += "<div class='table-bordered col-md-2' style='background-color: #000000 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #000000 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                        }
+                          
+                      }
+
+                      $('#a').html(response);
+                      
+                    },
+                    error: function (xhr) {
+                      console.log("no");
+                        }
+                 });
+}
+// end of ajax status line
+
+// carousel audi
     var slideIndex = 1;
     var z=0;
-    carousel();
+    // carousel();
     function carousel() {
+      console.log('AYOO');
       var i;
       var x = document.getElementsByClassName("mySlides");
 
@@ -177,8 +222,10 @@
       for (i = 0; i < x.length; i++) {
         x[i].style.display = "none"; 
       }
+      if (slideIndex > x.length){
+        slideIndex = 1;
 
-      if (slideIndex > x.length) {slideIndex = 1}
+      }
       if(z==0){
         x[slideIndex-1].style.display = "block";
         z=1;
@@ -190,6 +237,7 @@
        carousel();
       }, 2000); 
     }
+// end carousel audi
 
   </script>
 

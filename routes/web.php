@@ -180,6 +180,7 @@ Route::get('/', 'DashboardController@choose');
 Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.andon2'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/line', 'DashboardController@direct_line')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
+Route::get('/direct/line/index', 'DashboardController@direct_line_index')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
 
 //List Traceability
 
@@ -208,7 +209,7 @@ Route::get('/direct/line', 'DashboardController@direct_line')->name('direct.line
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
 
 	//trial
-	Route::get('/andon/view', 'AndonTrial@index2');
+	Route::get('/andon/view', 'AndonTrial@index');
 	Route::get('/andon/view/list', 'AndonTrial@getData');
 	Route::get('/andon/view/status', 'AndonTrial@getStatus');
 	// Route::get('/andon/view/list/all', 'DashboardController@getDataAll');

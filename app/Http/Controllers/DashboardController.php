@@ -74,7 +74,7 @@ class DashboardController extends Controller
         $lines = avi_andon_status::select('*')->get();
         $a = array();
         $warning_status = avi_andon_status::select('line')
-        ->where('status','=', 1)
+        ->where('status','=', 2)
         ->get();
 
         foreach ($warning_status as $warning ) {
@@ -93,11 +93,13 @@ class DashboardController extends Controller
                 $d = avi_andon_status::select('*', 'avi_andon_status.pic_gm as pic')->where('line', $warning->line)->first();
             }
             array_push($a, $d);
-            // array_push($a,$d);
         }
-        // return $a;
-
         return view('adminlte::dashboard.direct.line' , compact('lines','a'));
+    }
+
+    function direct_line_index(){
+        $lines = avi_andon_status::select('line','status')->get();
+        return $lines;
     }
 
 }
