@@ -4,11 +4,6 @@
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
 
-<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px;">
-<div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
-  <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
-  <span style="color: white; font-size: 15px "> All line in body plant </span>
-</div>
         @foreach ($lines as $andon)
 
         <?php
@@ -33,45 +28,26 @@
             $text = '#ffffff'; //putih
           }
         ?>
-        <div>
-          <div  class="table-bordered col-md-2" style="background-color: {{$class}} ; color: {{$text}} ;">
-                  <div style="padding-top: 30px;padding-bottom: 30px">
-                      @if($andon->status == 2)
-                      <div style="text-align: center; width: 100%; height: 50% ; font-size: 30px ;  padding-right: : 10px ; padding-left: 10px; " > {{ $andon->line }}</div>
-                      <button type="button" class="positive" name="test" id="test" style="display:none;" data-toggle="modal" data-target="#modal-insert">
-                      </button>
-                      @else
-                      <div style="text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: {{$class}} ; color: {{$text}} ; padding-right: : 2px ; padding-left: 2px; "> {{ $andon->line }}</div>
-                      @endif
-                  </div>
-          </div>
-        </div>
         @endforeach
-        <div id="c">
-          
-
-
-        </div>
-        
-
-</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
     <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
       <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
-      <span style="color: white; font-size: 15px "> Ajax Trial </span>
+      <span style="color: white; font-size: 15px "> All line in body plant </span>
     </div>
+    <div id="a" >
+    </div>
+    
 
-        <div id="a" >
-          
-        </div>
-        
+</div>
+<div >
+      <br><br><br><br><br><br>
+      <span id="c" style="color: white; font-size: 25px "> BODY PLANT </span>
 
 </div>
 
 
 
-<div class="modal fade" id="modal-insert" role="dialog">
+<div class="modal fade" id="modal-alert" role="dialog">
   <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
     <div class="modal-content" style="height: 500px">
 <!--       <div class="modal-header" style="background-color: #bf1007;">
@@ -144,28 +120,24 @@
 @section('scripts')
   @parent
   <script type="text/javascript">
+    var jalan = 1 ;
+    var coba = [];
+     var mlakuModal=0;
+
+    var mdl_alert = $("#modal-alert");
 // document ready
     $(document).ready(function(){
         document.body.style.backgroundColor = '#000000';
-
-        jQuery(function(){
-           jQuery('#test').click();
-        });
-          //flagging
-          var jalan = 1 ;
-
           // ajax per line
-        ajax(); 
+        //ajax(); 
            // Start an interval to refresh page every 10 seconds
         setInterval(function(){
-          if (jalan == 1) {
-            ajax();
-            console.log("masuk");
-          }else if (jalan == 0) {
-            console.log("keluar");
-          }
-             
-        }, 1000); // 14 seconds
+         if(jalan==1){
+          ajax();
+         }else if(jalan==0 && mlakuModal==0){
+           ShowModal(coba);
+         }
+        }, 1000); // 1 seconds
 
     });
 // end document ready
@@ -180,13 +152,17 @@ function ajax(){
                     async:false,
                     success: function(data) {
                       var response = '';
+                      var array = '';
+                      var mlaku=0;
 
                       for (var a = 0; a < data.length; a++) {
                         if ( data[a].status == 1 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          // array += data[a];
+                            // jalan = 1;
                         }else if ( data[a].status == 2 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                            var jalan = 0 ;
+                            mlaku = 1;
                         }else if ( data[a].status == 3 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
                         }else if ( data[a].status == 4 ) {
@@ -198,8 +174,11 @@ function ajax(){
                         }
                           
                       }
-
+                      if(mlaku==1){
+                        jalan=0;
+                      }
                       $('#a').html(response);
+                      // coba.push(array);
                       
                     },
                     error: function (xhr) {
@@ -207,7 +186,21 @@ function ajax(){
                         }
                  });
 }
+
+function ShowModal(a){
+  mlakuModal=1;
+  mdl_alert.modal();
+
+  // if (mlakuModal==1){
+    setInterval(function(){
+      mdl_alert.modal('hide');
+      jalan=1;
+    },5000)
+  }
+// }
 // end of ajax status line
+//function modal
+
 
 // carousel audi
     var slideIndex = 1;
