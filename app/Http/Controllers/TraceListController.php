@@ -199,7 +199,8 @@ class TraceListController extends Controller
     		->get();
 
     		$delimiter = config::set('excel.csv.delimiter', ';');
-    		Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query, $delimiter){
+    		$enclosure = config::set('excel.csv.enclosure', '');
+    		Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query){
 
     			$a = "2";
     			foreach ($query as $queries){
