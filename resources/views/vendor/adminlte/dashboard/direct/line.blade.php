@@ -71,31 +71,19 @@
                     </div>
                     <div class="col-md-9" style="padding-left: 100px;">
 
-                      @foreach ($a as $status)
-                        <div class="mySlides w3-container w3-xlarge w3-white w3-card-4">
-                          <b><font id="myfont" size="7" >LINE &ensp;&ensp;&nbsp; : {{ $status->line }}</font></b><br>
-                          <b><font size="7" >STATUS : STOP LINE</font></b><br>
-                          <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp; : {{ $status->pic }}</font></b>
-                        </div>
-
                         <div class="carousel-container">
-                          <div id="myCarousel" class="carousel slide">
-                              <!-- Indicators -->
-                              <ol class="carousel-indicators" id="indicators">
-                              </ol>
-                              <div class="carousel-inner" id="homepageItems">
-                              </div>
-                              <div class="carousel-controls"> 
-                                <a class="carousel-control left" href="#myCarousel" data-slide="prev"> 
-                                  <span class="glyphicon glyphicon-chevron-left"></span> 
-                                </a>
-                                <a class="carousel-control right" href="#myCarousel" data-slide="next"> 
-                                  <span class="glyphicon glyphicon-chevron-right"></span> 
-                                </a>
-                              </div>
+                          <div id="konten">
+                            
                           </div>
+<!--                           <div id="myCarousel" class="carousel slide">
+                              <b><font size="7" >LINE &ensp;&ensp;&nbsp; : </font></b><br>
+                              <b><font id="line" size="7" ></font></b>
+                              <b><font size="7" >STATUS : </font></b><br>
+                              <b><font id="status" size="7" ></font></b>
+                              <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;:</font></b>
+                              <b><font id="pic" size="7" ></font></b>
+                          </div> -->
                         </div>
-                      @endforeach
 
                     </div>
                 </div>
@@ -122,6 +110,7 @@
   <script type="text/javascript">
     var jalan = 1 ;
     var coba = [];
+    var simpan = [];
      var mlakuModal=0;
 
     var mdl_alert = $("#modal-alert");
@@ -133,9 +122,17 @@
            // Start an interval to refresh page every 10 seconds
         setInterval(function(){
          if(jalan==1){
+          coba = [];
+          simpan = [];
+          mdl_alert.modal('hide');
           ajax();
-         }else if(jalan==0 && mlakuModal==0){
-           ShowModal(coba);
+         }else if(jalan==0 ){
+              if (simpan != coba) {
+                simpan = coba;
+              }
+              ShowModal(simpan);
+              console.log(simpan);
+              // konten();
          }
         }, 1000); // 1 seconds
 
@@ -152,23 +149,31 @@ function ajax(){
                     async:false,
                     success: function(data) {
                       var response = '';
-                      var array = '';
+                      var konten = '';
                       var mlaku=0;
 
                       for (var a = 0; a < data.length; a++) {
                         if ( data[a].status == 1 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
                           // array += data[a];
-                            // jalan = 1;
+                            jalan = 1;
                         }else if ( data[a].status == 2 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                            mlaku = 1;
+                              coba.push([data[a].line,"PROBLEM MESIN",data[a].pic]);
+                          konten += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                              mlaku = 1;
                         }else if ( data[a].status == 3 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                              coba.push([data[a].line,"PROBLEM QUALITY",data[a].pic]);
+                              mlaku = 1;
                         }else if ( data[a].status == 4 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                              coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].pic]);
+                              mlaku = 1;
                         }else if ( data[a].status == 5 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                              coba.push([data[a].line,"DANDORI",data[a].pic]);
+                              mlaku = 1;
                         }else if ( data[a].status == 0 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #000000 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #000000 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
                         }
@@ -178,7 +183,11 @@ function ajax(){
                         jalan=0;
                       }
                       $('#a').html(response);
+                      // $('#konten').html(simpan);
+                      
                       // coba.push(array);
+                      
+
                       
                     },
                     error: function (xhr) {
@@ -186,20 +195,30 @@ function ajax(){
                         }
                  });
 }
-
-function ShowModal(a){
-  mlakuModal=1;
-  mdl_alert.modal();
-
-  // if (mlakuModal==1){
-    setInterval(function(){
-      mdl_alert.modal('hide');
-      jalan=1;
-    },5000)
-  }
-// }
 // end of ajax status line
+
 //function modal
+function ShowModal(a){
+  if (simpan.length > 0 ){
+      konten = '';
+      mdl_alert.modal();
+      jalan=0;
+      coba = [];
+      ajax();
+      console.log(simpan);
+      for (var h = 0; h < simpan.length; h++) {
+        konten += "<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;:</font></b><b><font size='7' >"+simpan[h][2]+"</font></b></div>";                          
+      }
+      $('#konten').html(konten);
+
+  }
+}
+//end of function modal
+
+//function konten
+function konten(){
+}
+//end of function konten
 
 
 // carousel audi
