@@ -242,7 +242,7 @@ class TraceListController extends Controller
     		$file = Storage::disk('public')->get('print_part_tmiin.csv');
     			    Storage::disk('myftp')->put('\data_'.$now.'.csv',$file);
 
-    			    $this->tes();
+    		//	    $this->tes(); //dev-1.1.0 , Handika, Non aktif fitur email
     	}catch(\Exception $e){
     		echo "Error ".$e;
     	}
