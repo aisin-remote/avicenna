@@ -6,6 +6,7 @@
  */
 
 namespace App\Http\Controllers;
+use App\Models\Iot\TT_DATA_PROD_RESULT;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -36,4 +37,29 @@ class HomeController extends Controller
         return view('adminlte::home');
     }
     
+    public function test()
+    {
+        $test = new TT_DATA_PROD_RESULT;
+        $test->DTM_TIM_PROD_RESULT = '2019-01-11 06:05:00.0000000';
+        $test->CHR_COD_COMPANY = 'AIIA';
+        $test->CHR_COD_KJ = 'TEST';
+        $test->CHR_COD_KOFU = 'TS';
+        $test->CHR_COD_LINE = 'TEST';
+        $test->CHR_COD_HNMK = 'TEST';
+        $test->DEC_SUR_RESULT = 99;
+        $test->DEC_SUR_THROWOUT = 99;
+        $test->DEC_TIM_CT = 99;
+        $test->DTM_TIM_PROD_RESULT_UTC = '2019-01-11 06:05:00.0000000';
+        $test->DTM_TIM_SERVER_UTC = '2019-01-11 06:05:00.0000000';
+        $test->CHR_INF_SAKUSEI_USER = '0';
+        $test->CHR_NGP_SAKUSEI = '0';
+        $test->CHR_TIM_SAKUSEI = '0';
+        $test->CHR_INF_KOSIN_USER = NULL;
+        $test->CHR_NGP_KOSIN = NULL;
+        $test->CHR_TIM_KOSIN = NULL;
+
+        $test->timestamps = false;
+
+        $test->save();
+    }
 }

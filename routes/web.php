@@ -212,3 +212,6 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 
 	Route::get('/trace/export/part', 'TraceListController@tracepartreport'); //dev-1.1.0, Audi 20190218, Export Part
 	Route::get('/tmmin', 'TraceListController@tes');
+
+	// dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
+	Route::get('/test', 'HomeController@test');
