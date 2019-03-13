@@ -249,19 +249,17 @@ class TraceListController extends Controller
 		
     }
 
-    function tes(){ 
-		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
-		$tmmin = array('tanggal' => $yesterday);
-		$penerima = array('destya.amifa@toyota.co.id');
+ //    function tes(){  //dev-1.1.0 , Handika, Non aktif fitur email
+	// 	$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
+	// 	$tmmin = array('tanggal' => $yesterday);
 		// $penerima = array('audi.r@aiia.co.id');
 
-		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
-		$message->to('heri.surachman@toyota.co.id', 'harpan@aiia.co.id', 'ferry@aiia.co.id', 'imam@aiia.co.id', 'support@aiia.co.id')
+	// 	Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
 		// $message->to('handika@aiia.co.id')
-					->subject('Traceability')
-					->attach(storage_path('traceability/print_part_tmiin.csv'));
-		$message->cc($penerima);
-		$message->from('aisinbisa@aiia.co.id');
-		});
-	}
+	// 				->subject('Traceability')
+	// 				->attach(storage_path('traceability/print_part_tmiin.csv'));
+	// 	$message->cc($penerima);
+	// 	$message->from('aisinbisa@aiia.co.id');
+	// 	});
+	// }
 }
