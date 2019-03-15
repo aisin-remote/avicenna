@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class avi_andon extends Model
 {
     protected $primaryKey = 'line';
+    public $incrementing = false;
     protected $fillable =[
     	'line',
     	'target',
@@ -17,7 +18,9 @@ class avi_andon extends Model
     	'dandori',
     	'loss_time_qa',
     	'loss_time_parts',
-    	'loss_time_mc'
+    	'loss_time_mc',
+        'buffer_mutation',
+        'buffer_alcolla'
     ];
     
     public function running() {

@@ -37,6 +37,10 @@ class Kernel extends ConsoleKernel
                  ->everyFiveMinutes();
         $schedule->command('EmailTraceability')
                  ->hourly();
+
+        //For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT
+        $schedule->command('alcolla:productionResult')
+                 ->everyMinute();
     }
 
     /**

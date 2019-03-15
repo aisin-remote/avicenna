@@ -42,17 +42,18 @@ class AlcollaProductionResult extends Command
      */
     public function handle()
     {
-        $lines = avi_andon::select('line as prod_line','actual_qty','buffer','back_number')
+        $lines = avi_andon::select('line','actual_qty','buffer_alcolla','back_number')
                         ->where('line','AS600')
                         ->orWhere('line','AS523')
                         ->get();
-        try{
-            DB::beginTransaction();
+        // echo $lines;
+        // echo"\n";
+        foreach ($lines as $line) {
+            if($line->actual_qty > $line->buffer_alcolla){
+                try{
+                    DB::beginTransaction();
 
-            foreach ($lines as $line) {
-                if($line->actual_qty > $line->buffer){
-
-                    $qty_prod_result=$line->actual_qty-$line->buffer;
+                    $qty_prod_result=$line->actual_qty-$line->buffer_alcolla;
                     $master_part=avi_part_production::select('part_number','ct')
                         ->where('back_number',$line->back_number)
                         ->firstOrFail();
@@ -76,14 +77,22 @@ class AlcollaProductionResult extends Command
                     $product_result->CHR_NGP_KOSIN = NULL;
                     $product_result->CHR_TIM_KOSIN = NULL;
                     $product_result->timestamps = false;
-
                     $product_result->save();
+                    
+
+                    $line->buffer_alcolla=$line->actual_qty;
+                    $line->save();
+
+                    DB::commit();
+                }catch(\Exception $ex){
+                    echo $ex->getMessage();
+                    DB::rollBack();
                 }
+                
+            }else{
+                $line->buffer_alcolla=0;
+                $line->save();
             }
-            DB::commit();
-        }catch(\Exception $ex){
-            echo $ex->getMessage();
-            DB::rollBack();
         }
     }
 }
