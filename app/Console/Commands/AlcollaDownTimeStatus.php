@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use \Carbon\Carbon;
 use \DB;
 use App\Models\Avicenna\avi_andon_status;
-use App\Models\Avicenna\avi_part_production;
 use App\Models\Iot\TT_DATA_DOWN_RESULT;
 
 
@@ -44,7 +43,7 @@ class AlcollaDownTimeStatus extends Command
     public function handle()
     {
         $line_status=avi_andon_status::select('id','line','status','status_before')->get();
-        // echo $line_status;
+        
         foreach ($line_status as $my_status) {
             if($my_status->status!= 0){
                 if($my_status->status != $my_status->status_before){
@@ -89,7 +88,6 @@ class AlcollaDownTimeStatus extends Command
                             $my_status->status_before=$my_status->status;
                             $my_status->save();
 
-                            echo $my_status;
                             DB::commit();
                         } catch (Exception $e) {
                             echo $ex->getMessage();
@@ -117,8 +115,6 @@ class AlcollaDownTimeStatus extends Command
                                     //Update Status Before disamakan
                                     $my_status->status_before=$my_status->status;
                                     $my_status->save();
-                                    echo $my_status;
-                                    // echo $dataDown->CHR_TIM_KOSIN;
                                 }
 
                                 DB::commit();
