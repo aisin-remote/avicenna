@@ -18,7 +18,8 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\MutasiAndon',
         '\App\Console\Commands\EmailTraceability',
         '\App\Console\Commands\AlcollaProductionResult',
-        '\App\Console\Commands\AvicennaDandori',
+        '\App\Console\Commands\AlcollaDownTimeStatus'
+        // '\App\Console\Commands\AvicennaDandori',
     ];
 
     /**

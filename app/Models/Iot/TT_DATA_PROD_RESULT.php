@@ -22,6 +22,7 @@ class TT_DATA_PROD_RESULT extends Model
     	'DEC_TIM_CT',
     	'DTM_TIM_PROD_RESULT_UTC',
     	'DTM_TIM_SERVER_UTC',
+        'INT_KEY_REFERENCE',
     	'CHR_INF_SAKUSEI_USER',
     	'CHR_NGP_SAKUSEI',
     	'CHR_TIM_SAKUSEI',

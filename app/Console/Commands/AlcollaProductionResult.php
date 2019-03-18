@@ -63,13 +63,14 @@ class AlcollaProductionResult extends Command
                     $product_result->CHR_COD_COMPANY = 'J922';
                     $product_result->CHR_COD_KJ = 'JE';
                     $product_result->CHR_COD_KOFU = 'AS';
-                    $product_result->CHR_COD_LINE = substr($line->prod_line,2,3);
+                    $product_result->CHR_COD_LINE = substr($line->line,2,3);
                     $product_result->CHR_COD_HNMK = $master_part->part_number;
                     $product_result->DEC_SUR_RESULT = $qty_prod_result;
                     $product_result->DEC_SUR_THROWOUT = 0;
                     $product_result->DEC_TIM_CT = $master_part->ct;
                     $product_result->DTM_TIM_PROD_RESULT_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
                     $product_result->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
+                    $product_result->INT_KEY_REFERENCE=1;
                     $product_result->CHR_INF_SAKUSEI_USER = 'SYSTEM';
                     $product_result->CHR_NGP_SAKUSEI = Carbon::now()->format('Ymd');
                     $product_result->CHR_TIM_SAKUSEI = Carbon::now()->format('Hi');
@@ -89,9 +90,12 @@ class AlcollaProductionResult extends Command
                     DB::rollBack();
                 }
                 
-            }else{
+            }elseif($line->actual_qty < $line->buffer_alcolla){
                 $line->buffer_alcolla=0;
                 $line->save();
+            }
+            else{
+                // Do nothing if same
             }
         }
     }
