@@ -3,6 +3,7 @@
 namespace App\Models\Iot;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class TT_DATA_PROD_RESULT extends Model
 {
@@ -29,5 +30,19 @@ class TT_DATA_PROD_RESULT extends Model
     	'CHR_INF_KOSIN_USER',
     	'CHR_NGP_KOSIN',
     	'CHR_TIM_KOSIN'
-    ];	
+    ];
+
+    /* Untuk Composite Primary Key */
+    protected function setKeysForSaveQuery(Builder $query)
+    {
+        $query
+        ->where('DTM_TIM_PROD_RESULT', '=', $this->getAttribute('DTM_TIM_PROD_RESULT'))
+        ->where('CHR_COD_COMPANY', '=', $this->getAttribute('CHR_COD_COMPANY'))
+        ->where('CHR_COD_KJ', '=', $this->getAttribute('CHR_COD_KJ'))
+        ->where('CHR_COD_KOFU', '=', $this->getAttribute('CHR_COD_KOFU'))
+        ->where('CHR_COD_LINE', '=', $this->getAttribute('CHR_COD_LINE'))
+        ->where('CHR_COD_HNMK', '=', $this->getAttribute('CHR_COD_HNMK'));
+        return $query;
+    }
+
 }

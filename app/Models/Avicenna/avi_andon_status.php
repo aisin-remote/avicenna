@@ -15,6 +15,5 @@ class avi_andon_status extends Model
     	'pic_spv',
     	'pic_mgr',
     	'pic_gm',
-        'alcolla_last_id_downtime'
     ];
 }

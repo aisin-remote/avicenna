@@ -41,11 +41,11 @@ class Kernel extends ConsoleKernel
 
         //For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT
         $schedule->command('alcolla:productionResult')
-                 ->everyMinute();
+                 ->everyFiveMinutes();
 
         //For Insert Table SQL ALCOLLA TT_DATA_DOWN_STATUS
         $schedule->command('alcolla:downtimeStatus')
-                 ->everyMinute()
+                 ->everyFiveMinutes();
     }
 
     /**
