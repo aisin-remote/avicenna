@@ -15,11 +15,10 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         '\App\Console\Commands\DeleteEveryMonth',
         '\App\Console\Commands\CopyAndonHourly',
-        '\App\Console\Commands\MutasiAndon',
         '\App\Console\Commands\EmailTraceability',
         '\App\Console\Commands\AlcollaProductionResult',
-        '\App\Console\Commands\AlcollaDownTimeStatus'
-        // '\App\Console\Commands\AvicennaDandori',
+        '\App\Console\Commands\AlcollaDownTimeStatus',
+        '\App\Console\Commands\AvicennaAndonMutation'
     ];
 
     /**
@@ -34,16 +33,18 @@ class Kernel extends ConsoleKernel
                  ->hourly();
         $schedule->command('CopyAndonHourly:CopyAndon')
                  ->everyFiveMinutes();
-        $schedule->command('Andon:Mutation')
-                 ->everyFiveMinutes();
         $schedule->command('EmailTraceability')
                  ->hourly();
 
-        //For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT
+        /* For Insert Table AVICENNA avi_mutation */
+        $schedule->command('avicenna:andonMutation')
+                 ->everyMinute();
+        
+        /* For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT */
         $schedule->command('alcolla:productionResult')
                  ->everyFiveMinutes();
 
-        //For Insert Table SQL ALCOLLA TT_DATA_DOWN_STATUS
+        /* For Insert Table SQL ALCOLLA TT_DATA_DOWN_STATUS */
         $schedule->command('alcolla:downtimeStatus')
                  ->everyFiveMinutes();
     }
