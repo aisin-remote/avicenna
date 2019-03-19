@@ -50,12 +50,12 @@
 <div class="modal fade" id="modal-alert" role="dialog">
   <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
     <div class="modal-content" style="height: 500px">
-<!--       <div class="modal-header" style="background-color: #bf1007;">
+      <div class="modal-header" style="background-color: #bf1007;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
- -->      <div class="modal-body">
+      <div class="modal-body">
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
         <form id="frm-insert">
           <div class="box-body">
@@ -75,14 +75,6 @@
                           <div id="konten">
                             
                           </div>
-<!--                           <div id="myCarousel" class="carousel slide">
-                              <b><font size="7" >LINE &ensp;&ensp;&nbsp; : </font></b><br>
-                              <b><font id="line" size="7" ></font></b>
-                              <b><font size="7" >STATUS : </font></b><br>
-                              <b><font id="status" size="7" ></font></b>
-                              <b><font size="7" >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;:</font></b>
-                              <b><font id="pic" size="7" ></font></b>
-                          </div> -->
                         </div>
 
                     </div>
@@ -131,11 +123,9 @@
                 simpan = coba;
               }
               ShowModal(simpan);
-              console.log(simpan);
               // konten();
          }
         }, 1000); // 1 seconds
-
     });
 // end document ready
 
@@ -200,16 +190,68 @@ function ajax(){
 //function modal
 function ShowModal(a){
   if (simpan.length > 0 ){
-      konten = '';
-      mdl_alert.modal();
+      
       jalan=0;
-      coba = [];
-      ajax();
-      console.log(simpan);
-      for (var h = 0; h < simpan.length; h++) {
-        konten += "<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;:</font></b><b><font size='7' >"+simpan[h][2]+"</font></b></div>";                          
+      coba = [];      
+      // $('#konten').html(konten);
+
+      //tes carousel
+      var slideIndex = 1;
+      var z = 0;
+      var akhir = 0 ;
+      var konten = [];
+      tes();
+
+      function tes(){
+        
+        for (var h = 0; h < simpan.length; h++) {
+          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][2]+"</font></b></div>");                          
+        }
+        if (slideIndex > konten.length){
+          slideIndex = 1;
+          akhir = 1;
+          coba = [];
+          simpan = [];
+          mdl_alert.modal('hide');
+          ajax();
+        }else{
+            if(z==0){
+              var item ;
+              setTimeout(function(){
+                item = slideIndex-1;
+                $('#konten').html(konten[item]);
+                mdl_alert.modal('show');
+                z=1;
+                console.log('satu');
+                console.log(item);
+                // console.log(konten);
+
+              }, 2000);
+            }else{
+              slideIndex++;
+              setTimeout(function(){
+
+              mdl_alert.modal('hide');
+              
+              z=0;
+              console.log('dua');
+
+              }, 2000);
+            }
+            akhir = 0;            
+        }
+
+        if (akhir == 0) {
+          setTimeout(function(){
+             tes();
+            }, 2000);
+        }
+
+        
+
+
       }
-      $('#konten').html(konten);
+      //tes carousel
 
   }
 }
@@ -217,6 +259,7 @@ function ShowModal(a){
 
 //function konten
 function konten(){
+
 }
 //end of function konten
 
@@ -227,17 +270,17 @@ function konten(){
     // carousel();
     function carousel() {
       console.log('AYOO');
-      var i;
+      // var i;
       var x = document.getElementsByClassName("mySlides");
 
       //Blok semua
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none"; 
-      }
-      if (slideIndex > x.length){
-        slideIndex = 1;
+      // for (i = 0; i < x.length; i++) {
+      //   x[i].style.display = "none"; 
+      // }
+      // if (slideIndex > x.length){
+      //   slideIndex = 1;
 
-      }
+      // }
       if(z==0){
         x[slideIndex-1].style.display = "block";
         z=1;
