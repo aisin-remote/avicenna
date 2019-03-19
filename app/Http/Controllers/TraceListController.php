@@ -240,7 +240,7 @@ class TraceListController extends Controller
 
     		})->save('csv', storage_path('traceability'), true);
     		$file = Storage::disk('public')->get('print_part_tmiin.csv');
-    			    Storage::disk('myftp')->put('\data_'.$now.'.csv',$file);
+    			    // Storage::disk('myftp')->put('\data_'.$now.'.csv',$file);
 
     		//	    $this->tes(); //dev-1.1.0 , Handika, Non aktif fitur email
     	}catch(\Exception $e){

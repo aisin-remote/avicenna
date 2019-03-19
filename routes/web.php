@@ -211,7 +211,14 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
 
 	Route::get('/trace/export/part', 'TraceListController@tracepartreport'); //dev-1.1.0, Audi 20190218, Export Part
-	Route::get('/tmmin', 'TraceListController@tes');
+	Route::get('/tmmin', 'TraceListController@tracepartreport');
 
 	// dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
 	Route::get('/test', 'HomeController@test');
+
+// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
+Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {
+
+	Route::get('/prodplan', 'Avicenna\IoTController@showProdPlan');
+	Route::post('/prodplan', 'Avicenna\IoTController@verifyProdPlan');
+});
