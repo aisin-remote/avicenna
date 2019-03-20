@@ -48,6 +48,7 @@
                     </span>
                     <input name="tipe" type="hidden" value="verify">
                     <input type="submit" class="btn btn-warning" id="buttonfilter" value="Verifikasi" />
+                    <a href="{{ url('download/templates/prod_plan.xlsx') }}" class="pull-right">Klik download untuk template</a>
                     <!-- /.input group -->
                     {!! Form::close() !!}
                 </div>

@@ -51,6 +51,8 @@ class IoTController extends Controller
 	    			$this->insertDB($posting, $i, $row, $days);
 	    		}
     		}
+
+    		Storage::delete($path);
     	}
 
     	return view('avicenna.iot.prodplan', compact('rows', 'posting', 'days', 'path'));
@@ -68,7 +70,7 @@ class IoTController extends Controller
 
     	$now = Carbon::now();
     	$qtydaily = $this->countDaily($data['total'], $days, $dayindex);
-// dd($yearmonth.'-'.sprintf('%02d', $dayindex));
+
 		$plan = TT_DATA_PROD_PLAN::firstOrNew([
 				'DTM_DAY_PROD_PLAN' => ($yearmonth.'-'.sprintf('%02d', $dayindex)),
 			    'CHR_COD_COMPANY' => 'J922',
@@ -80,7 +82,7 @@ class IoTController extends Controller
 
 		$plan->DEC_SUR_PROD_PLAN = $qtydaily;
 		$plan->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
-		$plan->INT_KEY_REFERENCE = 0;
+		$plan->INT_KEY_REFERENCE = 1;
 
 		if (! $plan->exists) {
 

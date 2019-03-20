@@ -32,6 +32,6 @@ class CreateAviAndonStatus extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avi_trace_status');
+        Schema::dropIfExists('avi_andon_status');
     }
 }

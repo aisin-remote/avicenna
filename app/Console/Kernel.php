@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\CopyAndonHourly',
         '\App\Console\Commands\MutasiAndon',
         '\App\Console\Commands\EmailTraceability',
+        '\App\Console\Commands\AlcollaOperationStatus',
     ];
 
     /**
@@ -35,6 +36,9 @@ class Kernel extends ConsoleKernel
                  ->everyFiveMinutes();
         $schedule->command('EmailTraceability')
                  ->hourly();
+        //For Insert Table SQL ALCOLLA TT_DATA_OPERATION_STATUS
+        $schedule->command('alcolla:operationStatus')
+                 ->everyMinute();
     }
 
     /**
