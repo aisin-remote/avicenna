@@ -38,20 +38,20 @@ class Kernel extends ConsoleKernel
                  ->hourly();
 
         //For Insert Table SQL ALCOLLA TT_DATA_OPERATION_STATUS
-        $schedule->command('alcolla:operationStatus')
-                 ->everyMinute();
+        // $schedule->command('alcolla:operationStatus')
+                 // ->everyMinute();
 
         /* For Insert Table AVICENNA avi_mutation */
         $schedule->command('avicenna:andonMutation')
                  ->everyMinute();
         
         /* For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT */
-        $schedule->command('alcolla:productionResult')
-                 ->everyMinute();
+        // $schedule->command('alcolla:productionResult')
+                 // ->everyMinute();
 
         /* For Insert Table SQL ALCOLLA TT_DATA_DOWN_STATUS */
-        $schedule->command('alcolla:downtimeStatus')
-                 ->everyMinute();
+        // $schedule->command('alcolla:downtimeStatus')
+                 // ->everyMinute();
     }
 
     /**

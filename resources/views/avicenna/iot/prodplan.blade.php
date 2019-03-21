@@ -73,6 +73,7 @@
                 <thead>
                   <tr>
                     <th>No</th>
+                    <th>Line</th>
                     <th>Part Number</th>
                     <th>Total</th>
                     
@@ -89,6 +90,7 @@
                     <tr>
                         
                         <td>{{ $j++ }}</td>
+                        <td>{{ $row['line'] }}</td>
                         <td>{{ $row['partno'] }}</td>
                         <td>{{ $row['total'] }}</td>
                         
