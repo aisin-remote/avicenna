@@ -149,23 +149,22 @@ function ajax(){
                             jalan = 1;
                         }else if ( data[a].status == 2 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                              coba.push([data[a].line,"PROBLEM MESIN",data[a].pic]);
-                          konten += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                              coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 3 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                              coba.push([data[a].line,"PROBLEM QUALITY",data[a].pic]);
+                              coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 4 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                              coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].pic]);
+                              coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 5 ) {
                           response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                              coba.push([data[a].line,"DANDORI",data[a].pic]);
+                              coba.push([data[a].line,"DANDORI",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 0 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #000000 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #000000 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          response += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
                         }
                           
                       }
@@ -205,7 +204,7 @@ function ShowModal(a){
       function tes(){
         
         for (var h = 0; h < simpan.length; h++) {
-          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][2]+"</font></b></div>");                          
+          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='7' >EMAIL&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][3]+"</font></b></div>");                          
         }
         if (slideIndex > konten.length){
           slideIndex = 1;

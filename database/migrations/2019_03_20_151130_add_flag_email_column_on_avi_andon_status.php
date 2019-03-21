@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTriggerUpdateAviAndonStatus extends Migration
+class AddFlagEmailColumnOnAviAndonStatus extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,9 @@ class CreateTriggerUpdateAviAndonStatus extends Migration
      */
     public function up()
     {
-        DB::unprapred('CREATE TRIGGER update_updated_at_column_on_avi_andon_status BEFORE UPDATE ON `avi_andon_status` FOR EACH ROW BEGIN SET NEW.updated_at = NOW(); END');
+        Schema::table('avi_andon_status', function (Blueprint $table) {
+            $table->boolean('flag_email')->after('pic_gm');
+        });
     }
 
     /**
@@ -23,6 +25,8 @@ class CreateTriggerUpdateAviAndonStatus extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER `avi_andon_status`')
+        Schema::table('avi_andon_status', function (Blueprint $table) {
+            $table->dropColumn('flag_email');
+        });
     }
 }
