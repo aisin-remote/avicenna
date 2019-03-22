@@ -56,7 +56,7 @@ class AlcollaProductionResult extends Command
                     $qty_prod_result=$line->actual_qty-$line->buffer_alcolla;
                     $master_part=avi_part_production::select('part_number','ct')
                         ->where('back_number',$line->back_number)
-                        ->firstOrFail();
+                        ->first();
 
                     $product_result= new TT_DATA_PROD_RESULT();
                     $product_result->DTM_TIM_PROD_RESULT = Carbon::now()->format('Y-m-d H:i:s.0000000');
@@ -64,10 +64,10 @@ class AlcollaProductionResult extends Command
                     $product_result->CHR_COD_KJ = 'JE';
                     $product_result->CHR_COD_KOFU = 'AS';
                     $product_result->CHR_COD_LINE = substr($line->line,2,3);
-                    $product_result->CHR_COD_HNMK = $master_part->part_number;
+                    $product_result->CHR_COD_HNMK = isset($master_part->part_number) ? $master_part->part_number : 'UNKNOWN';
                     $product_result->DEC_SUR_RESULT = $qty_prod_result;
                     $product_result->DEC_SUR_THROWOUT = 0;
-                    $product_result->DEC_TIM_CT = $master_part->ct;
+                    $product_result->DEC_TIM_CT = isset($master_part->ct) ? $master_part->ct : 30;;
                     $product_result->DTM_TIM_PROD_RESULT_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
                     $product_result->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
                     $product_result->INT_KEY_REFERENCE=1;
@@ -86,7 +86,7 @@ class AlcollaProductionResult extends Command
 
                     DB::commit();
                 }catch(\Exception $ex){
-                    echo $ex->getMessage();
+                    echo "Error Method Insert karena" .$ex->getMessage();
                     DB::rollBack();
                 }
                 
