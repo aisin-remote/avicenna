@@ -14,7 +14,9 @@ class AddFlagEmailColumnOnAviAndonStatus extends Migration
     public function up()
     {
         Schema::table('avi_andon_status', function (Blueprint $table) {
-            $table->boolean('flag_email')->after('pic_gm');
+            $table->boolean('flag_spv')->after('pic_spv');
+            $table->boolean('flag_mgr')->after('pic_mgr');
+            $table->boolean('flag_gm')->after('pic_gm');
         });
     }
 
@@ -26,7 +28,9 @@ class AddFlagEmailColumnOnAviAndonStatus extends Migration
     public function down()
     {
         Schema::table('avi_andon_status', function (Blueprint $table) {
-            $table->dropColumn('flag_email');
+            $table->dropColumn('flag_spv');
+            $table->dropColumn('flag_mgr');
+            $table->dropColumn('flag_gm');
         });
     }
 }

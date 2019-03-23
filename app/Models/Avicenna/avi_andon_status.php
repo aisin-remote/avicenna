@@ -11,8 +11,11 @@ class avi_andon_status extends Model
     	'status',
     	'pic_ldr',
     	'pic_spv',
+        'flag_spv',
     	'pic_mgr',
+        'flag_mgr',
     	'pic_gm',
+        'flag_gm',
     	'created_at',
     	'updated_at'
     ];

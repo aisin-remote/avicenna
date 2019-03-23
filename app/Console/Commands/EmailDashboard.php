@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Avicenna\avi_andon_status;
+use Carbon\Carbon;
 
 class EmailDashboard extends Command
 {
@@ -12,7 +14,7 @@ class EmailDashboard extends Command
      *
      * @var string
      */
-    protected $signature = 'Email:AndonStatus';
+    protected $signature = 'avicenna:emailDashboard';
 
     /**
      * The console command description.
@@ -47,33 +49,73 @@ class EmailDashboard extends Command
             $now     = Carbon::now();
 
             if ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();  
-            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
-            }else{
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
-                if ($d->flag_email == 0 ) {
-                    email($d->email, $status);
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
+                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                    if ($d->flag_spv == 0 ) {
+                    $this->email($d->email, $d->status, $d->line, '5 Menit');
+                    $flag1 = avi_andon_status::where('line', $line->line)->first();
+                    $flag1->flag_spv = 1;
+                    $flag1->save();
+                    }
                 }
+            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
+                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                    if ($d->flag_mgr == 0 ) {
+                    $this->email($d->email, $d->status, $d->line, '10 Menit');
+                    $flag1 = avi_andon_status::where('line', $line->line)->first();
+                    $flag1->flag_mgr = 1;
+                    $flag1->save();
+                    }
+                }
+            }else{
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
+                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                    if ($d->flag_gm == 0 ) {
+                    $this->email($d->email, $d->status, $d->line, '15 Menit');
+                    $flag1 = avi_andon_status::where('line', $line->line)->first();
+                    $flag1->flag_gm = 1;
+                    $flag1->save();
+                    }
+                }
+                
             }
 
         }
+
+
+
+        
     }
+    function email($email,$status,$line,$time)
+            {
+                if ($status == 2) {
+                   $textstatus = 'Error Problem Machine';
+                }
+                elseif ($status == 3) {
+                   $textstatus = 'Error Problem Quality';
+                }
+                elseif ($status == 4) {
+                   $textstatus = 'Error Problem Supply Part';
+                }
+                $now = Carbon::now()->format('Y-m-d');
 
-    public function email($email,$status)
-    {
+                $value = array ('tanggal' => $now,
+                                'status' => $textstatus,
+                                'line' => $line,
+                                'time' => $time,
+                                );
 
-        $value = array('tanggal' => $yesterday);
-        $penerima = array('audi.r@aiia.co.id');
+                $penerima = array('audi.r@aiia.co.id');
 
-        Mail::send('tracebility.email.index', $value, function($message) use ($penerima)  {
-        $message->to('handika@aiia.co.id')
-                    ->subject('Traceability')
-                    ->attach(storage_path('traceability/print_part_tmiin.csv'));
-        $message->cc($penerima);
-        $message->from('aisinbisa@aiia.co.id');
-        });
-    }
+                Mail::send('tracebility.email.linestatus', $value, function($message) use ($penerima,$email,$line)  {
+                $message->to($email)
+                            ->subject($line);
+                $message->cc($penerima);
+                $message->from('aisinbisa@aiia.co.id');
+                });
+            }
+  
 
 
 }

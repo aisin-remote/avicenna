@@ -112,15 +112,24 @@ class DashboardController extends Controller
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
             }elseif ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
+
             }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
             }else{
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
+                
             }
             array_push($lines, $d);
+            
+            $flag = avi_andon_status::where('line', $warning->line)->first();
+            if ($flag->status == 1 ) {
+                    $flag->flag_spv = 0;
+                    $flag->flag_mgr = 0;
+                    $flag->flag_gm = 0;
+                    $flag->save();
+            }
         }
 
-        // $lines = avi_andon_status::select('line','status','pic_ldr')->get();
         return $lines;
     }
 
