@@ -34,14 +34,19 @@
       <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
       <span style="color: white; font-size: 15px "> All line in body plant </span>
     </div>
-    <div id="a" >
+    <div id="body" >
     </div>
     
 
 </div>
-<div >
-      <br><br><br><br><br><br>
-      <span id="c" style="color: white; font-size: 25px "> BODY PLANT </span>
+<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
+    <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
+      <span style="color: white; font-size: 25px "> UNIT PLANT </span> <br>
+      <span style="color: white; font-size: 15px "> All line in unit plant </span>
+    </div>
+    <div id="unit" >
+    </div>
+    
 
 </div>
 
@@ -138,43 +143,66 @@ function ajax(){
                     dataType: 'json',
                     async:false,
                     success: function(data) {
-                      var response = '';
-                      var konten = '';
+                      var unit = '';
+                      var body = '';
                       var mlaku=0;
 
                       for (var a = 0; a < data.length; a++) {
                         if ( data[a].status == 1 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
-                          // array += data[a];
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";  
+                          }
                             jalan = 1;
                         }else if ( data[a].status == 2 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }
                               coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 3 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }
                               coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 4 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }
                               coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 5 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";  
+                          }
                               coba.push([data[a].line,"DANDORI",data[a].name,data[a].email]);
                               mlaku = 1;
                         }else if ( data[a].status == 0 ) {
-                          response += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          if (data[a].plant == "UNIT") {
+                            unit += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }else if (data[a].plant == "BODY"){
+                            body += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+                          }
+                            jalan = 1;
                         }
                           
                       }
                       if(mlaku==1){
                         jalan=0;
                       }
-                      $('#a').html(response);
-                      // $('#konten').html(simpan);
-                      
-                      // coba.push(array);
+                      $('#body').html(body);
+                      $('#unit').html(unit);
                       
 
                       

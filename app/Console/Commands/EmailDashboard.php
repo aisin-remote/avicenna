@@ -44,11 +44,25 @@ class EmailDashboard extends Command
         ->get();
         foreach ($lines as $line ) {
 
-            $update_at = avi_andon_status::select('updated_at')
+            $error_at = avi_andon_status::select('error_at')
             ->where('line', $line->line)->first();
             $now     = Carbon::now();
 
-            if ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
+            if ($error_at->error_at) {
+            $error1 = Carbon::parse($error_at->error_at);
+            $error2 = Carbon::parse($error_at->error_at);
+            $error3 = Carbon::parse($error_at->error_at);
+                    $a = $error1->addSeconds(env('AVI_EMAIL_LINE', 300));
+                    $b = $error2->addSeconds(env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300));
+                    $c = $error3->addSeconds(env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300));
+                    echo "  ---------  ";
+                    echo $a;
+                    echo "  ---------  ";
+                    echo $b;
+                    echo "  ---------  ";
+                    echo $c;
+
+            if ($a < $now && $now < $b) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_spv == 0 ) {
@@ -58,7 +72,8 @@ class EmailDashboard extends Command
                     $flag1->save();
                     }
                 }
-            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
+                echo "email spv";
+            }elseif ($b < $now && $now < $c) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_mgr == 0 ) {
@@ -68,7 +83,8 @@ class EmailDashboard extends Command
                     $flag1->save();
                     }
                 }
-            }else{
+                echo "email mgr";
+            }elseif ($now > $c){
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_gm == 0 ) {
@@ -77,9 +93,19 @@ class EmailDashboard extends Command
                     $flag1->flag_gm = 1;
                     $flag1->save();
                     }
+
                 }
+                echo "email gm";
                 
+            }else{
+                echo "oke";
             }
+
+
+        }
+            
+
+            
 
         }
 
@@ -106,12 +132,12 @@ class EmailDashboard extends Command
                                 'time' => $time,
                                 );
 
-                $penerima = array('audi.r@aiia.co.id');
+                // $penerima = array('audi.r@aiia.co.id');
 
-                Mail::send('tracebility.email.linestatus', $value, function($message) use ($penerima,$email,$line)  {
+                Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line)  {
                 $message->to($email)
                             ->subject($line);
-                $message->cc($penerima);
+                // $message->cc($penerima);
                 $message->from('aisinbisa@aiia.co.id');
                 });
             }

@@ -101,7 +101,6 @@ class DashboardController extends Controller
         $lines = array();
         $warning_status = avi_andon_status::select('line')
         ->get();
-        $d = avi_andon_status::select('avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', 'AS600')->first(); 
         foreach ($warning_status as $warning ) {
 
             $update_at = avi_andon_status::select('updated_at')
@@ -109,14 +108,14 @@ class DashboardController extends Controller
             $now     = Carbon::now();
 
             if($update_at->updated_at <= $now && $now <= $update_at->updated_at->addSeconds(300)){
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
             }elseif ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
 
             }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
             }else{
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
                 
             }
             array_push($lines, $d);
@@ -126,6 +125,7 @@ class DashboardController extends Controller
                     $flag->flag_spv = 0;
                     $flag->flag_mgr = 0;
                     $flag->flag_gm = 0;
+                    $flag->error_at = NULL;
                     $flag->save();
             }
         }

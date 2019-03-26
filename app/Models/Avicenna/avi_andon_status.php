@@ -8,6 +8,7 @@ class avi_andon_status extends Model
 {
     protected $fillable =[   	
 		'line',
+        'plant',
     	'status',
     	'pic_ldr',
     	'pic_spv',
@@ -16,9 +17,11 @@ class avi_andon_status extends Model
         'flag_mgr',
     	'pic_gm',
         'flag_gm',
+        'error_at',
     	'created_at',
     	'updated_at'
     ];
 
     protected $table = 'avi_andon_status';
+    
 }
