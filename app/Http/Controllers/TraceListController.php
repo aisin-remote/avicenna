@@ -240,7 +240,7 @@ class TraceListController extends Controller
 
     		})->save('csv', storage_path('traceability'), true);
     		$file = Storage::disk('public')->get('print_part_tmiin.csv');
-    			    // Storage::disk('myftp')->put('\data_'.$now.'.csv',$file);
+    			    Storage::disk('myftp')->put('\data_'.$now.'.csv',$file); /* ---- for saving CSV file to  AIIA-SVR-WX04 ---- */
 
     		//	    $this->tes(); //dev-1.1.0 , Handika, Non aktif fitur email
     	}catch(\Exception $e){
@@ -249,17 +249,19 @@ class TraceListController extends Controller
 		
     }
 
- //    function tes(){  //dev-1.1.0 , Handika, Non aktif fitur email
-	// 	$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
-	// 	$tmmin = array('tanggal' => $yesterday);
-		// $penerima = array('audi.r@aiia.co.id');
+    /* ----------- Function Email  --------------------
+    function tes(){  //dev-1.1.0 , Handika, Non aktif fitur email
+		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
+		$tmmin = array('tanggal' => $yesterday);
+		$penerima = array('audi.r@aiia.co.id');
 
-	// 	Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
-		// $message->to('handika@aiia.co.id')
-	// 				->subject('Traceability')
-	// 				->attach(storage_path('traceability/print_part_tmiin.csv'));
-	// 	$message->cc($penerima);
-	// 	$message->from('aisinbisa@aiia.co.id');
-	// 	});
-	// }
+		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
+		$message->to('handika@aiia.co.id')
+					->subject('Traceability')
+					->attach(storage_path('traceability/print_part_tmiin.csv'));
+		$message->cc($penerima);
+		$message->from('aisinbisa@aiia.co.id');
+		});
+	}
+	*/
 }
