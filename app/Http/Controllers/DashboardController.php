@@ -71,30 +71,7 @@ class DashboardController extends Controller
         return view('adminlte::dashboard.direct.andon2' , compact('andons'));
     }
     function direct_line(){
-        $lines = avi_andon_status::select('*')->get();
-        $a = array();
-        $warning_status = avi_andon_status::select('line')
-        ->where('status','=', 2)
-        ->get();
-
-        foreach ($warning_status as $warning ) {
-
-            $update_at = avi_andon_status::select('updated_at')
-            ->where('line', $warning->line)->first();
-            $now     = Carbon::now();
-
-            if($update_at->updated_at <= $now && $now <= $update_at->updated_at->addSeconds(300)){
-                $d = avi_andon_status::select('*', 'avi_andon_status.pic_ldr as pic')->where('line', $warning->line)->first();
-            }elseif ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
-                $d = avi_andon_status::select('*', 'avi_andon_status.pic_spv as pic')->where('line', $warning->line)->first();
-            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
-                $d = avi_andon_status::select('*', 'avi_andon_status.pic_mgr as pic')->where('line', $warning->line)->first();
-            }else{
-                $d = avi_andon_status::select('*', 'avi_andon_status.pic_gm as pic')->where('line', $warning->line)->first();
-            }
-            array_push($a, $d);
-        }
-        return view('adminlte::dashboard.direct.line' , compact('lines','a'));
+        return view('adminlte::dashboard.direct.line' );
     }
 
     function direct_line_index(){
@@ -103,20 +80,31 @@ class DashboardController extends Controller
         ->get();
         foreach ($warning_status as $warning ) {
 
-            $update_at = avi_andon_status::select('updated_at')
+            $error_at = avi_andon_status::select('error_at')
             ->where('line', $warning->line)->first();
             $now     = Carbon::now();
+            $error1 = Carbon::parse($error_at->error_at);
+            $error2 = Carbon::parse($error_at->error_at);
+            $error3 = Carbon::parse($error_at->error_at);
+                $satu   = env('AVI_EMAIL_LINE', 300);
+                $dua    = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                $tiga   = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                    $a = $error1->addSeconds($satu);
+                    $b = $error2->addSeconds($dua);
+                    $c = $error3->addSeconds($tiga);
 
-            if($update_at->updated_at <= $now && $now <= $update_at->updated_at->addSeconds(300)){
+            if($error_at->error_at && $error1 < $now && $now < $a){
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
-            }elseif ($update_at->updated_at->addSeconds(300) <= $now && $now <= $update_at->updated_at->addSeconds(600)) {
+            }elseif ($error_at->error_at && $a < $now && $now < $b) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
 
-            }elseif ($update_at->updated_at->addSeconds(600) <= $now && $now <= $update_at->updated_at->addSeconds(900)) {
+            }elseif ($error_at->error_at && $b < $now && $now < $c) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
-            }else{
+            }elseif ($error_at->error_at && $now > $c){
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
                 
+            }else{
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
             }
             array_push($lines, $d);
             

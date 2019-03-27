@@ -3,32 +3,6 @@
 @section('content')
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
-
-        @foreach ($lines as $andon)
-
-        <?php
-          // special manipulation in looping
-          if ($andon->status == 2) {
-            $class= '#bf4848'; //merah
-            $text= '#ffffff'; //putih
-          }
-          elseif ($andon->status == 1) {
-            $class = '#5daa68'; //hijau
-            $text= '#ffffff'; //putih
-          }
-          elseif ($andon->status == 5) {
-            $class = '#ffff00' ; //kuning
-            $text= '#000000'; //hitam
-          }elseif ($andon->status == 3) {
-            $class = '#ffffff'; //putih
-            $text= '#000000'; //hitam
-          }
-          elseif ($andon->status == 0) {
-            $class = '#000000'; //hitam
-            $text = '#ffffff'; //putih
-          }
-        ?>
-        @endforeach
 <div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
     <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
       <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>

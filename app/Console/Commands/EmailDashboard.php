@@ -52,21 +52,19 @@ class EmailDashboard extends Command
             $error1 = Carbon::parse($error_at->error_at);
             $error2 = Carbon::parse($error_at->error_at);
             $error3 = Carbon::parse($error_at->error_at);
-                    $a = $error1->addSeconds(env('AVI_EMAIL_LINE', 300));
-                    $b = $error2->addSeconds(env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300));
-                    $c = $error3->addSeconds(env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300));
-                    echo "  ---------  ";
-                    echo $a;
-                    echo "  ---------  ";
-                    echo $b;
-                    echo "  ---------  ";
-                    echo $c;
+                $satu   = env('AVI_EMAIL_LINE', 300);
+                $dua    = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                $tiga   = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                    $a = $error1->addSeconds($satu);
+                    $b = $error2->addSeconds($dua);
+                    $c = $error3->addSeconds($tiga);
 
             if ($a < $now && $now < $b) {
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_spv == 0 ) {
-                    $this->email($d->email, $d->status, $d->line, '5 Menit');
+                    $time = $satu/60;
+                    $this->email($d->email, $d->status, $d->line, $time);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_spv = 1;
                     $flag1->save();
@@ -77,7 +75,8 @@ class EmailDashboard extends Command
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_mgr == 0 ) {
-                    $this->email($d->email, $d->status, $d->line, '10 Menit');
+                    $time = $dua/60;
+                    $this->email($d->email, $d->status, $d->line, $time);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_mgr = 1;
                     $flag1->save();
@@ -88,7 +87,8 @@ class EmailDashboard extends Command
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_gm == 0 ) {
-                    $this->email($d->email, $d->status, $d->line, '15 Menit');
+                    $time = $tiga/60;
+                    $this->email($d->email, $d->status, $d->line, $time);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_gm = 1;
                     $flag1->save();
