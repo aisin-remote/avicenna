@@ -46,7 +46,6 @@ class ViewTraceController extends Controller
 	            })
 	        ->addIndexColumn()
 	        ->make(true);
-		
 	}
 
 

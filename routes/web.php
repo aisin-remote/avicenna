@@ -104,6 +104,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
+	Route::get('/trace/view/list', 'TraceListController@index');
+	Route::get('/trace/view/listout', 'TraceListController@indexout');
 	Route::get('/trace/view/list', 'TraceListController@indexout');
 	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
@@ -177,6 +179,8 @@ Route::get('/dashboard/datatools2/{id_mesin}','Avicenna\UnitDashboardController@
 Route::get('/', 'DashboardController@choose');
 Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.andon2'); //dev-1.0, 20180416, Andon Monitoring
+Route::get('/direct/line', 'DashboardController@direct_line')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
+Route::get('/direct/line/index', 'DashboardController@direct_line_index')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
 
 //List Traceability
 
@@ -189,12 +193,7 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
-	Route::get('/trace/view/list', 'TraceListController@index');
-	Route::get('/trace/view/listout', 'TraceListController@indexout');
-	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
-	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
-	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
-	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
+	
 
 	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
 	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
@@ -216,9 +215,9 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 	// dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
 	Route::get('/test', 'HomeController@test');
 
-// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
-Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {
+	// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
+	Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {
 
-	Route::get('/prodplan', 'Avicenna\IoTController@showProdPlan');
-	Route::post('/prodplan', 'Avicenna\IoTController@verifyProdPlan');
-});
+		Route::get('/prodplan', 'Avicenna\IoTController@showProdPlan');
+		Route::post('/prodplan', 'Avicenna\IoTController@verifyProdPlan');
+	});

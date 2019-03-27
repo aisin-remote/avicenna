@@ -19,7 +19,9 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\AlcollaOperationStatus',
         '\App\Console\Commands\AlcollaProductionResult',
         '\App\Console\Commands\AlcollaDownTimeStatus',
-        '\App\Console\Commands\AvicennaAndonMutation'
+        '\App\Console\Commands\AvicennaAndonMutation',
+        '\App\Console\Commands\EmailDashboard',
+        '\App\Console\Commands\AvicennaUpdateError',
     ];
 
     /**
@@ -30,28 +32,23 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('DeleteEveryMonth:DeleteMutations')
-                 ->hourly();
         $schedule->command('CopyAndonHourly:CopyAndon')
                  ->everyFiveMinutes();
         $schedule->command('EmailTraceability')
                  ->hourly();
 
-        //For Insert Table SQL ALCOLLA TT_DATA_OPERATION_STATUS
-        // $schedule->command('alcolla:operationStatus')
-                 // ->everyMinute();
+        /* update error date ketika abnormal pada tabel avi_andon_status */
+        $schedule->command('avicenna:updateerror')
+                 ->everyMinute();
 
-        /* For Insert Table AVICENNA avi_mutation */
+        /* insert mutasi dari andon */
         $schedule->command('avicenna:andonMutation')
                  ->everyMinute();
-        
-        /* For Insert Table SQL ALCOLLA TT_PODUCTION_RESULT */
-        // $schedule->command('alcolla:productionResult')
-                 // ->everyMinute();
 
-        /* For Insert Table SQL ALCOLLA TT_DATA_DOWN_STATUS */
-        // $schedule->command('alcolla:downtimeStatus')
-                 // ->everyMinute();
+        /* email alert saat terjadi abnormality */
+        $schedule->command('avicenna:emailDashboard')
+                 ->everyMinute();
+       
     }
 
     /**
