@@ -42,7 +42,9 @@ class AlcollaDownTimeStatus extends Command
      */
     public function handle()
     {
-        $line_status=avi_andon_status::select('id','line','status','status_before')->get();
+        $line_status=avi_andon_status::select('id','line','status','status_before')
+                                ->whereIn('line',['AS600','AS523'])
+                                ->get();
         
         foreach ($line_status as $my_status) {
             if($my_status->status!= 0){
@@ -96,13 +98,14 @@ class AlcollaDownTimeStatus extends Command
                         
                     }else{
                         if($my_status->status_before!=0){
-                            try {
-                                DB::beginTransaction();
-                                //Update ke SQL Server
-                                $dataDown=TT_DATA_DOWN_RESULT::where('CHR_COD_LINE', substr($my_status->line,2,3))
-                                                            ->orderBy('DTM_TIM_DOWN_OCCURRENCE','DESC')
-                                                            ->first();
-                                if($dataDown){
+
+                            $dataDown=TT_DATA_DOWN_RESULT::where('CHR_COD_LINE', substr($my_status->line,2,3))
+                            ->orderBy('DTM_TIM_DOWN_OCCURRENCE','DESC')
+                            ->first();
+                            if($dataDown){
+                                try {
+                                    DB::beginTransaction();
+                                        //Update ke SQL Server
                                     $dataDown->INT_KUB_DOWN_STATUS= 3; // --> Finish/Restore
                                     $dataDown->DTM_TIM_RESTORTION=Carbon::now()->format('Y-m-d H:i:s.0000000');
                                     $dataDown->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
@@ -115,19 +118,50 @@ class AlcollaDownTimeStatus extends Command
                                     //Update Status Before disamakan
                                     $my_status->status_before=$my_status->status;
                                     $my_status->save();
+
+                                    DB::commit();
+
+                                } catch (Exception $e) {
+                                    echo "Error karena: ".$ex->getMessage();
+                                    DB::rollBack();
                                 }
-
-                                DB::commit();
-
-                            } catch (Exception $e) {
-                                echo "Error karena: ".$ex->getMessage();
-                                DB::rollBack();
                             }
+
+
                         }
+                    }
+                }
+            }elseif($my_status->status == 0 && $my_status->status_before > 1){
+
+                $dataDown=TT_DATA_DOWN_RESULT::where('CHR_COD_LINE', substr($my_status->line,2,3))
+                ->orderBy('DTM_TIM_DOWN_OCCURRENCE','DESC')
+                ->first();
+                if($dataDown){
+                    try {
+                        DB::beginTransaction();
+                            //Update ke SQL Server
+                        $dataDown->INT_KUB_DOWN_STATUS= 3; // --> Finish/Restore
+                        $dataDown->DTM_TIM_RESTORTION=Carbon::now()->format('Y-m-d H:i:s.0000000');
+                        $dataDown->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
+                        $dataDown->CHR_INF_KOSIN_USER = 'SYSTEM';
+                        $dataDown->CHR_NGP_KOSIN = Carbon::now()->format('Ymd');
+                        $dataDown->CHR_TIM_KOSIN = Carbon::now()->format('Hi');
+                        $dataDown->timestamps = false;
+                        $dataDown->save();
+
+                        //Update Status Before disamakan
+                        $my_status->status_before=$my_status->status;
+                        $my_status->save();
+
+                        DB::commit();
+
+                    } catch (Exception $e) {
+                        echo "Error karena: ".$ex->getMessage();
+                        DB::rollBack();
                     }
                 }
             }
         }
-       
+
     }
 }
