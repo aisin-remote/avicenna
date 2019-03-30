@@ -38,7 +38,7 @@
                     <table style="background-color: #000000 ;" class="table table-bordered">
                       <tr>
                         <th style="text-align: center; width: 25% ; font-size: 9px"><div class="jam"></div>AIIA</th>
-                        <th style="text-align: center; width: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 ; padding-right: : 20px ; padding-left: 20px "><span class="direct-chat-name pull-center">{{ $andon->lin }}</span></th>
+                        <th style="text-align: center; width: 50% ; font-size: 27px ; background-color: #ffff00 ; color: #000000 ; padding-right: : 20px ; padding-left: 20px "><span class="direct-chat-name pull-center">{{ $andon->line }}</span></th>
                         <th style="text-align: center; width: 25%"><span style="text-align: center;" >MODEL<br> {{ $andon->back }} </th>
                       </tr>
                     </table>

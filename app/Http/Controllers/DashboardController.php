@@ -63,11 +63,9 @@ class DashboardController extends Controller
 
     function direct_andon2(){
 
-        // $andons = avi_andon::select('*')->get();
+        $andons = avi_andon::join('avi_andon_details','avi_andons.back_number', '=', 'avi_andon_details.back_no')->get();
 
-        $andons = avi_andon::select('*', 'avi_andon_details.line as lin','avi_andon_details.back_no as back')
-        ->join('avi_andon_details','avi_andons.word', '=', 'avi_andon_details.word')->get();
-
+        // return $andons;
         return view('adminlte::dashboard.direct.andon2' , compact('andons'));
     }
     function direct_line(){
