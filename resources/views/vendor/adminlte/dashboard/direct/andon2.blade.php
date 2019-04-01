@@ -21,7 +21,7 @@
             $class = "status-normal";
             $text = "NORMAL";
           }
-          else{
+          elseif ($andon->target_qty == 0 ){
             $class = "status-off";
             $text = "NO PRODUCTION";
           }
