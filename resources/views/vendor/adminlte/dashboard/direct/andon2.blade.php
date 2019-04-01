@@ -9,7 +9,7 @@
         <?php
           // special manipulation in looping
           $productivity = number_format((empty($andon->target_qty) || ($andon->target_qty==0)) ? 0 : round($andon->actual_qty / $andon->target_qty, 2) * 100 , 1);
-          if ($productivity < 60) {
+          if (($productivity < 60) && ($productivity > 0)) {
             $class= "status-abnormal";
             $text = "ABNORMAL";
           }
@@ -20,6 +20,10 @@
           elseif ($productivity > 80) {
             $class = "status-normal";
             $text = "NORMAL";
+          }
+          else{
+            $class = "status-off";
+            $text = "NO PRODUCTION";
           }
         ?>
 

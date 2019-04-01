@@ -68,7 +68,7 @@
 				<div class="panel-body">
 					<div class="col-md-12" >
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<a href="trace/view/listout" style="text-decoration:none">
 								<div class="rectangle" >
 									<div class="plant">
@@ -77,7 +77,7 @@
 								</div>
 								</a>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<a href="direct/andon2" style="text-decoration:none">
 								<div class="rectangle">
 									<div class="plant">
@@ -88,7 +88,13 @@
 								</div>
 								</a>
 							</div>
-							<div class="col-md-4">
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12" >
+						<div class="row">
+							<div class="col-md-6">
 								<a href="avicenna/stock/mutation" style="text-decoration:none">
 								<div class="rectangle">
 									<div class="plant">
@@ -99,8 +105,19 @@
 								</div>
 								</a>
 							</div>
+							<div class="col-md-6">
+								<a href="direct/line" style="text-decoration:none">
+								<div class="rectangle">
+									<div class="plant">
+										All Line 
+										<div class="quote">Monitoring</div>
+										
+									</div>
+								</div>
+								</a>
+							</div>
+						</div>
 					</div>
-				</div>
 				</div>
 				<br><br><br><br><br>
 				<div class="quote"> <a href="login" style="text-decoration:none">Login</a></div>		

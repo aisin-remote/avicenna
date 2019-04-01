@@ -72,3 +72,11 @@
 	font-weight: bold;
 	font-size: 20px ;
 }
+.status-off{
+	background-color: #ffffff ;
+	text-align: center;
+	color: black;
+	width: 100%;
+	font-weight: bold;
+	font-size: 20px ;
+}
