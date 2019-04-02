@@ -228,26 +228,25 @@ function ShowModal(a){
               console.log('satu');
               console.log(item);
                 // console.log(konten);
-
-              }, 2000);
-          }else{
-            slideIndex++;
-            setTimeout(function(){
+              }, {{env('AVI_SLIDER_LINE', 3)*1000}}  ) ;
+            }else{
+              slideIndex++;
+              setTimeout(function(){
 
               mdl_alert.modal('hide');
               
               z=0;
               console.log('dua');
 
-            }, 2000);
-          }
-          akhir = 0;            
+              }, {{env('AVI_SLIDER_LINE', 3)*1000}} ) ;
+            }
+            akhir = 0;
         }
 
         if (akhir == 0) {
           setTimeout(function(){
-           tes();
-         }, 2000);
+             tes();
+            }, {{env('AVI_SLIDER_LINE', 3)*1000}}  ) ;
         }
 
         
