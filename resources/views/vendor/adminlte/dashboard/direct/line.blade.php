@@ -28,11 +28,11 @@
 
 <div class="modal fade" id="modal-alert" role="dialog">
   <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
-    <div class="modal-content" style="height: 500px">
+    <div class="modal-content" style="height: 650px">
       <div class="modal-header" style="background-color: #bf1007;">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
       </div>
       <div class="modal-body">
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
@@ -136,7 +136,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email]);
+            coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email,data[a].phone]);
             mlaku = 1;
           }else if ( data[a].status == 3 ) {
             if (data[a].plant == "UNIT") {
@@ -144,7 +144,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email]);
+            coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email,data[a].phone]);
             mlaku = 1;
           }else if ( data[a].status == 4 ) {
             if (data[a].plant == "UNIT") {
@@ -152,7 +152,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email]);
+            coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email,data[a].phone]);
             mlaku = 1;
           }else if ( data[a].status == 5 ) {
 
@@ -161,7 +161,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";  
             }
-            coba.push([data[a].line,"DANDORI",data[a].name,data[a].email]);
+            coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone]);
             mlaku = 1;
           }else if ( data[a].status == 0 ) {
             if (data[a].plant == "UNIT") {
@@ -195,8 +195,7 @@ function ShowModal(a){
   if (simpan.length > 0 ){
 
     jalan=0;
-    coba = [];      
-      // $('#konten').html(konten);
+    coba = [];    
 
       //tes carousel
       var slideIndex = 1;
@@ -208,7 +207,7 @@ function ShowModal(a){
       function tes(){
 
         for (var h = 0; h < simpan.length; h++) {
-          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='7'>LINE &ensp;&ensp;&nbsp; : </font></b><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='7' >STATUS : </font></b><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='7' >PIC &ensp;&ensp;&nbsp;&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='7' >EMAIL&nbsp;&nbsp;&nbsp;: </font></b><b><font size='7' >"+simpan[h][3]+"</font></b></div>");                          
+          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='4'>LINE</font></b><br><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='4' >STATUS : </font></b><br><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='4' >PIC </font></b><br><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='4' >EMAIL</font></b><br><b><font size='7' >"+simpan[h][3]+"</font></b><br><b><font size='4' >PHONE    : </font></b><br><b><font size='7' >"+simpan[h][4]+"</font></b></div>");                          
         }
         if (slideIndex > konten.length){
           slideIndex = 1;
@@ -223,11 +222,9 @@ function ShowModal(a){
             setTimeout(function(){
               item = slideIndex-1;
               $('#konten').html(konten[item]);
+
               mdl_alert.modal('show');
               z=1;
-              console.log('satu');
-              console.log(item);
-                // console.log(konten);
               }, {{env('AVI_SLIDER_LINE', 3)*1000}}  ) ;
             }else{
               slideIndex++;
@@ -236,7 +233,6 @@ function ShowModal(a){
               mdl_alert.modal('hide');
               
               z=0;
-              console.log('dua');
 
               }, {{env('AVI_SLIDER_LINE', 3)*1000}} ) ;
             }

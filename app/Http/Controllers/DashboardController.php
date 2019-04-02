@@ -93,17 +93,17 @@ class DashboardController extends Controller
                     
 
             if($error_at->error_at && $error1 < $now && $now < $a){
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
             }elseif ($error_at->error_at && $a < $now && $now < $b) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $warning->line)->first();
 
             }elseif ($error_at->error_at && $b < $now && $now < $c) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $warning->line)->first();
             }elseif ($error_at->error_at && $now > $c){
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $warning->line)->first();
                 
             }else{
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
 
             }
             array_push($lines, $d);
