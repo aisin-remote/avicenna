@@ -8,8 +8,15 @@ use App\Models\Avicenna\avi_andon_status;
 use App\User;
 use Carbon\Carbon;
 
+// Declare disini jika butuh Class bawaan laravel dan plugin yang tidak auto-generated
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Cookie\CookieJar;
+
 class EmailDashboard extends Command
 {
+    private $client;    // SMS Api Client
+
     /**
      * The name and signature of the console command.
      *
@@ -32,6 +39,13 @@ class EmailDashboard extends Command
     public function __construct()
     {
         parent::__construct();
+
+        $this->client = new Client([
+            // Base URI is used with relative requests
+            'base_uri' => env('SMS_GATEWAY_URL'),
+            // You can set any number of default request options.
+            'timeout'  => env('SMS_GATEWAY_TIMEOUT'),
+        ]);
     }
 
     /**
@@ -142,6 +156,28 @@ class EmailDashboard extends Command
                 $message->cc($penerima);
                 $message->from('aisinbisa@aiia.co.id');
                 });
+
+                // email sudah selesai urusannya
+                // dilanjutkan SMS blast
+
+                // dev-1.1.0, Ferry, 20190408. SMS Api ke Elpia gateway
+                $users = User::whereIn('npk', explode(",", $cc))
+                                ->orWhere('email', $email)
+                                ->get();
+
+                foreach ($users as $user) {
+                    $response = $this->client->request('GET', 'plain', [
+                        'query' => [
+                            'user'      => env('SMS_GATEWAY_USER'),
+                            'password'  => env('SMS_GATEWAY_PASSWORD'),
+                            'SMSText'   => 'ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', TIME: '.$time,
+                            'GSM'       => $user->phone_number,
+                        ],
+
+                    ]);
+                }
+
+                // end
             }
   
 
