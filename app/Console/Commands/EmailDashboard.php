@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Avicenna\avi_andon_status;
+use App\User;
 use Carbon\Carbon;
 
 class EmailDashboard extends Command
@@ -64,7 +65,7 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_spv == 0 ) {
                     $time = $satu/60;
-                    $this->email($d->email, $d->status, $d->line, $time);
+                    $this->email($d->email, $d->status, $d->line, $time, 'N');
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_spv = 1;
                     $flag1->save();
@@ -75,18 +76,18 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_mgr == 0 ) {
                     $time = $dua/60;
-                    $this->email($d->email, $d->status, $d->line, $time);
+                    $this->email($d->email, $d->status, $d->line, $time, 'N');
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_mgr = 1;
                     $flag1->save();
                     }
                 }
             }elseif ($now > $c){
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_gm as flag_gm')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
+                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_gm as flag_gm','avi_andon_status.cc_email as cc')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_gm == 0 ) {
                     $time = $tiga/60;
-                    $this->email($d->email, $d->status, $d->line, $time);
+                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_gm = 1;
                     $flag1->save();
@@ -97,19 +98,15 @@ class EmailDashboard extends Command
                 echo "oke";
             }
 
-
         }
             
-
-            
-
         }
 
 
 
         
     }
-    function email($email,$status,$line,$time)
+    function email($email,$status,$line,$time,$cc)
             {
                 if ($status == 2) {
                    $textstatus = 'Error Problem Machine';
@@ -120,20 +117,29 @@ class EmailDashboard extends Command
                 elseif ($status == 4) {
                    $textstatus = 'Error Problem Supply Part';
                 }
-                $now = Carbon::now()->format('Y-m-d');
+                $penerima = [];
 
+                if ($cc != 'N') {
+                    $penerima = [];
+                    $npks = (explode(",",$cc));
+                    foreach ($npks as $npk ) {
+                        $cc = User::where('npk', $npk)->first();
+                        $push = array_push($penerima, $cc->email);
+                    }
+                }else{
+                    $penerima = [];
+                }
+
+                $now = Carbon::now()->format('Y-m-d');
                 $value = array ('tanggal' => $now,
                                 'status' => $textstatus,
                                 'line' => $line,
                                 'time' => $time,
                                 );
-
-                // $penerima = array('audi.r@aiia.co.id');
-
-                Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line)  {
+                Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
                 $message->to($email)
                             ->subject($line);
-                // $message->cc($penerima);
+                $message->cc($penerima);
                 $message->from('aisinbisa@aiia.co.id');
                 });
             }
