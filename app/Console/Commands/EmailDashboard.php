@@ -137,8 +137,8 @@ class EmailDashboard extends Command
                     $penerima = [];
                     $npks = (explode(",",$cc));
                     foreach ($npks as $npk ) {
-                        $cc = User::where('npk', $npk)->first();
-                        $push = array_push($penerima, $cc->email);
+                        $mail = User::where('npk', $npk)->first();
+                        $push = array_push($penerima, $mail->email);
                     }
                 }else{
                     $penerima = [];
@@ -161,17 +161,23 @@ class EmailDashboard extends Command
                 // dilanjutkan SMS blast
 
                 // dev-1.1.0, Ferry, 20190408. SMS Api ke Elpia gateway
-                $users = User::whereIn('npk', explode(",", $cc))
-                                ->orWhere('email', $email)
-                                ->get();
+                $sms = [];
+                $nomors = (explode(",",$cc));
+                foreach ($nomors as $nomor ) {
+                    $hp = User::where('npk', $nomor)->first();
+                    $push = array_push($sms, $hp->phone_number);
+                }
+                $to = User::where('email', $email)
+                        ->first();
+                $push = array_push($sms, $to->phone_number);
 
-                foreach ($users as $user) {
+                foreach ($sms as $user) {
                     $response = $this->client->request('GET', 'plain', [
                         'query' => [
                             'user'      => env('SMS_GATEWAY_USER'),
                             'password'  => env('SMS_GATEWAY_PASSWORD'),
                             'SMSText'   => 'ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', TIME: '.$time,
-                            'GSM'       => $user->phone_number,
+                            'GSM'       => $user,
                         ],
 
                     ]);
