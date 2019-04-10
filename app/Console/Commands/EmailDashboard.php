@@ -162,11 +162,14 @@ class EmailDashboard extends Command
 
                 // dev-1.1.0, Ferry, 20190408. SMS Api ke Elpia gateway
                 $sms = [];
-                $nomors = (explode(",",$cc));
-                foreach ($nomors as $nomor ) {
-                    $hp = User::where('npk', $nomor)->first();
-                    $push = array_push($sms, $hp->phone_number);
-                }
+
+                if ($cc != 'N') {
+                    $nomors = (explode(",",$cc));
+                    foreach ($nomors as $nomor ) {
+                        $hp = User::where('npk', $nomor)->first();
+                        $push = array_push($sms, $hp->phone_number);
+                    }
+                }            
                 $to = User::where('email', $email)
                         ->first();
                 $push = array_push($sms, $to->phone_number);
