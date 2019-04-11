@@ -84,9 +84,9 @@ class DashboardController extends Controller
             $error1 = Carbon::parse($error_at->error_at);
             $error2 = Carbon::parse($error_at->error_at);
             $error3 = Carbon::parse($error_at->error_at);
-                $satu   = env('AVI_EMAIL_LINE', 300);
-                $dua    = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
-                $tiga   = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                $satu   = env('AVI_EMAIL_LINE_1', 300);
+                $dua    = env('AVI_EMAIL_LINE_2', 600);
+                $tiga   = env('AVI_EMAIL_LINE_3', 900);
                     $a = $error1->addSeconds($satu);
                     $b = $error2->addSeconds($dua);
                     $c = $error3->addSeconds($tiga);

@@ -157,9 +157,9 @@ function ajax(){
           }else if ( data[a].status == 5 ) {
 
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #5daa68  ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += "<div class='table-bordered col-md-2' style='animation:blinking 1s infinite; color: #ffffff'> <div><div style='padding-top: 30px;padding-bottom: 30px;text-align: center; width: 100%; height: 50% ; font-size: 40px ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px;'>"+data[a].line+"</div></div></div>";
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";  
+              body += "<div class='table-bordered col-md-2' style='animation:blinking 1s infinite; color: #ffffff'> <div><div style='padding-top: 30px;padding-bottom: 30px;text-align: center; width: 100%; height: 50% ; font-size: 40px ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px;'>"+data[a].line+"</div></div></div>";  
             }
             coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone]);
             mlaku = 1;
@@ -207,7 +207,7 @@ function ShowModal(a){
       function tes(){
 
         for (var h = 0; h < simpan.length; h++) {
-          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='4'>LINE</font></b><br><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='4' >STATUS : </font></b><br><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='4' >PIC </font></b><br><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='4' >EMAIL</font></b><br><b><font size='7' >"+simpan[h][3]+"</font></b><br><b><font size='4' >PHONE    : </font></b><br><b><font size='7' >"+simpan[h][4]+"</font></b></div>");                          
+          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='4'>LINE</font></b><br><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='4' >STATUS</font></b><br><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='4' >PIC </font></b><br><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='4' >EMAIL</font></b><br><b><font size='7' >"+simpan[h][3]+"</font></b><br><b><font size='4' >PHONE</font></b><br><b><font size='7' >"+simpan[h][4]+"</font></b></div>");                          
         }
         if (slideIndex > konten.length){
           slideIndex = 1;
@@ -257,5 +257,15 @@ function ShowModal(a){
 
 
 </script>
+<style>
+      .dandori-blinking {
+        animation:blinking 1s infinite; 
+      }
+      @keyframes blinking{
+        0%{   background-color: #5daa68;  }
+        50%{  background-color: transparent;  }
+        100%{ background-color: #5daa68;  }
+      }
+</style>
 
 @endsection

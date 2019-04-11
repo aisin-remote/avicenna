@@ -67,9 +67,9 @@ class EmailDashboard extends Command
             $error1 = Carbon::parse($error_at->error_at);
             $error2 = Carbon::parse($error_at->error_at);
             $error3 = Carbon::parse($error_at->error_at);
-                $satu   = env('AVI_EMAIL_LINE', 300);
-                $dua    = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
-                $tiga   = env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300) + env('AVI_EMAIL_LINE', 300);
+                $satu   = env('AVI_EMAIL_LINE_1', 300);
+                $dua    = env('AVI_EMAIL_LINE_2', 600);
+                $tiga   = env('AVI_EMAIL_LINE_3', 900);
                     $a = $error1->addSeconds($satu);
                     $b = $error2->addSeconds($dua);
                     $c = $error3->addSeconds($tiga);
@@ -79,7 +79,7 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_spv == 0 ) {
                     $time = $satu/60;
-                    $this->email($d->email, $d->status, $d->line, $time, 'N');
+                    $this->email($d->email, $d->status, $d->line, $time);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_spv = 1;
                     $flag1->save();
@@ -90,7 +90,7 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_mgr == 0 ) {
                     $time = $dua/60;
-                    $this->email($d->email, $d->status, $d->line, $time, 'N');
+                    $this->email($d->email, $d->status, $d->line, $time);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_mgr = 1;
                     $flag1->save();
@@ -120,7 +120,7 @@ class EmailDashboard extends Command
 
         
     }
-    function email($email,$status,$line,$time,$cc)
+    function email($email,$status,$line,$time,$cc="")
             {
                 if ($status == 2) {
                    $textstatus = 'Error Problem Machine';
@@ -133,7 +133,7 @@ class EmailDashboard extends Command
                 }
                 $penerima = [];
 
-                if ($cc != 'N') {
+                if ($cc != '') {
                     $penerima = [];
                     $npks = (explode(",",$cc));
                     foreach ($npks as $npk ) {
@@ -161,26 +161,16 @@ class EmailDashboard extends Command
                 // dilanjutkan SMS blast
 
                 // dev-1.1.0, Ferry, 20190408. SMS Api ke Elpia gateway
-                $sms = [];
-
-                if ($cc != 'N') {
-                    $nomors = (explode(",",$cc));
-                    foreach ($nomors as $nomor ) {
-                        $hp = User::where('npk', $nomor)->first();
-                        $push = array_push($sms, $hp->phone_number);
-                    }
-                }            
-                $to = User::where('email', $email)
-                        ->first();
-                $push = array_push($sms, $to->phone_number);
-
-                foreach ($sms as $user) {
+                $users = User::whereIn('npk', explode(",", $cc))
+                                ->orWhere('email', $email)
+                                ->get();
+                foreach ($users as $user) {
                     $response = $this->client->request('GET', 'plain', [
                         'query' => [
                             'user'      => env('SMS_GATEWAY_USER'),
                             'password'  => env('SMS_GATEWAY_PASSWORD'),
-                            'SMSText'   => 'ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', TIME: '.$time,
-                            'GSM'       => $user,
+                            'SMSText'   => 'ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
+                            'GSM'       => $user->phone_number,
                         ],
 
                     ]);
