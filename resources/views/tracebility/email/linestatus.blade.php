@@ -52,7 +52,7 @@
   <tr>
     <td colspan="2 ">
       <p class="title" style="font-weight: bold;font-size: 40px;margin-bottom: 30px;"> <center class="title">PT AISIN INDONESIA AUTOMOTIVE</center></p>
-       <center> <span style="color: yellow; font-size: 40px"> TRIAL ALERT LINE STATUS </span> </center>
+       <center> <span style="color: yellow; font-size: 40px"> REAL TIME ALERT LINE STATUS </span> </center>
     </td>
   </tr>
   <tr>

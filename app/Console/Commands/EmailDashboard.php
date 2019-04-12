@@ -169,7 +169,7 @@ class EmailDashboard extends Command
                         'query' => [
                             'user'      => env('SMS_GATEWAY_USER'),
                             'password'  => env('SMS_GATEWAY_PASSWORD'),
-                            'SMSText'   => 'ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
+                            'SMSText'   => 'REAL TIME ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
                             'GSM'       => $user->phone_number,
                         ],
 
