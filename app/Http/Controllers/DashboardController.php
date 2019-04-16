@@ -72,6 +72,10 @@ class DashboardController extends Controller
         return view('adminlte::dashboard.direct.line' );
     }
 
+    function mobileline(){
+        return view('adminlte::dashboard.direct.mobileline' );
+    }
+
     function direct_line_index(){
         $lines = array();
         $warning_status = avi_andon_status::select('line')
