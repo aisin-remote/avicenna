@@ -117,7 +117,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered' style='float: left;display: table-cell;width: 20%;background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 3px;padding-bottom: 3px'><div style='text-align: center; width: 100%; height: 100% ; font-size: 20px ; background-color: #bf4848 ; color: #ffffff ; padding-right:2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email,data[a].phone]);
+            coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 3 ) {
             if (data[a].plant == "UNIT") {
@@ -125,7 +125,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered' style='float: left;display: table-cell;width: 20%;background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 3px;padding-bottom: 3px'><div style='text-align: center; width: 100%; height: 100% ; font-size: 20px ; background-color: #bf4848 ; color: #ffffff ; padding-right:2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email,data[a].phone]);
+            coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 4 ) {
             if (data[a].plant == "UNIT") {
@@ -133,7 +133,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered' style='float: left;display: table-cell;width: 20%;background-color: #ffffff ; color: #000000'> <div style='padding-top: 3px;padding-bottom: 3px'><div style='text-align: center; width: 100%; height: 100% ; font-size: 20px ; background-color: #ffffff ; color: #000000 ; padding-right:2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
             }
-            coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email,data[a].phone]);
+            coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 5 ) {
 
@@ -142,7 +142,7 @@ function ajax(){
             }else if (data[a].plant == "BODY"){
               body += "<div class='table-bordered' style='float: left;display: table-cell;width: 20%;animation:blinking 1s infinite; color: #ffffff'> <div style='padding-top: 3px;padding-bottom: 3px;'><div style='text-align: center; width: 100%; height: 100% ; font-size: 20px ; color: #ffffff ; padding-right:2px ; padding-left: 2px;'>"+data[a].line+"</div></div></div>";  
             }
-            coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone]);
+            coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 0 ) {
             if (data[a].plant == "UNIT") {
@@ -188,7 +188,7 @@ function ShowModal(a){
       function tes(){
 
         for (var h = 0; h < simpan.length; h++) {
-          konten.push("<div id='myCarousel' class='carousel slide'><font size='3'>LINE: </font><b><font size='4' >"+simpan[h][0]+"</font></b><br><font size='3'>STATUS: </font><b><font size='4'>"+simpan[h][1]+"</font></b><br><font size='3' >PIC: </font><b><font size='4' >"+simpan[h][2]+"</font></b><br><font size='3' >EMAIL: </font><b><font size='4' >"+simpan[h][3]+"</font></b><br><font size='3'>PHONE: </font><b><font size='4' >"+simpan[h][4]+"</font></b></div>");                          
+          konten.push("<div id='myCarousel' class='carousel slide'><font size='3'>LINE: </font><br><b><font size='4' >"+simpan[h][0]+"</font></b><br><br><font size='3'>STATUS: </font><b><br><font size='4'>"+simpan[h][1]+"</font></b><br><br><font size='3' >PIC: </font><b><br><font size='4' >"+simpan[h][2]+"</font></b><br><br><font size='3' >EMAIL: </font><b><br><font size='4' >"+simpan[h][3]+"</font></b><br><br><font size='3'>PHONE: </font><b><br><font size='4' >"+simpan[h][4]+"</font></b><br><br><font size='3'>ERROR AT: </font><b><br><font size='4' >"+simpan[h][5]+"</font></b></div>");                          
         }
         if (slideIndex > konten.length){
           slideIndex = 1;
