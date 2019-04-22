@@ -74,48 +74,48 @@ class EmailDashboard extends Command
                     $b = $error2->addSeconds($dua);
                     $c = $error3->addSeconds($tiga);
 
-            if ($a < $now && $now < $b) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
-                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
-                    if ($d->flag_spv == 0 ) {
-                    $time = $satu/60;
-                    $flag1 = avi_andon_status::where('line', $line->line)->first();
-                    $flag1->flag_spv = 1;
-                    $flag1->save();
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
-                    
+                if ($a < $now && $now < $b) {
+                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
+                    if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                        if ($d->flag_spv == 0 ) {
+                        $time = $satu/60;
+                        $flag1 = avi_andon_status::where('line', $line->line)->first();
+                        $flag1->flag_spv = 1;
+                        $flag1->save();
+                        $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
+                        
+                        }
                     }
-                }
-            }elseif ($b < $now && $now < $c) {
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.cc_mgr as cc')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
-                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
-                    if ($d->flag_mgr == 0 ) {
-                    $time = $dua/60;
-                    $flag1 = avi_andon_status::where('line', $line->line)->first();
-                    $flag1->flag_mgr = 1;
-                    $flag1->save();
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
-                    
+                }elseif ($b < $now && $now < $c) {
+                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.cc_mgr as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
+                    if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                        if ($d->flag_mgr == 0 ) {
+                        $time = $dua/60;
+                        $flag1 = avi_andon_status::where('line', $line->line)->first();
+                        $flag1->flag_mgr = 1;
+                        $flag1->save();
+                        $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
+                        
+                        }
                     }
-                }
-            }elseif ($now > $c){
-                $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_gm as flag_gm','avi_andon_status.cc_email as cc')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
-                if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
-                    if ($d->flag_gm == 0 ) {
-                    $time = $tiga/60;
-                    $flag1 = avi_andon_status::where('line', $line->line)->first();
-                    $flag1->flag_gm = 1;
-                    $flag1->save();
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
-                    
+                }elseif ($now > $c){
+                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_gm as flag_gm','avi_andon_status.cc_email as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
+                    if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
+                        if ($d->flag_gm == 0 ) {
+                        $time = $tiga/60;
+                        $flag1 = avi_andon_status::where('line', $line->line)->first();
+                        $flag1->flag_gm = 1;
+                        $flag1->save();
+                        $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
+                        
+                        }
                     }
+                    
+                }else{
+                    echo "oke";
                 }
-                
-            }else{
-                echo "oke";
-            }
 
-        }
+            }
             
         }
 
@@ -123,7 +123,7 @@ class EmailDashboard extends Command
 
         
     }
-    function email($email,$status,$line,$time,$cc="")
+    function email($email,$status,$line,$time,$cc="",$error)
             {
                 if ($status == 2) {
                    $textstatus = 'Error Problem Machine';
@@ -146,9 +146,7 @@ class EmailDashboard extends Command
                 }else{
                     $penerima = [];
                 }
-
-                $now = Carbon::now()->format('Y-m-d H:i');
-                $value = array ('tanggal' => $now,
+                $value = array ('tanggal' => $error,
                                 'status' => $textstatus,
                                 'line' => $line,
                                 'time' => $time,
@@ -172,7 +170,7 @@ class EmailDashboard extends Command
                         'query' => [
                             'user'      => env('SMS_GATEWAY_USER'),
                             'password'  => env('SMS_GATEWAY_PASSWORD'),
-                            'SMSText'   => 'REAL TIME ALERT: '.$now.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
+                            'SMSText'   => 'REAL TIME ALERT: '.$error.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
                             'GSM'       => $user->phone_number,
                         ],
 
