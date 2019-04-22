@@ -4,9 +4,17 @@
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
 <div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
-  <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
-    <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
-    <span style="color: white; font-size: 15px "> All line in body plant </span>
+  <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% ">
+    <div class="col-md-10" style="margin-bottom: 10px; background-color: #000000; height: 100% ">
+      <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
+      <span style="color: white; font-size: 15px "> All line in body plant </span>
+    </div>
+    <a href="mobileline">
+    <div class="table-bordered col-md-2" style="margin-bottom: 10px; background-color: #000000; height: 100% " >
+      <i class="fa fa-mobile" aria-hidden="true" style="font-size:30px"></i>
+      <span style="color: white; font-size: 20px; text-align: center "> &nbsp;&nbsp; mobile view </span>
+    </div>
+  </a>
   </div>
   <div id="body" >
   </div>

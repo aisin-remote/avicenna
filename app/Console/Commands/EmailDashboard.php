@@ -79,10 +79,11 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_spv == 0 ) {
                     $time = $satu/60;
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_spv = 1;
                     $flag1->save();
+                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
+                    
                     }
                 }
             }elseif ($b < $now && $now < $c) {
@@ -90,10 +91,11 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_mgr == 0 ) {
                     $time = $dua/60;
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_mgr = 1;
                     $flag1->save();
+                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
+                    
                     }
                 }
             }elseif ($now > $c){
@@ -101,10 +103,11 @@ class EmailDashboard extends Command
                 if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                     if ($d->flag_gm == 0 ) {
                     $time = $tiga/60;
-                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
                     $flag1 = avi_andon_status::where('line', $line->line)->first();
                     $flag1->flag_gm = 1;
                     $flag1->save();
+                    $this->email($d->email, $d->status, $d->line, $time, $d->cc);
+                    
                     }
                 }
                 
@@ -144,7 +147,7 @@ class EmailDashboard extends Command
                     $penerima = [];
                 }
 
-                $now = Carbon::now()->format('Y-m-d');
+                $now = Carbon::now()->format('Y-m-d H:i');
                 $value = array ('tanggal' => $now,
                                 'status' => $textstatus,
                                 'line' => $line,

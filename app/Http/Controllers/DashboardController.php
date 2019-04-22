@@ -110,7 +110,10 @@ class DashboardController extends Controller
                 $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email', 'users.phone_number as phone', 'avi_andon_status.plant', 'avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_ldr')->where('line', $warning->line)->first();
 
             }
-            array_push($lines, $d);
+            if($d){
+                if(!$d->error_at) $d->error_at = Carbon::now()->format('Y-m-d H:i');
+            }
+            array_push($lines, $d );
             
             $flag = avi_andon_status::where('line', $warning->line)->first();
             if ($flag->status == 1 ) {
