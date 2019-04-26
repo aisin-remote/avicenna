@@ -117,7 +117,7 @@
 								</a>
 							</div>
 							<div class="col-md-4">
-								<a href="http://10.80.254.72:8009/Pages/TiGs001/TiGs001Page.aspx" style="text-decoration:none">
+								<a href="http://10.80.254.72:8009/Pages/GiGs001/GiGs001Page.aspx" style="text-decoration:none">
 								<div class="rectangle">
 									<div class="plant">
 										Alcolla
