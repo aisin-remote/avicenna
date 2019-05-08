@@ -45,9 +45,9 @@ class PisController extends Controller
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         $image  = strlen($image) == 208 ? substr($image, 53, 15) : $image;  // dev-1.0, Handika, 20171020, Cust SIM change numb substr
         $image  = strlen($image) == 220 ? substr($image, 158, 10) : $image;  // hotfix-1.0.1, Handika, 20180827, Cust TTI change numb substr
-        $image  = strlen($image) == 106 ? substr($image, 12, 10) : $image;  // hotfix-1.0.2, Handika, 20180827, Cust change numb substr
-        $image  = strlen($image) == 107 ? substr($image, 12, 10) : $image; // dev-1.1.0, Audi, 20190104, Part Custo TTI subst
-        
+
+        $image  = explode('|', $image)[3];      // hotfix-1.0.2, Handika, 20190827, Cust change numb substr TTI
+
         $image  = str_replace("-","", $image);
         $image  = strlen($image) == 14 ? substr($image, 0, 10) : $image;
         $image  = strlen($image) == 12 ? (substr($image, -2) == "00" ? substr($image, 0, 10) : $image) : $image;
