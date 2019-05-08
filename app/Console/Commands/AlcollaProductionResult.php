@@ -49,54 +49,57 @@ class AlcollaProductionResult extends Command
         // echo $lines;
         // echo"\n";
         foreach ($lines as $line) {
-            if($line->actual_qty > $line->buffer_alcolla){
-                try{
-                    DB::beginTransaction();
+            if($line->actual_qty){
+                if($line->actual_qty > $line->buffer_alcolla){
+                    try{
+                        DB::beginTransaction();
 
-                    $qty_prod_result=$line->actual_qty-$line->buffer_alcolla;
-                    $master_part=avi_part_production::select('part_number','ct')
-                        ->where('back_number',$line->back_number)
-                        ->first();
+                        $qty_prod_result=$line->actual_qty-$line->buffer_alcolla;
+                        $master_part=avi_part_production::select('part_number','ct')
+                            ->where('back_number',$line->back_number)
+                            ->first();
 
-                    $product_result= new TT_DATA_PROD_RESULT();
-                    $product_result->DTM_TIM_PROD_RESULT = Carbon::now()->format('Y-m-d H:i:s.0000000');
-                    $product_result->CHR_COD_COMPANY = 'J922';
-                    $product_result->CHR_COD_KJ = 'JE';
-                    $product_result->CHR_COD_KOFU = 'AS';
-                    $product_result->CHR_COD_LINE = substr($line->line,2,3);
-                    $product_result->CHR_COD_HNMK = isset($master_part->part_number) ? $master_part->part_number : 'UNKNOWN';
-                    $product_result->DEC_SUR_RESULT = $qty_prod_result;
-                    $product_result->DEC_SUR_THROWOUT = 0;
-                    $product_result->DEC_TIM_CT = isset($master_part->ct) ? $master_part->ct : 30;;
-                    $product_result->DTM_TIM_PROD_RESULT_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
-                    $product_result->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
-                    $product_result->INT_KEY_REFERENCE=1;
-                    $product_result->CHR_INF_SAKUSEI_USER = 'SYSTEM';
-                    $product_result->CHR_NGP_SAKUSEI = Carbon::now()->format('Ymd');
-                    $product_result->CHR_TIM_SAKUSEI = Carbon::now()->format('Hi');
-                    $product_result->CHR_INF_KOSIN_USER = NULL;
-                    $product_result->CHR_NGP_KOSIN = NULL;
-                    $product_result->CHR_TIM_KOSIN = NULL;
-                    $product_result->timestamps = false;
-                    $product_result->save();
+                        $product_result= new TT_DATA_PROD_RESULT();
+                        $product_result->DTM_TIM_PROD_RESULT = Carbon::now()->format('Y-m-d H:i:s.0000000');
+                        $product_result->CHR_COD_COMPANY = 'J922';
+                        $product_result->CHR_COD_KJ = 'JE';
+                        $product_result->CHR_COD_KOFU = 'AS';
+                        $product_result->CHR_COD_LINE = substr($line->line,2,3);
+                        $product_result->CHR_COD_HNMK = isset($master_part->part_number) ? $master_part->part_number : 'UNKNOWN';
+                        $product_result->DEC_SUR_RESULT = $qty_prod_result;
+                        $product_result->DEC_SUR_THROWOUT = 0;
+                        $product_result->DEC_TIM_CT = isset($master_part->ct) ? $master_part->ct : 30;;
+                        $product_result->DTM_TIM_PROD_RESULT_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
+                        $product_result->DTM_TIM_SERVER_UTC = Carbon::now('UTC')->format('Y-m-d H:i:s.0000000');
+                        $product_result->INT_KEY_REFERENCE=1;
+                        $product_result->CHR_INF_SAKUSEI_USER = 'SYSTEM';
+                        $product_result->CHR_NGP_SAKUSEI = Carbon::now()->format('Ymd');
+                        $product_result->CHR_TIM_SAKUSEI = Carbon::now()->format('Hi');
+                        $product_result->CHR_INF_KOSIN_USER = NULL;
+                        $product_result->CHR_NGP_KOSIN = NULL;
+                        $product_result->CHR_TIM_KOSIN = NULL;
+                        $product_result->timestamps = false;
+                        $product_result->save();
+                        
+
+                        $line->buffer_alcolla=$line->actual_qty;
+                        $line->save();
+
+                        DB::commit();
+                    }catch(\Exception $ex){
+                        echo "Error Method Insert karena" .$ex->getMessage();
+                        DB::rollBack();
+                    }
                     
-
-                    $line->buffer_alcolla=$line->actual_qty;
+                }elseif($line->actual_qty < $line->buffer_alcolla){
+                    $line->buffer_alcolla=0;
                     $line->save();
-
-                    DB::commit();
-                }catch(\Exception $ex){
-                    echo "Error Method Insert karena" .$ex->getMessage();
-                    DB::rollBack();
                 }
-                
-            }elseif($line->actual_qty < $line->buffer_alcolla){
-                $line->buffer_alcolla=0;
-                $line->save();
+                else{
+                    // Do nothing if same
+                }
             }
-            else{
-                // Do nothing if same
-            }
+            
         }
     }
 }
