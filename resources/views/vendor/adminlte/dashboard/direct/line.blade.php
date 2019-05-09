@@ -11,7 +11,7 @@
   <div class="col-sm-12">
     <div class="panel table-bordered panel-line">
       <div class="panel-header">
-        <h1>BODY PLANT</h1>
+        <h1 class="title">BODY PLANT</h1>
         <span class="subtitle"> All line in body plant </span>
       </div>
       <div class="panel-body">
@@ -27,7 +27,7 @@
   <div class="col-sm-12">
     <div class="panel table-bordered panel-line">
       <div class="panel-header">
-        <h1>UNIT PLANT</h1>
+        <h1 class="title" >UNIT PLANT</h1>
         <span class="subtitle"> All line in unit  plant </span>
       </div>
       <div class="panel-body">
@@ -93,7 +93,7 @@ var mdl_alert = $("#modal-alert");
 $(document).ready(function(){
   document.body.style.backgroundColor = '#000000';
           // ajax per line
-        //ajax(); 
+        // ajax(); 
            // Start an interval to refresh page every 10 seconds
            setInterval(function(){
              if(jalan==1){

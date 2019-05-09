@@ -182,7 +182,7 @@ Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.
 Route::get('/direct/line', 'DashboardController@direct_line')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
 Route::get('/direct/line/index', 'DashboardController@direct_line_index')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
 
-Route::get('/direct/mobileline', 'DashboardController@mobileline')->name('direct.mobileline'); //dev-1.0.0, 20180416, Handika, dashboard line status
+Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direct.mobileline'); //dev-1.0.0, 20180416, Handika, dashboard line status
 //List Traceability
 
 	// view trace product

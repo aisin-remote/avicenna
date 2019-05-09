@@ -105,11 +105,12 @@
 
 .line-wrapper {
 	padding: 15px;
+	margin-top: -25px;	
 }
 
 .line-wrapper .line {
-	padding-top: 35px;
-	padding-bottom: 35px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	text-align: center;
 }
 
@@ -155,30 +156,73 @@
 	.modal-line-error .modal-info .info-value {
 		font-size: 18px !important;
 	}
+
+	.panel-line .panel-header .title {
+		font-size: 20px ;
+	}
 }
 
 @media(max-width:330px) {
 	.line-title {
-		font-size: 10px !important;
+		font-size: 20px !important;
 	}
 }
 
-@media(min-width:768px) {
+@media(min-width:451px) {
 	.line-title {
-		font-size: 26px;
+		font-size: 19px;
 	}
 
 	.panel-header .subtitle {
 		font-size: 20px;
 	}
 }
+
+@media(min-width:551px) {
+	.line-title {
+		font-size: 20px;
+	}
+
+	.panel-header .subtitle {
+		font-size: 20px;
+	}
+}
+
+@media(min-width:768px) {
+	.line-title {
+		font-size: 25px;
+	}
+
+	.panel-header .subtitle {
+		font-size: 20px;
+	}
+}
+
+@media(min-width:992px) {
+	.line-title {
+		font-size: 34px;
+	}
+
+ 	.panel-header .subtitle {
+		font-size: 20px;
+	}
+
+	.modal-line-error .modal-info .info-value {
+		font-size: 40px !important;
+	}
+}
+
 @media(min-width:1200px){
 	.line-title {
-		font-size: 36px;
+		font-size: 42px;
 	}
 
 	.panel-header .subtitle {
 		font-size: 25px;
+	}
+
+	.modal-line-error .modal-info .info-value {
+		font-size: 50px !important;
 	}
 }
 
@@ -196,7 +240,7 @@
 
 @media (min-width: 885px) {
 	.modal-line-error .modal-dialog {
-		width: 60vw;
+		width: 80vw;
 	}
 }
 
