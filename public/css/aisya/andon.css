@@ -105,7 +105,7 @@
 
 .line-wrapper {
 	padding: 15px;
-	margin-top: -25px;	
+	margin-top: -10px;	
 }
 
 .line-wrapper .line {
@@ -229,6 +229,27 @@
 @media (min-width: 1600px) {
 	.container {
 	    width: 1570px;
+	}
+
+	.line-title {
+		font-size: 75px;
+	}
+
+	.panel-line .panel-header .title {
+		font-size: 60px ;
+	}
+
+	.line-wrapper .line {
+		padding-top: 5px;
+		padding-bottom: 5px;
+	}
+	
+	.modal-line-error .modal-info .info-title {
+		font-size: 50px;
+	}
+
+	.modal-line-error .modal-info .info-value {
+		font-size: 70px !important;
 	}
 }
 

@@ -12,7 +12,6 @@
     <div class="panel table-bordered panel-line">
       <div class="panel-header">
         <h1 class="title">BODY PLANT</h1>
-        <span class="subtitle"> All line in body plant </span>
       </div>
       <div class="panel-body">
         <div class="row line-wrapper" id="body">
@@ -28,7 +27,6 @@
     <div class="panel table-bordered panel-line">
       <div class="panel-header">
         <h1 class="title" >UNIT PLANT</h1>
-        <span class="subtitle"> All line in unit  plant </span>
       </div>
       <div class="panel-body">
         <div class="row line-wrapper" id="unit">
@@ -53,13 +51,13 @@
           <div class="box-body">
             <div class="panel-body">
               <div class="row">
-                <div class="col-sm-4 hidden-xs">
+                <div class="col-sm-3 hidden-xs">
                   <img src="/images/emergency.gif" class="img-responsive">
                 </div>
                 <div class="col-xs-12 visible-xs">
                    <div style="font-size: 14pt; font-weight:bold;" class="text-center"><span class="fa fa-bell"></span> ALERT </div>
                 </div>
-                <div class="col-xs-12 col-sm-8" id="konten">
+                <div class="col-xs-12 col-sm-9" id="konten">
                   
                 </div>
               </div>
