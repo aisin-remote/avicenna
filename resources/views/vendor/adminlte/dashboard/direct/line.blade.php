@@ -1,43 +1,48 @@
 @extends('layouts.delivery')
 
-@section('content')
+@push('css')
 <link href="{{ asset('/css/all.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('/css/aisya/andon.css') }}" rel="stylesheet" type="text/css" />
-<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
-  <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% ">
-    <div class="col-md-10" style="margin-bottom: 10px; background-color: #000000; height: 100% ">
-      <span style="color: white; font-size: 25px "> BODY PLANT </span> <br>
-      <span style="color: white; font-size: 15px "> All line in body plant </span>
+@endpush
+
+@section('content')
+<!-- Start Body Plant -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel table-bordered panel-line">
+      <div class="panel-header">
+        <h1>BODY PLANT</h1>
+        <span class="subtitle"> All line in body plant </span>
+      </div>
+      <div class="panel-body">
+        <div class="row line-wrapper" id="body">
+        </div>
+      </div>
     </div>
-    <a href="mobileline">
-    <div class="table-bordered col-md-2" style="margin-bottom: 10px; background-color: #000000; height: 100% " >
-      <i class="fa fa-mobile" aria-hidden="true" style="font-size:30px"></i>
-      <span style="color: white; font-size: 20px; text-align: center "> &nbsp;&nbsp; mobile view </span>
-    </div>
-  </a>
   </div>
-  <div id="body" >
-  </div>
-
-
-</div>
-<div class="table-bordered col-md-12" style="padding: 10px; margin: 10px">
-  <div class="col-md-12" style="margin-bottom: 10px; background-color: #000000; height: 100% "> 
-    <span style="color: white; font-size: 25px "> UNIT PLANT </span> <br>
-    <span style="color: white; font-size: 15px "> All line in unit plant </span>
-  </div>
-  <div id="unit" >
-  </div>
-
-
 </div>
 
+<!-- Start Unit Plant -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="panel table-bordered panel-line">
+      <div class="panel-header">
+        <h1>UNIT PLANT</h1>
+        <span class="subtitle"> All line in unit  plant </span>
+      </div>
+      <div class="panel-body">
+        <div class="row line-wrapper" id="unit">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
-<div class="modal fade" id="modal-alert" role="dialog">
-  <div class="modal-dialog" style="width: 1150px; position: center; top: 38px;">
-    <div class="modal-content" style="height: 100%">
-      <div class="modal-header" style="background-color: #bf1007;">
+<div class="modal fade modal-line-error" id="modal-alert" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -46,25 +51,16 @@
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
         <form id="frm-insert">
           <div class="box-body">
-            <div class="panel-body" style="">
-              <div class="col-md-12" >
-                <div class="row">
-                  <div class="col-md-3" >
-                    <div class="row">
-                      <div>
-                        <img src="/images/emergency.gif" style="height: 100%;width: 100%">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-9" style="padding-left: 100px;">
-
-                    <div class="carousel-container">
-                      <div id="konten">
-
-                      </div>
-                    </div>
-
-                  </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-sm-4 hidden-xs">
+                  <img src="/images/emergency.gif" class="img-responsive">
+                </div>
+                <div class="col-xs-12 visible-xs">
+                   <div style="font-size: 14pt; font-weight:bold;" class="text-center"><span class="fa fa-bell"></span> ALERT </div>
+                </div>
+                <div class="col-xs-12 col-sm-8" id="konten">
+                  
                 </div>
               </div>
             </div>
@@ -133,49 +129,49 @@ function ajax(){
 
           if ( data[a].status == 1 ) {
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line ok"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #5daa68 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #5daa68 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";  
+              body += '<div class="table-bordered col-xs-2 line ok"><p class="line-title">' + data[a].line + '</p></div>';  
             }
             jalan = 1;
           }else if ( data[a].status == 2 ) {
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              body += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
             }
             coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 3 ) {
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #bf4848 ; color: #ffffff'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #bf4848 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              body += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
             }
             coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 4 ) {
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line error-supply"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #ffffff ; color: #000000'> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #ffffff ; color: #000000 ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              body += '<div class="table-bordered col-xs-2 line error-supply"><p class="line-title">' + data[a].line + '</p></div>';
             }
             coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 5 ) {
 
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='animation:blinking 1s infinite; color: #ffffff'> <div><div style='padding-top: 30px;padding-bottom: 30px;text-align: center; width: 100%; height: 50% ; font-size: 40px ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px;'>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line dandory"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='animation:blinking 1s infinite; color: #ffffff'> <div><div style='padding-top: 30px;padding-bottom: 30px;text-align: center; width: 100%; height: 50% ; font-size: 40px ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px;'>"+data[a].line+"</div></div></div>";  
+              body += '<div class="table-bordered col-xs-2 line dandory"><p class="line-title">' + data[a].line + '</p></div>';  
             }
             coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
             mlaku = 1;
           }else if ( data[a].status == 0 ) {
             if (data[a].plant == "UNIT") {
-              unit += "<div class='table-bordered col-md-2' style='background-color: #000000 ; color: #ffffff '> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #000000 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              unit += '<div class="table-bordered col-xs-2 line"><p class="line-title">' + data[a].line + '</p></div>';
             }else if (data[a].plant == "BODY"){
-              body += "<div class='table-bordered col-md-2' style='background-color: #000000 ; color: #ffffff '> <div style='padding-top: 30px;padding-bottom: 30px'><div style='text-align: center; width: 100%; height: 50% ; font-size: 40px ; background-color: #000000 ; color: #ffffff ; padding-right: : 2px ; padding-left: 2px; '>"+data[a].line+"</div></div></div>";
+              body += '<div class="table-bordered col-xs-2 line"><p class="line-title">' + data[a].line + '</p></div>';
             }
             jalan = 1;
           }
@@ -187,9 +183,6 @@ function ajax(){
       }
       $('#body').html(body);
       $('#unit').html(unit);
-
-
-
     },
     error: function (xhr) {
       console.log("no");
@@ -215,7 +208,7 @@ function ShowModal(a){
       function tes(){
 
         for (var h = 0; h < simpan.length; h++) {
-          konten.push("<div id='myCarousel' class='carousel slide'><b><font size='4'>LINE</font></b><br><b><font size='7' >"+simpan[h][0]+"</font></b><br><b><font size='4' >STATUS</font></b><br><b><font size='7'>"+simpan[h][1]+"</font></b><br><b><font size='4' >PIC </font></b><br><b><font size='7' >"+simpan[h][2]+"</font></b><br><b><font size='4' >EMAIL</font></b><br><b><font size='7' >"+simpan[h][3]+"</font></b><br><b><font size='4' >PHONE</font></b><br><b><font size='7' >"+simpan[h][4]+"</font></b><br><b><font size='4' >ERROR AT</font></b><br><b><font size='7' >"+simpan[h][5]+"</font></b></div>");                          
+          konten.push('<div class="modal-info"><p class="info-title">LINE</p><h2 class="info-value">'+simpan[h][0]+'</h2></div><div class="modal-info"><p class="info-title">STATUS</p><h2 class="info-value">'+simpan[h][1]+'</h2></div><div class="modal-info"><p class="info-title">PIC</p><h2 class="info-value">'+simpan[h][2]+'</h2></div><div class="modal-info"><p class="info-title">EMAIL</p><h2 class="info-value">'+simpan[h][3]+'</h2></div><div class="modal-info"><p class="info-title">PHONE</p><h2 class="info-value">'+simpan[h][4]+'</h2></div><div class="modal-info"><p class="info-title">ERROR AT</p><h2 class="info-value">'+simpan[h][5]+'</h2></div>');                      
         }
         if (slideIndex > konten.length){
           slideIndex = 1;
@@ -233,7 +226,7 @@ function ShowModal(a){
 
               mdl_alert.modal('show');
               z=1;
-              }, {{env('AVI_SLIDER_LINE', 3)*1000}}  ) ;
+              }, {{env('AVI_SLIDER_LINE', 3)*1000}}) ;
             }else{
               slideIndex++;
               setTimeout(function(){
@@ -252,13 +245,8 @@ function ShowModal(a){
              tes();
             }, {{env('AVI_SLIDER_LINE', 3)*1000}}  ) ;
         }
-
-        
-
-
       }
       //tes carousel
-
     }
   }
 //end of function modal
