@@ -50,7 +50,7 @@ class ViewTraceController extends Controller
 
 
 	public function getAjaxProduct($id_product)
-	{	
+	{
 
 		$b 				= substr($id_product, 5, 1);
 		$npk 			= "DCAA0".$b."";
@@ -104,7 +104,7 @@ class ViewTraceController extends Controller
 	{
 
 		$code 			= $id_product;
-		$a 				= substr($id_product, 6, 1);
+		$a 				= substr($id_product, 5, 1);
 		$npk 			= "DCAA0".$a."";
 		if ($a == "A") {
 			$npk 			= "DCAA10";
@@ -120,7 +120,7 @@ class ViewTraceController extends Controller
 			}else{
 				$a = '0'.$a ;
 			}
-		$date  				= '20'.substr($id_product, 6, 2).'-'.$a.'-'.substr($id_product, 9, 2); 
+		$date  				= '20'.substr($id_product, 6, 2).'-'.$a.'-'.substr($id_product, 9, 2);
 		$create 			= New avi_trace_casting();
 		$create->code 		= $code;
 		$create->npk 		= $npk;
@@ -151,7 +151,7 @@ class ViewTraceController extends Controller
 				$casting->location = "02 Lastman Casting" ;
 			}
 		   $arrayku=array($create, $casting, $machining, $delivery);
-		   
+
 		   return Datatables::of($arrayku)
 		        ->addColumn('time', function($arrayku) {
 		        		$b = $arrayku->created_at;
