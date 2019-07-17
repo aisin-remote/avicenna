@@ -7,10 +7,12 @@ use DB;
 use Auth;
 use Storage;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_printer;
+use App\Models\Avicenna\avi_trace_line_master;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_ng_casting_temp;
 use Illuminate\Support\Facades\Cache;
@@ -22,9 +24,14 @@ class TraceScanController extends Controller
 // MODUL CASTING
 //=======================================================================================================================================================
 
-    public function scancasting($line)
+    public function scancasting()
     {
-        // $customer = avi_customers::all();
+        $ip   = request()->ip();
+        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
+            $line = "Not Found";
+        }else{
+            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
+        }
         return view('tracebility/casting/scan',compact('line'));
     }
 
@@ -45,7 +52,7 @@ class TraceScanController extends Controller
                 $scan->line                 = $line;
                 $scan->npk     		        = $user->npk;
                 $scan->status               = 1;
-                
+
                 // $b = substr($scan->code, 0,2);
                 // if($b != 10){
                 //     return "Not OPN 889F Model";
@@ -59,7 +66,7 @@ class TraceScanController extends Controller
 
                 $scan->save();
 
-                
+
 
                 DB::commit();
 
@@ -79,21 +86,21 @@ class TraceScanController extends Controller
                                 "last_scan" => $last_scan
                         );
 
-                return $arrJSON;       	
-        }else{ 
+                return $arrJSON;
+        }else{
 				// return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
-	            return array("code" => "");      	
-        }               
-           
+	            return array("code" => "");
+        }
+
         }catch(\Exception $e){
 
          DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
-        
+
 
     }
-    
+
     public function castingng($line)
     {
         return view('tracebility/casting/ng',compact('line'));
@@ -120,13 +127,13 @@ class TraceScanController extends Controller
                         );
 
             return $arrJSON;
-                    
+
         }catch(\Exception $e){
 
          DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
-        
+
 
     }
     public function getDatacastingng()
@@ -139,17 +146,17 @@ class TraceScanController extends Controller
         ->make();
         // return Datatables::of($data)
         //         ->addColumn('action', function($data) {
-        //             $btn_action = 
+        //             $btn_action =
         //                             '<div style="text-align:center;">
-        //                                 <span type="button" class="btn btn-sm bg-maroon" 
-        //                                         data-toggle="modal" data-target="#modal-delete" 
+        //                                 <span type="button" class="btn btn-sm bg-maroon"
+        //                                         data-toggle="modal" data-target="#modal-delete"
         //                                         onclick="$(\'#btn-delete\').val(' . $data->id . ')">
         //                                     <i class="fa fa-times"></i> Delete
         //                                 </span>
         //                             </div>';
         //                         return $btn_action;
         //         })
-               
+
         //         ->addIndexColumn()
         //         ->make(true);
 
@@ -169,7 +176,7 @@ class TraceScanController extends Controller
                     return 'No Data';
                 })
                     ->addIndexColumn()
-                    ->make(true);   
+                    ->make(true);
     }
     public function getAjaxcastingupdate(){
         $user                       = Auth::user();
@@ -196,7 +203,7 @@ class TraceScanController extends Controller
                 })
                 ->addIndexColumn()
                 ->make(true);
-        
+
     }
 
 
@@ -238,18 +245,18 @@ class TraceScanController extends Controller
                                 "counter"   => $counter
                         );
 
-                return $arrJSON;        
-        }else{ 
+                return $arrJSON;
+        }else{
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
-                return array("code" => "");         
-        }               
-           
+                return array("code" => "");
+        }
+
         }catch(\Exception $e){
 
          DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
-        
+
 
     }
     public function getAjaxcycle($code)
@@ -259,7 +266,7 @@ class TraceScanController extends Controller
 
                 $code = avi_trace_cycle::where('code', $code)->first();
 
-                return array( "cycle" => $code->name ); 
+                return array( "cycle" => $code->name );
     }
 
 
@@ -298,18 +305,18 @@ class TraceScanController extends Controller
                                 "counter"    => $counter,
                         );
 
-                return $arrJSON;        
-        }else{ 
+                return $arrJSON;
+        }else{
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
-                return array("code" => "");         
-        }               
-           
+                return array("code" => "");
+        }
+
         }catch(\Exception $e){
 
          DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
-        
+
 
     }
     public function getAjaxdeliveryngtable(){
@@ -320,7 +327,7 @@ class TraceScanController extends Controller
             $arrayku=array($create);
             return Datatables::of($arrayku)
                     ->addIndexColumn()
-                    ->make(true);   
+                    ->make(true);
     }
     public function getAjaxdeliveryngupdate(){
         $user                       = Auth::user();
@@ -331,15 +338,21 @@ class TraceScanController extends Controller
         return Datatables::of($create)
                 ->addIndexColumn()
                 ->make(true);
-        
+
     }
 
 
 // MODULE MACHINING
 //=======================================================================================================================================================
 
-    public function scanmachining($line)
+    public function scanmachining()
     {
+        $ip   = request()->ip();
+        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
+            $line = "Not Found";
+        }else{
+            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
+        }
         return view('tracebility/machining/scan',compact('line'));
     }
 
@@ -365,7 +378,7 @@ class TraceScanController extends Controller
                 if (is_null($product)){
                         return "Not OPN 889F Model";
                 }
-                
+
                 $scan->save();
 
                 // dev-1.0.0, Handika, 20180724, counter
@@ -376,7 +389,7 @@ class TraceScanController extends Controller
                                 "code"      => $number,
                                 "counter"   => $counter,
                         );
-                
+
                 $a                          = substr($number, 0, 2);
                 $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
                     if (is_null($product)){
@@ -385,27 +398,33 @@ class TraceScanController extends Controller
                             $product->back_number   = "No Data";
                             $product->part_name     = "No Data";
                     }
+
                 $printer                    = avi_trace_printer::where('line', $line)->first();
                 $printer->part_code         = $number;
                 $printer->part_number       = $product->part_number;
                 $printer->back_number       = $product->back_number;
                 $printer->part_name         = $product->part_name;
-                $printer->flag              = 0;
+                if ($product->is_assy == 0) {
+                    $printer->flag              = 0;
+                }else{
+                    $printer->flag              = 1;
+                }
                 $printer->save();
-                DB::commit();
 
-                return $arrJSON;        
-        }else{ 
+            DB::commit();
+
+                return $arrJSON;
+        }else{
                 // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
-                return array("code" => "");         
-        }               
-           
+                return array("code" => "");
+        }
+
         }catch(\Exception $e){
 
          DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
-        
+
     }
      public function getAjaxmachiningtable(){
             $create= New avi_trace_machining();
@@ -422,7 +441,7 @@ class TraceScanController extends Controller
                     return 'No Data';
                 })
                     ->addIndexColumn()
-                    ->make(true);   
+                    ->make(true);
     }
     public function getAjaxmachiningupdate(){
         $user                       = Auth::user();
@@ -449,34 +468,128 @@ class TraceScanController extends Controller
                 })
                 ->addIndexColumn()
                 ->make(true);
-        
+
     }
-    //  public function getAjaxcastingtable(){
-    //         $create= New avi_trace_casting();
-    //         $create->code = 'No Data';
-    //         $create->npk = 'No Data';
-    //         $create->date = 'No Data';
-    //         $arrayku=array($create);
-    //         return Datatables::of($arrayku)
-    //                 ->addIndexColumn()
-    //                 ->make(true);   
-    // }
-    // public function getAjaxcastingupdate(){
-    //     $user                       = Auth::user();
-    //     $create= avi_trace_casting::select('code','npk','date')
-    //             ->where('npk', $user->npk)
-    //             ->where('date', date('Y-m-d'))
-    //             ->take(5)
-    //             ->orderBy('id', 'DESC')
-    //             ->get();
-    //     return Datatables::of($create)
-    //             ->addIndexColumn()
-    //             ->make(true);
-        
-    // }
 
+// MODULE ASSEMBLING
+//=======================================================================================================================================================
 
+    public function scanassembling()
+    {
+        $ip   = request()->ip();
+        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
+            $line = "NOT FOUND";
+        }else{
+            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
+        }
+        return view('tracebility/assembling/scan',compact('line'));
+    }
 
+    public function getAjaxassembling($number, $line)
+    {
+        try{
 
+        $cek    = avi_trace_assembling::where('code', $number)->first();
+
+        if (is_null($cek)) {
+
+            DB::beginTransaction();
+                $user                       = Auth::user();
+                $scan                       = new avi_trace_assembling;
+                $scan->code                 = $number;
+                $scan->date                 = date('Y-m-d');
+                $scan->line                 = $line;
+                $scan->status               = 1;
+                $scan->npk                  = $user->npk;
+
+                $a                          = substr($number, 0, 2);
+                $product                    = avi_trace_program_number::where('code', $a)->first();
+                if (is_null($product)){
+                        return "Not OPN 889F Model";
+                }
+                $scan->save();
+                // dev-1.0.0, Handika, 20180724, counter
+                $counter = avi_trace_assembling::where('date', date('Y-m-d'))
+                                        ->where('npk', $user->npk)
+                                        ->count();
+                $arrJSON = array(
+                                "code"      => $number,
+                                "counter"   => $counter,
+                        );
+
+                $a                          = substr($number, 0, 2);
+                $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
+                    if (is_null($product)){
+                            $product                = new avi_trace_program_number();
+                            $product->part_number   = "No Data";
+                            $product->back_number   = "No Data";
+                            $product->part_name     = "No Data";
+                    }
+                $printer                    = avi_trace_printer::where('line', $line)->first();
+                $printer->part_code         = $number;
+                $printer->part_number       = $product->part_number;
+                $printer->back_number       = $product->back_number;
+                $printer->part_name         = $product->part_name;
+                $printer->flag              = 0;
+                $printer->save();
+                DB::commit();
+
+                return $arrJSON;
+        }else{
+                // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
+                return array("code" => "");
+        }
+
+        }catch(\Exception $e){
+
+         DB::rollBack();
+            return array( "code" => "", "error" => $e->getMessage() );
+        }
+
+    }
+     public function getAjaxassemblingtable(){
+            $create= New avi_trace_assembling();
+            $create->code = 'No Data';
+            $create->npk = 'No Data';
+            $create->date = 'No Data';
+            $arrayku=array($create);
+            return Datatables::of($arrayku)
+            ->addColumn('product', function($create) {
+                    return 'No Data';
+                })
+                ->addColumn('model', function($create) {
+
+                    return 'No Data';
+                })
+                    ->addIndexColumn()
+                    ->make(true);
+    }
+    public function getAjaxassemblingupdate(){
+        $user                       = Auth::user();
+        $create= avi_trace_assembling::select('code','npk','date')
+                ->where('npk', $user->npk)
+                ->where('date', date('Y-m-d'))
+                ->take(5)
+                ->orderBy('id', 'DESC')
+                ->get();
+        return Datatables::of($create)
+                ->addColumn('product', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('product')->where('code', $code)->first();
+                    return $models ? $models->product : '--No Product--';
+                })
+                ->addColumn('model', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('back_number')->where('code', $code)->first();
+                    return $models ? $models->back_number : '--No Back Number--';
+                })
+                ->addIndexColumn()
+                ->make(true);
+
+    }
 
 }

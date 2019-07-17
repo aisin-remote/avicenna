@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	// dev-1.0, Ferry, 20170822, Merged
 	Route::get('/pis/master', 'PisController@PisMasterView'); //dev-1.0, 20170926, view master pis
 	Route::get('/pis/add', 'PisController@add_new_part'); //dev-1.0, 20171018, add part no
-	Route::get('/pis/preview/{img}', 'PisController@PisPreview'); //dev-1.0, 20170926, view 
+	Route::get('/pis/preview/{img}', 'PisController@PisPreview'); //dev-1.0, 20170926, view
 	Route::get('/pis/edit/{id}', 'PisController@UpdatePis'); //dev-1.0, 20170926, view update pis
 	Route::get('/pis/update/{id}', 'PisController@UpdatePisProses'); //dev-1.0, 20170926, view update pis
 	Route::post('/updatepis','PisController@UpdatePisProses');
@@ -67,9 +67,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::post('/part/master','PartController@AddNewParts');
 	Route::get('/part/edit/{id}', 'PartController@UpdateParts'); //dev-1.0, 20170926, view update pis
 	Route::post('/updatepart','PartController@UpdatePartProses');
-	
 
-	
+
+
 	// dev-1.0, Ferry, 20170830, Route DASHBOARD ======================================================
 	//dev-1.0, by Yudo, 20170824, Dashboard
 	Route::get('/dashboard/viewDashboardMutation', 'PisController@viewDashboardMutation');
@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	Route::get('/dashboard/andon', 'DashboardController@andon'); //dev-1.0, 20180416, Andon Monitoring
 	//end of dashboard
-	
+
 
 	// dev-1.0, Handika, 20180707, Route Production Report =========================================================================
 
@@ -119,7 +119,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	//SCAN PART
 		//Casting
-	Route::get('/trace/scan/casting/{line}', 'TraceScanController@scancasting');
+	Route::get('/trace/scan/casting/{line?}', 'TraceScanController@scancasting');
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 	Route::get('/trace/casting/index', 'TraceScanController@getAjaxcastingtable');
@@ -130,7 +130,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
 
 		//Machining
-	Route::get('/trace/scan/machining/{line}', 'TraceScanController@scanmachining');
+	Route::get('/trace/scan/machining/{line?}', 'TraceScanController@scanmachining');
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
 	// Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
 	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
@@ -150,6 +150,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/delivery/getAjaxng/{number}', 'TraceScanController@getAjaxdeliveryng');
 	Route::get('/trace/delivery/ng/index', 'TraceScanController@getAjaxdeliveryngtable');
 	Route::get('/trace/delivery/ng/update', 'TraceScanController@getAjaxdeliveryngupdate');
+
+		//Assembling
+	Route::get('/trace/scan/assembling/{line?}', 'TraceScanController@scanassembling');
+	Route::get('/trace/scan/assembling/getAjax/{number}/{line}', 'TraceScanController@getAjaxassembling');
+	Route::get('/trace/assembling/index', 'TraceScanController@getAjaxassemblingtable');
+	Route::get('/trace/assembling/update', 'TraceScanController@getAjaxassemblingupdate');
 
 
 });
@@ -194,7 +200,7 @@ Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direc
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
 	//dev-1.1.0, Audi, 20180702 View Trace List
-	
+
 
 	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
 	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
