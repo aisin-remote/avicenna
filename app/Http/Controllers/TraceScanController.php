@@ -26,13 +26,7 @@ class TraceScanController extends Controller
 
     public function scancasting()
     {
-        $ip   = request()->ip();
-        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
-            $line = "Not Found";
-        }else{
-            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
-        }
-        return view('tracebility/casting/scan',compact('line'));
+        return view('tracebility/casting/scan');
     }
 
     public function getAjaxcasting($number, $line)
@@ -347,13 +341,7 @@ class TraceScanController extends Controller
 
     public function scanmachining()
     {
-        $ip   = request()->ip();
-        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
-            $line = "Not Found";
-        }else{
-            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
-        }
-        return view('tracebility/machining/scan',compact('line'));
+        return view('tracebility/machining/scan');
     }
 
     public function getAjaxmachining($number, $line)
@@ -476,13 +464,7 @@ class TraceScanController extends Controller
 
     public function scanassembling()
     {
-        $ip   = request()->ip();
-        if (!$line = avi_trace_line_master::select('line')->where('ip', $ip )->first()){
-            $line = "NOT FOUND";
-        }else{
-            $line = avi_trace_line_master::select('line')->where('ip', $ip )->first()->line;
-        }
-        return view('tracebility/assembling/scan',compact('line'));
+        return view('tracebility/assembling/scan');
     }
 
     public function getAjaxassembling($number, $line)
@@ -490,9 +472,7 @@ class TraceScanController extends Controller
         try{
 
         $cek    = avi_trace_assembling::where('code', $number)->first();
-
         if (is_null($cek)) {
-
             DB::beginTransaction();
                 $user                       = Auth::user();
                 $scan                       = new avi_trace_assembling;
@@ -508,6 +488,7 @@ class TraceScanController extends Controller
                         return "Not OPN 889F Model";
                 }
                 $scan->save();
+
                 // dev-1.0.0, Handika, 20180724, counter
                 $counter = avi_trace_assembling::where('date', date('Y-m-d'))
                                         ->where('npk', $user->npk)
