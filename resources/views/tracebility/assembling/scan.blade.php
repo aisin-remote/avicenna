@@ -168,6 +168,9 @@
 
     $(document).ready(function() {
         initApp();
+        $(document).on('click', function() {
+            $('#detail_no').focus();
+        });
         $('#input-line').keypress(function(e) {
             let code = (e.keyCode ? e.keyCode : e.which);
             if(code==13) {
