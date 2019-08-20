@@ -347,12 +347,9 @@ class TraceScanController extends Controller
     public function getAjaxmachining($number, $line)
     {
         try{
-
-        $cek    = avi_trace_machining::where('code', $number)->first();
-
-        if (is_null($cek)) {
-
-            DB::beginTransaction();
+            $cek    = avi_trace_machining::where('code', $number)->first();
+            if (is_null($cek)) {
+                DB::beginTransaction();
                 $user                       = Auth::user();
                 $scan                       = new avi_trace_machining;
                 $scan->code                 = $number;
@@ -388,28 +385,30 @@ class TraceScanController extends Controller
                     }
 
                 $printer                    = avi_trace_printer::where('line', $line)->first();
-                $printer->part_code         = $number;
-                $printer->part_number       = $product->part_number;
-                $printer->back_number       = $product->back_number;
-                $printer->part_name         = $product->part_name;
-                if ($product->is_assy == 0) {
-                    $printer->flag              = 0;
-                }else{
-                    $printer->flag              = 1;
-                }
-                $printer->save();
 
-            DB::commit();
+                // dev-1.1.0, Ali, Handle untuk data yang tidak di print di line yg sedang jalan
+                if ($printer) {
+                    $printer->part_code         = $number;
+                    $printer->part_number       = $product->part_number;
+                    $printer->back_number       = $product->back_number;
+                    $printer->part_name         = $product->part_name;
+                    if ($product->is_assy == 0) {
+                        $printer->flag              = 0;
+                    }else{
+                        $printer->flag              = 1;
+                    }
+                    $printer->save();
+                }
+                DB::commit();
 
                 return $arrJSON;
-        }else{
-                // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
-                return array("code" => "");
-        }
+            }else{
+                    // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
+                    return array("code" => "");
+            }
 
         }catch(\Exception $e){
-
-         DB::rollBack();
+            DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
 
@@ -507,12 +506,14 @@ class TraceScanController extends Controller
                             $product->part_name     = "No Data";
                     }
                 $printer                    = avi_trace_printer::where('line', $line)->first();
-                $printer->part_code         = $number;
-                $printer->part_number       = $product->part_number;
-                $printer->back_number       = $product->back_number;
-                $printer->part_name         = $product->part_name;
-                $printer->flag              = 0;
-                $printer->save();
+                if ($printer) {
+                    $printer->part_code         = $number;
+                    $printer->part_number       = $product->part_number;
+                    $printer->back_number       = $product->back_number;
+                    $printer->part_name         = $product->part_name;
+                    $printer->flag              = 0;
+                    $printer->save();
+                }
                 DB::commit();
 
                 return $arrJSON;

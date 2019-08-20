@@ -230,7 +230,7 @@
                                 }
                             },
                             error: function (xhr) {
-                                    if (xhr.status) {
+                                    if (xhr.status == 401) {
                                         location.reload();
                                     }
                                     // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
