@@ -144,6 +144,7 @@
         } else {
             $('#line-display').text(line_number);
             line = line_number;
+            $('#detail_no').focus();
         }
     }
 
@@ -203,7 +204,6 @@
                     $.ajax({
                             type: 'get',           // {{-- POST Request --}}
                             url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcodecomplete+'/'+line,
-                            _token: "{{ csrf_token() }}",
                             dataType: 'json',       // {{-- Data Type of the Transmit --}}
                             success: function (data) {
                                 code = data.code;
@@ -232,6 +232,9 @@
                                 $('#detail_no').focus();
                             },
                             error: function (xhr) {
+                                    if (xhr.status) {
+                                        location.reload();
+                                    }
                                     // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                                     $('#alert').removeClass('alert-success');
                                     $('#alert').addClass('alert-danger');

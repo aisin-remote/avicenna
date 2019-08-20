@@ -227,6 +227,9 @@
                                 }
                             },
                             error: function (xhr) {
+                                    if (xhr.status) {
+                                        location.reload();
+                                    }
                                     // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                                     $('#alert').removeClass('alert-success');
                                     $('#alert').addClass('alert-danger');
