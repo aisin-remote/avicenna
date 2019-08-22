@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/list/all', 'TraceListController@getDataAll');
 	Route::get('/trace/view/list/casting', 'TraceListController@getAjaxDataCasting');
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
+	Route::get('/trace/view/list/assembling', 'TraceListController@getAjaxDataAssembling');
 	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
 	// =====================================================================================================================
 	// view delivered product

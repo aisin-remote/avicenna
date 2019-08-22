@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
+use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_machine_tonase;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
@@ -126,22 +127,7 @@ class ViewTraceController extends Controller
 		$create->npk 		= $npk;
 		$create->date 		= $date;
 		$create->location 	= "01 Casting" ;
-			$machining 		=avi_trace_machining::select('*', \DB::raw('"03 Lastman Machining" as location'))->where('code','like','%'.$id_product.'%')->first();
-			if (is_null($machining)){
-				$machining= new avi_trace_machining();
-				$machining->code = "--";
-				$machining->npk = "--";
-				$machining->date = "--";
-				$machining->location = "03 Last Machining" ;
-			}
-			$delivery 		=avi_trace_delivery::select('*', \DB::raw('"04 Pulling" as location'))->where('code','like','%'.$id_product.'%')->first();
-			if (is_null($delivery)){
-				$delivery= new avi_trace_delivery();
-				$delivery->code = "--";
-				$delivery->npk = "--";
-				$delivery->date = "--";
-				$delivery->location = "04 Delivery" ;
-			}
+
 			$casting 		=avi_trace_casting::select('*', \DB::raw('"02 Lastman Casting" as location'))->where('code','like','%'.$id_product."%")->first();
 			if (is_null($casting)){
 				$casting= new avi_trace_casting();
@@ -150,7 +136,31 @@ class ViewTraceController extends Controller
 				$casting->date = "--";
 				$casting->location = "02 Lastman Casting" ;
 			}
-		   $arrayku=array($create, $casting, $machining, $delivery);
+			$machining 		=avi_trace_machining::select('*', \DB::raw('"03 Lastman Machining" as location'))->where('code','like','%'.$id_product.'%')->first();
+			if (is_null($machining)){
+				$machining= new avi_trace_machining();
+				$machining->code = "--";
+				$machining->npk = "--";
+				$machining->date = "--";
+				$machining->location = "03 Last Machining" ;
+			}
+			$assembling 	=avi_trace_assembling::select('*', \DB::raw('"04 Lastman Assembling" as location'))->where('code','like','%'.$id_product.'%')->first();
+			if (is_null($assembling)){
+				$assembling= new avi_trace_assembling();
+				$assembling->code = "--";
+				$assembling->npk = "--";
+				$assembling->date = "--";
+				$assembling->location = "04 Last Assembling" ;
+			}
+			$delivery 		=avi_trace_delivery::select('*', \DB::raw('"05 Pulling" as location'))->where('code','like','%'.$id_product.'%')->first();
+			if (is_null($delivery)){
+				$delivery= new avi_trace_delivery();
+				$delivery->code = "--";
+				$delivery->npk = "--";
+				$delivery->date = "--";
+				$delivery->location = "05 Pulling" ;
+			}
+		   $arrayku=array($create, $casting, $machining, $assembling, $delivery);
 
 		   return Datatables::of($arrayku)
 		        ->addColumn('time', function($arrayku) {

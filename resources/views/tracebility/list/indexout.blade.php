@@ -33,8 +33,9 @@
                     <select id="mySelect" name="mySelect" onchange="checkList()" class="form-control select2">
                       <option value="casting" id="casting">Casting</option>
                       <option value="machining" id="machining">Machining</option>
+                      <option value="assembling" id="assembling">Assembling</option>
                       <option value="delivery" id="delivery">Delivery</option>
-                    </select>  
+                    </select>
                   </div>
                   </div>
                   <br>
@@ -93,7 +94,7 @@
 
 <script type="text/javascript">
     // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
- 
+
     var table = $('#tabel_all').DataTable({
         processing: true,
         serverSide: true,
