@@ -206,10 +206,13 @@ Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direc
 	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
 	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
 	Route::get('/trace/reportdetail/machining', 'TraceReportController@machiningAjaxdata');
+	Route::get('/trace/reportdetail/assembling', 'TraceReportController@assemblingAjaxdata');
 	Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
 
 	//export detail - Machining
 	Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterMachiningDetail');
+	//export detail - Assembling
+	Route::get('/trace/reportdetail/list/assembling/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterAssemblingDetail');
 	//export detail - Casting
 	Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterCastingDetail');
 	//export detail - Delivery
