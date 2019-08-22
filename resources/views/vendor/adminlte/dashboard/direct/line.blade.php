@@ -138,36 +138,68 @@ function ajax(){
           }else if ( data[a].status == 2 ) {
             if (data[a].plant == "UNIT") {
               unit += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'body')
+                injectAlertValue('PROBLEM MESIN', data, a);
+                mlaku = 1;
+              @endif
             }else if (data[a].plant == "BODY"){
               body += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'unit')
+                injectAlertValue('PROBLEM MESIN', data, a);
+                mlaku = 1;
+              @endif
             }
-            coba.push([data[a].line,"PROBLEM MESIN",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
-            mlaku = 1;
           }else if ( data[a].status == 3 ) {
             if (data[a].plant == "UNIT") {
               unit += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'body')
+                injectAlertValue('PROBLEM QUALITY', data, a);
+                mlaku = 1;
+              @endif
             }else if (data[a].plant == "BODY"){
               body += '<div class="table-bordered col-xs-2 line error"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'unit')
+                injectAlertValue('PROBLEM QUALITY', data, a);
+                mlaku = 1;
+              @endif
             }
-            coba.push([data[a].line,"PROBLEM QUALITY",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
-            mlaku = 1;
           }else if ( data[a].status == 4 ) {
             if (data[a].plant == "UNIT") {
               unit += '<div class="table-bordered col-xs-2 line error-supply"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'body')
+                injectAlertValue('PROBLEM SUPPLY PART', data, a);
+                mlaku = 1;
+              @endif
             }else if (data[a].plant == "BODY"){
               body += '<div class="table-bordered col-xs-2 line error-supply"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'unit')
+                injectAlertValue('PROBLEM SUPPLY PART', data, a);
+                mlaku = 1;
+              @endif
             }
-            coba.push([data[a].line,"PROBLEM SUPPLY PART",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
-            mlaku = 1;
           }else if ( data[a].status == 5 ) {
 
             if (data[a].plant == "UNIT") {
               unit += '<div class="table-bordered col-xs-2 line dandory"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'body')
+                injectAlertValue('DANDORI', data, a);
+                mlaku = 1;
+              @endif
             }else if (data[a].plant == "BODY"){
               body += '<div class="table-bordered col-xs-2 line dandory"><p class="line-title">' + data[a].line + '</p></div>';
+
+              @if(request()->query('plant') !== 'unit')
+                injectAlertValue('DANDORI', data, a);
+                mlaku = 1;
+              @endif
             }
-            coba.push([data[a].line,"DANDORI",data[a].name,data[a].email,data[a].phone,data[a].error_at]);
-            mlaku = 1;
           }else if ( data[a].status == 0 ) {
             if (data[a].plant == "UNIT") {
               unit += '<div class="table-bordered col-xs-2 line"><p class="line-title">' + data[a].line + '</p></div>';
@@ -195,6 +227,9 @@ function ajax(){
   });
 }
 // end of ajax status line
+function injectAlertValue(title, data, index) {
+  coba.push([data[index].line,title,data[index].name,data[index].email,data[index].phone,data[index].error_at]);
+}
 
 //function modal
 function ShowModal(a){
