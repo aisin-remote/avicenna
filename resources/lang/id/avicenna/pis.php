@@ -14,7 +14,9 @@ return [
     */
 
     'part_not_found'    => 'Part tidak ditemukan !!! Silakan cek master data PIS',
-    'part_found'        => ' berhasil dipindai',
+    'part_found'        => 'berhasil dipindai',
+    'fatal_error'       => 'Internal Server Error',
+    'connection_error'  => 'Mohon scan ulang, terjadi masalah koneksi internet',
     'error_scan'        => 'Terjadi kesalahan pemindaian : ',
     'part_numb'         => 'Nomer part terbaca',
     'counter'           => 'Penghitung (Total Scan)',

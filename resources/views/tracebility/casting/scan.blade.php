@@ -232,14 +232,24 @@
                                 $('#detail_no').focus();
                             },
                             error: function (xhr) {
+
                                     if (xhr.status) {
                                         location.reload();
                                     }
-                                    // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
+
                                     $('#alert').removeClass('alert-success');
                                     $('#alert').addClass('alert-danger');
                                     $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                                    $('#alert-body').text('@lang("avicenna/pis.err889")');
+
+                                    if (xhr.status == 0) {
+                                        $('#alert-body').text('@lang("avicenna/pis.connection_error")');
+                                        return;
+                                    }
+
+                                    $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
+
+                                    console.log(xhr);
+
                             }
 
                         });
