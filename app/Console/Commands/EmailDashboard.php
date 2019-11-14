@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Avicenna\avi_andon_status;
 use App\User;
+use DB;
 use Carbon\Carbon;
 
 // Declare disini jika butuh Class bawaan laravel dan plugin yang tidak auto-generated
@@ -75,7 +76,7 @@ class EmailDashboard extends Command
                     $c = $error3->addSeconds($tiga);
 
                 if ($a < $now && $now < $b) {
-                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first(); 
+                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                         if ($d->flag_spv == 0 ) {
                         $time = $satu/60;
@@ -83,7 +84,7 @@ class EmailDashboard extends Command
                         $flag1->flag_spv = 1;
                         $flag1->save();
                         $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
-                        
+
                         }
                     }
                 }elseif ($b < $now && $now < $c) {
@@ -95,7 +96,7 @@ class EmailDashboard extends Command
                         $flag1->flag_mgr = 1;
                         $flag1->save();
                         $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
-                        
+
                         }
                     }
                 }elseif ($now > $c){
@@ -107,21 +108,21 @@ class EmailDashboard extends Command
                         $flag1->flag_gm = 1;
                         $flag1->save();
                         $this->email($d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
-                        
+
                         }
                     }
-                    
+
                 }else{
                     echo "oke";
                 }
 
             }
-            
+
         }
 
 
 
-        
+
     }
     function email($email,$status,$line,$time,$cc="",$error)
             {
@@ -165,21 +166,42 @@ class EmailDashboard extends Command
                 $users = User::whereIn('npk', explode(",", $cc))
                                 ->orWhere('email', $email)
                                 ->get();
-                foreach ($users as $user) {
-                    $response = $this->client->request('GET', 'plain', [
-                        'query' => [
-                            'user'      => env('SMS_GATEWAY_USER'),
-                            'password'  => env('SMS_GATEWAY_PASSWORD'),
-                            'SMSText'   => 'REAL TIME ALERT: '.$error.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
-                            'GSM'       => $user->phone_number,
-                        ],
 
-                    ]);
+                // WA message
+                foreach ($users as $user) {
+                    $param = 0;
+                    while ($param < 1) {
+                        $firstVal = DB::connection('mysql2')->table('tw_message')->first();
+
+                        if (!$firstVal) {
+                            DB::connection('mysql2')->table('tw_message')->insert([
+                                'nowa' => $user->phone_number,
+                                'pesan' => 'REAL TIME ALERT: '.$error.', LINE: *'.$line.'*, STATUS: *'.$textstatus. '*, DOWNTIME: *'.$time.' Minutes*',
+                            ]);
+
+                            $param++;
+                        }
+                    }
                 }
+
+                // SMS
+
+                // foreach ($users as $user) {
+
+                    // $response = $this->client->request('GET', 'plain', [
+                    //     'query' => [
+                    //         'user'      => env('SMS_GATEWAY_USER'),
+                    //         'password'  => env('SMS_GATEWAY_PASSWORD'),
+                    //         'SMSText'   => 'REAL TIME ALERT: '.$error.', LINE: '.$line.', STATUS: '.$textstatus. ', DOWNTIME: '.$time.' Minutes',
+                    //         'GSM'       => $user->phone_number,
+                    //     ],
+
+                    // ]);
+                // }
 
                 // end
             }
-  
+
 
 
 }
