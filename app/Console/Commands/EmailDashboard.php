@@ -167,6 +167,8 @@ class EmailDashboard extends Command
                                 ->orWhere('email', $email)
                                 ->get();
 
+                $errordate = date('Y-m-d', strtotime($error));
+                $errortime = date('H:i:s', strtotime($error));
                 // WA message
                 foreach ($users as $user) {
                     $param = 0;
@@ -176,7 +178,7 @@ class EmailDashboard extends Command
                         if (!$firstVal) {
                             DB::connection('mysql2')->table('tw_message')->insert([
                                 'nowa' => $user->phone_number,
-                                'pesan' => 'REAL TIME ALERT: '.$error.', LINE: *'.$line.'*, STATUS: *'.$textstatus. '*, DOWNTIME: *'.$time.' Minutes*',
+                                'pesan' => sprintf("```----------------------------- %cREAL TIME ALERT %cTGL      : $errordate %cJAM      : $errortime %cLINE     : $line %cSTATUS   : $textstatus %cDOWNTIME : $time Minutes %c-----------------------------``` ", 13, 13, 13, 13, 13, 13,13)
                             ]);
 
                             $param++;
