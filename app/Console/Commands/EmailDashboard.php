@@ -178,7 +178,7 @@ class EmailDashboard extends Command
                         if (!$firstVal) {
                             DB::connection('mysql2')->table('tw_message')->insert([
                                 'nowa' => $user->phone_number,
-                                'pesan' => sprintf("```--------------------------%cREAL TIME ALERT %cTGL      : $errordate %cJAM      : $errortime %cLINE     : $line %cSTATUS   : $textstatus %cDOWNTIME : $time Minutes %c--------------------------``` ", 13, 13, 13, 13, 13, 13,13)
+                                'pesan' => sprintf("```--- REAL TIME ALERT ---%cTGL      : $errordate %cJAM      : $errortime %cLINE     : $line %cSTATUS   : $textstatus %cDOWNTIME : $time Minutes %c--------------------------``` ", 13, 13, 13, 13, 13, 13,13)
                             ]);
 
                             $param++;
