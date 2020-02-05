@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading"><b>DELIVERY</b>&nbsp&nbsp >> Total Scan :    <b><span style="font-size: 20pt " id="total-scan"></span></b></div>
-                
+
                     <div class="panel-body">
                        <center> <span id="wimcycle"></span> - <span id="customer"> </span></center>
 
@@ -37,7 +37,7 @@
             </div>
 
         </div>
-        
+
     </div>
 </div>
 
@@ -48,21 +48,27 @@
 
 <script src="{{ asset('/js/jquery-cookie.js') }}"></script>
 <script type="text/javascript">
-  
- 
+
+
   var barcode   ="";
   var rep2      = "";
   var detail_no = $('#detail_no');
   var flag=1;
 
   $(document).keypress(function(e) {
-    
+
         var code = (e.keyCode ? e.keyCode : e.which);
-        console.log(code);
         if(code==13)// Enter key hit
-        {  
+        {
             barcodecomplete = barcode;
             barcode = "";
+            // remove * from qr
+            if (barcodecomplete.length == 17) {
+                if (barcodecomplete[0] == '*' && barcodecomplete[16] == '*') {
+                    barcodecomplete = barcodecomplete.slice(1).slice(0, -1);
+                }
+            }
+
             if (barcodecomplete.length == 2) {
                 if(barcodecomplete=="EN"){
                     $.removeCookie("wimcycle");
@@ -78,21 +84,21 @@
                 }else{
                     $.ajax({
                         type: 'get',           // {{-- POST Request --}}
-                        url: "{{ url('/trace/scan/delivery/getAjaxcycle') }}"+'/'+barcodecomplete,  
+                        url: "{{ url('/trace/scan/delivery/getAjaxcycle') }}"+'/'+barcodecomplete,
                         _token: "{{ csrf_token() }}",
                         dataType: 'json',       // {{-- Data Type of the Transmit --}}
                         success: function (data) {
-                            code = data.cycle; 
+                            code = data.cycle;
                             $('#alert').removeClass('alert-danger');
                             $('#alert').addClass('alert-success');
                             // $('#alert-header').html('SCAN CYCLE OK !!');
                             $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
                             $.cookie("wimcycle",""+barcodecomplete+"");
-                            $("#wimcycle").html(code); 
+                            $("#wimcycle").html(code);
                         },
                         error: function (xhr) {
                         }
-                                          
+
                     });
                 }
 
@@ -109,15 +115,15 @@
                 $("#customer").html(barcodecomplete);
             }
             else if( barcodecomplete.length == 15 )
-            { 
+            {
                 if($.cookie("wimcycle") != undefined && $.cookie("customer") != undefined ){
                 $.ajax({
                         type: 'get',           // {{-- POST Request --}}
-                        url: "{{ url('/trace/scan/delivery/getAjax') }}"+'/'+barcodecomplete+"/"+$.cookie("wimcycle")+"/"+$.cookie("customer"),  
+                        url: "{{ url('/trace/scan/delivery/getAjax') }}"+'/'+barcodecomplete+"/"+$.cookie("wimcycle")+"/"+$.cookie("customer"),
                         _token: "{{ csrf_token() }}",
                         dataType: 'json',       // {{-- Data Type of the Transmit --}}
                         success: function (data) {
-                            code = data.code;                       
+                            code = data.code;
                             if(code == "" ){
                                 $('#detail_no').prop('readonly', false);
                                 $('#detail_no').val(barcodecomplete);
@@ -128,7 +134,7 @@
                                 // $('#alert-header').html('PERHATIAN !!');
                                 $('#batman').html(barcodecomplete);
                                 $('#alert-body').text('Data sudah ada');
-                                
+
                                 $('#detail_no').prop('readonly', true);
                             }
                             else{
@@ -152,11 +158,11 @@
                                 $('#alert').addClass('alert-danger');
                                 // $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
                                 $('#alert-body').text('@lang("avicenna/pis.part_not_found")');
-                                
+
                                 console.log("flag 1 ajax eror");
                         }
-                                          
-                    }); 
+
+                    });
                 }else if($.cookie("wimcycle") == undefined && $.cookie("customer") == undefined){
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').removeClass('alert-success');
@@ -193,13 +199,13 @@
                     window.location.replace("{{url('/trace/logout')}}");
 
             }
-              
+
         }
         else
         {
             barcode=barcode+String.fromCharCode(e.which);
         }
-    
+
     });
 
     $(document).ready(function() {
