@@ -119,6 +119,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
 
 	//SCAN PART
+		//Casting Dowa
+	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
+	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
+	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
 		//Casting
 	Route::get('/trace/scan/casting/{line?}', 'TraceScanController@scancasting');
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
@@ -140,6 +144,15 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
 
+		//Delivery Dowa
+	Route::get('/trace/scan/delivery/dowa', 'TraceScanController@scanDeliveryDowa');
+	Route::get('/trace/scan/delivery/dowa/check-code', 'TraceScanController@checkCodeDeliveryDowa');
+	Route::get('/trace/scan/delivery/dowa/input-code', 'TraceScanController@inputCodeDeliveryDowa');
+
+		//Torimetron Dowa
+	Route::get('/trace/scan/torimetron', 'TraceScanController@scanTorimetron');
+	Route::get('/trace/scan/torimetron/check-code', 'TraceScanController@checkCodeTorimetron');
+	Route::get('/trace/scan/torimetron/input-code', 'TraceScanController@inputCodeTorimetron');
 		//Delivery
 	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
 	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');

@@ -114,7 +114,7 @@
                 $.cookie("customer",""+barcodecomplete+"");
                 $("#customer").html(barcodecomplete);
             }
-            else if( barcodecomplete.length == 15 )
+            else if( barcodecomplete.length == 15 || barcodecomplete.length > 25 )
             {
                 if($.cookie("wimcycle") != undefined && $.cookie("customer") != undefined ){
                 $.ajax({

@@ -12,6 +12,8 @@ class avi_trace_casting extends Model
     	'id',
     	'code',
     	'npk',
+    	'line',
+    	'status',
     	'date'
     ];
 }
