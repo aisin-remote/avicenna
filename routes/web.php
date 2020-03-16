@@ -119,6 +119,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
 
 	//SCAN PART
+		//Casting Dowa
+	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
+	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
+	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
 		//Casting
 	Route::get('/trace/scan/casting/{line?}', 'TraceScanController@scancasting');
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
@@ -140,6 +144,15 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
 
+		//Delivery Dowa
+	Route::get('/trace/scan/delivery/dowa', 'TraceScanController@scanDeliveryDowa');
+	Route::get('/trace/scan/delivery/dowa/check-code', 'TraceScanController@checkCodeDeliveryDowa');
+	Route::get('/trace/scan/delivery/dowa/input-code', 'TraceScanController@inputCodeDeliveryDowa');
+
+		//Torimetron Dowa
+	Route::get('/trace/scan/torimetron', 'TraceScanController@scanTorimetron');
+	Route::get('/trace/scan/torimetron/check-code', 'TraceScanController@checkCodeTorimetron');
+	Route::get('/trace/scan/torimetron/input-code', 'TraceScanController@inputCodeTorimetron');
 		//Delivery
 	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
 	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
@@ -193,38 +206,38 @@ Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direc
 //List Traceability
 
 	// view trace product
-	Route::get('/trace/view/part', 'ViewTraceController@index');
-	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
-	Route::get('/trace/view/part/searchout/{barcode}', 'ViewTraceController@searchout');
-	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
-	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
-	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
+Route::get('/trace/view/part', 'ViewTraceController@index');
+Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
+Route::get('/trace/view/part/searchout/{barcode}', 'ViewTraceController@searchout');
+Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
+Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
+Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
+Route::get('/trace/view/product/dowa/{id_product}', 'ViewTraceController@getAjaxProductDowa');
 
-	//dev-1.1.0, Audi, 20180702 View Trace List
+//dev-1.1.0, Audi, 20180702 View Trace List
 
+Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
+Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
+Route::get('/trace/reportdetail/machining', 'TraceReportController@machiningAjaxdata');
+Route::get('/trace/reportdetail/assembling', 'TraceReportController@assemblingAjaxdata');
+Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
 
-	Route::get('/trace/reportdetail/list/{type}', 'TraceReportController@index');
-	Route::get('/trace/reportdetail/casting', 'TraceReportController@castingAjaxdata');
-	Route::get('/trace/reportdetail/machining', 'TraceReportController@machiningAjaxdata');
-	Route::get('/trace/reportdetail/assembling', 'TraceReportController@assemblingAjaxdata');
-	Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
+//export detail - Machining
+Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterMachiningDetail');
+//export detail - Assembling
+Route::get('/trace/reportdetail/list/assembling/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterAssemblingDetail');
+//export detail - Casting
+Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterCastingDetail');
+//export detail - Delivery
+Route::get('/trace/reportdetail/list/delivery/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterDeliveryDetail');
+//Export
+Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
 
-	//export detail - Machining
-	Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterMachiningDetail');
-	//export detail - Assembling
-	Route::get('/trace/reportdetail/list/assembling/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterAssemblingDetail');
-	//export detail - Casting
-	Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterCastingDetail');
-	//export detail - Delivery
-	Route::get('/trace/reportdetail/list/delivery/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterDeliveryDetail');
-	//Export
-	Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
+Route::get('/trace/export/part', 'TraceListController@tracepartreport'); //dev-1.1.0, Audi 20190218, Export Part
+Route::get('/tmmin', 'TraceListController@tracepartreport');
 
-	Route::get('/trace/export/part', 'TraceListController@tracepartreport'); //dev-1.1.0, Audi 20190218, Export Part
-	Route::get('/tmmin', 'TraceListController@tracepartreport');
-
-	// dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
-	Route::get('/test', 'HomeController@test');
+// dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
+Route::get('/test', 'HomeController@test');
 
 	// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
 	Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {

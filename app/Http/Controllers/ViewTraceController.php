@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Avicenna\avi_dowa_process;
 use Illuminate\Http\Request;
 use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
@@ -10,7 +11,10 @@ use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_machine_tonase;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
+use DateTime;
 use Yajra\Datatables\Datatables;
+use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 use Storage;
 
 class ViewTraceController extends Controller
@@ -174,6 +178,71 @@ class ViewTraceController extends Controller
 		        ->addIndexColumn()
 		        ->make(true);
 
+
+	}
+
+	public function getAjaxProductDowa($id_product) {
+		try {
+			$dowaData = avi_dowa_process::where('code', $id_product)->first();
+			if ( $dowaData == null) {
+				return [
+					"status" => "notfound"
+				];
+			}
+
+			try {
+				$client = new Client();
+				$response = $client->get(env('DOWA_BASE_URL').'/products/'.$id_product, [
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => 'Bearer '.Cache::get('dowa_token')
+					]
+				]);
+				$api = $response->json();
+			} catch (\Throwable $th) {
+				$api = null;
+			}
+			$datedelivery = $dowaData->scan_delivery_dowa_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_delivery_dowa_at)->format('Y-m-d') : '--';
+			$datereceivedowa = $api['data']['received_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['received_dowa_at'])->format('Y-m-d') : '--';
+			$datesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('Y-m-d') : '--';
+			$datetorimetrondowa = $dowaData->scan_torimetron_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_torimetron_at )->format('Y-m-d') : '--';
+			$timedelivery = $dowaData->scan_delivery_dowa_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_delivery_dowa_at)->format('H:i:s') : '--';
+			$timereceivedowa = $api['data']['received_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['received_dowa_at'])->format('H:i:s') : '--';
+			$timesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('H:i:s') : '--';
+			$timetorimetrondowa = $dowaData->scan_torimetron_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_torimetron_at )->format('H:i:s') : '--';
+			$ngsenddowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
+			$ngreceivedowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
+			$ng = $dowaData->status;
+			$deliverydowa = [
+				'kbn_sup' => $dowaData->kbn_supply ?? '--',
+				'npk_delivery_dowa' => $dowaData->npk_delivery_dowa ?? '--',
+				'date_delivery_dowa' => $datedelivery,
+				'time_delivery_dowa' => $timedelivery,
+				'note_delivery_dowa' => $dowaData->npk_delivery_dowa ? 'OK' : '--',
+				'npk_receive_dowa' =>$api['data']['received_by']?? '--',
+				'date_receive_dowa' =>$datereceivedowa,
+				'time_receive_dowa' =>$timereceivedowa,
+				'npk_send_dowa' =>$api['data']['finished_by'] ?? '--',
+				'date_send_dowa' => $datesenddowa,
+				'time_send_dowa' => $timesenddowa,
+				'note_send_dowa' => $api['data']['received_dowa_at'] ? $ngsenddowa : '--',
+				'note_receive_dowa' => $api['data']['received_dowa_at'] ? $ngreceivedowa : '--',
+				'kbn_fg'=>$dowaData->kbn_fg ?? '--',
+				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ?? '--',
+				'date_torimetron_dowa'=>$datetorimetrondowa,
+				'time_torimetron_dowa'=>$timetorimetrondowa
+			];
+			return [
+				"status" => "success",
+				"data" => $deliverydowa
+			];
+		} catch (\Throwable $e) {
+			//throw $th;
+			return [
+				"status" => "error",
+				"messege" => $e->getMessage()
+			];
+		}
 
 	}
 }
