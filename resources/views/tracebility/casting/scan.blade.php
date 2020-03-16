@@ -200,6 +200,9 @@
                 // end of isi dengan line
 
                 $('#detail_no').val('');
+                if (barcodecomplete == "DOWA") {
+                    window.location.replace("{{url('/trace/scan/casting/dowa')}}");
+                }
                 if (barcodecomplete.length == 15) {
                     $.ajax({
                             type: 'get',           // {{-- POST Request --}}

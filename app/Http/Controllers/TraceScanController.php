@@ -277,11 +277,47 @@ class TraceScanController extends Controller
                 'code'=>$value,
                 'kbn_int_casting'=>$kbn_int
             );
+            $key = 'casting_'.$user->npk;
+            if (Cache::has($key)) {
+                $cache = Cache::get($key);
+
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1,
+                            'items' => [
+                                $value
+                            ]
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                    if (count($cache[date('Y-m-d')]['items']) >= 10) {
+                        unset($cache[date('Y-m-d')]['items'][0]);
+                    }
+                    $cache[date('Y-m-d')]['items'][] = $value;
+                    $cache[date('Y-m-d')]['items'] = array_values($cache[date('Y-m-d')]['items']);
+                }
+            } else {
+                $cache = [
+                    date('Y-m-d') => [
+                        'counter' => 1,
+                        'items' => [
+                            $value
+                        ]
+                    ]
+                ];
+            }
+
+            Cache::forever($key, $cache);
             $casting = avi_trace_casting::create($dataCasting);
             $dowaProcess = avi_dowa_process::create($dataCastingDowa);
         };
+
         return [
-            "status" => "success"
+            "status" => "success",
+            "counter"   => $cache[date('Y-m-d')]['counter']
         ];
     }
 

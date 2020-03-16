@@ -251,7 +251,6 @@
                     notifMessege("error", data.codesubstr+" Unregistered");
                 } else {
                     saveDataLocalStorage(data.type, data.code);
-                    notifMessege("success", data.codesubstr);
                 }
             },
             error: function (xhr) {
@@ -268,16 +267,22 @@
         if (type == 'kbnint') {
             localStorage.setItem('avi_casting_kanban_int', code);
             $('#part-internal').text(code.substring(41,53).concat(' (',code.substring(100,104),')'));
+            notifMessege("success", code.substring(100,104));
         } else if (type == 'code') {
             if (partCode1 == null || partCode1 == undefined) {
                 localStorage.setItem('avi_casting_code1', code);
                 $('#code1').text(code);
+                notifMessege("success", code);
             } else if (partCode2 == null || partCode2 == undefined) {
                 localStorage.setItem('avi_casting_code2', code);
                 $('#code2').text(code);
+                notifMessege("success", code);
             } else if (partCode3 == null || partCode3 == undefined) {
                 localStorage.setItem('avi_casting_code3', code);
                 $('#code3').text(code);
+                notifMessege("success", code);
+            } else {
+                notifMessege("error", "Parts is complete, please scan kanban");
             }
         }
         if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
@@ -312,8 +317,8 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data.status);
                 notifMessege("success", "Data Saved");
+                $('#counter').text(data.counter);
             },
             error: function (xhr) {
 

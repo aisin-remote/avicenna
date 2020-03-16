@@ -215,20 +215,20 @@ class ViewTraceController extends Controller
 			$ng = $dowaData->status;
 			$deliverydowa = [
 				'kbn_sup' => $dowaData->kbn_supply ?? '--',
-				'npk_delivery_dowa' => $dowaData->npk_delivery_dowa ?? '--',
+				'npk_delivery_dowa' => $dowaData->npk_delivery_dowa ? $dowaData->npk_delivery_dowa : '--',
 				'date_delivery_dowa' => $datedelivery,
 				'time_delivery_dowa' => $timedelivery,
 				'note_delivery_dowa' => $dowaData->npk_delivery_dowa ? 'OK' : '--',
-				'npk_receive_dowa' =>$api['data']['received_by']?? '--',
+				'npk_receive_dowa' =>$api['data']['received_by']? $api['data']['received_by']: '--',
 				'date_receive_dowa' =>$datereceivedowa,
 				'time_receive_dowa' =>$timereceivedowa,
-				'npk_send_dowa' =>$api['data']['finished_by'] ?? '--',
+				'npk_send_dowa' =>$api['data']['finished_by'] ? $api['data']['finished_by'] : '--',
 				'date_send_dowa' => $datesenddowa,
 				'time_send_dowa' => $timesenddowa,
 				'note_send_dowa' => $api['data']['received_dowa_at'] ? $ngsenddowa : '--',
 				'note_receive_dowa' => $api['data']['received_dowa_at'] ? $ngreceivedowa : '--',
-				'kbn_fg'=>$dowaData->kbn_fg ?? '--',
-				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ?? '--',
+				'kbn_fg'=>$dowaData->kbn_fg ? $dowaData->kbn_fg : '--',
+				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ? $dowaData->npk_torimetron : '--',
 				'date_torimetron_dowa'=>$datetorimetrondowa,
 				'time_torimetron_dowa'=>$timetorimetrondowa
 			];
