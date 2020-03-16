@@ -318,7 +318,7 @@
             dataType: 'json',
             success: function (data) {
                 notifMessege("success", "Data Saved");
-                $('#counter').text(data.counter);
+                // $('#counter').text(data.counter);
             },
             error: function (xhr) {
 
