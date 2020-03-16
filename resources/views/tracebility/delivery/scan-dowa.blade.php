@@ -9,10 +9,10 @@
                 <div class="panel-heading"><b><center> DELIVERY DOWA</center></b></span></b>
                 </div>
                 <div class="panel-body">
-                    <span style="float: left"><font size=2>Total Scan :</font></span>
+                    {{-- <span style="float: left"><font size=2>Total Scan :</font></span>
                     <br>
                     <font size=4><strong><span style="float: left" id="total_scan">-</strong></font></span>
-                    <br>
+                    <br> --}}
                     <input id="detail_no"required type="hidden" readonly>
                     <span><font size=2>Kanban Internal :</font></span>
                     <br>
@@ -54,16 +54,20 @@
             if (barcodecomplete.length == 13) {
                 clearCookie();
                 window.location.replace("{{url('/trace/logout')}}");
-            } else if (barcodecomplete.length > 25) {
+            } else if (barcodecomplete.length == 230) {
                 barcodesub = barcodecomplete.substring(123,127)
                 if (checkDataCookie()) {
                     checkDataAjax(barcodesub);
                 } else {
-                    notifMessege("success", barcodesub);
-                    $('#part-supply').text(barcodesub);
-                    sendDataAjax(barcodesub);
+                    notifMessege("error", "Rescan Internal Kanban");
                     clearCookie();
                 }
+            } else if (barcodecomplete.length == 234) {
+                barcodesub = barcodecomplete.substring(119,124);
+                notifMessege("success", barcodesub);
+                $('#part-supply').text(barcodesub);
+                sendDataAjax(barcodesub);
+                clearCookie();
             }
         }
         else
@@ -134,8 +138,13 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 notifMessege("success", "Data Saved");
+                if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined ) {
+                    $.cookie('total_scan', 1);
+                } else {
+                    $.cookie('total_scan', $.cookie('total_scan')+1);
+                }
+                $('#total_scan').text($.cookie('total_scan'));
             },
             error: function (xhr) {
 

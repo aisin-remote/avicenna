@@ -127,25 +127,18 @@
                             if(code == "" ){
                                 $('#detail_no').prop('readonly', false);
                                 $('#detail_no').val(barcodecomplete);
-
-                                {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
-                                // $('#alert-header').html('PERHATIAN !!');
                                 $('#batman').html(barcodecomplete);
                                 $('#alert-body').text('Data sudah ada');
-
                                 $('#detail_no').prop('readonly', true);
                             }
                             else{
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').addClass('alert-success');
-                                // $('#alert-header').html('BERHASIL !!');
-                                $('#alert-body').text(barcodecomplete);
-
+                                $('#alert-body').text(data.counter);
                                 $('#detail_no').val(rep2);
                                 $('#detail_no').prop('readonly', true);
-                                // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
                                 $('#total-scan').html(data.counter);
                                 $('#batman').html(data.code);
                             }
@@ -183,7 +176,7 @@
                                 $('#detail_no').prop('readonly', true);
                 }
 
-            }else if (barcodecomplete.length > 15) {
+            }else if (barcodecomplete.length == 13) {
 
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
@@ -192,8 +185,7 @@
                                 $('#detail_no').prop('readonly', true);
 
             }
-            else if (barcodecomplete.length == 13)
-            {
+            else {
                     $.removeCookie("wimcycle");
                     $.removeCookie("customer");
                     window.location.replace("{{url('/trace/logout')}}");

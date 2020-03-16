@@ -1,74 +1,36 @@
-@extends('layouts.app')
+@extends('layouts.delivery')
 
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div id="line" class="panel panel-default" >
-                <span style="font-size : 50px "> <center> LINE TORIMETRON </center> </span>
-                <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
+        <div class="col-xs-12">
+            <div class="panel panel-default" >
+                <span style="font-size : 20px "> <center><b>TORIMETRON</b> --> Total : <span id="counter">0<span> </center> </span>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-xs-12">
             <div id="ng-banner" class="alert alert-danger" style="display :none">
-                <h2><div style="font-size : 51px; text-align: center;"> <i class="icon fa fa-check"></i>SCAN PART NG</div></h2>
+                <h2><div style="font-size : 20px; text-align: center;"> <i class="icon fa fa-check"></i>SCAN PART NG</div></h2>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
+    <div class="row" style="height:20px;">
+        <div class="col-xs-12">
             <div class="panel panel-default">
-                <div class="panel-heading">PART SCANNED</div>
-                <div class="panel-body" style="height:110px;">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form>
-                                <input height=60 id="detail_no" class="form-control" name="detail_no" required autofocus>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                <div class="panel-body" >
+                    <form>
+                    <input height=10 id="detail_no" class="form-control" name="detail_no" required autofocus>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-8">
-            <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
-                <div id="alert-body" style="font-size : 51px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
-            </div>
-
-        </div>
-
-        <div class="col-md-2">
-            <!-- counter -->
-            <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">TOTAL SCAN</div>
-                <div class="panel-body" style="height:110px;">
-                    <div class="form-group">
-                        <table id="data_table" class="table table-bordered responsive-utilities jambo_table">
-                            <tbody>
-                                <tr>
-                                    <td align="center" height=60>
-                                        <font size=35><div id="counter">0</div></font></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <!-- end counter -->
-            <!-- x_panel -->
-        </div>
-
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">KANBAN SCANNED</div>
                 <div class="panel-body">
@@ -76,8 +38,15 @@
                         <table class="table table-bordered responsive-utilities jambo_table">
                             <tbody>
                                 <tr>
-                                    <td align="center" height=180 style="vertical-align: middle">
-                                    <font size=5><div id="part-internal"></div></font></td>
+                                    <td align="center" height=90 style="vertical-align: middle; width: 50%" rowspan="3" >
+                                    <font size=2><div id="part-internal"></div></font></td>
+                                    <td align="center" height=30><font size=2><div id="code1"></div></font></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" height=30><font size=2><div id="code2"></div></font></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" height=30><font size=2><div id="code3"></div></font></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -85,26 +54,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">CODE SCANNED</div>
-                <div class="panel-body">
-                    <div class="form-group">
-                        <table class="table table-bordered responsive-utilities jambo_table">
-                            <tbody>
-                                <tr>
-                                    <td align="center" height=60><font size=5><div id="code1"></div></font></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" height=60><font size=5><div id="code2"></div></font></td>
-                                </tr>
-                                <tr>
-                                    <td align="center" height=60><font size=5><div id="code3"></div></font></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="alert"  class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
+                <h4><div id="alert-header" style="font-size : 13px"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
+                <div id="alert-body" style="font-size : 16px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
             </div>
         </div>
     </div>

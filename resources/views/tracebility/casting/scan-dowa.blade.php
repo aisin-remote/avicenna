@@ -197,6 +197,9 @@
                 barcode = "";
                 // end of isi dengan line
                 $('#detail_no').val('');
+                if (barcodecomplete == "DOWA") {
+                    window.location.replace("{{url('/trace/scan/casting')}}");
+                }
                 if (barcodecomplete.length == 15) {
                     console.log(checkDataLocal(barcodecomplete));
                     if (checkDataLocal(barcodecomplete) == true ){
