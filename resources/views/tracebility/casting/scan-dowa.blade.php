@@ -199,6 +199,7 @@
                 $('#detail_no').val('');
                 if (barcodecomplete == "DOWA") {
                     window.location.replace("{{url('/trace/scan/casting')}}");
+                    return;
                 }
                 if (barcodecomplete.length == 15) {
                     console.log(checkDataLocal(barcodecomplete));
@@ -207,7 +208,7 @@
                     }else{
                         notifMessege("error", barcodecomplete+" Already Exist");
                     }
-                } else if(barcodecomplete.length > 25) {
+                } else if(barcodecomplete.length == 230) {
                     checkDataAjax(barcodecomplete, 'kbnint');
                 } else if (barcodecomplete.length == 13) {
                     window.location.replace("{{url('/trace/logout')}}");
@@ -282,7 +283,7 @@
                 $('#code3').text(code);
                 notifMessege("success", code);
             } else {
-                notifMessege("error", "Parts is complete, please scan kanban");
+                notifMessege("error", "Parts is Complete, Scan Kanban!");
             }
         }
         if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
@@ -317,8 +318,12 @@
             },
             dataType: 'json',
             success: function (data) {
-                notifMessege("success", "Data Saved");
-                // $('#counter').text(data.counter);
+                if (data.status == "success") {
+                    notifMessege("success", "Data Saved");
+                    $('#counter').text(data.counter);
+                } else if (data.status == "error") {
+                    notifMessege("error", data.messege);
+                }
             },
             error: function (xhr) {
 

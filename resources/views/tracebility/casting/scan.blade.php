@@ -202,6 +202,7 @@
                 $('#detail_no').val('');
                 if (barcodecomplete == "DOWA") {
                     window.location.replace("{{url('/trace/scan/casting/dowa')}}");
+                    return;
                 }
                 if (barcodecomplete.length == 15) {
                     $.ajax({
@@ -217,7 +218,6 @@
                                     $('#alert').addClass('alert-danger');
                                     $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
                                     $('#alert-body').text('Data sudah ada');
-
                                     $('#detail_no').prop('readonly', true);
 
                                 } else {

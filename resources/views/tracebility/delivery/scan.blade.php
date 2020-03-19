@@ -62,6 +62,10 @@
         {
             barcodecomplete = barcode;
             barcode = "";
+            if (barcodecomplete == "DOWA") {
+                window.location.replace("{{url('/trace/scan/delivery/dowa')}}");
+                return;
+            }
             // remove * from qr
             if (barcodecomplete.length == 17) {
                 if (barcodecomplete[0] == '*' && barcodecomplete[16] == '*') {

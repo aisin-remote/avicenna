@@ -51,6 +51,10 @@
         {
             barcodecomplete = barcode;
             barcode = "";
+            if (barcodecomplete == "DOWA") {
+                window.location.replace("{{url('/trace/scan/delivery')}}");
+                return;
+            }
             if (barcodecomplete.length == 13) {
                 clearCookie();
                 window.location.replace("{{url('/trace/logout')}}");
