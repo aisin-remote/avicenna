@@ -233,8 +233,7 @@ class TraceScanController extends Controller
         } elseif ($type == 'code') {
             $substr                     = substr($code, 0, 2);
             $product                    = avi_trace_program_number::where('code', $substr)->first();
-            $casting                    = avi_trace_casting::where('code', $substr)->first();
-            if (is_null($product) || is_null($casting)){
+            if (is_null($product)){
                 return array(
                     "type" => $type,
                     "code" => "unregistered",
