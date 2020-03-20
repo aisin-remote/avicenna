@@ -315,7 +315,7 @@ class TraceScanController extends Controller
         };
         return [
             "status" => "success",
-            "counter"   => $cache[date('Y-m-d')]['counter']
+            // "counter"   => $cache[date('Y-m-d')]['counter']
         ];
     }
 
