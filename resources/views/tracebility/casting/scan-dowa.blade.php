@@ -320,7 +320,7 @@
             success: function (data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
-                    $('#counter').text(data.counter);
+                    // $('#counter').text(data.counter);
                 } else if (data.status == "error") {
                     notifMessege("error", data.messege);
                 }

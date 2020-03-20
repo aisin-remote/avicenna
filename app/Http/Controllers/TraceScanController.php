@@ -233,7 +233,8 @@ class TraceScanController extends Controller
         } elseif ($type == 'code') {
             $substr                     = substr($code, 0, 2);
             $product                    = avi_trace_program_number::where('code', $substr)->first();
-            if (is_null($product)){
+            $casting                    = avi_trace_casting::where('code', $substr)->first();
+            if (is_null($product) || is_null($casting)){
                 return array(
                     "type" => $type,
                     "code" => "unregistered",
@@ -277,29 +278,29 @@ class TraceScanController extends Controller
                 'code'=>$value,
                 'kbn_int_casting'=>$kbn_int
             );
-            $key = 'casting_dowa'.$line;
-            if (Cache::has($key)) {
-                $cache = Cache::get($key);
+            // $key = 'casting_dowa'.$line;
+            // if (Cache::has($key)) {
+            //     $cache = Cache::get($key);
 
-                if(!isset($cache[date('Y-m-d')])) {
-                    $cache = [];
-                    $cache = [
-                        date('Y-m-d') => [
-                            'counter' => 1
-                        ]
-                    ];
-                } else {
-                    $cache[date('Y-m-d')]['counter'] += 1;
-                }
-            } else {
-                $cache = [
-                    date('Y-m-d') => [
-                        'counter' => 1
-                    ]
-                ];
-            }
+            //     if(!isset($cache[date('Y-m-d')])) {
+            //         $cache = [];
+            //         $cache = [
+            //             date('Y-m-d') => [
+            //                 'counter' => 1
+            //             ]
+            //         ];
+            //     } else {
+            //         $cache[date('Y-m-d')]['counter'] += 1;
+            //     }
+            // } else {
+            //     $cache = [
+            //         date('Y-m-d') => [
+            //             'counter' => 1
+            //         ]
+            //     ];
+            // }
 
-            Cache::forever($key, $cache);
+            // Cache::forever($key, $cache);
             try {
                 DB::beginTransaction();
                 $casting = avi_trace_casting::create($dataCasting);
