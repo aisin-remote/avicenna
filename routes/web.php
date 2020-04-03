@@ -117,9 +117,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');
 	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
-
 	//SCAN PART
-		//Casting Dowa
+	//Casting Dowa
 	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
 	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
 	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
@@ -133,11 +132,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/ng/{line}', 'TraceScanController@castingng');
 	Route::get('/trace/scan/casting/ng/{id_product}/{date}/{line}', 'TraceScanController@getAjaxcastingng');
 	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
-
 		//Machining
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
 	Route::get('/trace/scan/machining/{line?}', 'TraceScanController@scanmachining');
-	// Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjax2');
 	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
 	Route::get('/trace/machining/update', 'TraceScanController@getAjaxmachiningupdate');
 		//NG Machining
@@ -171,9 +168,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/assembling/index', 'TraceScanController@getAjaxassemblingtable');
 	Route::get('/trace/assembling/update', 'TraceScanController@getAjaxassemblingupdate');
 
+		//Traceability Stock
+	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
+
 
 });
-
 	//end of tracebility ====================================================================================================
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.

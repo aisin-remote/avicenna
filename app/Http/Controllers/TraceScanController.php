@@ -394,7 +394,6 @@ class TraceScanController extends Controller
     {
         try{
             $user                       = Auth::user();
-            $cek    = avi_trace_delivery::where('code', $number)->first();
             if (strlen($number) > 25) {
                 $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4) )->get();
                 foreach ($codes as $code) {
@@ -425,6 +424,7 @@ class TraceScanController extends Controller
                         );
                 return $arrJSON;
             }
+            $cek    = avi_trace_delivery::where('code', $number)->first();
             if (is_null($cek)) {
 
                 DB::beginTransaction();
@@ -887,6 +887,13 @@ class TraceScanController extends Controller
             $data = avi_dowa_process::select('*')->where('code', $code)->first();
             if ($data != null && $data->code != null && $data->kbn_fg ==  null ) {
                 if ($codes['isNg'] == 1) {
+                    if ($data->status == '0') {
+                        return array(
+                            "type" => $type,
+                            "code" => "false",
+                            "codesubstr" => $code
+                        );
+                    }
                     $array = [
                         'scan_torimetron_at' => $today,
                         'npk_torimetron' => $user,

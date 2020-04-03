@@ -12,8 +12,8 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div id="ng-banner" class="alert alert-danger" style="display :none">
-                <h2><div style="font-size : 20px; text-align: center;"> <i class="icon fa fa-check"></i>SCAN PART NG</div></h2>
+            <div id="ng-banner" style="display :none;" class="panel panel-default">
+                <center><h2 style="color: red;">SCAN PART NG</h2></center>
             </div>
         </div>
     </div>
@@ -31,8 +31,16 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
+            <div id="alert"  class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
+                <h4><div id="alert-header" style="font-size : 13px"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
+                <div id="alert-body" style="font-size : 16px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
             <div class="panel panel-default">
-                <div class="panel-heading">KANBAN SCANNED</div>
+                <div class="panel-heading">PART SCANNED</div>
                 <div class="panel-body">
                     <div class="form-group">
                         <table class="table table-bordered responsive-utilities jambo_table">
@@ -52,14 +60,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div id="alert"  class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                <h4><div id="alert-header" style="font-size : 13px"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
-                <div id="alert-body" style="font-size : 16px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
             </div>
         </div>
     </div>
@@ -169,6 +169,7 @@
                     notifMessege("error", data.codesubstr+" Unregistered");
                 } else if(data.code == "ng") {
                     notifMessege("success", data.codesubstr+" is NG");
+                    updateTable(data.codesubstr);
                 } else if (data.code == "ngnotfound") {
                     notifMessege("error", data.codesubstr+" Not Found");
                 } else {
@@ -200,6 +201,8 @@
             } else if (partCode3 == null || partCode3 == undefined) {
                 localStorage.setItem('avi_torimetron_code3', code);
                 $('#code3').text(code);
+            } else {
+                notifMessege("error", "Parts is Complete, Scan Kanban!");
             }
         }
         if (localStorage.getItem('avi_torimetron_fg') !== null && localStorage.getItem('avi_torimetron_code1') !== null && localStorage.getItem('avi_torimetron_code2') !== null && localStorage.getItem('avi_torimetron_code3') !== null ) {
@@ -260,13 +263,28 @@
     function modeNG(status) {
         if (status == "on") {
             localStorage.setItem('avi_torimetron', "1");
+            $('#part-internal').text("NG");
             $('#ng-banner').show();
             notifMessege("success", "Ready to Scan NG Part");
         } else if (status == "off") {
             localStorage.removeItem('avi_torimetron');
+            clearLocalStorage()
             $('#ng-banner').hide();
             notifMessege("success", "Ready to Scan OK Part");
         }
+    }
+
+    function updateTable(code) {
+        let partCode1 = localStorage.getItem('avi_torimetron_code1');
+        let partCode2 = localStorage.getItem('avi_torimetron_code2');
+        let partCode3 = localStorage.getItem('avi_torimetron_code3');
+        localStorage.removeItem('avi_torimetron_code1');
+        localStorage.setItem('avi_torimetron_code1', partCode2);
+        localStorage.setItem('avi_torimetron_code2', partCode3);
+        localStorage.setItem('avi_torimetron_code3', code);
+        $('#code1').text(localStorage.getItem('avi_torimetron_code1'));
+        $('#code2').text(localStorage.getItem('avi_torimetron_code2'));
+        $('#code3').text(localStorage.getItem('avi_torimetron_code3'));
     }
 
 </script>
