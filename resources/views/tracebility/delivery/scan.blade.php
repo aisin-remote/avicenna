@@ -136,6 +136,14 @@
                                 $('#batman').html(barcodecomplete);
                                 $('#alert-body').text('Data sudah ada');
                                 $('#detail_no').prop('readonly', true);
+                            } else if(code == "not found" ){
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(barcodecomplete);
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#batman').html(barcodecomplete);
+                                $('#alert-body').text('Not Found');
+                                $('#detail_no').prop('readonly', true);
                             }
                             else{
                                 $('#alert').removeClass('alert-danger');

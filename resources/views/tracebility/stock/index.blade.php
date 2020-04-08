@@ -134,9 +134,7 @@
         autoclose: true,
         format: "yyyy-mm-dd"
     });
-    let start_date = $('#start_date').val();
-    let end_date = $('#end_date').val();
-    //table
+
     let table = $('#tblStock').DataTable({
         responsive: true,
         processing: true,
@@ -157,21 +155,19 @@
     });
     //Filter
     $('#buttonfilter').on('click', function(e){
-           let product = $('#product' ).val();
-           let start_date = $('#start_date').val();
-           let end_date = $('#end_date').val();
-           let d1 = Date.parse(start_date);
-           let d2 = Date.parse(end_date);
-           if (start_date == '' || end_date == '') {
+        let product = $('#product').val();
+        let d1 = Date.parse($('#start_date').val());
+        let d2 = Date.parse($('#end_date').val())
+        if (start_date == '' || end_date == '') {
             alert('Isi Tanggal Filter');
-           }else if(d1 > d2){
+        }else if(d1 > d2){
             alert('Start date harus lebih lampau dari end date');
-           }
-           else {
-                table.ajax.url("{{ url('/avicenna/stock/mutation/filter').'/'}}"+start_date+'/'+end_date+'/'+line).load();
-                $("#box-title")[0].innerHTML = "Inventory Summary - From <strong>"+start_date+"</strong> To <strong>"+end_date+"</strong>";
-            }
-        });
+        }
+        else {
+            table.ajax.url("{{ url('/trace/stock/filter').'/'}}"+$('#start_date').val()+'/'+$('#end_date').val()+'/'+product).load();
+            $("#box-title")[0].innerHTML = "Inventory Summary - From <strong>"+$('#start_date').val()+"</strong> To <strong>"+$('#end_date').val()+"</strong>";
+        }
+    });
 </script>
 
 @endsection

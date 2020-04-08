@@ -399,14 +399,17 @@ class TraceScanController extends Controller
                 foreach ($codes as $code) {
                     if($code->code != null) {
                         DB::beginTransaction();
-                        $scan                       = new avi_trace_delivery;
-                        $scan->code                 = $code->code;
-                        $scan->cycle                = $wimcycle;
-                        $scan->customer             = $customer;
-                        $scan->npk                  = $user->npk;
-                        $scan->date                 = date('Y-m-d');
-                        $scan->status               = 1;
-                        $scan->save();
+                            $scan                       = new avi_trace_delivery;
+                            $scan->code                 = $code->code;
+                            $scan->cycle                = $wimcycle;
+                            $scan->customer             = $customer;
+                            $scan->npk                  = $user->npk;
+                            $scan->date                 = date('Y-m-d');
+                            $scan->status               = 1;
+                            $scan->save();
+
+                            DB::table('avi_dowa_process')->where('code', $code->code)->update(['is_delivered' => '1']);
+
                         DB::commit();
                     } else {
                         return [
@@ -853,8 +856,10 @@ class TraceScanController extends Controller
         $type = $codes['type'];
         $code = $codes['code'];
         if ($type == 'kbnfg') {
-            $codesubstr = substr($code,123,4);
-            $data = avi_dowa_process::select('kbn_fg')->where('kbn_fg', $codesubstr)->first();
+            // $codesubstr = substr($code,123,4);
+            $codesubstr = $code;
+
+            $data = avi_dowa_process::select('kbn_fg', 'is_delivered')->where('kbn_fg', $codesubstr)->first();
             if ($data == null) {
                 return array(
                     "type" => $type,
@@ -862,6 +867,12 @@ class TraceScanController extends Controller
                     "codesubstr" => $codesubstr
                 );
             } else if($data->kbn_fg == null) {
+                return array(
+                    "type" => $type,
+                    "code" => $code,
+                    "codesubstr" => $codesubstr
+                );
+            } else if($data->kbn_fg != null && $data->is_delivered =='1' ) {
                 return array(
                     "type" => $type,
                     "code" => $code,

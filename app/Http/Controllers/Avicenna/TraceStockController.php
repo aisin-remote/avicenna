@@ -46,58 +46,42 @@ class TraceStockController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a filtered list of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function filter($start, $end, $product)
     {
-        //
-    }
+        dd($product);
+        $back_no = $product;
+        if ($product != "ALL" || $product != "") {
+            $products = avi_trace_program_number::where('back_number', $product)->get();
+        } else {
+            $products = avi_trace_program_number::select('*')->get();
+        };
+        $dataStockCasting = 0;
+        $dataStockMachining = 0;
+        $dataStockAssembling = 0;
+        $dataStockDelivery = 0;
+        dd($products);
+        foreach ($products as $product) {
+            $dataStockCasting += avi_trace_casting::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockMachining += avi_trace_machining::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockAssembling += avi_trace_assembling::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockDelivery += avi_trace_delivery::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+        };
+        $dataAll =  [ "data" => [
+                            $back_no,
+                            $dataStockCasting,
+                            0,
+                            $dataStockMachining,
+                            $dataStockCasting - $dataStockMachining,
+                            $dataStockAssembling,
+                            $dataStockAssembling - $dataStockMachining,
+                            $dataStockDelivery,
+                            $dataStockAssembling - $dataStockDelivery,
+                    ]];
+        return Datatables::of($dataAll)->make(true);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
