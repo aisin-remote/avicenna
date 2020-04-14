@@ -347,7 +347,7 @@ class TraceScanController extends Controller
             $code = $request->all();
             $kbn_int = $code['kbn_int'];
             $kbn_sup = $code['kbn_sup'];
-            $partcodes = avi_dowa_process::select('code', 'kbn_int_casting')->where('kbn_int_casting', $kbn_int)->get();
+            $partcodes = avi_dowa_process::select('code', 'kbn_int_casting')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', NULL)->get();
             $sendJson = [];
             foreach ($partcodes as $key => $value) {
                 $dowaProcess = avi_dowa_process::where('code', $value->code)

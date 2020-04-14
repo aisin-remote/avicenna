@@ -224,7 +224,7 @@ class ViewTraceController extends Controller
 			$timetorimetrondowa = $dowaData->scan_torimetron_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_torimetron_at )->format('H:i:s') : '--';
 			$ngsenddowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
 			$ngreceivedowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
-			$ng = $dowaData->status;
+			$ng = $dowaData->status == '1'? 'OK' : 'NG';
 			$avgt01 = $api2['data']['avgt01'] ? $api2['data']['avgt01'] : '-';
 			$avgt02 = $api2['data']['avgt02'] ? $api2['data']['avgt02'] : '-';
 			$avgt03 = $api2['data']['avgt03'] ? $api2['data']['avgt03'] : '-';
@@ -261,6 +261,7 @@ class ViewTraceController extends Controller
 				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ? $dowaData->npk_torimetron : '--',
 				'date_torimetron_dowa'=>$datetorimetrondowa,
 				'time_torimetron_dowa'=>$timetorimetrondowa,
+				'note_torimetron_dowa'=> $ng,
 				'avgt01' => $avgt01,
 				'avgt02' => $avgt02,
 				'avgt03' => $avgt03,

@@ -146,7 +146,7 @@
           </div>
           <!-- /.box-body -->
       </div>
-      <div class="box box-primary" id="torimetron-table" >
+      <div class="box box-primary" id="torimetron-table" hidden >
           <div class="box-header">
             <h3 class="box-title"> Torimetron detail</h3>
           </div>
@@ -154,31 +154,31 @@
             <table id="table" class="table table-bordered table-striped" style="width: 100%">
               <thead>
                 <tr>
-                  <td style="width: 20%">AVGT01</td><td style="width: 30%" id="avtg01"></td><td style="width: 20%">AVGT10</td><td style="width: 30%" id="avtg10"></td>
+                  <td style="width: 20%">AVGT01</td><td style="width: 30%" id="avgt01"></td><td style="width: 20%">AVGT10</td><td style="width: 30%" id="avgt10"></td>
                 </tr>
                 <tr>
-                  <td>AVGT02</td><td id="avtg02"></td><td>AVGT11</td><td id="avtg11"></td>
+                  <td>AVGT02</td><td id="avgt02"></td><td>AVGT11</td><td id="avgt11"></td>
                 </tr>
                 <tr>
-                  <td>AVGT03</td><td id="avtg03"></td><td>AVGT12</td><td id="avtg12"></td>
+                  <td>AVGT03</td><td id="avgt03"></td><td>AVGT12</td><td id="avgt12"></td>
                 </tr>
                 <tr>
-                  <td>AVGT04</td><td id="avtg04"></td><td>AVGT13</td><td id="avtg13"></td>
+                  <td>AVGT04</td><td id="avgt04"></td><td>AVGT13</td><td id="avgt13"></td>
                 </tr>
                 <tr>
-                  <td>AVGT05</td><td id="avtg05"></td><td>AVGT14</td><td id="avtg14"></td>
+                  <td>AVGT05</td><td id="avgt05"></td><td>AVGT14</td><td id="avgt14"></td>
                 </tr>
                 <tr>
-                  <td>AVGT06</td><td id="avtg06"></td><td>AVGT15</td><td id="avtg15"></td>
+                  <td>AVGT06</td><td id="avgt06"></td><td>AVGT15</td><td id="avgt15"></td>
                 </tr>
                 <tr>
-                  <td>AVGT07</td><td id="avtg07"></td><td>AVGT16</td><td id="avtg16"></td>
+                  <td>AVGT07</td><td id="avgt07"></td><td>AVGT16</td><td id="avgt16"></td>
                 </tr>
                 <tr>
-                  <td>AVGT08</td><td id="avtg08"></td><td>AVGT17</td><td id="avtg17"></td>
+                  <td>AVGT08</td><td id="avgt08"></td><td>AVGT17</td><td id="avgt17"></td>
                 </tr>
                 <tr>
-                  <td>AVGT09</td><td id="avtg09"></td><td>AVGT18</td><td id="avtg18"></td>
+                  <td>AVGT09</td><td id="avgt09"></td><td>AVGT18</td><td id="avgt18"></td>
                 </tr>
               </thead>
             </table>
@@ -292,9 +292,29 @@
                     $('#date_torimetron_dowa').text(data.data.date_torimetron_dowa);
                     $('#time_torimetron_dowa').text(data.data.time_torimetron_dowa);
                     $('#note_torimetron_dowa').text(data.data.note_torimetron_dowa);
+                    $('#avgt01').text(data.data.avgt01);
+                    $('#avgt02').text(data.data.avgt02);
+                    $('#avgt03').text(data.data.avgt03);
+                    $('#avgt04').text(data.data.avgt04);
+                    $('#avgt05').text(data.data.avgt05);
+                    $('#avgt06').text(data.data.avgt06);
+                    $('#avgt07').text(data.data.avgt07);
+                    $('#avgt08').text(data.data.avgt08);
+                    $('#avgt09').text(data.data.avgt09);
+                    $('#avgt10').text(data.data.avgt10);
+                    $('#avgt11').text(data.data.avgt11);
+                    $('#avgt12').text(data.data.avgt12);
+                    $('#avgt13').text(data.data.avgt13);
+                    $('#avgt14').text(data.data.avgt14);
+                    $('#avgt15').text(data.data.avgt15);
+                    $('#avgt16').text(data.data.avgt16);
+                    $('#avgt17').text(data.data.avgt17);
+                    $('#avgt18').text(data.data.avgt18);
                     $('#dowa-table').show();
+                    $('#torimetron-table').show();
                   } else if (data.status == "notfound") {
                     $('#dowa-table').hide();
+                    $('#torimetron-table').hide();
                   }
                 }
               });
