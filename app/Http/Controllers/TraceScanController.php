@@ -217,13 +217,13 @@ class TraceScanController extends Controller
                     "code" => $code,
                     "codesubstr" => $codesubstr
                 );
-            } else if($data->kbn_int_casting != null && $data->kbn_customer != null) {
+            } else if($data->kbn_int_casting != null && $data->kbn_supply != null) {
                 return array(
                     "type" => $type,
                     "code" => $code,
                     "codesubstr" => $codesubstr
                 );
-            } else if($data->kbn_int_casting != null && $data->kbn_customer == null) {
+            } else if($data->kbn_int_casting != null && $data->kbn_supply == null) {
                 return array(
                     "type" => $type,
                     "code" => "false",

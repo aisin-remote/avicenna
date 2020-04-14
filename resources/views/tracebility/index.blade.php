@@ -108,48 +108,83 @@
     </div>
     </div>
     <div class="col-xs-4">
-        <div class="box box-primary">
-            <div class="box-header">
-              <h3 class="box-title">Produk </h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" id="imageDiv">
-
-            </div>
-            <!-- /.box-body -->
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="table" class="table table-bordered table-striped" style="width: 100%">
-                <thead>
-                  <tr>
-                    <td style="width: 50% ">Model</td><td id="product"></td>
-                  </tr>
-                  <tr>
-                    <td>Dies</td><td id="dies"></td>
-                  </tr>
-                  <tr>
-                    <td>Shot</td><td id="shot"></td>
-                  </tr>
-                  <tr>
-                    <td>Tonase Mesin</td><td id="tonase_mesin"></td>
-                  </tr>
-                  <tr>
-                    <td>No Mesin</td><td id="mesin"></td>
-                  </tr>
-                  <tr>
-                    <td>Shift</td><td id="shift"></td>
-                  </tr>
-                  <tr>
-                    <td>Cycle</td><td id="cycle"></td>
-                  </tr>
-                  <tr>
-                    <td>Customer</td><td id="customer"></td>
-                  </tr>
-                </thead>
-              </table>
-            </div>
-            <!-- /.box-body -->
-        </div>
+      <div class="box box-primary">
+          <div class="box-header">
+            <h3 class="box-title">Produk </h3>
+          </div>
+          <div class="box-body" id="imageDiv">
+          </div>
+          <div class="box-body">
+            <table id="table" class="table table-bordered table-striped" style="width: 100%">
+              <thead>
+                <tr>
+                  <td style="width: 50% ">Model</td><td id="product"></td>
+                </tr>
+                <tr>
+                  <td>Dies</td><td id="dies"></td>
+                </tr>
+                <tr>
+                  <td>Shot</td><td id="shot"></td>
+                </tr>
+                <tr>
+                  <td>Tonase Mesin</td><td id="tonase_mesin"></td>
+                </tr>
+                <tr>
+                  <td>No Mesin</td><td id="mesin"></td>
+                </tr>
+                <tr>
+                  <td>Shift</td><td id="shift"></td>
+                </tr>
+                <tr>
+                  <td>Cycle</td><td id="cycle"></td>
+                </tr>
+                <tr>
+                  <td>Customer</td><td id="customer"></td>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <!-- /.box-body -->
+      </div>
+      <div class="box box-primary" id="torimetron-table" >
+          <div class="box-header">
+            <h3 class="box-title"> Torimetron detail</h3>
+          </div>
+          <div class="box-body">
+            <table id="table" class="table table-bordered table-striped" style="width: 100%">
+              <thead>
+                <tr>
+                  <td style="width: 20%">AVGT01</td><td style="width: 30%" id="avtg01"></td><td style="width: 20%">AVGT10</td><td style="width: 30%" id="avtg10"></td>
+                </tr>
+                <tr>
+                  <td>AVGT02</td><td id="avtg02"></td><td>AVGT11</td><td id="avtg11"></td>
+                </tr>
+                <tr>
+                  <td>AVGT03</td><td id="avtg03"></td><td>AVGT12</td><td id="avtg12"></td>
+                </tr>
+                <tr>
+                  <td>AVGT04</td><td id="avtg04"></td><td>AVGT13</td><td id="avtg13"></td>
+                </tr>
+                <tr>
+                  <td>AVGT05</td><td id="avtg05"></td><td>AVGT14</td><td id="avtg14"></td>
+                </tr>
+                <tr>
+                  <td>AVGT06</td><td id="avtg06"></td><td>AVGT15</td><td id="avtg15"></td>
+                </tr>
+                <tr>
+                  <td>AVGT07</td><td id="avtg07"></td><td>AVGT16</td><td id="avtg16"></td>
+                </tr>
+                <tr>
+                  <td>AVGT08</td><td id="avtg08"></td><td>AVGT17</td><td id="avtg17"></td>
+                </tr>
+                <tr>
+                  <td>AVGT09</td><td id="avtg09"></td><td>AVGT18</td><td id="avtg18"></td>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <!-- /.box-body -->
+      </div>
         <!-- /.box -->
     </div>
 </div>

@@ -189,7 +189,6 @@ class ViewTraceController extends Controller
 					"status" => "notfound"
 				];
 			}
-
 			try {
 				$client = new Client();
 				$response = $client->get(env('DOWA_BASE_URL').'/products/'.$id_product, [
@@ -202,6 +201,19 @@ class ViewTraceController extends Controller
 			} catch (\Throwable $th) {
 				$api = null;
 			}
+
+			try {
+				$client2 = new Client();
+				$response2 = $client2->get(env('DOWA_BASE_URL').'/torimetron/'.$id_product, [
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => 'Bearer '.Cache::get('dowa_token')
+					]
+				]);
+				$api2 = $response2->json();
+			} catch (\Throwable $th) {
+				$api2 = null;
+			}
 			$datedelivery = $dowaData->scan_delivery_dowa_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_delivery_dowa_at)->format('Y-m-d') : '--';
 			$datereceivedowa = $api['data']['received_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['received_dowa_at'])->format('Y-m-d') : '--';
 			$datesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('Y-m-d') : '--';
@@ -213,16 +225,34 @@ class ViewTraceController extends Controller
 			$ngsenddowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
 			$ngreceivedowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
 			$ng = $dowaData->status;
+			$avgt01 = $api2['data']['avgt01'] ? $api2['data']['avgt01'] : '-';
+			$avgt02 = $api2['data']['avgt02'] ? $api2['data']['avgt02'] : '-';
+			$avgt03 = $api2['data']['avgt03'] ? $api2['data']['avgt03'] : '-';
+			$avgt04 = $api2['data']['avgt04'] ? $api2['data']['avgt04'] : '-';
+			$avgt05 = $api2['data']['avgt05'] ? $api2['data']['avgt05'] : '-';
+			$avgt06 = $api2['data']['avgt06'] ? $api2['data']['avgt06'] : '-';
+			$avgt07 = $api2['data']['avgt07'] ? $api2['data']['avgt07'] : '-';
+			$avgt08 = $api2['data']['avgt08'] ? $api2['data']['avgt08'] : '-';
+			$avgt09 = $api2['data']['avgt09'] ? $api2['data']['avgt09'] : '-';
+			$avgt10 = $api2['data']['avgt10'] ? $api2['data']['avgt10'] : '-';
+			$avgt11 = $api2['data']['avgt11'] ? $api2['data']['avgt11'] : '-';
+			$avgt12 = $api2['data']['avgt12'] ? $api2['data']['avgt12'] : '-';
+			$avgt13 = $api2['data']['avgt13'] ? $api2['data']['avgt13'] : '-';
+			$avgt14 = $api2['data']['avgt14'] ? $api2['data']['avgt14'] : '-';
+			$avgt15 = $api2['data']['avgt15'] ? $api2['data']['avgt15'] : '-';
+			$avgt16 = $api2['data']['avgt16'] ? $api2['data']['avgt16'] : '-';
+			$avgt17 = $api2['data']['avgt17'] ? $api2['data']['avgt17'] : '-';
+			$avgt18 = $api2['data']['avgt18'] ? $api2['data']['avgt18'] : '-';
 			$deliverydowa = [
-				'kbn_sup' => $dowaData->kbn_supply ?? '--',
+				'kbn_sup' => $dowaData->kbn_supply ? $dowaData->kbn_supply : '--',
 				'npk_delivery_dowa' => $dowaData->npk_delivery_dowa ? $dowaData->npk_delivery_dowa : '--',
 				'date_delivery_dowa' => $datedelivery,
 				'time_delivery_dowa' => $timedelivery,
 				'note_delivery_dowa' => $dowaData->npk_delivery_dowa ? 'OK' : '--',
-				'npk_receive_dowa' =>$api['data']['received_by']? $api['data']['received_by']: '--',
+				'npk_receive_dowa' =>$api['data']['received_by']['npk']? $api['data']['received_by']['npk']: '--',
 				'date_receive_dowa' =>$datereceivedowa,
 				'time_receive_dowa' =>$timereceivedowa,
-				'npk_send_dowa' =>$api['data']['finished_by'] ? $api['data']['finished_by'] : '--',
+				'npk_send_dowa' =>$api['data']['finished_by']['npk'] ? $api['data']['finished_by']['npk'] : '--',
 				'date_send_dowa' => $datesenddowa,
 				'time_send_dowa' => $timesenddowa,
 				'note_send_dowa' => $api['data']['received_dowa_at'] ? $ngsenddowa : '--',
@@ -230,7 +260,25 @@ class ViewTraceController extends Controller
 				'kbn_fg'=>$dowaData->kbn_fg ? $dowaData->kbn_fg : '--',
 				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ? $dowaData->npk_torimetron : '--',
 				'date_torimetron_dowa'=>$datetorimetrondowa,
-				'time_torimetron_dowa'=>$timetorimetrondowa
+				'time_torimetron_dowa'=>$timetorimetrondowa,
+				'avgt01' => $avgt01,
+				'avgt02' => $avgt02,
+				'avgt03' => $avgt03,
+				'avgt04' => $avgt04,
+				'avgt05' => $avgt05,
+				'avgt06' => $avgt06,
+				'avgt07' => $avgt07,
+				'avgt08' => $avgt08,
+				'avgt09' => $avgt09,
+				'avgt10' => $avgt10,
+				'avgt11' => $avgt11,
+				'avgt12' => $avgt12,
+				'avgt13' => $avgt13,
+				'avgt14' => $avgt14,
+				'avgt15' => $avgt15,
+				'avgt16' => $avgt16,
+				'avgt17' => $avgt17,
+				'avgt18' => $avgt18,
 			];
 			return [
 				"status" => "success",
