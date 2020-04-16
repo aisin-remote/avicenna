@@ -326,19 +326,29 @@ class TraceScanController extends Controller
     }
 
     public function checkCodeDeliveryDowa(Request $request) {
-        $code = $request->all();
-        $kbn_int = $code['kbnint'];
-        $data = avi_dowa_process::select('id')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', NULL)->first();
-        if ($data != null) {
+
+        try {
+            $code = $request->all();
+            $kbn_int = $code['kbnint'];
+            $data = avi_dowa_process::select('id')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', NULL)->first();
+            if ($data != null) {
+                return array(
+                    "code" => $kbn_int,
+                    "codesubstr" => $kbn_int
+                );
+            }
             return array(
-                "code" => $kbn_int,
+                "code" => "false",
                 "codesubstr" => $kbn_int
             );
+        } catch (\Throwable $th) {
+            //throw $th;
+            return array(
+                "code" => "error",
+                "codesubstr" => $th->getMessage()
+            );
         }
-        return array(
-            "code" => "false",
-            "codesubstr" => $kbn_int
-        );
+
     }
 
     public function inputCodeDeliveryDowa(Request $request) {
@@ -395,7 +405,7 @@ class TraceScanController extends Controller
         try{
             $user                       = Auth::user();
             if (strlen($number) > 25) {
-                $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4) )->get();
+                $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', NULL)->get();
                 foreach ($codes as $code) {
                     if($code->code != null) {
                         DB::beginTransaction();
@@ -476,7 +486,6 @@ class TraceScanController extends Controller
 
     public function scandeliveryng()
     {
-
         return view('tracebility/delivery/ng');
     }
 

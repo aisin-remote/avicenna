@@ -67,6 +67,10 @@
                     clearCookie();
                 }
             } else if (barcodecomplete.length == 234) {
+                if ($.cookie('avi_kanban_int') == null || $.cookie('avi_kanban_int') == undefined) {
+                    notifMessege("error", "Scan Internal Kanban First !");
+                    return;
+                }
                 barcodesub = barcodecomplete.substring(119,124);
                 notifMessege("success", barcodesub);
                 $('#part-supply').text(barcodesub);
@@ -119,6 +123,10 @@
                 if (data.code == "false") {
                     notifMessege("error", data.codesubstr+" Not Found");
                     return false;
+                } else if(data.code == "error") {
+                    alert("Please resecan kanban");
+                    notifMessege("error", barcodesub);
+                    return false;
                 } else {
                     notifMessege("success", barcodesub);
                     $.cookie('avi_kanban_int', barcodesub);
@@ -127,7 +135,8 @@
                 }
             },
             error: function (xhr) {
-
+                alert("Please resecan kanban");
+                return false;
             }
         });
     }
@@ -151,7 +160,8 @@
                 $('#total_scan').text($.cookie('total_scan'));
             },
             error: function (xhr) {
-
+                alert("Error sending data");
+                notifMessege("error", xhr)
             }
 
         });

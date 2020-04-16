@@ -52,23 +52,21 @@ class TraceStockController extends Controller
      */
     public function filter($start, $end, $product)
     {
-        dd($product);
         $back_no = $product;
-        if ($product != "ALL" || $product != "") {
+        if ($product != "ALL") {
             $products = avi_trace_program_number::where('back_number', $product)->get();
-        } else {
+        } elseif ($product == "ALL") {
             $products = avi_trace_program_number::select('*')->get();
         };
         $dataStockCasting = 0;
         $dataStockMachining = 0;
         $dataStockAssembling = 0;
         $dataStockDelivery = 0;
-        dd($products);
-        foreach ($products as $product) {
-            $dataStockCasting += avi_trace_casting::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
-            $dataStockMachining += avi_trace_machining::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
-            $dataStockAssembling += avi_trace_assembling::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
-            $dataStockDelivery += avi_trace_delivery::where('code', 'like', $product->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+        foreach ($products as $value) {
+            $dataStockCasting += avi_trace_casting::where('code', 'like', $value->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockMachining += avi_trace_machining::where('code', 'like', $value->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockAssembling += avi_trace_assembling::where('code', 'like', $value->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
+            $dataStockDelivery += avi_trace_delivery::where('code', 'like', $value->code.'%')->where('date', '>=', $start)->where('date', '<=', $end)->count();
         };
         $dataAll =  [ "data" => [
                             $back_no,
@@ -77,7 +75,7 @@ class TraceStockController extends Controller
                             $dataStockMachining,
                             $dataStockCasting - $dataStockMachining,
                             $dataStockAssembling,
-                            $dataStockAssembling - $dataStockMachining,
+                            $dataStockMachining - $dataStockAssembling,
                             $dataStockDelivery,
                             $dataStockAssembling - $dataStockDelivery,
                     ]];
