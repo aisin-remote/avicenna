@@ -109,7 +109,7 @@
             }else if(barcodecomplete.length > 2 && barcodecomplete.length < 10){
                 $('#alert').removeClass('alert-danger');
                 if ($.cookie("wimcycle") != undefined) {
-                    $('#alert-body').text('SILAHKAN SCAN PART');
+                    $('#alert-body').text('SCAN PART/KANBAN TRACEABILITY');
                 }else{
 
                     $('#alert-body').text('SILAHKAN SCAN CYCLE');
@@ -144,8 +144,7 @@
                                 $('#batman').html(barcodecomplete);
                                 $('#alert-body').text('Not Found');
                                 $('#detail_no').prop('readonly', true);
-                            }
-                            else{
+                            } else {
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').addClass('alert-success');
                                 $('#alert-body').text(data.counter);
