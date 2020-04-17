@@ -405,11 +405,11 @@ class TraceScanController extends Controller
         try{
             $user                       = Auth::user();
             if (strlen($number) > 25) {
-                if ($codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', '1')->where('date', date('Y-m-d'))->first()) {
-                    return [
-                        "code" => ""
-                    ];
-                }
+                // if ($codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', '1')->where('date', date('Y-m-d'))->first()) {
+                //     return [
+                //         "code" => ""
+                //     ];
+                // }
                 $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', NULL)->get();
                 foreach ($codes as $code) {
                     if($code->code != null) {
