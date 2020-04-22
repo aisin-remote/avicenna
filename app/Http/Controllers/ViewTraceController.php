@@ -222,8 +222,8 @@ class ViewTraceController extends Controller
 			$timereceivedowa = $api['data']['received_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['received_dowa_at'])->format('H:i:s') : '--';
 			$timesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('H:i:s') : '--';
 			$timetorimetrondowa = $dowaData->scan_torimetron_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_torimetron_at )->format('H:i:s') : '--';
-			$ngsenddowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
-			$ngreceivedowa = $api['data']['received_dowa_at'] == 1 ? 'OKE':'NG';
+			$ngsenddowa = $api['data']['status'] == '1' ? 'OK':'NG';
+			$ngreceivedowa = $api['data']['received_dowa_at']  ? 'OK':'NG';
 			$ng = $dowaData->status == '1'? 'OK' : 'NG';
 			$avgt01 = $api2['data']['avgt01'] ? $api2['data']['avgt01'] : '-';
 			$avgt02 = $api2['data']['avgt02'] ? $api2['data']['avgt02'] : '-';

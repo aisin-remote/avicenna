@@ -95,8 +95,11 @@
                             code = data.cycle;
                             $('#alert').removeClass('alert-danger');
                             $('#alert').addClass('alert-success');
-                            // $('#alert-header').html('SCAN CYCLE OK !!');
-                            $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
+                            if ($.cookie("customer") != undefined) {
+                                $('#alert-body').text('SCAN PART/KANBAN TRACEABILITY');
+                            }else{
+                                $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
+                            }
                             $.cookie("wimcycle",""+barcodecomplete+"");
                             $("#wimcycle").html(code);
                         },
@@ -111,7 +114,6 @@
                 if ($.cookie("wimcycle") != undefined) {
                     $('#alert-body').text('SCAN PART/KANBAN TRACEABILITY');
                 }else{
-
                     $('#alert-body').text('SILAHKAN SCAN CYCLE');
                 }
                 $('#alert').addClass('alert-success');
@@ -151,6 +153,7 @@
                                 $('#detail_no').val(rep2);
                                 $('#detail_no').prop('readonly', true);
                                 $('#total-scan').html(data.counter);
+                                $.cookie("counter", data.counter);
                                 $('#batman').html(data.code);
                             }
 
@@ -214,6 +217,36 @@
     $(document).ready(function() {
         $('#detail_no').prop('readonly', true);
         document.body.style.backgroundColor = '#dddddd';
+        if($.cookie("wimcycle") != undefined) {
+            $.ajax({
+                        type: 'get',           // {{-- POST Request --}}
+                        url: "{{ url('/trace/scan/delivery/getAjaxcycle') }}"+'/'+$.cookie("wimcycle"),
+                        _token: "{{ csrf_token() }}",
+                        dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                        success: function (data) {
+                            code = data.cycle;
+                            $('#alert').removeClass('alert-danger');
+                            $('#alert').addClass('alert-success');
+                            if ($.cookie("customer") != undefined) {
+                                $('#alert-body').text('SCAN PART/KANBAN TRACEABILITY');
+                            }else{
+                                $('#alert-body').text('SILAHKAN SCAN CUSTOMER');
+                            }
+                            $("#wimcycle").html(code);
+                        },
+                        error: function (xhr) {
+                        }
+
+                    });
+        }
+        if ($.cookie("customer") != undefined) {
+            $('#customer').html($.cookie("customer"));
+        }
+
+        if ($.cookie("counter") != undefined) {
+            $('#total-scan').html($.cookie("counter"));
+        }
+
     } );
 
 </script>
