@@ -11,6 +11,7 @@ use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_machine_tonase;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
+use App\Models\Avicenna\avi_trace_torimetron;
 use DateTime;
 use Yajra\Datatables\Datatables;
 use GuzzleHttp\Client;
@@ -202,18 +203,8 @@ class ViewTraceController extends Controller
 				$api = null;
 			}
 
-			try {
-				$client2 = new Client();
-				$response2 = $client2->get(env('DOWA_BASE_URL').'/torimetron/'.$id_product, [
-					'headers' => [
-						'Accept' => 'application/json',
-						'Authorization' => 'Bearer '.Cache::get('dowa_token')
-					]
-				]);
-				$api2 = $response2->json();
-			} catch (\Throwable $th) {
-				$api2 = null;
-			}
+			$torimetron = avi_trace_torimetron::where('product_code', $id_product)->first();
+
 			$datedelivery = $dowaData->scan_delivery_dowa_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_delivery_dowa_at)->format('Y-m-d') : '--';
 			$datereceivedowa = $api['data']['received_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['received_dowa_at'])->format('Y-m-d') : '--';
 			$datesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('Y-m-d') : '--';
@@ -223,26 +214,39 @@ class ViewTraceController extends Controller
 			$timesenddowa = $api['data']['finished_dowa_at'] ? DateTime::createFromFormat('Y-m-d H:i:s',$api['data']['finished_dowa_at'])->format('H:i:s') : '--';
 			$timetorimetrondowa = $dowaData->scan_torimetron_at ? DateTime::createFromFormat('Y-m-d H:i:s',$dowaData->scan_torimetron_at )->format('H:i:s') : '--';
 			$ngsenddowa = $api['data']['status'] == '1' ? 'OK':'NG';
-			$ngreceivedowa = $api['data']['received_dowa_at']  ? 'OK':'NG';
-			$ng = $dowaData->status == '1'? 'OK' : 'NG';
-			$avgt01 = $api2['data']['avgt01'] ? $api2['data']['avgt01'] : '-';
-			$avgt02 = $api2['data']['avgt02'] ? $api2['data']['avgt02'] : '-';
-			$avgt03 = $api2['data']['avgt03'] ? $api2['data']['avgt03'] : '-';
-			$avgt04 = $api2['data']['avgt04'] ? $api2['data']['avgt04'] : '-';
-			$avgt05 = $api2['data']['avgt05'] ? $api2['data']['avgt05'] : '-';
-			$avgt06 = $api2['data']['avgt06'] ? $api2['data']['avgt06'] : '-';
-			$avgt07 = $api2['data']['avgt07'] ? $api2['data']['avgt07'] : '-';
-			$avgt08 = $api2['data']['avgt08'] ? $api2['data']['avgt08'] : '-';
-			$avgt09 = $api2['data']['avgt09'] ? $api2['data']['avgt09'] : '-';
-			$avgt10 = $api2['data']['avgt10'] ? $api2['data']['avgt10'] : '-';
-			$avgt11 = $api2['data']['avgt11'] ? $api2['data']['avgt11'] : '-';
-			$avgt12 = $api2['data']['avgt12'] ? $api2['data']['avgt12'] : '-';
-			$avgt13 = $api2['data']['avgt13'] ? $api2['data']['avgt13'] : '-';
-			$avgt14 = $api2['data']['avgt14'] ? $api2['data']['avgt14'] : '-';
-			$avgt15 = $api2['data']['avgt15'] ? $api2['data']['avgt15'] : '-';
-			$avgt16 = $api2['data']['avgt16'] ? $api2['data']['avgt16'] : '-';
-			$avgt17 = $api2['data']['avgt17'] ? $api2['data']['avgt17'] : '-';
-			$avgt18 = $api2['data']['avgt18'] ? $api2['data']['avgt18'] : '-';
+
+			if ($torimetron) {
+				if ($dowaData->status == '1' && $torimetron->status == avi_trace_torimetron::STATUS_OK) {
+					$statusTorimetron = 'OK';
+				} elseif ($dowaData->status == '1' && $torimetron->status == avi_trace_torimetron::STATUS_NG) {
+					$statusTorimetron = 'NG Torimetron';
+				} elseif ($dowaData->status == '0' && $torimetron->status == avi_trace_torimetron::STATUS_OK) {
+					$statusTorimetron = 'NG Visual';
+				} else {
+					$statusTorimetron = 'NG';
+				}
+			} else {
+				$statusTorimetron = $dowaData->status == '1'? 'OK' : 'NG Visual';
+			}
+
+			$avgt01 = $torimetron ? $torimetron->avgt01 : '-';
+			$avgt02 = $torimetron ? $torimetron->avgt02 : '-';
+			$avgt03 = $torimetron ? $torimetron->avgt03 : '-';
+			$avgt04 = $torimetron ? $torimetron->avgt04 : '-';
+			$avgt05 = $torimetron ? $torimetron->avgt05 : '-';
+			$avgt06 = $torimetron ? $torimetron->avgt06 : '-';
+			$avgt07 = $torimetron ? $torimetron->avgt07 : '-';
+			$avgt08 = $torimetron ? $torimetron->avgt08 : '-';
+			$avgt09 = $torimetron ? $torimetron->avgt09 : '-';
+			$avgt10 = $torimetron ? $torimetron->avgt10 : '-';
+			$avgt11 = $torimetron ? $torimetron->avgt11 : '-';
+			$avgt12 = $torimetron ? $torimetron->avgt12 : '-';
+			$avgt13 = $torimetron ? $torimetron->avgt13 : '-';
+			$avgt14 = $torimetron ? $torimetron->avgt14 : '-';
+			$avgt15 = $torimetron ? $torimetron->avgt15 : '-';
+			$avgt16 = $torimetron ? $torimetron->avgt16 : '-';
+			$avgt17 = $torimetron ? $torimetron->avgt17 : '-';
+			$avgt18 = $torimetron ? $torimetron->avgt18 : '-';
 			$deliverydowa = [
 				'kbn_sup' => $dowaData->kbn_supply ? $dowaData->kbn_supply : '--',
 				'npk_delivery_dowa' => $dowaData->npk_delivery_dowa ? $dowaData->npk_delivery_dowa : '--',
@@ -256,12 +260,12 @@ class ViewTraceController extends Controller
 				'date_send_dowa' => $datesenddowa,
 				'time_send_dowa' => $timesenddowa,
 				'note_send_dowa' => $api['data']['received_dowa_at'] ? $ngsenddowa : '--',
-				'note_receive_dowa' => $api['data']['received_dowa_at'] ? $ngreceivedowa : '--',
+				'note_receive_dowa' =>  $dowaData->npk_delivery_dowa ? 'OK' : '--',
 				'kbn_fg'=>$dowaData->kbn_fg ? $dowaData->kbn_fg : '--',
 				'npk_torimetron_dowa'=>$dowaData->npk_torimetron ? $dowaData->npk_torimetron : '--',
 				'date_torimetron_dowa'=>$datetorimetrondowa,
 				'time_torimetron_dowa'=>$timetorimetrondowa,
-				'note_torimetron_dowa'=> $ng,
+				'note_torimetron_dowa'=> $statusTorimetron,
 				'avgt01' => $avgt01,
 				'avgt02' => $avgt02,
 				'avgt03' => $avgt03,

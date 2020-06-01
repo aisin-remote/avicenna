@@ -205,7 +205,7 @@ Route::get('/direct/line/index', 'DashboardController@direct_line_index')->name(
 Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direct.mobileline'); //dev-1.0.0, 20180416, Handika, dashboard line status
 //List Traceability
 
-	// view trace product
+// view trace product
 Route::get('/trace/view/part', 'ViewTraceController@index');
 Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
 Route::get('/trace/view/part/searchout/{barcode}', 'ViewTraceController@searchout');

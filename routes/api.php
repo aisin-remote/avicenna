@@ -12,14 +12,21 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'v1'], function() {
+    Route::group([
+        'prefix' => 'auth',
+    ], function () {
+        Route::post('login', 'AuthController@login');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+        Route::group(['middleware' => 'auth:api'], function() {
+            Route::post('logout', 'AuthController@logout');
+            Route::post('refresh', 'AuthController@refresh');
+        });
+    });
 
-Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
-    //    Route::resource('task', 'TasksController');
-
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    #adminlte_api_routes
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::post('torimetron', 'TraceTorimetronController@store');
+        Route::get('torimetron', 'TraceTorimetronController@index');
+        Route::get('torimetron/{product}', 'TraceTorimetronController@show');
+    });
 });

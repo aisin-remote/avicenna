@@ -192,6 +192,9 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
 
+        // JWT
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
     ],
 
     /*

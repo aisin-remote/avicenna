@@ -151,37 +151,42 @@
             <h3 class="box-title"> Torimetron detail</h3>
           </div>
           <div class="box-body">
-            <table id="table" class="table table-bordered table-striped" style="width: 100%">
-              <thead>
-                <tr>
-                  <td style="width: 20%">AVGT01</td><td style="width: 30%" id="avgt01"></td><td style="width: 20%">AVGT10</td><td style="width: 30%" id="avgt10"></td>
-                </tr>
-                <tr>
-                  <td>AVGT02</td><td id="avgt02"></td><td>AVGT11</td><td id="avgt11"></td>
-                </tr>
-                <tr>
-                  <td>AVGT03</td><td id="avgt03"></td><td>AVGT12</td><td id="avgt12"></td>
-                </tr>
-                <tr>
-                  <td>AVGT04</td><td id="avgt04"></td><td>AVGT13</td><td id="avgt13"></td>
-                </tr>
-                <tr>
-                  <td>AVGT05</td><td id="avgt05"></td><td>AVGT14</td><td id="avgt14"></td>
-                </tr>
-                <tr>
-                  <td>AVGT06</td><td id="avgt06"></td><td>AVGT15</td><td id="avgt15"></td>
-                </tr>
-                <tr>
-                  <td>AVGT07</td><td id="avgt07"></td><td>AVGT16</td><td id="avgt16"></td>
-                </tr>
-                <tr>
-                  <td>AVGT08</td><td id="avgt08"></td><td>AVGT17</td><td id="avgt17"></td>
-                </tr>
-                <tr>
-                  <td>AVGT09</td><td id="avgt09"></td><td>AVGT18</td><td id="avgt18"></td>
-                </tr>
-              </thead>
-            </table>
+            <div class="table-responsive">
+              <table id="table" class="table table-bordered table-striped">
+                <tbody>
+                  <tr>
+                    <td >AVGT01</td>
+                    <td id="avgt01"></td>
+                    <td >AVGT10</td>
+                    <td id="avgt10"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT02</td><td id="avgt02"></td><td>AVGT11</td><td id="avgt11"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT03</td><td id="avgt03"></td><td>AVGT12</td><td id="avgt12"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT04</td><td id="avgt04"></td><td>AVGT13</td><td id="avgt13"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT05</td><td id="avgt05"></td><td>AVGT14</td><td id="avgt14"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT06</td><td id="avgt06"></td><td>AVGT15</td><td id="avgt15"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT07</td><td id="avgt07"></td><td>AVGT16</td><td id="avgt16"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT08</td><td id="avgt08"></td><td>AVGT17</td><td id="avgt17"></td>
+                  </tr>
+                  <tr>
+                    <td>AVGT09</td><td id="avgt09"></td><td>AVGT18</td><td id="avgt18"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <!-- /.box-body -->
       </div>
