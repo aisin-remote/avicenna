@@ -79,7 +79,7 @@ class TraceTorimetronController extends Controller
                         if (!$firstVal) {
                             DB::connection('mysql2')->table('tw_message')->insert([
                                 'nowa' => $user->phone_number,
-                                'pesan' => sprintf("```---- TORIMETRON NG NOTIF ----%cTGL      : $errorDate %cJAM      : $errorTime %cPRODUCT CODE     :$productCode %cSTATUS   : NG PART %c-------------------------``` ", 13, 13, 13, 13, 13, 13)
+                                'pesan' => sprintf("```---- TORIMETRON NOTIF ----%cTGL      : $errorDate %cJAM      : $errorTime %cPART     : $productCode %cSTATUS   : NG PART %c------------------------``` ", 13, 13, 13, 13, 13, 13)
                             ]);
 
                             $param++;
