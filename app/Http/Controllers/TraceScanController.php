@@ -318,6 +318,10 @@ class TraceScanController extends Controller
             // "counter"   => $cache[date('Y-m-d')]['counter']
         ];
     }
+    //MODUL NG DOWA
+    public function scanDowaNg() {
+        return view('tracebility/casting/scan-dowa-ng');
+    }
 
     //MODUL DELIVERY DOWA
     //==================================================================================================================================================
@@ -357,6 +361,13 @@ class TraceScanController extends Controller
             $code = $request->all();
             $kbn_int = $code['kbn_int'];
             $kbn_sup = $code['kbn_sup'];
+            $cekkbn = avi_dowa_process::select('id')->where('kbn_supply', $kbn_sup)->where('kbn_fg', NULL)->first();
+            if ($cekkbn) {
+                return [
+                    "status" => "error",
+                    "messege" => "kbn sup exist"
+                ];
+            }
             $partcodes = avi_dowa_process::select('code', 'kbn_int_casting')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', NULL)->get();
             $sendJson = [];
             foreach ($partcodes as $key => $value) {
@@ -366,6 +377,7 @@ class TraceScanController extends Controller
                  'npk_delivery_dowa'=>$user]);
 
                 $data = [
+                        'status' => 'success',
                         'code' => $value->code,
                         'delivery_aiia_at' => date('Y-m-d H:i:s'),
                         'kanban' => $kbn_sup
@@ -910,7 +922,7 @@ class TraceScanController extends Controller
                 );
             };
             $data = avi_dowa_process::select('*')->where('code', $code)->first();
-            if ($data != null && $data->code != null && $data->kbn_fg ==  null ) {
+            if ($data != null && $data->code != null && $data->kbn_fg == null ) {
                 if ($codes['isNg'] == 1) {
                     if ($data->status == '0') {
                         return array(
