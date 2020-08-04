@@ -51,6 +51,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('avicenna:emailDashboard')
                  ->everyMinute();
 
+        $schedule->command('furnace:send')
+            ->everyMinute();
     }
 
     /**
