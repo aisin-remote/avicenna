@@ -19,6 +19,11 @@ class CreateAviFurnaceStatusTable extends Migration
             $table->string('furnace', 30);
             $table->char('pic', 6)->index();
             $table->tinyInteger('value')->default(0);
+            $table->dateTime('error_at')->nullable();
+            $table->char('flag_half_hour', 1)->default('0');
+            $table->char('flag_one_hour', 1)->default('0');
+            $table->char('flag_two_hour', 1)->default('0');
+            $table->text('notif_to')->nullable();
             $table->timestamps();
         });
     }

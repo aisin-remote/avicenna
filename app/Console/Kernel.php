@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\AvicennaAndonMutation',
         '\App\Console\Commands\EmailDashboard',
         '\App\Console\Commands\AvicennaUpdateError',
+        '\App\Console\Commands\FurnaceNotification',
     ];
 
     /**
