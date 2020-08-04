@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         '\App\Console\Commands\AvicennaAndonMutation',
         '\App\Console\Commands\EmailDashboard',
         '\App\Console\Commands\AvicennaUpdateError',
+        '\App\Console\Commands\FurnaceNotification',
     ];
 
     /**
@@ -37,9 +38,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('EmailTraceability')
                  ->hourly();
 
+        // Pindah dari manual php ke trigger mysql
         /* update error date ketika abnormal pada tabel avi_andon_status */
-        $schedule->command('avicenna:updateerror')
-                 ->everyMinute();
+        // $schedule->command('avicenna:updateerror')
+        //          ->everyMinute();
 
         /* insert mutasi dari andon */
         $schedule->command('avicenna:andonMutation')
@@ -48,7 +50,7 @@ class Kernel extends ConsoleKernel
         /* email alert saat terjadi abnormality */
         $schedule->command('avicenna:emailDashboard')
                  ->everyMinute();
-       
+
     }
 
     /**
@@ -60,5 +62,5 @@ class Kernel extends ConsoleKernel
     {
         require base_path('routes/console.php');
     }
-    
+
 }

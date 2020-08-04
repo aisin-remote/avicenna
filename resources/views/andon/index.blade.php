@@ -48,7 +48,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <center><b><font size="7" color="white">WARNING !</font></b></center>          
+        <center><b><font size="7" color="white">WARNING !</font></b></center>
       </div>
       <div class="modal-body">
         <div id="err-message-insert" class="alert alert-success" style="display: none;"></div>
@@ -112,7 +112,7 @@
 
 <script type="text/javascript">
     // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
- 
+
     var table = $('#tabel_all').DataTable({
         processing: true,
         serverSide: true,
