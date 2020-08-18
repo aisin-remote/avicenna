@@ -265,6 +265,14 @@ class TraceScanController extends Controller
         $partcodes = $code['code'];
         $line = $code['line'];
         $kbn_int = $code['kbn_int'];
+        $data = avi_dowa_process::select('kbn_supply')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', null)->first();
+        if ($data != null) {
+            return array(
+                "type" => 'kbn_int',
+                "status" => "false",
+                "codesubstr" => $kbn_int
+            );
+        }
         foreach ($partcodes as $key => $value) {
             $dataCasting = array(
                 'code'=>$value,
@@ -307,6 +315,7 @@ class TraceScanController extends Controller
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollBack();
+                dd($th);
                 return [
                     "status" => "error",
                     "messege" => "Data Not Saved, Please Rescan Part & Kanban"
