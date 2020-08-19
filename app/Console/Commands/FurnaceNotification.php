@@ -40,6 +40,12 @@ class FurnaceNotification extends Command
      */
     public function handle()
     {
+        $warnFurnacesQuarter = avi_furnace_status::where('value', 1)
+            ->where(DB::raw('TIMESTAMPDIFF(MINUTE, error_at, NOW())'), '>=', 15)
+            ->where(DB::raw('TIMESTAMPDIFF(MINUTE, error_at, NOW())'), '<', 30)
+            ->where('flag_quarter_hour', '0')
+            ->get();
+
         $warnFurnacesHalf = avi_furnace_status::where('value', 1)
             ->where(DB::raw('TIMESTAMPDIFF(MINUTE, error_at, NOW())'), '>=', 30)
             ->where(DB::raw('TIMESTAMPDIFF(MINUTE, error_at, NOW())'), '<', 60)
@@ -57,6 +63,7 @@ class FurnaceNotification extends Command
             ->where('flag_two_hour', '0')
             ->get();
 
+        $this->sendWa($warnFurnacesQuarter, 'flag_quarter_hour');
         $this->sendWa($warnFurnacesHalf, 'flag_half_hour');
         $this->sendWa($warnFurnacesOne, 'flag_one_hour');
         $this->sendWa($warnFurnacesTwo, 'flag_two_hour');
