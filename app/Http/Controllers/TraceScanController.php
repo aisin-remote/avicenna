@@ -639,21 +639,16 @@ class TraceScanController extends Controller
 
                 $a                          = substr($number, 0, 2);
                 $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
-                    if (is_null($product)){
-                            $product                = new avi_trace_program_number();
-                            $product->part_number   = "No Data";
-                            $product->back_number   = "No Data";
-                            $product->part_name     = "No Data";
-                    }
-
                 $printer                    = avi_trace_printer::where('line', $line)->first();
 
                 // dev-1.1.0, Ali, Handle untuk data yang tidak di print di line yg sedang jalan
                 if ($printer) {
                     $printer->part_code         = $number;
-                    $printer->part_number       = $product->part_number;
-                    $printer->back_number       = $product->back_number;
-                    $printer->part_name         = $product->part_name;
+                    $printer->part_number       = $product ? $product->part_number : "No Data";
+                    $printer->back_number       = $product ? $product->back_number : "No Data";
+                    $printer->part_name         = $product ? $product->part_name : "No Data";
+                    $printer->back_number_adm   = $product->back_number_adm;
+
                     if ($product->is_assy == 0) {
                         $printer->flag              = 0;
                     }else{
@@ -786,27 +781,24 @@ class TraceScanController extends Controller
 
                 Cache::forever($key, $cache);
                 $arrJSON = array(
-                                "code"      => $number,
-                                "counter"   => $cache[date('Y-m-d')]['counter']
-                            );
+                    "code"      => $number,
+                    "counter"   => $cache[date('Y-m-d')]['counter']
+                );
 
                 $a                          = substr($number, 0, 2);
                 $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
-                    if (is_null($product)){
-                            $product                = new avi_trace_program_number();
-                            $product->part_number   = "No Data";
-                            $product->back_number   = "No Data";
-                            $product->part_name     = "No Data";
-                    }
                 $printer                    = avi_trace_printer::where('line', $line)->first();
+
                 if ($printer) {
                     $printer->part_code         = $number;
-                    $printer->part_number       = $product->part_number;
-                    $printer->back_number       = $product->back_number;
-                    $printer->part_name         = $product->part_name;
+                    $printer->part_number       = $product ? $product->part_number : "No Data";
+                    $printer->back_number       = $product ? $product->back_number : "No Data";
+                    $printer->part_name         = $product ? $product->part_name : "No Data";
+                    $printer->back_number_adm   = $product->back_number_adm;
                     $printer->flag              = 0;
                     $printer->save();
                 }
+
                 DB::commit();
 
                 return $arrJSON;
@@ -816,8 +808,7 @@ class TraceScanController extends Controller
         }
 
         }catch(\Exception $e){
-
-         DB::rollBack();
+            DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
         }
 
