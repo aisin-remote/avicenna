@@ -318,10 +318,6 @@ class TraceScanController extends Controller
             // "counter"   => $cache[date('Y-m-d')]['counter']
         ];
     }
-    //MODUL NG DOWA
-    public function scanDowaNg() {
-        return view('tracebility/casting/scan-dowa-ng');
-    }
 
     //MODUL DELIVERY DOWA
     //==================================================================================================================================================

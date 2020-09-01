@@ -141,8 +141,6 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
 
-		//NG Dowa
-	Route::get('/trace/scan/dowa/ng', 'TraceScanController@scanDowaNg');
 		//Delivery Dowa
 	Route::get('/trace/scan/delivery/dowa', 'TraceScanController@scanDeliveryDowa');
 	Route::get('/trace/scan/delivery/dowa/check-code', 'TraceScanController@checkCodeDeliveryDowa');
