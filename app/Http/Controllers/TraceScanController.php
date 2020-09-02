@@ -285,29 +285,28 @@ class TraceScanController extends Controller
                 'code'=>$value,
                 'kbn_int_casting'=>$kbn_int
             );
-            // $key = 'casting_dowa'.$line;
-            // if (Cache::has($key)) {
-            //     $cache = Cache::get($key);
+            $key = 'casting_dowa'.$line;
+            if (Cache::has($key)) {
+                $cache = Cache::get($key);
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                }
+            } else {
+                $cache = [
+                    date('Y-m-d') => [
+                        'counter' => 1
+                    ]
+                ];
+            }
 
-            //     if(!isset($cache[date('Y-m-d')])) {
-            //         $cache = [];
-            //         $cache = [
-            //             date('Y-m-d') => [
-            //                 'counter' => 1
-            //             ]
-            //         ];
-            //     } else {
-            //         $cache[date('Y-m-d')]['counter'] += 1;
-            //     }
-            // } else {
-            //     $cache = [
-            //         date('Y-m-d') => [
-            //             'counter' => 1
-            //         ]
-            //     ];
-            // }
-
-            // Cache::forever($key, $cache);
+            Cache::forever($key, $cache);
             try {
                 DB::beginTransaction();
                 $casting = avi_trace_casting::create($dataCasting);
@@ -315,7 +314,6 @@ class TraceScanController extends Controller
                 DB::commit();
             } catch (\Throwable $th) {
                 DB::rollBack();
-                dd($th);
                 return [
                     "status" => "error",
                     "messege" => "Data Not Saved, Please Rescan Part & Kanban"
@@ -324,7 +322,7 @@ class TraceScanController extends Controller
         };
         return [
             "status" => "success",
-            // "counter"   => $cache[date('Y-m-d')]['counter']
+            "counter"   => $cache[date('Y-m-d')]['counter']
         ];
     }
 

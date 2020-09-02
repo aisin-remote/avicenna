@@ -210,9 +210,10 @@
                 } else if(barcodecomplete.length == 230) {
                     if (checkDataLocal(barcodecomplete, 'kbnint') == true ){
                         checkDataAjax(barcodecomplete, 'kbnint');
-                    } else {
-                        notifMessege("error", "Scan Part First" )
+                    }else{
+                        notifMessege("error", "Scan Part First");
                     }
+
                 } else if (barcodecomplete.length == 13) {
                     window.location.replace("{{url('/trace/logout')}}");
                 } else if (barcodecomplete == "RELOAD") {
@@ -232,17 +233,20 @@
         let partCode1 = localStorage.getItem('avi_casting_code1');
         let partCode2 = localStorage.getItem('avi_casting_code2');
         let partCode3 = localStorage.getItem('avi_casting_code3');
-        let kbnint = localStorage.getItem('kbnint');
-        if (type == 'kbnint') {
-            if (!partCode1 || !partCode2 || !partCode3) {
-                return false;
-            }
-        } else if (type == 'code') {
+        if (type == "code") {
             if (barcodecomplete == partCode1 || barcodecomplete == partCode2 || barcodecomplete == partCode3) {
                 return false;
+            } else {
+                return true;
+            }
+        } else if (type == "kbnint") {
+            if (!partCode1 || !partCode2 || !partCode3) {
+                return false;
+            } else {
+                return true;
             }
         }
-        return true;
+
     }
 
     function checkDataAjax(barcodecomplete, type) {
@@ -278,7 +282,6 @@
             localStorage.setItem('avi_casting_kanban_int', code);
             $('#part-internal').text(code.substring(41,53).concat(' (',code.substring(100,104),')'));
             notifMessege("success", code.substring(100,104));
-
         } else if (type == 'code') {
             if (partCode1 == null || partCode1 == undefined) {
                 localStorage.setItem('avi_casting_code1', code);
@@ -296,7 +299,6 @@
                 notifMessege("error", "Parts is Complete, Scan Kanban!");
             }
         }
-
         if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
             sendDataAjax();
         }
@@ -330,15 +332,11 @@
             success: function (data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
+                    console.log(data.counter);
+                    $('#counter').text(data.counter);
                     clearLocalStorage();
                 } else if (data.status == "error") {
                     notifMessege("error", data.messege);
-                    clearLocalStorage();
-                } else if (data.status == "false") {
-                    notifMessege("error", "Kanban sudah ada, scan kanban lain");
-                    localStorage.removeItem('avi_casting_kanban_int');
-                    $('#part-internal').text('');
-
                 }
             },
             error: function (xhr) {
