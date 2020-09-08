@@ -149,7 +149,7 @@
                             } else {
                                 $('#alert').removeClass('alert-danger');
                                 $('#alert').addClass('alert-success');
-                                $('#alert-body').text(data.counter);
+                                $('#alert-body').text(data.code);
                                 $('#detail_no').val(rep2);
                                 $('#detail_no').prop('readonly', true);
                                 $('#total-scan').html(data.counter);

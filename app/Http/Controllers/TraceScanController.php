@@ -265,6 +265,12 @@ class TraceScanController extends Controller
         $partcodes = $code['code'];
         $line = $code['line'];
         $kbn_int = $code['kbn_int'];
+        $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->first();
+        if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
+            return array(
+                "status" => "exist"
+            );
+        }
         foreach ($partcodes as $key => $value) {
             $dataCasting = array(
                 'code'=>$value,
@@ -419,6 +425,7 @@ class TraceScanController extends Controller
                     ];
                 }
                 $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', NULL)->get();
+
                 foreach ($codes as $code) {
 
                     if($code->code != null) {
@@ -446,7 +453,7 @@ class TraceScanController extends Controller
                             ->where('cycle', $wimcycle)
                             ->count();
                 $arrJSON = array(
-                                "code"      => substr($number, 123, 4),
+                                "code"      => $number,
                                 "counter"   => $counter
                         );
                 return $arrJSON;
