@@ -72,10 +72,9 @@
                     return;
                 }
                 barcodesub = barcodecomplete.substring(119,124);
-                notifMessege("success", barcodesub);
                 $('#part-supply').text(barcodesub);
+                notifMessege("success", barcodesub);
                 sendDataAjax(barcodesub);
-                clearCookie();
             }
         }
         else
@@ -158,8 +157,10 @@
                     $.cookie('total_scan', $.cookie('total_scan')+1);
                 }
                 $('#total_scan').text($.cookie('total_scan'));
+                clearCookie();
             },
             error: function (xhr) {
+                clearCookie();
                 alert("Error sending data");
                 notifMessege("error", xhr)
             }
