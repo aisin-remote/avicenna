@@ -242,7 +242,7 @@
               var dies  = id_product.substr(2, 2);
               var mesin = id_product.substr(5, 1);
               var shift = id_product.substr(11, 1);
-              var mesin1= "DCAA0"+id_product.substr(6, 1);
+              var mesin1= "DCAA0"+id_product.substr(5, 1);
               if (mesin == "A") {
                 var mesin1= "DCAA10";
               }
