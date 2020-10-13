@@ -145,7 +145,6 @@
 
     function initApp() {
         let line_number = localStorage.getItem('avi_line_number');
-
         if (line_number == null || line_number == undefined) {
             $('#modalLineScan').on('shown.bs.modal', function () {
                 $('#input-line').focus();
@@ -155,6 +154,10 @@
             $('#line-display').text(line_number);
             line = line_number;
             $('#detail_no').focus();
+        }
+
+        if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
+            sendDataAjax();
         }
     }
 
@@ -337,6 +340,8 @@
                     clearLocalStorage();
                 } else if (data.status == "error") {
                     notifMessege("error", data.messege);
+                } else if (data.status == "false") {
+                    notifMessege("error", "Scan kanban lain");
                 }
             },
             error: function (xhr) {
