@@ -230,15 +230,20 @@
                                 }
                             },
                             error: function (xhr) {
-                                    if (xhr.status == 401) {
-                                        location.reload();
-                                    }
-                                    // {{-- dev-1.0, ferry, 20170913, alert jika error scan --}}
-                                    $('#alert').removeClass('alert-success');
-                                    $('#alert').addClass('alert-danger');
-                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-                                    $('#alert-body').text('@lang("avicenna/pis.err889")');
-                                    $('#detail_no').focus();
+                                if (xhr.status) {
+                                    location.reload();
+                                }
+
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+
+                                if (xhr.status == 0) {
+                                    $('#alert-body').text('@lang("avicenna/pis.connection_error")');
+                                    return;
+                                }
+
+                                $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
                             }
                         });
 
