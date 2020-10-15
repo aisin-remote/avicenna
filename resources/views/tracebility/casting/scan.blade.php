@@ -206,56 +206,52 @@
                 }
                 if (barcodecomplete.length == 15) {
                     $.ajax({
-                            type: 'get',           // {{-- POST Request --}}
-                            url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcodecomplete+'/'+line,
-                            dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                            success: function (data) {
-                                code = data.code;
-                                if(code == "" ){
-                                    $('#detail_no').prop('readonly', false);
-                                    $('#detail_no').val(barcode);
-                                    $('#alert').removeClass('alert-success');
-                                    $('#alert').addClass('alert-danger');
-                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
-                                    $('#alert-body').text('Data sudah ada');
-                                    $('#detail_no').prop('readonly', true);
+                        type: 'get',           // {{-- POST Request --}}
+                        url: "{{ url('/trace/scan/casting/getAjax') }}"+'/'+barcodecomplete+'/'+line,
+                        dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                        success: function (data) {
+                            code = data.code;
+                            if(code == "" ){
+                                $('#detail_no').prop('readonly', false);
+                                $('#detail_no').val(barcode);
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                $('#alert-body').text('Data sudah ada');
+                                $('#detail_no').prop('readonly', true);
 
-                                } else {
-                                    table.ajax.url("{{ url ('trace/casting/update')}}").load();
-                                    $('#alert').removeClass('alert-danger');
-                                    $('#alert').addClass('alert-success');
-                                    $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
-                                    $('#alert-body').text(barcodecomplete);
-                                    $('#detail_no').val(rep2);
-                                    $('#detail_no').prop('readonly', true);
-                                    // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
-                                    $('#counter').text(data.counter);
-                                }
-
-                                $('#detail_no').focus();
-                            },
-                            error: function (xhr) {
-
-                                    if (xhr.status) {
-                                        location.reload();
-                                    }
-
-                                    $('#alert').removeClass('alert-success');
-                                    $('#alert').addClass('alert-danger');
-                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-
-                                    if (xhr.status == 0) {
-                                        $('#alert-body').text('@lang("avicenna/pis.connection_error")');
-                                        return;
-                                    }
-
-                                    $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
-
-                                    console.log(xhr);
-
+                            } else {
+                                table.ajax.url("{{ url ('trace/casting/update')}}").load();
+                                $('#alert').removeClass('alert-danger');
+                                $('#alert').addClass('alert-success');
+                                $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
+                                $('#alert-body').text(barcodecomplete);
+                                $('#detail_no').val(rep2);
+                                $('#detail_no').prop('readonly', true);
+                                // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
+                                $('#counter').text(data.counter);
                             }
 
-                        });
+                            $('#detail_no').focus();
+                        },
+                        error: function (xhr) {
+                            if (xhr.status) {
+                                location.reload();
+                            }
+
+                            $('#alert').removeClass('alert-success');
+                            $('#alert').addClass('alert-danger');
+                            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+
+                            if (xhr.status == 0) {
+                                $('#alert-body').text('@lang("avicenna/pis.connection_error")');
+                                return;
+                            }
+
+                            $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
+                        }
+
+                    });
                 } else if (barcodecomplete.length == 13) {
                     window.location.replace("{{url('/trace/logout')}}");
                 } else if (barcodecomplete == "RELOAD") {

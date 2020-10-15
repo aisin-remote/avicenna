@@ -239,8 +239,9 @@ class TraceScanController extends Controller
                     "codesubstr" => $code
                 );
             }
-            $data = avi_dowa_process::select('code')->where('code', $code)->first();
-            if ($data) {
+            $dataDowa = avi_dowa_process::select('code')->where('code', $code)->first();
+            $dataCasting = avi_trace_casting::select('code')->where('code', $code)->first();
+            if ($dataDowa || $dataCasting) {
                 return array(
                     "type" => $type,
                     "code" => "false",

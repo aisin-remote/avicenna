@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <form>
-                                <input height=60 id="detail_no" class="form-control" name="detail_no" required autofocus>
+                                    <input height=60 id="detail_no" class="form-control" name="detail_no" required autofocus>
                                 </form>
                             </div>
 
@@ -106,25 +106,23 @@
 
 
 <div id="modalLineScan" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title text-center"><strong>Scan Barcode Line</strong></h4>
-      </div>
-      <div class="modal-body">
-        <h3 class="text-warning text-center"><b>Tolong Scan Barcode Line Untuk Melanjutkan</b></h3>
-        <br>
-        <input type="text" class="form-control" id="input-line">
-        <br>
-      </div>
-      <div class="modal-footer">
-      </div>
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title text-center"><strong>Scan Barcode Line</strong></h4>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-warning text-center"><b>Tolong Scan Barcode Line Untuk Melanjutkan</b></h3>
+                <br>
+                <input type="text" class="form-control" id="input-line">
+                <br>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
     </div>
-
-  </div>
 </div>
 
 @endsection
@@ -162,6 +160,7 @@
     }
 
     $(document).ready(function() {
+        var dowaParts = "{!! config('traceability.dowa_part_code') !!}".split(',');
         initApp();
 
         $(document).on('click', function() {
@@ -177,9 +176,11 @@
                 $('#detail_no').focus();
             }
         });
+
         if (localStorage.getItem('avi_casting_kanban_int') != null) {
             $('#part-internal').text(localStorage.getItem('avi_casting_kanban_int').substring(41,53).concat(' (',localStorage.getItem('avi_casting_kanban_int').substring(100,104),')'));
         }
+
         $('#code1').text(localStorage.getItem('avi_casting_code1'));
         $('#code2').text(localStorage.getItem('avi_casting_code2'));
         $('#code3').text(localStorage.getItem('avi_casting_code3'));
@@ -205,6 +206,12 @@
                     return;
                 }
                 if (barcodecomplete.length == 15) {
+                    var partType = barcodecomplete.substring(0,2);
+                    if (!dowaParts.includes(partType)) {
+                        notifMessege("error", "Is not a CSH D05");
+                        return;
+                    }
+
                     if (checkDataLocal(barcodecomplete, 'code') == true ){
                         checkDataAjax(barcodecomplete, 'code');
                     }else{
@@ -271,7 +278,11 @@
                 }
             },
             error: function (xhr) {
-
+                if (xhr.status == 0) {
+                    notifMessege("error", '@lang("avicenna/pis.connection_error")');
+                    return;
+                }
+                notifMessege("error", '@lang("avicenna/pis.fatal_error")');
             }
         });
     };
@@ -335,7 +346,6 @@
             success: function (data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
-                    console.log(data.counter);
                     $('#counter').text(data.counter);
                     clearLocalStorage();
                 } else if (data.status == "error") {
@@ -345,9 +355,12 @@
                 }
             },
             error: function (xhr) {
-
+                if (xhr.status == 0) {
+                    notifMessege("error", '@lang("avicenna/pis.connection_error")');
+                    return;
+                }
+                notifMessege("error", '@lang("avicenna/pis.fatal_error")');
             }
-
         });
     }
 
@@ -364,8 +377,6 @@
             $('#alert-body').text(messege);
         }
     }
-
-
 </script>
 
 @endsection
