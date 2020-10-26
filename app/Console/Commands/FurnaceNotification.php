@@ -71,11 +71,32 @@ class FurnaceNotification extends Command
 
     private function sendWa($furnaces, $flag)
     {
+        switch ($flag) {
+            case 'flag_quarter_hour':
+                $minute = '15';
+                break;
+
+            case 'flag_half_hour':
+                $minute = '30';
+                break;
+
+            case 'flag_one_hour':
+                $minute = '60';
+                break;
+
+            case 'flag_two_hour':
+                $minute = '120';
+                break;
+
+            default:
+                $minute = '';
+                break;
+        }
+
         foreach($furnaces as $value) {
             $users = User::whereIn('npk', explode(',', $value->notif_to))
                 ->get();
 
-            $minute = round(abs(strtotime($value->error_at) - time()) / 60);
             $offDate = date('Y-m-d', strtotime($value->error_at));
             $offTIme = date('H:i', strtotime($value->error_at));
             $line = $value->line;

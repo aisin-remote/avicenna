@@ -52,7 +52,7 @@ class Kernel extends ConsoleKernel
                  ->everyMinute();
 
         $schedule->command('furnace:send')
-            ->everyMinute();
+            ->everyFiveMinutes();
     }
 
     /**
