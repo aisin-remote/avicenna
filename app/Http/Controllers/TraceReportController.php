@@ -8,11 +8,10 @@ use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_delivery;
-use App\Models\Avicenna\avi_trace_machine_tonase;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
 use Yajra\Datatables\Datatables;
-use \Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TraceReportController extends Controller
 {
@@ -464,5 +463,79 @@ class TraceReportController extends Controller
 
                 ->addIndexColumn()
                 ->make(true);
+    }
+
+    /**
+     * Export trace data
+     */
+    public function exportCollectionIndex()
+    {
+        $lines = config('traceability.production_lines');
+
+        return view('tracebility.export_collection.index', compact('lines'));
+    }
+
+    /**
+     * Export trace data to excel
+     */
+    public function exportCollection(Request $request)
+    {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $line = $request->line;
+
+        $existingLine = config('traceability.production_lines');
+
+        if (!in_array($line, $existingLine)) {
+            abort(400);
+        }
+
+        // hardcode line to get tablename
+        $prefixLine = strtolower(substr($line, 0, 2));
+
+        switch ($prefixLine) {
+            case 'dc':
+                $tableName = 'avi_trace_casting';
+                break;
+
+            case 'ma':
+                $tableName = 'avi_trace_machining';
+                break;
+
+            case 'as':
+                $tableName = 'avi_trace_assemblings';
+                break;
+
+            case 'pp':
+                $tableName = 'avi_trace_delivery';
+                break;
+
+            default:
+                abort (400);
+                break;
+        }
+
+        // use query builder
+        $data = DB::table($tableName)
+            ->select('code')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->where('line', $line)
+            ->pluck('code')->toArray();
+
+        $data = DB::table('avi_trace_casting as atc')
+            ->select('atc.code', 'atc.npk as mp_casting', 'atm.npk as mp_ma', 'ata.npk as mp_as', 'atd.npk as mp_pulling', 'atc.created_at as scan_at_casting', 'atm.created_at as scan_at_ma', 'ata.created_at as scan_at_as', 'atd.created_at as scan_at_delivery')
+            ->leftJoin('avi_trace_machining as atm', 'atm.code', '=', 'atc.code')
+            ->leftJoin('avi_trace_assemblings as ata', 'atm.code', '=', 'ata.code')
+            ->leftJoin('avi_trace_delivery as atd', 'atm.code', '=', 'atd.code')
+            ->whereIn('atc.code', $data)
+            ->get()->toJson();
+
+        ob_end_clean();
+        ob_start();
+        return Excel::create('TRACE_' . $line . '_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)), function($excel) use ($data){
+            $excel->sheet('TRACEABILITY', function($sheet) use ($data) {
+                $sheet->fromArray(json_decode($data, true));
+            });
+        })->export('xlsx');
     }
 }

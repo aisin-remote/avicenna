@@ -172,7 +172,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
 	Route::get('/trace/stock/filter/{start}/{end}/{product}', 'Avicenna\TraceStockController@filter')->name('trace.stock.filter');
 
-
+	Route::get('/trace/export-collection', 'TraceReportController@exportCollectionIndex')->name('trace.export-collection');
+	Route::get('/trace/export-collection/generate', 'TraceReportController@exportCollection')->name('trace.export-collection.generate');
 });
 	//end of tracebility ====================================================================================================
 
