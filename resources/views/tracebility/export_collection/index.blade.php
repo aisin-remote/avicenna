@@ -85,8 +85,25 @@
             var endDate = $('#end-date').val();
             var line = $('#line').val();
 
+            var format1 = new Date(startDate);
+            var format2 = new Date(endDate);
+
+            if (format1 > format2) {
+                alert('End date tidak boleh lebih kecil dari start date');
+                return;
+            }
+
+            var diffTime = format2.getTime() - format1.getTime();
+            var diffDay = diffTime / (1000 * 3600 * 24);
+
+            if (diffDay > 7) {
+                alert('Penarikan data tidak bisa untuk rentang lebih dari 7 hari');
+                return;
+            }
+
             if (startDate == null || startDate == '' || startDate == undefined || endDate == null || endDate == '' || endDate == undefined) {
                 alert ('Start date dan end date wajib diisi');
+                return;
             }
 
             url.searchParams.set('start_date', startDate);
