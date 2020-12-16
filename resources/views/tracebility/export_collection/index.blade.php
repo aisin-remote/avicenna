@@ -55,6 +55,11 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-sm-12">
+                <p class="text-danger">
+                    <i><b>* Tidak bisa mengexport data dalam rentang lebih dari 7 hari</b></i>
+                </p>
+            </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <button class="btn btn-success btn-sm" id="btn-export">Export To Excel</button>
