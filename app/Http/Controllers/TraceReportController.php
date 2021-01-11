@@ -496,18 +496,22 @@ class TraceReportController extends Controller
         switch ($prefixLine) {
             case 'dc':
                 $tableName = 'avi_trace_casting';
+                $orderBy = 'atc.created_at';
                 break;
 
             case 'ma':
                 $tableName = 'avi_trace_machining';
+                $orderBy = 'atm.created_at';
                 break;
 
             case 'as':
                 $tableName = 'avi_trace_assemblings';
+                $orderBy = 'ata.created_at';
                 break;
 
             case 'pp':
                 $tableName = 'avi_trace_delivery';
+                $orderBy = 'atd.created_at';
                 break;
 
             default:
@@ -518,9 +522,12 @@ class TraceReportController extends Controller
         // use query builder
         $data = DB::table($tableName)
             ->select('code')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->where('line', $line)
-            ->pluck('code')->toArray();
+            ->whereBetween('created_at', [$startDate, $endDate]);
+        if ($prefixLine != 'pp') {
+            $data = $data->where('line', $line);
+        }
+
+        $data = $data->pluck('code')->toArray();
 
         $data = DB::table('avi_trace_casting as atc')
             ->select('atc.code', 'atc.npk as mp_casting', 'atm.npk as mp_ma', 'ata.npk as mp_as', 'atd.npk as mp_pulling', 'atc.created_at as scan_at_casting', 'atm.created_at as scan_at_ma', 'ata.created_at as scan_at_as', 'atd.created_at as scan_at_delivery')
@@ -528,6 +535,7 @@ class TraceReportController extends Controller
             ->leftJoin('avi_trace_assemblings as ata', 'atm.code', '=', 'ata.code')
             ->leftJoin('avi_trace_delivery as atd', 'atm.code', '=', 'atd.code')
             ->whereIn('atc.code', $data)
+            ->orderBy($orderBy, 'asc')
             ->get()->toJson();
 
         ob_end_clean();
