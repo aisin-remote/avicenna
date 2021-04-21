@@ -314,7 +314,12 @@
             }
         }
         if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
-            sendDataAjax();
+            if (sendDataAjax()) {
+                clearLocalStorage();
+            } else {
+                localStorage.removeItem('avi_casting_kanban_int');
+                $('#part-internal').text('');
+            }
         }
     }
 
@@ -346,12 +351,13 @@
             success: function (data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
-                    $('#counter').text(data.counter);
-                    clearLocalStorage();
+                    return true
                 } else if (data.status == "error") {
                     notifMessege("error", data.messege);
-                } else if (data.status == "false") {
-                    notifMessege("error", "Scan kanban lain");
+                    return false
+                } else if (data.status == "exist") {
+                    notifMessege("error", "Kanban already exist, please scan another kanban");
+                    return false
                 }
             },
             error: function (xhr) {

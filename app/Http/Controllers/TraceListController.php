@@ -24,6 +24,70 @@ class TraceListController extends Controller
 	function indexout(){
 		return view('tracebility.list.indexout');
 	}
+	function indexFilter(Request $request){
+		$data = $request->all();
+		if ($data["process"] == "casting") {
+			$list 			= avi_trace_casting::select('*')->orderBy('created_at', 'DESC');
+		} elseif ($data["process"] == "machining") {
+			$list 			= avi_trace_machining::select('*')->orderBy('created_at', 'DESC');
+		} elseif ($data["process"] == "assembling") {
+			$list 			= avi_trace_assembling::select('*')->orderBy('created_at', 'DESC');
+		}
+
+		if ($data["start_date"]) {
+			$list = $list->where('date', '>=', $data["start_date"]);
+		}
+
+		if ($data["end_date"]) {
+			$list = $list->where('date', '<=', $data["end_date"]);
+		}
+
+		if ($data["line"]) {
+			$list = $list->where('line', '=', $data["line"]);
+		}
+
+		if ($data["back_no"]) {
+			$back_no = avi_trace_program_number::select('code')->where('back_number', $data['back_no'])->get();
+			foreach ($back_no as $key => $value) {
+				$list = $list->orWhere('code', 'like', $value->code.'%');
+			}
+
+		}
+		$datatable = Datatables::of($list)
+				->addColumn('part_number', function($list) {
+
+								$codes 	= $list->code ;
+								$code 	= substr($list->code, 0, 2);
+								$models	= avi_trace_program_number::select('part_number')->where('code', $code)->first();
+				            	return $models ? $models->part_number : '--No Part Number--';
+				            })
+				->addColumn('back_number', function($list)  {
+								$codes 	= $list->code ;
+								$code 	= substr($list->code, 0, 2);
+								$models	= avi_trace_program_number::select('back_number')->where('code', $code)->first();
+				            	return $models ? $models->back_number : '--No Back Number--';
+				            })
+				->addColumn('part_name', function($list) {
+
+								$codes 	= $list->code ;
+								$code 	= substr($list->code, 0, 2);
+								$models	= avi_trace_program_number::select('part_name')->where('code', $code)->first();
+				            	return $models ? $models->part_name : '--No Part Name--';
+				            })
+				->addColumn('status', function($list) {
+								if ($list->status == 1) {
+	                                return '<span class="label label-success">OK</span>';
+	                            } else {
+	                                return '<span class="label label-danger">NG</span>';
+	                            }
+				            })
+
+		        ->addIndexColumn()
+		        ->rawColumns(['status'])
+				->make(true);
+
+		return $datatable;
+	}
 	function getAjaxDataCasting(){
 
 		$list 			= avi_trace_casting::select('*')->orderBy('created_at', 'DESC');

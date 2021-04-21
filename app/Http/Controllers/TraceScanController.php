@@ -265,12 +265,11 @@ class TraceScanController extends Controller
         $partcodes = $code['code'];
         $line = $code['line'];
         $kbn_int = $code['kbn_int'];
-        $data = avi_dowa_process::select('kbn_supply')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', null)->first();
-        if ($data != null) {
+
+        $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->first();
+        if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
             return array(
-                "type" => 'kbn_int',
-                "status" => "false",
-                "codesubstr" => $kbn_int
+                "status" => "exist"
             );
         }
         foreach ($partcodes as $key => $value) {
@@ -415,13 +414,15 @@ class TraceScanController extends Controller
         try{
             $user                       = Auth::user();
             if (strlen($number) > 25) {
-                // if ($codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', '1')->where('date', date('Y-m-d'))->first()) {
-                //     return [
-                //         "code" => ""
-                //     ];
-                // }
+                if (!$codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', NULL)->first()) {
+                    return [
+                        "code" => "not found"
+                    ];
+                }
                 $codes = avi_dowa_process::where('kbn_fg', substr($number, 123, 4))->where('is_delivered', NULL)->get();
+
                 foreach ($codes as $code) {
+
                     if($code->code != null) {
                         DB::beginTransaction();
                             $scan                       = new avi_trace_delivery;
@@ -447,7 +448,7 @@ class TraceScanController extends Controller
                             ->where('cycle', $wimcycle)
                             ->count();
                 $arrJSON = array(
-                                "code"      => substr($number, 123, 4),
+                                "code"      => $number,
                                 "counter"   => $counter
                         );
                 return $arrJSON;
@@ -911,7 +912,7 @@ class TraceScanController extends Controller
                 );
             };
             $data = avi_dowa_process::select('*')->where('code', $code)->first();
-            if ($data != null && $data->code != null && $data->kbn_fg ==  null ) {
+            if ($data != null && $data->code != null && $data->kbn_fg == null ) {
                 if ($codes['isNg'] == 1) {
                     if ($data->status == '0') {
                         return array(

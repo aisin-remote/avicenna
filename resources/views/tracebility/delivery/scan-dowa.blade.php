@@ -9,10 +9,10 @@
                 <div class="panel-heading"><b><center> DELIVERY DOWA</center></b></span></b>
                 </div>
                 <div class="panel-body">
-                    {{-- <span style="float: left"><font size=2>Total Scan :</font></span>
+                    <span style="float: left"><font size=2>Total Scan :</font></span>
                     <br>
                     <font size=4><strong><span style="float: left" id="total_scan">-</strong></font></span>
-                    <br> --}}
+                    <br>
                     <input id="detail_no"required type="hidden" readonly>
                     <span><font size=2>Kanban Internal :</font></span>
                     <br>
@@ -63,8 +63,7 @@
                 if (checkDataCookie()) {
                     checkDataAjax(barcodesub);
                 } else {
-                    notifMessege("error", "Rescan Internal Kanban");
-                    clearCookie();
+                    notifMessege("error", "Scan Kanban Customer");
                 }
             } else if (barcodecomplete.length == 234) {
                 if ($.cookie('avi_kanban_int') == null || $.cookie('avi_kanban_int') == undefined) {
@@ -127,7 +126,7 @@
                     notifMessege("error", barcodesub);
                     return false;
                 } else {
-                    notifMessege("success", barcodesub);
+                    notifMessege("success", "Kbn int "+barcodesub);
                     $.cookie('avi_kanban_int', barcodesub);
                     $('#part-internal').text(barcodesub);
                     return true;
@@ -150,11 +149,16 @@
             },
             dataType: 'json',
             success: function (data) {
-                notifMessege("success", "Data Saved");
-                if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined ) {
-                    $.cookie('total_scan', 1);
-                } else {
-                    $.cookie('total_scan', $.cookie('total_scan')+1);
+                if (data.status == "error") {
+                    notifMessege("error", "Kanban Supply Exist")
+                } else if(data.status == "success") {
+                    notifMessege("success", "Data Saved");
+                    if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined ) {
+                        $.cookie('total_scan', 1);
+                    } else {
+                        $.cookie('total_scan', $.cookie('total_scan')++);
+                    }
+                    $('#total_scan').text($.cookie('total_scan'));
                 }
                 $('#total_scan').text($.cookie('total_scan'));
                 clearCookie();
