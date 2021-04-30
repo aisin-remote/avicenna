@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 Route::group(['prefix' => 'v1'], function() {
     Route::group([
-        'prefix' => 'auth',
+        'prefix' => 'auth', 'namespace' => 'Avicenna\Api'
     ], function () {
 
         Route::post('login', 'AuthController@login');
@@ -26,13 +26,13 @@ Route::group(['prefix' => 'v1'], function() {
     });
 
 
-    Route::group(['middleware' => 'auth:api'], function() {
+    Route::group(['middleware' => 'auth:api', 'namespace' => 'Avicenna\Api'], function() {
         Route::post('torimetron', 'TraceTorimetronController@store');
         Route::get('torimetron', 'TraceTorimetronController@index');
         Route::get('torimetron/{product}', 'TraceTorimetronController@show');
-    // Traceablity Routes
-        Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
-        Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
-        // End Traceability Routes
     });
+    // Traceablity Routes
+    Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
+    Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
+    // End Traceability Routes
 });
