@@ -16,7 +16,7 @@ Route::group(['prefix' => 'v1'], function() {
     Route::group([
         'prefix' => 'auth',
     ], function () {
-        Route::namespace('Avicenna\Api')->group(function(){
+        Route::group(function(){
 
             Route::post('login', 'AuthController@login');
 
@@ -29,7 +29,7 @@ Route::group(['prefix' => 'v1'], function() {
 
 
     Route::group(['middleware' => 'auth:api'], function() {
-        Route::namespace('Avicenna\Api')->group(function(){
+        Route::group(function(){
             Route::post('torimetron', 'TraceTorimetronController@store');
             Route::get('torimetron', 'TraceTorimetronController@index');
             Route::get('torimetron/{product}', 'TraceTorimetronController@show');
