@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class avi_andon_status extends Model
 {
-    protected $fillable =[   	
+    protected $fillable =[
 		'line',
         'plant',
     	'status',
