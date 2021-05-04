@@ -152,14 +152,18 @@
             success: function (data) {
                 if (data.status == "error") {
                     notifMessege("error", "Kanban Supply Exist")
+                    clearCookie();
                 } else if(data.status == "success") {
                     notifMessege("success", "Data Saved");
                     if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined ) {
                         $.cookie('total_scan', 1);
+                        clearCookie();
                     } else {
                         $.cookie('total_scan', $.cookie('total_scan')++);
+                        clearCookie();
                     }
                     $('#total_scan').text($.cookie('total_scan'));
+                    clearCookie();
                 }
                 $('#total_scan').text($.cookie('total_scan'));
                 clearCookie();
