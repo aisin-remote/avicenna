@@ -63,7 +63,8 @@
                 if (checkDataCookie()) {
                     checkDataAjax(barcodesub);
                 } else {
-                    notifMessege("error", "Scan Kanban Customer");
+                    notifMessege("error", "Rescan Internal Kanban");
+                    clearCookie();
                 }
             } else if (barcodecomplete.length == 234) {
                 if ($.cookie('avi_kanban_int') == null || $.cookie('avi_kanban_int') == undefined) {
