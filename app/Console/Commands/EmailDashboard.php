@@ -76,6 +76,7 @@ class EmailDashboard extends Command
                     $c = $error3->addSeconds($tiga);
 
                 if ($a < $now && $now < $b) {
+                    echo "tai";
                     $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                         if ($d->flag_spv == 0 ) {
@@ -138,7 +139,7 @@ class EmailDashboard extends Command
 
                 if ($satu < $rangeTime && $rangeTime < $dua) {
                     echo "satu";
-                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
+                    $satu = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
@@ -152,12 +153,14 @@ class EmailDashboard extends Command
                         $resetAndonStatus->finish_at = NULL;
                         $resetAndonStatus->save();
 
-                        $this->emailfinish($finishAndonHistory->id, $d->email, $andonFinished->status, $d->line, $time, $d->cc);
+                        $this->emailfinish($finishAndonHistory->id, $satu->email, $andonFinished->status, $satu->line, $time, $satu->cc);
                     }
 
                 }elseif ($dua < $rangeTime && $rangeTime < $tiga) {
                     echo "dua";
-                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.cc_mgr as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
+                    $dua = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.pic_spv as pic_spv','avi_andon_status.cc_spv as cc_spv','avi_andon_status.cc_mgr as cc_mgr','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
+
+                    $cc = $dua->pic_spv . "," . $dua->cc_spv . "," . $dua->cc_mgr;
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
@@ -171,11 +174,12 @@ class EmailDashboard extends Command
                         $resetAndonStatus->finish_at = NULL;
                         $resetAndonStatus->save();
 
-                        $this->emailfinish($finishAndonHistory->id, $d->email, $andonFinished->status, $d->line, $time, $d->cc);
+                        $this->emailfinish($finishAndonHistory->id, $dua->email, $andonFinished->status, $dua->line, $time, $cc);
                     }
                 }elseif ($rangeTime > $tiga){
                     echo "tiga";
-                    $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_gm as flag_gm','avi_andon_status.cc_email as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
+                    $dua = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.pic_spv as pic_spv','avi_andon_status.cc_spv as cc_spv','avi_andon_status.cc_mgr as cc_mgr','avi_andon_status.cc_email as cc_gm','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
+                    $cc = $dua->pic_spv . "," . $dua->cc_spv . $dua->pic_mgr . "," . $dua->cc_mgr . "," . $dua->cc_gm ;
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
@@ -189,7 +193,7 @@ class EmailDashboard extends Command
                         $resetAndonStatus->finish_at = NULL;
                         $resetAndonStatus->save();
 
-                        $this->emailfinish($finishAndonHistory->id, $d->email, $andonFinished->status, $d->line, $time, $d->cc);
+                        $this->emailfinish($finishAndonHistory->id, $dua->email, $andonFinished->status, $dua->line, $time, $cc);
                     }
 
                 }else{

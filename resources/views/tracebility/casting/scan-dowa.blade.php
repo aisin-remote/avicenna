@@ -352,6 +352,7 @@
             success: function (data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
+                    $('#counter').text(data.counter);
                     clearLocalStorage()
                     return true
                 } else if (data.status == "error") {
