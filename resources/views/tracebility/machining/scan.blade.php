@@ -160,6 +160,7 @@
 
     function initApp() {
         let line_number = localStorage.getItem('avi_line_number');
+        let strainer_id = localStorage.getItem('strainer_id');
         if (line_number == null || line_number == undefined) {
             $('#modalLineScan').on('shown.bs.modal', function () {
                 $('#input-line').focus();
@@ -179,9 +180,10 @@
                     if (data.class != null) {
                         $('#strainer-banner').addClass(data.class);
                         $('#strainer-text').text('STRAINER '+ data.customer);
-                        localStorage.setItem('strainer', data.id);
+                        localStorage.setItem('strainer_id', data.id);
                         $('#strainer').removeAttr('hidden');
-                        console.log(data);
+                    } else {
+                        localStorage.setItem('strainer_id', 0);
                     }
                 },
                 error: function (xhr) {
@@ -223,9 +225,10 @@
                 barcode = "";
                 $('#detail_no').val('');
                 if (barcodecomplete.length == 15) {
+                    let strainer_id = localStorage.getItem('strainer_id');
                     $.ajax({
                             type: 'get',           // {{-- POST Request --}}
-                            url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line,
+                            url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line+'/'+strainer_id,
                             _token: "{{ csrf_token() }}",
                             dataType: 'json',       // {{-- Data Type of the Transmit --}}
                             success: function (data) {

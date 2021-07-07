@@ -578,15 +578,9 @@ class TraceScanController extends Controller
         return view('tracebility/machining/scan');
     }
 
-    public function getAjaxmachining($number, $line)
+    public function getAjaxmachining($number, $line, $strainer)
     {
         try{
-            $strainer_id = 0;
-            $now = date('Y-m-d H:i:s');;
-            $strainer = avi_trace_strainer::where('start_at', '<=', $now)->where('end_at', '>=', $now)->where('line', $line)->first();
-            if ($strainer) {
-                $strainer_id = $strainer->strainer_id;
-            }
 
             $cek    = avi_trace_machining::where('code', $number)->first();
             if (is_null($cek)) {
@@ -596,7 +590,7 @@ class TraceScanController extends Controller
                 $scan->code                 = $number;
                 $scan->date                 = date('Y-m-d');
                 $scan->line                 = $line;
-                $scan->strainer_id          = $strainer_id;
+                $scan->strainer_id          = $strainer;
                 $scan->status               = 1;
                 $scan->npk                  = $user->npk;
 
