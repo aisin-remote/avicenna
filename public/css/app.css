@@ -6718,3 +6718,12 @@ button.close {
         display: none!important
     }
 }
+
+.strainer-blue {
+    background-color: blue !important;
+    color: white;
+}
+
+.strainer-yellow {
+    background-color: yellow !important;
+}

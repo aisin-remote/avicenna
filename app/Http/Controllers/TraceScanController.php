@@ -12,6 +12,7 @@ use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_printer;
+use App\Models\Avicenna\avi_trace_strainer;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_ng_casting_temp;
 use Illuminate\Support\Facades\Cache;
@@ -580,6 +581,13 @@ class TraceScanController extends Controller
     public function getAjaxmachining($number, $line)
     {
         try{
+            $strainer_id = 0;
+            $now = date('Y-m-d H:i:s');;
+            $strainer = avi_trace_strainer::where('start_at', '<=', $now)->where('end_at', '>=', $now)->where('line', $line)->first();
+            if ($strainer) {
+                $strainer_id = $strainer->strainer_id;
+            }
+
             $cek    = avi_trace_machining::where('code', $number)->first();
             if (is_null($cek)) {
                 DB::beginTransaction();
@@ -588,6 +596,7 @@ class TraceScanController extends Controller
                 $scan->code                 = $number;
                 $scan->date                 = date('Y-m-d');
                 $scan->line                 = $line;
+                $scan->strainer_id          = $strainer_id;
                 $scan->status               = 1;
                 $scan->npk                  = $user->npk;
 

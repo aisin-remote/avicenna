@@ -14,6 +14,14 @@
 
     </div>
 
+    <div class="row" id="strainer" hidden>
+        <div class="col-md-12">
+            <div id="strainer-banner" class="panel panel-default" >
+                <span style="font-size : 30px; " ><center> <span id="strainer-text"></span> </center>  </span>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
 
 
@@ -161,6 +169,25 @@
         } else {
             $('#line-display').text(line_number);
             line = line_number;
+            //cek strainer
+            $.ajax({
+                type: 'get',           // {{-- POST Request --}}
+                url: "{{ url('/trace/scan/machining/getStrainerMachining') }}"+'/'+line,
+                _token: "{{ csrf_token() }}",
+                dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                success: function (data) {
+                    if (data.class != null) {
+                        $('#strainer-banner').addClass(data.class);
+                        $('#strainer-text').text('STRAINER '+ data.customer);
+                        localStorage.setItem('strainer', data.id);
+                        $('#strainer').removeAttr('hidden');
+                        console.log(data);
+                    }
+                },
+                error: function (xhr) {
+                }
+            });
+
             $('#detail_no').focus();
         }
     }
@@ -230,9 +257,9 @@
                                 }
                             },
                             error: function (xhr) {
-                                if (xhr.status) {
-                                    location.reload();
-                                }
+                                // if (xhr.status) {
+                                //     location.reload();
+                                // }
 
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');

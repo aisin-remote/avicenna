@@ -96,14 +96,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// dev-1.0, Handika, 20180702, Route TRACEBILITY =========================================================================
 
-	// view trace product
+		// view trace product
 	Route::get('/trace/view/part', 'ViewTraceController@index');
 	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
 	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
 	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
-	//dev-1.1.0, Audi, 20180702 View Trace List
+		//dev-1.1.0, Audi, 20180702 View Trace List
 	Route::get('/trace/view/list', 'TraceListController@index');
 	Route::get('/trace/view/listout', 'TraceListController@indexout');
 	Route::get('/trace/view/filter', 'TraceListController@indexFilter');
@@ -113,13 +113,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
 	Route::get('/trace/view/list/assembling', 'TraceListController@getAjaxDataAssembling');
 	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
-	// =====================================================================================================================
-	// view delivered product
+		// view delivered product
 	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');
 	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
-	//SCAN PART
-	//Casting Dowa
+		//SCAN PART
+		//Casting Dowa
 	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
 	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
 	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
@@ -135,7 +134,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
 		//Machining
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}', 'TraceScanController@getAjaxmachining');
-	Route::get('/trace/scan/machining/{line?}', 'TraceScanController@scanmachining');
+	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
 	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
 	Route::get('/trace/machining/update', 'TraceScanController@getAjaxmachiningupdate');
 		//NG Machining
@@ -175,8 +174,19 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	Route::get('/trace/export-collection', 'TraceReportController@exportCollectionIndex')->name('trace.export-collection');
 	Route::get('/trace/export-collection/generate', 'TraceReportController@exportCollection')->name('trace.export-collection.generate');
-});
+
+		//Strainer
+	Route::get('/trace/view/strainer', 'Avicenna\StrainerController@index');
+	Route::get('/trace/view/strainer/getData', 'Avicenna\StrainerController@getDataStrainer');
+	Route::get('/trace/scan/machining/getStrainerMachining/{line}', 'Avicenna\StrainerController@getStrainerMachining');
+
+
+
 	//end of tracebility ====================================================================================================
+
+
+
+});
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
