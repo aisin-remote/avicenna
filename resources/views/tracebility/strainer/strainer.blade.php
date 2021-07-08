@@ -37,9 +37,10 @@
                     <th>No</th>
                     <th>Start At</th>
                     <th>Finish At</th>
-                    <th>Stariner</th>
-                    <th>Customer</th>
+                    <th>Color</th>
+                    <th>Strainer</th>
                     <th>Created At</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
               </table>
@@ -62,30 +63,37 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="GET" action="{{url ('/trace/view/strainer/create')}}">
           <div class="form-row p-0">
             <div class="form-group col-md-6" style="padding-left: 0px">
               <label for="inputEmail4">Tanggal mulai</label>
-              <input type='datetime-local' class="form-control" />
+              <input name="start_at" type='date' class="form-control" />
             </div>
             <div class="form-group col-md-6" style="padding-left: 0px">
               <label for="inputEmail4">Tanggal Akhir</label>
-              <input type='datetime-local' class="form-control" />
+              <input name="end_at" type='date' class="form-control" />
             </div>
           </div>
           <div class="form-group">
             <label for="inputAddress">Strainer</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <select class="form-control" name="strainer">
+              @foreach ($strainers as $strainer)
+                <option value="{{ $strainer->id }}">{{ $strainer->customer }} - ({{ $strainer->name }})</option>
+              @endforeach
+            </select>
           </div>
           <div class="form-group">
             <label for="inputAddress">Line</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+            <select class="form-control" name="line">
+              @foreach ($lines as $line)
+                <option value="{{ $line->line }}" >{{ $line->line }}</option>
+              @endforeach
+            </select>
           </div>
+          <hr>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Submit</button>
       </div>
     </div>
   </div>

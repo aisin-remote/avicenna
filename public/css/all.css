@@ -23686,3 +23686,16 @@ button.toast-close-button {
     width: 25em;
   }
 }
+
+.strainer-blue {
+    background-color: blue !important;
+    color: white;
+}
+
+.strainer-pink {
+    background-color: pink !important;
+}
+
+.strainer-yellow {
+    background-color: yellow !important;
+}

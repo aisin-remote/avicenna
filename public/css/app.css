@@ -6724,6 +6724,10 @@ button.close {
     color: white;
 }
 
+.strainer-pink {
+    background-color: pink !important;
+}
+
 .strainer-yellow {
     background-color: yellow !important;
 }

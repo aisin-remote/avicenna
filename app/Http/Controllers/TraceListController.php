@@ -6,6 +6,7 @@ use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_assembling;
+use App\Models\Avicenna\avi_trace_strainer_master;
 use App\Models\Avicenna\avi_trace_delivery;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
@@ -121,7 +122,7 @@ class TraceListController extends Controller
 	                                return '<span class="label label-danger">NG</span>';
 	                            }
 				            })
-
+				->addColumn('strainer', "-")
 		        ->addIndexColumn()
 		        ->rawColumns(['status'])
 		        ->make(true);
@@ -160,9 +161,12 @@ class TraceListController extends Controller
 	                                return '<span class="label label-danger">NG</span>';
 	                            }
 				            })
-
+				->addColumn('strainer', function($list) {
+								$strainer = avi_trace_strainer_master::where('id', $list->strainer_id)->first();
+								return '<div class="'.$strainer->name.'">'.$strainer->customer.'</div>';
+				            })
 		        ->addIndexColumn()
-		        ->rawColumns(['status'])
+		        ->rawColumns(['status', 'strainer'])
 		        ->make(true);
 
 	}
@@ -199,6 +203,7 @@ class TraceListController extends Controller
 	                                return '<span class="label label-danger">NG</span>';
 	                            }
 				            })
+				->addColumn('strainer', "-")
 
 		        ->addIndexColumn()
 		        ->rawColumns(['status'])
@@ -246,6 +251,7 @@ class TraceListController extends Controller
                                 return $list->npk_ng;
                             }
 			            })
+			->addColumn('strainer', "-")
 
 	        ->addIndexColumn()
 	        ->rawColumns(['status'])

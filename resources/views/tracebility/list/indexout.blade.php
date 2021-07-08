@@ -83,7 +83,7 @@
             <div class="box-body">
               <table id="tabel_all" class="table table-bordered table-striped" style="width: 100%">
                 <thead>
-                  <tr>
+                  <tr id="header-tabel">
                     <th>No</th>
                     <th>Part Code</th>
                     <th>Part Number</th>
@@ -92,6 +92,7 @@
                     <th>Line</th>
                     <th>Status</th>
                     <th>Date Scan</th>
+                    <th>Strainer</th>
                   </tr>
                 </thead>
               </table>
@@ -159,6 +160,7 @@
           {data: 'line', name: 'line'},
           {data: 'status', name: 'status'},
           {data: 'created_at', name: 'created_at'},
+          {data: 'strainer', name: 'strainer'},
         ],
         language: {
           search: "Search :"

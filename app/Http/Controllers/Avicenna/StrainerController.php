@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Avicenna;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Avicenna\avi_trace_strainer;
+use App\Models\Avicenna\avi_trace_strainer_master;
+use App\Models\Avicenna\avi_trace_line_master;
 use Carbon\Carbon;
 use Datatables;
 
@@ -65,9 +67,22 @@ class StrainerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+
+        $start_date = $request->start_at.' 06-00-00';
+        $end_date = Carbon::createFromTimestamp(strtotime($request->end_at . '06:00:00'));
+        $strainer = new avi_trace_strainer;
+        $strainer->strainer_id = $request->strainer;
+        $strainer->line = $request->line;
+        $strainer->start_at = $start_date;
+        $strainer->end_at = $end_date->addDays(1);
+        $strainer->save();
+
+
+        $strainers = avi_trace_strainer_master::select('*')->get();
+        $lines     = avi_trace_line_master::select('*')->get();
+        return view('tracebility.strainer.strainer', compact('strainers', 'lines'));
     }
 
     /**
