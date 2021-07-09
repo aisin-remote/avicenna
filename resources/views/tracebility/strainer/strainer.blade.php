@@ -35,6 +35,7 @@
                 <thead>
                   <tr>
                     <th>No</th>
+                    <th>Line</th>
                     <th>Start At</th>
                     <th>Finish At</th>
                     <th>Color</th>
@@ -133,6 +134,7 @@
           {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
                  return meta.row + meta.settings._iDisplayStart + 1;
           }},
+          {data: 'line', name: 'line'},
           {data: 'start_at', name: 'start_at'},
           {data: 'end_at', name: 'end_at'},
           {data: 'strainer.name', name: 'name'},
