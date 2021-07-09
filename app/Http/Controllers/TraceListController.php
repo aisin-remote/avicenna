@@ -163,10 +163,14 @@ class TraceListController extends Controller
 				            })
 				->addColumn('strainer', function($list) {
 								$strainer = avi_trace_strainer_master::where('id', $list->strainer_id)->first();
-								return '<div class="'.$strainer->name.'">'.$strainer->customer.'</div>';
+								if ($strainer) {
+									return $strainer->customer;
+								} else {
+									return '-';
+								}
 				            })
 		        ->addIndexColumn()
-		        ->rawColumns(['status', 'strainer'])
+		        ->rawColumns(['status'])
 		        ->make(true);
 
 	}
