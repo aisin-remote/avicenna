@@ -174,9 +174,8 @@ class TraceScanController extends Controller
         $create= avi_trace_casting::select('code','npk','date')
                 ->where('npk', $user->npk)
                 ->where('date', date('Y-m-d'))
-                ->take(5)
                 ->orderBy('id', 'DESC')
-                ->get();
+                ->take(5);
         return Datatables::of($create)
                 ->addColumn('product', function($create) {
 
@@ -697,9 +696,8 @@ class TraceScanController extends Controller
         $create= avi_trace_machining::select('code','npk','date')
                 ->where('npk', $user->npk)
                 ->where('date', date('Y-m-d'))
-                ->take(5)
                 ->orderBy('id', 'DESC')
-                ->get();
+                ->take(5);
         return Datatables::of($create)
                 ->addColumn('product', function($create) {
 
@@ -840,9 +838,8 @@ class TraceScanController extends Controller
         $create= avi_trace_assembling::select('code','npk','date')
                 ->where('npk', $user->npk)
                 ->where('date', date('Y-m-d'))
-                ->take(5)
                 ->orderBy('id', 'DESC')
-                ->get();
+                ->take(5);
         return Datatables::of($create)
                 ->addColumn('product', function($create) {
 
