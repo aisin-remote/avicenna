@@ -32,7 +32,20 @@ class StrainerController extends Controller
     public function getDataStrainer()
     {
         $data = avi_trace_strainer::select('*')->with('strainer');
-        return DataTables::eloquent($data)->make(true);
+        return DataTables::eloquent($data)
+            ->addColumn('actions', function($data) {
+                if ($data->finish_at == NULL) {
+                    return '<button class="btn btn-danger btn-action" onclick="delete_strainer(' . $data->id . ')">
+                        <i class="fa fa-trash"></i>
+                        </button>';
+                } else {
+                    return '<span>
+                    Confirmed
+                </span>';
+                }
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**
@@ -80,9 +93,7 @@ class StrainerController extends Controller
         $strainer->save();
 
 
-        $strainers = avi_trace_strainer_master::select('*')->get();
-        $lines     = avi_trace_line_master::select('*')->get();
-        return view('tracebility.strainer.strainer', compact('strainers', 'lines'));
+        return redirect('/trace/view/strainer')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -138,6 +149,8 @@ class StrainerController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $delete = avi_trace_strainer::find($id);
+        $delete->delete();
+        return redirect('/trace/view/strainer')->with('success', 'Data berhasil dihapus');
     }
 }

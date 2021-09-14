@@ -243,8 +243,7 @@
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
 
-                                }
-                                else{
+                                } else{
                                     table.ajax.url("{{ url ('trace/machining/update')}}").load();
                                     $('#alert').removeClass('alert-danger');
                                     $('#alert').addClass('alert-success');
@@ -257,6 +256,12 @@
                                     $('#detail_no').focus();
 
 
+                                }
+
+                                if (data.model_strainer == 0) {
+                                    $('#strainer').attr('hidden', 'true');
+                                } else {
+                                    $('#strainer').removeAttr('hidden');
                                 }
                             },
                             error: function (xhr) {

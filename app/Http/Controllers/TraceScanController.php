@@ -580,6 +580,12 @@ class TraceScanController extends Controller
     public function getAjaxmachining($number, $line, $strainer)
     {
         try{
+            $a = substr($number, 0, 2);
+            $model_strainer = 1;
+            if ($a != "14") {
+                $strainer = 0;
+                $model_strainer = 0;
+            }
 
             $cek    = avi_trace_machining::where('code', $number)->first();
             if (is_null($cek)) {
@@ -596,7 +602,7 @@ class TraceScanController extends Controller
                 $a                          = substr($number, 0, 2);
                 $product                    = avi_trace_program_number::where('code', $a)->first();
                 if (is_null($product)){
-                        return "Not OPN 889F Model";
+                        return "Model Not Found";
                 }
 
                 $scan->save();
@@ -638,7 +644,8 @@ class TraceScanController extends Controller
 
                 $arrJSON = array(
                                 "code"      => $number,
-                                "counter"   => $cache[date('Y-m-d')]['counter']
+                                "counter"   => $cache[date('Y-m-d')]['counter'],
+                                "model_strainer" => $model_strainer
                         );
 
                 $a                          = substr($number, 0, 2);
@@ -664,7 +671,6 @@ class TraceScanController extends Controller
 
                 return $arrJSON;
             }else{
-                    // return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
                     return array("code" => "");
             }
 

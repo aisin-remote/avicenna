@@ -179,6 +179,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/strainer', 'Avicenna\StrainerController@index');
 	Route::get('/trace/view/strainer/getData', 'Avicenna\StrainerController@getDataStrainer');
 	Route::get('/trace/view/strainer/create', 'Avicenna\StrainerController@create');
+	Route::get('/trace/view/strainer/delete/{id}', 'Avicenna\StrainerController@destroy');
 	Route::get('/trace/scan/machining/getStrainerMachining/{line}', 'Avicenna\StrainerController@getStrainerMachining');
 
 

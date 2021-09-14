@@ -22,7 +22,14 @@
 
 <div class="row">
     <div class="col-xs-12">
+        @if (\Session::has('success'))
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Berhasil!</strong> {!! \Session::get('success') !!}
+            </div>
+        @endif
         <div class="box box-primary">
+
             <div class="box-header">
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">
                     <i class="fa fa-plus" style="margin-right: 1rem"></i>Tambah Data
@@ -140,11 +147,19 @@
           {data: 'strainer.name', name: 'name'},
           {data: 'strainer.customer', name: 'customer'},
           {data: 'created_at', name: 'created_at'},
+          {data: 'actions', name: 'actions'}
         ],
         language: {
           search: "Search :"
         },
       });
+
+      function delete_strainer(id) {
+        var r = confirm("Apakah anda yakin akan menghapus data ini?");
+        if (r == true) {
+          window.location.href = "{{ url('trace/view/strainer/delete') }}" + '/' + id;
+        }
+    };
 
 </script>
 

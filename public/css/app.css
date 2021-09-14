@@ -6731,3 +6731,11 @@ button.close {
 .strainer-yellow {
     background-color: yellow !important;
 }
+
+.strainer-green {
+    background-color: green !important;
+}
+
+.strainer-grey {
+    background-color: #747574 !important;
+}
