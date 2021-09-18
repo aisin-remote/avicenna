@@ -182,6 +182,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/strainer/delete/{id}', 'Avicenna\StrainerController@destroy');
 	Route::get('/trace/scan/machining/getStrainerMachining/{line}', 'Avicenna\StrainerController@getStrainerMachining');
 
+		//Registrasi Kanban
+	Route::get('/trace/regis-kanban', 'Avicenna\RegisController@index');
+	Route::get('/trace/regis-kanban/tambah', 'Avicenna\RegisController@tambah');
+	Route::post('/trace/regis-kanban/tambah-ajax', 'Avicenna\RegisController@tambahAjax');
 
 
 	//end of tracebility ====================================================================================================
