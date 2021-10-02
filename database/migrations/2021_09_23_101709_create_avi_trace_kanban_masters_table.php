@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAviTraceKanbansTable extends Migration
+class CreateAviTraceKanbanMastersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateAviTraceKanbansTable extends Migration
      */
     public function up()
     {
-        Schema::create('avi_trace_kanbans', function (Blueprint $table) {
+        Schema::create('avi_trace_kanban_masters', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('no_seri');
-            $table->string('jenis_kanban');
-            $table->string('code_part')->nullable();
-            $table->string('master_id');
+            $table->string('back_nmr')->unique();
+            $table->string('code_part')->unique();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateAviTraceKanbansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('avi_trace_kanbans');
+        Schema::dropIfExists('avi_trace_kanban_masters');
     }
 }

@@ -27,14 +27,14 @@
 
         <div class="col-md-2">
             <div class="panel panel-default">
-                <div class="panel-heading">PART SCANNED</div>
+                <div class="panel-heading">SCAN HERE</div>
                     <div class="panel-body" style="height:110px;">
                         <div class="form-group">
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <form>
-                                    <input height=60 id="detail_no" class="form-control" name="detail_no" required >
+                                    <input height=60 id="detail_no" class="form-control" name="input" required >
                                     </form>
                                 </div>
 
@@ -77,29 +77,40 @@
 
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <!-- last scan -->
-            <div class="panel panel-default" id="table_hide">
-                <div class="panel-heading">LAST SCAN</div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">PART SCANNED</div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <table  id="data" class="table table-bordered responsive-utilities jambo_table">
-                            <thead>
-                                <tr>
-                                    <th>CODE</th> <th>PRODUCT</th> <th>MODEL</th> <th>NPK</th>  <th>DATE</th>
-                                </tr>
-                            </thead>
+                        <table class="table table-bordered responsive-utilities jambo_table">
                             <tbody>
-
+                                <tr>
+                                    <td align="center" height=180 style="vertical-align: middle">
+                                    <font size=5><div id="nopart"></div></font></td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <!-- end last scan -->
         </div>
-
-
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">KANBAN SCANNED</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <table class="table table-bordered responsive-utilities jambo_table">
+                            <tbody>
+                                <tr>
+                                    <td align="center" height=180 style="vertical-align: middle">
+                                    <font size=5><div id="kanban_int"></div></font></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -137,24 +148,36 @@
 <script src="{{ asset('/plugins/moment.min.js') }}"></script>
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script type="text/javascript">
-    // {{-- dev-1.1.0, Handika, 20180703, datatable filter --}}
-    var table = $('#data').DataTable({
-        "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-        processing: true,
-        serverSide: true,
-        searching: false,
-        paging: false,
-        ajax: '{{ url ("trace/machining/index") }}',
-        columns: [
 
-            {data: 'code', name: 'code'},
-            {data: 'product', name: 'product'},
-            {data: 'model', name: 'model'},
-            {data: 'npk', name: 'npk', searchable:false},
-            {data: 'date', name: 'date', searchable:false},
-        ],
+    // var tablekbn = $('#kanban_int').DataTable({
+    //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+    //     processing: true,
+    //     serverSide: true,
+    //     searching: false,
+    //     paging: false,
+    //     ajax: '{{ url ("/trace/machining/indexfgkbn") }}',
+    //     columns: [
 
-    });
+    //         {data: 'kbn_int', name: 'kbn_int'},
+
+    //     ],
+
+    // });
+
+    // var tablecode = $('#nopart').DataTable({
+    //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
+    //     processing: true,
+    //     serverSide: true,
+    //     searching: false,
+    //     paging: false,
+    //     ajax: '{{ url ("/trace/machining/indexfgcode") }}',
+    //     columns: [
+
+    //         {data: 'code', name: 'code'},
+
+    //     ],
+
+    // });
 
     let line = '';
 
@@ -168,23 +191,10 @@
             $('#modalLineScan').modal('show');
 
         } else {
+
             $('#line-display').text(line_number);
             line = line_number;
             //cek strainer
-            $.ajax({
-                type: 'get',           // {{-- POST Request --}}
-                url: "{{ url('/trace/scan/machining/check-fg') }}"+'/'+line,
-                _token: "{{ csrf_token() }}",
-                dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                success: function (data) {
-                    console.log(data);
-                    if (data.line != null) {
-                        window.location.replace("{{url('/trace/scan/machining/fg-machining')}}");
-                    } 
-                },
-                error: function (xhr) {
-                }
-            });
 
             $.ajax({
                 type: 'get',           // {{-- POST Request --}}
@@ -192,7 +202,6 @@
                 _token: "{{ csrf_token() }}",
                 dataType: 'json',       // {{-- Data Type of the Transmit --}}
                 success: function (data) {
-                    console.log(data);
                     if (data.class != null) {
                         $('#strainer-banner').addClass(data.class);
                         $('#strainer-text').text('STRAINER '+ data.customer);
@@ -210,6 +219,65 @@
         }
     }
 
+
+    function checkDataLocal(barcodecomplete){
+        let partCode = localStorage.getItem('avi_machining_nopart');
+
+        if (code == "code") {
+            if (barcodecomplete == partCode) {
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    function saveDataLocal(code){
+        let partCode = localStorage.getItem('avi_machining_nopart');
+
+        if (code == 'code') {
+            localStorage.setItem('avi_machining_nopart', code);
+            $('#nopart').text(code);
+                notifMessege("success", code);
+        }
+        else {
+                notifMessege("error", "Parts is Complete, Scan Kanban!");
+            }
+       if (localStorage.setItem('avi_machining_nopart') != null) {
+        if (sendDataAjax()) {
+            clearLocalStorage();
+        }
+        else{
+            clearLocalStorage();
+
+        }
+       }     
+    }
+
+    function clearLocalStorage() {
+
+        localStorage.removeItem('avi_machining_nopart');
+        $('#nopart').text('');
+        
+    } 
+
+    function notifMessege(type, messege) {
+        if (type == "error") {
+            $('#alert').removeClass('alert-success');
+            $('#alert').addClass('alert-danger');
+            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'ERROR');
+            $('#alert-body').text(messege);
+        } else if (type == "success") {
+            $('#alert').removeClass('alert-danger');
+            $('#alert').addClass('alert-success');
+            $('#alert-header').html('<i class="icon fa fa-success"></i>'+'SUCCESS');
+            $('#alert-body').text(messege);
+        }
+    }
     var barcode   ="";
     var rep2      = "";
     var detail_no = $('#detail_no');
@@ -228,7 +296,11 @@
                 $('#detail_no').focus();
             }
         });
+
+        $('#nopart').text(localStorage.getItem('avi_machining_nopart'));
+
         $('#detail_no').prop('readonly', true);
+
         document.body.style.backgroundColor = '#dddddd';
 
         $("#detail_no").keypress(function(e) {
@@ -239,12 +311,16 @@
 
                 barcodecomplete = barcode;
                 barcode = "";
+                console.log(barcodecomplete.length);
                 $('#detail_no').val('');
                 if (barcodecomplete.length == 15) {
                     let strainer_id = localStorage.getItem('strainer_id');
                     $.ajax({
                             type: 'get',           // {{-- POST Request --}}
-                            url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line+'/'+strainer_id,
+                            url: "{{ url('/trace/machining/cek-part') }}",
+                            data : {
+                                code : barcodecomplete,
+                                    },
                             _token: "{{ csrf_token() }}",
                             dataType: 'json',       // {{-- Data Type of the Transmit --}}
                             success: function (data) {
@@ -260,18 +336,17 @@
                                     $('#detail_no').focus();
 
                                 } else{
-                                    table.ajax.url("{{ url ('trace/machining/update')}}").load();
+                                    
                                     $('#alert').removeClass('alert-danger');
                                     $('#alert').addClass('alert-success');
                                     $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
                                     $('#alert-body').text(barcodecomplete);
                                     $('#detail_no').val(rep2);
                                     $('#detail_no').prop('readonly', true);
-                                    // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
-                                    $('#counter').text(data.counter);
                                     $('#detail_no').focus();
-
-
+                                    localStorage.setItem('avi_machining_nopart', data.code);
+                                    $('#nopart').text(localStorage.getItem('avi_machining_nopart'));
+                                    $('#kanban_int').text("");
                                 }
 
                                 if (data.model_strainer == 0) {
@@ -299,6 +374,98 @@
                         });
 
                 }
+                else if (barcodecomplete.length == 230)
+                {
+                    let strainer_id = localStorage.getItem('strainer_id');
+                    $.ajax({
+                            type: 'get',           // {{-- POST Request --}}
+                            url: "{{ url('/trace/scan/machining/AjaxFG') }}",
+                            data : {
+                                code : localStorage.getItem('avi_machining_nopart'),
+                                line : localStorage.getItem('avi_line_number'),
+                                strainer : localStorage.getItem('strainer_id'),
+                                kbn_int : barcodecomplete,
+
+                                    },
+                            _token: "{{ csrf_token() }}",
+                            dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                            success: function (data) {
+                                code = data.code;
+                                if(code == "" ){
+                                    $('#detail_no').prop('readonly', false);
+                                    $('#detail_no').val(barcode);
+                                    $('#alert').removeClass('alert-success');
+                                    $('#alert').addClass('alert-danger');
+                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                    $('#alert-body').text('Data sudah ada');
+                                    $('#detail_no').prop('readonly', true);
+                                    $('#detail_no').focus();
+
+                                } else if (code == "notmatch"){
+
+                                    $('#detail_no').prop('readonly', false);
+                                    $('#detail_no').val(barcode);
+                                    $('#alert').removeClass('alert-success');
+                                    $('#alert').addClass('alert-danger');
+                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                    $('#alert-body').text('Part dan Kanban Tidak Cocok');
+                                    $('#detail_no').prop('readonly', true);
+                                    $('#detail_no').focus();
+
+                                }
+                                else if (code == "notregistered"){
+
+                                    $('#detail_no').prop('readonly', false);
+                                    $('#detail_no').val(barcode);
+                                    $('#alert').removeClass('alert-success');
+                                    $('#alert').addClass('alert-danger');
+                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                    $('#alert-body').text('Kanban Tidak Terdaftar');
+                                    $('#detail_no').prop('readonly', true);
+                                    $('#detail_no').focus();
+
+                                }else{
+                                    
+                                    $('#alert').removeClass('alert-danger');
+                                    $('#alert').addClass('alert-success');
+                                    $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
+                                    $('#alert-body').text(data.kbn_int);
+                                    $('#detail_no').val(rep2);
+                                    $('#detail_no').prop('readonly', true);
+                                    $('#detail_no').focus();
+                                    localStorage.getItem('avi_machining_nopart', data.code);
+                                    $('#kanban_int').text(data.kbn_int);
+                                    $('#counter').text(data.counter);
+
+
+                                }
+
+                                if (data.model_strainer == 0) {
+                                    $('#strainer').attr('hidden', 'true');
+                                } else {
+                                    $('#strainer').removeAttr('hidden');
+                                }
+                            },
+                            error: function (xhr) {
+                                // if (xhr.status) {
+                                //     location.reload();
+                                // }
+
+                                $('#alert').removeClass('alert-success');
+                                $('#alert').addClass('alert-danger');
+                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
+
+                                if (xhr.status == 0) {
+                                    $('#alert-body').text('@lang("avicenna/pis.connection_error")');
+                                    return;
+                                }
+
+                                $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
+                            }
+                        });
+                   
+                }
+
                 else if (barcodecomplete.length == 13)
                 {
                         window.location.replace("{{url('/trace/logout')}}");

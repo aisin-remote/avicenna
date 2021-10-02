@@ -137,6 +137,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
 	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
 	Route::get('/trace/machining/update', 'TraceScanController@getAjaxmachiningupdate');
+		//FG Machining
+	Route::get('/trace/scan/machining/fg-machining', 'TraceScanController@machiningfg');
+	Route::get('/trace/machining/cek-part', 'TraceScanController@cekCodePart');
+	Route::get('/trace/scan/machining/check-fg/{line}', 'TraceScanController@checkmachiningfg');
+	Route::get('/trace/scan/machining/AjaxFG', 'TraceScanController@getAjaxmachiningfg');
 		//NG Machining
 	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
@@ -163,10 +168,16 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/delivery/ng/update', 'TraceScanController@getAjaxdeliveryngupdate');
 
 		//Assembling
-	Route::get('/trace/scan/assembling/{line?}', 'TraceScanController@scanassembling');
+	Route::get('/trace/scan/assembling/', 'TraceScanController@scanassembling');
 	Route::get('/trace/scan/assembling/getAjax/{number}/{line}', 'TraceScanController@getAjaxassembling');
 	Route::get('/trace/assembling/index', 'TraceScanController@getAjaxassemblingtable');
 	Route::get('/trace/assembling/update', 'TraceScanController@getAjaxassemblingupdate');
+
+		//Assembling-Ariansyah 10/2/2021
+	Route::get('/trace/scan/assembling/fg-assembling', 'TraceScanController@assemblingfg');
+	Route::get('/trace/assembling/cek-part', 'TraceScanController@cekCodePart2');
+	Route::get('/trace/scan/assembling/check-fg/{line}', 'TraceScanController@checkassemblingfg');
+	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
 
 		//Traceability Stock
 	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
@@ -184,8 +195,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 		//Registrasi Kanban
 	Route::get('/trace/regis-kanban', 'Avicenna\RegisController@index');
-	Route::get('/trace/regis-kanban/tambah', 'Avicenna\RegisController@tambah');
-	Route::post('/trace/regis-kanban/tambah-ajax', 'Avicenna\RegisController@tambahAjax');
+	Route::get('/trace/regis-kanban/tambah', 'Avicenna\RegisController@tambah')->name('tambah');
+	Route::post('/trace/regis-kanban/tambah-ajax', 'Avicenna\RegisController@tambahAjax')->name('tambah-ajax');
+	Route::get('/trace/regis-kanban/getData', 'Avicenna\RegisController@getData');
+	Route::get('/trace/regis-kanban/delete/{id}', 'Avicenna\RegisController@destroy');
 
 
 	//end of tracebility ====================================================================================================

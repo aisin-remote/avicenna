@@ -15,6 +15,8 @@ use App\Models\Avicenna\avi_trace_printer;
 use App\Models\Avicenna\avi_trace_strainer;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_ng_casting_temp;
+use App\Models\Avicenna\avi_trace_kanban;
+use App\Models\Avicenna\avi_trace_kanban_master;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendDataDowa;
 use Datatables;
@@ -577,6 +579,161 @@ class TraceScanController extends Controller
         return view('tracebility/machining/scan');
     }
 
+    public function machiningfg()
+    {
+        return view('tracebility/machining/fg');
+    }
+
+    public function checkmachiningfg($line)
+    {
+        $cek = avi_trace_printer::where('line', $line)->first();
+        if ($cek) {
+            return [
+                'line' => $line
+            ];
+        }
+        else {
+            return [
+                'line' => null
+            ];
+        }
+    }
+    public function cekCodePart(Request $request)
+    {
+       
+        $inputs = $request->all();
+        $cpart = $inputs['code'];
+
+        $cek = avi_trace_machining::where('code', $cpart)->first();
+
+        if ($cek) {
+                       return ["code" => ""];
+            
+        }
+         else {
+
+            return array(
+                "code" => $cpart,
+            );
+        }
+    }
+
+
+    public function getAjaxmachiningfg(Request $request)
+    {
+       
+       $input = $request->all();
+       $user = Auth::user()->npk;
+       $kbn_int = $input['kbn_int'];
+       $line = isset($input['line']) ? $input['line'] : '';
+       $strainer = isset($input['strainer']) ? $input['strainer'] : '';
+       $number = isset($input['code']) ? $input['code'] : '';
+       $cekPart = avi_trace_machining::where('code', $number)->first();
+       $numcek = substr($number, 0, 2);
+       if ($cekPart) {
+           
+           return ["code" => ""];
+       }
+
+
+       if ($kbn_int) {
+            $arr = preg_split('/ +/', $kbn_int);
+        
+            if ($arr[8] == '0') {
+
+                $lenght = strlen($arr[10]);
+                $seri = substr($arr[10], $lenght-4);
+                $back_number = $arr[9];
+            }
+            elseif ($arr[9] == '0') {
+                        
+                $lenght = strlen($arr[11]);
+                $seri = substr($arr[11], $lenght-4);
+                $back_number = $arr[10];
+            }
+            else {
+
+                $lenght = strlen($arr[9]);
+                $seri = substr($arr[9], $lenght-4);
+                $back_number = $arr[8];
+            } 
+
+            $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
+
+            $cekProgNum = avi_trace_program_number::select('back_number')->where('code', $numcek)->first();
+
+            if ($cekMaster->back_nmr != $cekProgNum->back_number) {
+                
+                return ["code" => "notmatch"];
+            }
+
+            $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+            if ($cek == null) {
+                
+                return ["code" => "notregistered"];
+            }
+
+            if ($cek->code_part == null) {
+
+                  $key = 'machining_'.$line;
+                if (Cache::has($key)) {
+                $cache = Cache::get($key);
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                    }
+                } else {
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                     ];
+                    }
+
+                    Cache::forever($key, $cache);
+                try {
+                     DB::beginTransaction();
+                     $update = avi_trace_kanban::where('no_seri', $seri)->update(['code_part' => $number]);
+                        $machining = avi_trace_machining::create([
+                            'date' => date('Y-m-d'),
+                            'line' => $line,
+                            'npk' => $user,
+                            'status' => "1",
+                            'strainer_id' => $strainer,
+                            'code' => $number,
+                        ]);
+                        DB::commit();
+                 } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return [
+                         "status" => "error",
+                         "messege" => "Data Not Saved, Please Rescan Part & Kanban"
+                        ];
+                    }  
+                
+                return [
+
+                     "counter"   => $cache[date('Y-m-d')]['counter'],
+                     "code" => $number,
+                     "kbn_int" => $seri,
+                     ];
+
+
+            }
+            else{
+                return "Kanban not ready";
+            }
+        }
+        else {
+            return "salah";
+        } 
+    }
     public function getAjaxmachining($number, $line, $strainer)
     {
         try{
@@ -650,23 +807,23 @@ class TraceScanController extends Controller
 
                 $a                          = substr($number, 0, 2);
                 $product                    = avi_trace_program_number::select('*')->where('code', $a)->first();
-                $printer                    = avi_trace_printer::where('line', $line)->first();
+                // $printer                    = avi_trace_printer::where('line', $line)->first();
 
-                // dev-1.1.0, Ali, Handle untuk data yang tidak di print di line yg sedang jalan
-                if ($printer) {
-                    $printer->part_code         = $number;
-                    $printer->part_number       = $product ? $product->part_number : "No Data";
-                    $printer->back_number       = $product ? $product->back_number : "No Data";
-                    $printer->part_name         = $product ? $product->part_name : "No Data";
-                    $printer->back_number_adm   = $product->back_number_adm;
+                // // dev-1.1.0, Ali, Handle untuk data yang tidak di print di line yg sedang jalan
+                // if ($printer) {
+                //     $printer->part_code         = $number;
+                //     $printer->part_number       = $product ? $product->part_number : "No Data";
+                //     $printer->back_number       = $product ? $product->back_number : "No Data";
+                //     $printer->part_name         = $product ? $product->part_name : "No Data";
+                //     $printer->back_number_adm   = $product->back_number_adm;
 
-                    if ($product->is_assy == 0) {
-                        $printer->flag              = 0;
-                    }else{
-                        $printer->flag              = 1;
-                    }
-                    $printer->save();
-                }
+                //     if ($product->is_assy == 0) {
+                //         $printer->flag              = 0;
+                //     }else{
+                //         $printer->flag              = 1;
+                //     }
+                //     $printer->save();
+                // }
                 DB::commit();
 
                 return $arrJSON;
@@ -677,9 +834,9 @@ class TraceScanController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             return array( "code" => "", "error" => $e->getMessage() );
-        }
-
+        }   
     }
+
      public function getAjaxmachiningtable(){
             $create= New avi_trace_machining();
             $create->code = 'No Data';
@@ -697,6 +854,7 @@ class TraceScanController extends Controller
                     ->addIndexColumn()
                     ->make(true);
     }
+    
     public function getAjaxmachiningupdate(){
         $user                       = Auth::user();
         $create= avi_trace_machining::select('code','npk','date')
@@ -730,6 +888,161 @@ class TraceScanController extends Controller
     public function scanassembling()
     {
         return view('tracebility/assembling/scan');
+    }
+
+    public function assemblingfg()
+    {
+        return view('tracebility/assembling/fg');
+    }
+
+    public function checkassemblingfg($line)
+    {
+        $cek = avi_trace_printer::where('line', $line)->first();
+        if ($cek) {
+            return [
+                'line' => $line
+            ];
+        }
+        else {
+            return [
+                'line' => null
+            ];
+        }
+    }
+    public function cekCodePart2(Request $request)
+    {
+       
+        $inputs = $request->all();
+        $cpart = $inputs['code'];
+
+        $cek = avi_trace_assembling::where('code', $cpart)->first();
+
+        if ($cek) {
+                       return "part sudah ada";
+            
+        }
+         else {
+
+            return array(
+                "code" => $cpart,
+            );
+        }
+    }
+
+
+    public function getAjaxassemblingfg(Request $request)
+    {
+       $input = $request->all();
+       $user = Auth::user()->npk;
+       $kbn_int = $input['kbn_int'];
+       $line = isset($input['line']) ? $input['line'] : '';
+       // $strainer = isset($input['strainer']) ? $input['strainer'] : '';
+       $number = isset($input['code']) ? $input['code'] : '';
+       $cekPart = avi_trace_assembling::where('code', $number)->first();
+       $numcek = substr($number, 0, 2);
+       if ($cekPart) {
+           
+           return ["code" => ""];
+       }
+
+
+       if ($kbn_int) {
+            $arr = preg_split('/ +/', $kbn_int);
+        
+            if ($arr[8] == '0') {
+
+                $lenght = strlen($arr[10]);
+                $seri = substr($arr[10], $lenght-4);
+                $back_number = $arr[9];
+            }
+            elseif ($arr[9] == '0') {
+                        
+                $lenght = strlen($arr[11]);
+                $seri = substr($arr[11], $lenght-4);
+                $back_number = $arr[10];
+            }
+            else {
+
+                $lenght = strlen($arr[9]);
+                $seri = substr($arr[9], $lenght-4);
+                $back_number = $arr[8];
+            } 
+
+            $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
+
+            $cekProgNum = avi_trace_program_number::select('back_number')->where('code', $numcek)->first();
+
+            if ($cekMaster->back_nmr != $cekProgNum->back_number) {
+                
+                return ["code" => "notmatch"];
+            }
+
+            $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+            if ($cek == null) {
+                
+                return ["code" => "notregistered"];
+            }
+
+            if ($cek->code_part == null) {
+
+                  $key = 'assembling_'.$line;
+                if (Cache::has($key)) {
+                $cache = Cache::get($key);
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                    }
+                } else {
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                     ];
+                    }
+
+                    Cache::forever($key, $cache);
+                try {
+                     DB::beginTransaction();
+                     $update = avi_trace_kanban::where('no_seri', $seri)->update(['code_part' => $number]);
+                        $machining = avi_trace_assembling::create([
+                            'date' => date('Y-m-d'),
+                            'line' => $line,
+                            'npk' => $user,
+                            'status' => "1",
+                            // 'strainer_id' => $strainer,
+                            'code' => $number,
+                        ]);
+                        DB::commit();
+                 } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return [
+                         "status" => "error",
+                         "messege" => "Data Not Saved, Please Rescan Part & Kanban"
+                        ];
+                    }  
+                
+                return [
+
+                     "counter"   => $cache[date('Y-m-d')]['counter'],
+                     "code" => $number,
+                     "kbn_int" => $seri,
+                     ];
+
+
+            }
+            else{
+                return "Kanban not ready";
+            }
+        }
+        else {
+            return "salah";
+        } 
     }
 
     public function getAjaxassembling($number, $line)
@@ -932,7 +1245,7 @@ class TraceScanController extends Controller
                         'npk_torimetron' => $user,
                         'status' => 0
                     ];
-                    $update = avi_dowa_process::select('code', 'scan_torimetron_at', 'npk_torimetron', 'status')->where('code', $code)->update($array);
+                    $update  = avi_dowa_process::select('code', 'scan_torimetron_at', 'npk_torimetron', 'status')->where('code', $code)->update($array);
                     return array(
                         "type" => $type,
                         "code" => "ng",
