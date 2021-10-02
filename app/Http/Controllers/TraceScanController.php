@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Auth;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_kanban;
 use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_cycle;
 use App\Models\Avicenna\avi_trace_machining;
@@ -487,14 +488,51 @@ class TraceScanController extends Controller
 
 
     }
+
+    public function getAjaxdeliveryApi($seri, $wimcycle, $customer, $npk)
+    {
+        try{
+            $cek    = avi_trace_kanban::where('no_seri', $seri)->whereNotNull('code_part')->first();
+            if ($cek) {
+                DB::beginTransaction();
+                    $scan                       = new avi_trace_delivery;
+                    $scan->code                 = $cek->code_part;
+                    $scan->cycle                = $wimcycle;
+                    $scan->customer             = $customer;
+                    $scan->npk                  = $npk;
+                    $scan->date                 = date('Y-m-d');
+                    $scan->status               = 1;
+                    $scan->save();
+
+                    $cek->code_part = null;
+                    $cek->save();
+
+                DB::commit();
+
+                $arrJSON = array(
+                        "code"      => $seri
+                    );
+
+                return $arrJSON;
+            }else{
+                return array("code" => 0);
+            }
+
+        }catch(\Exception $e){
+
+         DB::rollBack();
+            return array( "code" => "", "error" => $e->getMessage() );
+        }
+
+
+    }
     public function getAjaxcycle($code)
     {
-                // dev-1.0.0, Handika, 20180724, cycle
-                $user      = Auth::user();
+        // dev-1.0.0, Handika, 20180724, cycle
 
-                $code = avi_trace_cycle::where('code', $code)->first();
+        $code = avi_trace_cycle::where('code', $code)->first();
 
-                return array( "cycle" => $code->name );
+        return array( "cycle" => $code->name );
     }
 
 

@@ -15,14 +15,14 @@ use Illuminate\Http\Request;
 Route::group(['prefix' => 'v1'], function() {
     Route::group([
         'prefix' => 'auth', 'namespace' => 'Avicenna\Api'
-    ], function () {
+        ], function () {
 
-        Route::post('login', 'AuthController@login');
+            Route::post('login', 'AuthController@login');
 
-        Route::group(['middleware' => 'auth:api'], function() {
-            Route::post('logout', 'AuthController@logout');
-            Route::post('refresh', 'AuthController@refresh');
-        });
+            Route::group(['middleware' => 'auth:api'], function() {
+                Route::post('logout', 'AuthController@logout');
+                Route::post('refresh', 'AuthController@refresh');
+            });
     });
 
 
@@ -31,8 +31,11 @@ Route::group(['prefix' => 'v1'], function() {
         Route::get('torimetron', 'TraceTorimetronController@index');
         Route::get('torimetron/{product}', 'TraceTorimetronController@show');
     });
-    // Traceablity Routes
-    Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
-    Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
-    // End Traceability Routes
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        // Traceablity Routes
+        Route::get('/trace/scan/delivery/getAjax/{seri}/{wimcycle}/{customer}/{npk}', 'TraceScanController@getAjaxdeliveryApi');
+        Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
+        // End Traceability Routes
+    });
 });
