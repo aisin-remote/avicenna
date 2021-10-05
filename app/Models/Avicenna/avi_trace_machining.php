@@ -12,6 +12,9 @@ class avi_trace_machining extends Model
     	'id',
     	'code',
     	'npk',
-    	'date'
+    	'date',
+        'strainer_id',
+        'line',
+        'status'
     ];
 }

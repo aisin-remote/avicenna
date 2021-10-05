@@ -75,22 +75,19 @@
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     // {{-- dev-1.0.0, Audi, 20181511, datatable filter --}}
 
     var table = $('#tabel_all').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ url ("/trace/view/strainer/getData") }}',
+        ajax: '{{ url ("/trace/regis-kanban/getData") }}',
         columns: [
           {data: null, name: 'no', orderable: false, searchable: false, render: function (data, type, row, meta) {
                  return meta.row + meta.settings._iDisplayStart + 1;
           }},
-          {data: 'line', name: 'line'},
-          {data: 'start_at', name: 'start_at'},
-          {data: 'end_at', name: 'end_at'},
-          {data: 'strainer.name', name: 'name'},
-          {data: 'strainer.customer', name: 'customer'},
+          {data: 'no_seri', name: 'no_seri'},
+          {data: 'jenis_kanban', name: 'jenis_kanban'},
           {data: 'created_at', name: 'created_at'},
           {data: 'actions', name: 'actions'}
         ],
@@ -99,13 +96,13 @@
         },
       });
 
-      function delete_strainer(id) {
+      function delete_regis(id) {
         var r = confirm("Apakah anda yakin akan menghapus data ini?");
         if (r == true) {
-          window.location.href = "{{ url('trace/view/strainer/delete') }}" + '/' + id;
+          window.location.href = "{{ url('trace/regis-kanban/delete') }}" + '/' + id;
         }
     };
 
-</script> -->
+</script>
 
 @endsection
