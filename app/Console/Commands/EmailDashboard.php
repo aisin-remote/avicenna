@@ -60,20 +60,18 @@ class EmailDashboard extends Command
         $lines = avi_andon_status::select('*')
         ->get();
         foreach ($lines as $line ) {
+            $now = Carbon::now();
 
-            $error_at = avi_andon_status::select('*')->where('line', $line->line)->first();
-            $now     = Carbon::now();
-
-            if ($error_at->error_at) {
-            $error1 = Carbon::parse($error_at->error_at);
-            $error2 = Carbon::parse($error_at->error_at);
-            $error3 = Carbon::parse($error_at->error_at);
+            if ($line->error_at) {
+                $error1 = Carbon::parse($line->error_at);
+                $error2 = Carbon::parse($line->error_at);
+                $error3 = Carbon::parse($line->error_at);
                 $satu   = env('AVI_EMAIL_LINE_1', 300);
                 $dua    = env('AVI_EMAIL_LINE_2', 600);
                 $tiga   = env('AVI_EMAIL_LINE_3', 900);
-                    $a = $error1->addSeconds($satu);
-                    $b = $error2->addSeconds($dua);
-                    $c = $error3->addSeconds($tiga);
+                $a = $error1->addSeconds($satu);
+                $b = $error2->addSeconds($dua);
+                $c = $error3->addSeconds($tiga);
 
                 if ($a < $now && $now < $b) {
                     echo "tai";
@@ -85,7 +83,7 @@ class EmailDashboard extends Command
                         $flag1->flag_spv = 1;
                         $flag1->save();
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $this->email($finishAndonHistory->id, $d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
 
                         }
@@ -100,7 +98,7 @@ class EmailDashboard extends Command
                         $flag1->flag_mgr = 1;
                         $flag1->save();
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $this->email($finishAndonHistory->id, $d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
 
                         }
@@ -114,36 +112,35 @@ class EmailDashboard extends Command
                         $flag1->flag_gm = 1;
                         $flag1->save();
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $this->email($finishAndonHistory->id, $d->email, $d->status, $d->line, $time, $d->cc, $d->error_at);
 
                         }
                     }
 
                 }else{
-                    echo "oke";
+                    echo "line oke";
                 }
 
             }
 
-            if ($error_at->finish_at) {
-                $andonFinished = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
-                $rangeTime = strtotime($error_at->finish_at) - strtotime($error_at->error_at);
+            if ($line->finish_at) {
+                $andonFinished = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
+                $rangeTime = strtotime($line->finish_at) - strtotime($line->error_at);
 
-                $error1 = Carbon::parse($error_at->finish_at);
-                $error2 = Carbon::parse($error_at->finish_at);
-                $error3 = Carbon::parse($error_at->finish_at);
+                $error1 = Carbon::parse($line->finish_at);
+                $error2 = Carbon::parse($line->finish_at);
+                $error3 = Carbon::parse($line->finish_at);
                 $satu   = env('AVI_EMAIL_LINE_1', 300);
                 $dua    = env('AVI_EMAIL_LINE_2', 600);
                 $tiga   = env('AVI_EMAIL_LINE_3', 900);
 
                 if ($satu < $rangeTime && $rangeTime < $dua) {
-                    echo "satu";
                     $satu = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $resetAndonStatus = avi_andon_status::where('line', $line->line)->first();
 
                         $finishAndonHistory->finish_at = $resetAndonStatus->finish_at;
@@ -157,14 +154,13 @@ class EmailDashboard extends Command
                     }
 
                 }elseif ($dua < $rangeTime && $rangeTime < $tiga) {
-                    echo "dua";
                     $dua = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.pic_spv as pic_spv','avi_andon_status.cc_spv as cc_spv','avi_andon_status.cc_mgr as cc_mgr','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_mgr')->where('line', $line->line)->first();
 
                     $cc = $dua->pic_spv . "," . $dua->cc_spv . "," . $dua->cc_mgr;
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $resetAndonStatus = avi_andon_status::where('line', $line->line)->first();
 
                         $finishAndonHistory->finish_at = $resetAndonStatus->finish_at;
@@ -177,13 +173,12 @@ class EmailDashboard extends Command
                         $this->emailfinish($finishAndonHistory->id, $dua->email, $andonFinished->status, $dua->line, $time, $cc);
                     }
                 }elseif ($rangeTime > $tiga){
-                    echo "tiga";
                     $dua = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_mgr as flag_mgr','avi_andon_status.pic_spv as pic_spv','avi_andon_status.cc_spv as cc_spv','avi_andon_status.cc_mgr as cc_mgr','avi_andon_status.cc_email as cc_gm','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_gm')->where('line', $line->line)->first();
                     $cc = $dua->pic_spv . "," . $dua->cc_spv . $dua->pic_mgr . "," . $dua->cc_mgr . "," . $dua->cc_gm ;
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
 
-                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                        $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->first();
                         $resetAndonStatus = avi_andon_status::where('line', $line->line)->first();
 
                         $finishAndonHistory->finish_at = $resetAndonStatus->finish_at;
@@ -197,12 +192,13 @@ class EmailDashboard extends Command
                     }
 
                 }else{
-                    echo "oke";
-                    $finishAndonHistory = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $error_at->id)->first();
+                    $finishAndonHistories = avi_andon_status_history::where('finish_at', NULL)->where('andon_id', $line->id)->get();
                     $resetAndonStatus = avi_andon_status::where('line', $line->line)->first();
-
-                    $finishAndonHistory->finish_at = $resetAndonStatus->finish_at;
-                    $finishAndonHistory->save();
+                    // fix more than 1 problem in one mintes
+                    foreach ($finishAndonHistories as $finishAndonHistory) {
+                        $update = avi_andon_status_history::where('id', $finishAndonHistory->id)->update([
+                            'finish_at' => $resetAndonStatus->finish_at]);
+                    }
 
                     $resetAndonStatus->error_at = NULL;
                     $resetAndonStatus->finish_at = NULL;
@@ -244,12 +240,19 @@ class EmailDashboard extends Command
                         'line' => $line,
                         'time' => $time,
                         );
-        Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
-        $message->to($email)
-                    ->subject($line);
-        $message->cc($penerima);
-        $message->from('aisinbisa@aiia.co.id');
-        });
+
+        //Resume next
+        try {
+            Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
+            $message->to($email)
+                        ->subject($line);
+            $message->cc($penerima);
+            $message->from('aisinbisa@aiia.co.id');
+            });
+
+        } catch (Exception $e) {
+
+        }
 
         // email sudah selesai urusannya
         // dilanjutkan SMS blast
