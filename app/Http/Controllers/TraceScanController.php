@@ -1046,7 +1046,7 @@ class TraceScanController extends Controller
                     Cache::forever($key, $cache);
                 try {
                      DB::beginTransaction();
-                     $update = avi_trace_kanban::where('no_seri', $seri)->update(['code_part' => $number]);
+                     $update = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->update(['code_part' => $number]);
                         $machining = avi_trace_assembling::create([
                             'date' => date('Y-m-d'),
                             'line' => $line,
