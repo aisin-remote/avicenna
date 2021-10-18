@@ -697,12 +697,10 @@ class TraceScanController extends Controller
 
             $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
 
-            $cekProgNums = avi_trace_program_number::select('back_number')->where('code',  $numcek)->get();
-            foreach ($cekProgNums as $cekProgNum) {
+            $cekProgNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                 if ($cekMaster->back_nmr != $cekProgNum->back_number) {
                     return ["code" => "notmatch"];
                 }
-            }
 
             $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
             if ($cek == null) {
@@ -1007,13 +1005,11 @@ class TraceScanController extends Controller
 
             $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
 
-            $cekProgNums = avi_trace_program_number::select('back_number')->where('code', $numcek)->get();
+            $cekProgNum = avi_trace_program_number::select('back_number')->where('code', $numcek)->first();
 
-           foreach ($cekProgNums as $cekProgNum) {
                 if ($cekMaster->back_nmr != $cekProgNum->back_number) {
                     return ["code" => "notmatch"];
                 }
-            }
 
             $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
             if ($cek == null) {
