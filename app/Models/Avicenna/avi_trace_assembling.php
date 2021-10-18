@@ -12,6 +12,8 @@ class avi_trace_assembling extends Model
     	'id',
     	'code',
     	'npk',
+    	'line',
+    	'status',
     	'date'
     ];
 }
