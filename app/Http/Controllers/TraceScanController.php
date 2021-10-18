@@ -1009,7 +1009,7 @@ class TraceScanController extends Controller
 
             $cekProgNums = avi_trace_program_number::select('back_number')->where('code', $numcek)->get();
 
-s            foreach ($cekProgNums as $cekProgNum) {
+           foreach ($cekProgNums as $cekProgNum) {
                 if ($cekMaster->back_nmr != $cekProgNum->back_number) {
                     return ["code" => "notmatch"];
                 }
