@@ -162,6 +162,20 @@
         } else {
             $('#line-display').text(line_number);
             line = line_number;
+            $.ajax({
+                type: 'get',           // {{-- POST Request --}}
+                url: "{{ url('/trace/scan/assembling/check-fg') }}"+'/'+line,
+                _token: "{{ csrf_token() }}",
+                dataType: 'json',       // {{-- Data Type of the Transmit --}}
+                success: function (data) {
+                    console.log(data);
+                    if (data.line != null) {
+                        window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
+                    } 
+                },
+                error: function (xhr) {
+                }
+            });
             $('#detail_no').focus();
         }
     }
