@@ -255,15 +255,15 @@
             clearLocalStorage();
 
         }
-       }     
+       }
     }
 
     function clearLocalStorage() {
 
         localStorage.removeItem('avi_machining_nopart');
         $('#nopart').text('');
-        
-    } 
+
+    }
 
     function notifMessege(type, messege) {
         if (type == "error") {
@@ -336,7 +336,7 @@
                                     $('#detail_no').focus();
 
                                 } else{
-                                    
+
                                     $('#alert').removeClass('alert-danger');
                                     $('#alert').addClass('alert-success');
                                     $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
@@ -412,8 +412,7 @@
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
 
-                                }
-                                else if (code == "notregistered"){
+                                } else if (code == "notregistered"){
 
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
@@ -424,8 +423,19 @@
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
 
-                                }else{
-                                    
+                                } else if (code == "Kanbannotreset"){
+
+                                    $('#detail_no').prop('readonly', false);
+                                    $('#detail_no').val(barcode);
+                                    $('#alert').removeClass('alert-success');
+                                    $('#alert').addClass('alert-danger');
+                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
+                                    $('#alert-body').text('Kanban masih berisi Part');
+                                    $('#detail_no').prop('readonly', true);
+                                    $('#detail_no').focus();
+
+                                } else {
+
                                     $('#alert').removeClass('alert-danger');
                                     $('#alert').addClass('alert-success');
                                     $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
@@ -463,7 +473,7 @@
                                 $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
                             }
                         });
-                   
+
                 }
 
                 else if (barcodecomplete.length == 13)
