@@ -504,9 +504,22 @@ class TraceScanController extends Controller
                     $scan->date                 = date('Y-m-d');
                     $scan->status               = 1;
                     $scan->save();
+                    if ($cek->code_part_2) {
+                        $scan                       = new avi_trace_delivery;
+                        $scan->code                 = $cek->code_part_2;
+                        $scan->cycle                = $wimcycle;
+                        $scan->customer             = $customer;
+                        $scan->npk                  = $npk;
+                        $scan->date                 = date('Y-m-d');
+                        $scan->status               = 1;
+                        $scan->save();
+                    }
 
                     $cek->code_part = null;
+                    $cek->code_part_2 = null;
                     $cek->save();
+
+
 
                 DB::commit();
 
@@ -938,6 +951,11 @@ class TraceScanController extends Controller
         return view('tracebility/assembling/fg');
     }
 
+    public function assemblingfgdouble()
+    {
+        return view('tracebility/assembling/fg-double');
+    }
+
     public function checkassemblingfg($line)
     {
         $cek = avi_trace_printer::where('line', $line)->first();
@@ -1080,6 +1098,148 @@ class TraceScanController extends Controller
 
                      "counter"   => $cache[date('Y-m-d')]['counter'],
                      "code" => $number,
+                     "kbn_int" => $seri,
+                     ];
+
+
+            }
+            else{
+                return ["code" =>"Kanbannotreset"];
+            }
+        }
+        else {
+            return ["code" => "notregistered"];
+        }
+    }
+
+    public function cekCodePartDouble(Request $request)
+    {
+
+        $inputs = $request->all();
+        $cpart = $inputs['code'];
+
+        $cek = avi_trace_assembling::where('code', $cpart)->first();
+
+        if ($cek) {
+            return array(
+                "code" => "false",
+            );
+        }
+         else {
+            return array(
+                "code" => $cpart,
+            );
+        }
+    }
+    public function getAjaxassemblingfgDouble(Request $request)
+    {
+       $input = $request->all();
+       $user = Auth::user()->npk;
+       $kbn_int = $input['kbn_int'];
+       $line = isset($input['line']) ? $input['line'] : '';
+       $number1 = isset($input['code1']) ? $input['code1'] : '';
+       $number2 = isset($input['code2']) ? $input['code2'] : '';
+       $numcek = substr($number1, 0, 2);
+
+       if ($kbn_int) {
+            $arr = preg_split('/ +/', $kbn_int);
+
+            if ($arr[8] == '0') {
+
+                $lenght = strlen($arr[10]);
+                $seri = substr($arr[10], $lenght-4);
+                $back_number = $arr[9];
+            }
+            elseif ($arr[9] == '0') {
+
+                $lenght = strlen($arr[11]);
+                $seri = substr($arr[11], $lenght-4);
+                $back_number = $arr[10];
+            }
+            else {
+
+                $lenght = strlen($arr[9]);
+                $seri = substr($arr[9], $lenght-4);
+                $back_number = $arr[8];
+            }
+
+            $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
+            if (!$cekMaster) {
+                return ["code" => "notregistered"];
+            }
+            $cekProgNums = avi_trace_program_number::select('back_number')->where('code',  $numcek)->get();
+            $isReturn = 0;
+
+            foreach ($cekProgNums as $cekProgNum) {
+                if ($cekMaster->back_nmr == $cekProgNum->back_number) {
+                    $isReturn = 1;
+                }
+            }
+
+
+
+            if ($isReturn == 0 ) {
+                return ["code" => "notmatch"];
+            }
+
+            $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+            if ($cek == null) {
+                return ["code" => "notregistered"];
+            }
+
+            if ($cek->code_part == null) {
+                $key = 'assembling_'.$line;
+                if (Cache::has($key)) {
+                $cache = Cache::get($key);
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                    }
+                } else {
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                }
+
+                Cache::forever($key, $cache);
+                try {
+                    DB::beginTransaction();
+                    $update = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->update(['code_part' => $number1, 'code_part_2' => $number2]);
+                    $machining = avi_trace_assembling::create([
+                        'date' => date('Y-m-d'),
+                        'line' => $line,
+                        'npk' => $user,
+                        'status' => "1",
+                        'code' => $number1,
+                    ]);
+                    $machining = avi_trace_assembling::create([
+                        'date' => date('Y-m-d'),
+                        'line' => $line,
+                        'npk' => $user,
+                        'status' => "1",
+                        'code' => $number2,
+                    ]);
+                    DB::commit();
+                } catch (\Throwable $th) {
+                DB::rollBack();
+                return [
+                     "status" => "error",
+                     "messege" => "Data Not Saved, Please Rescan Part & Kanban"
+                    ];
+                }
+
+                return [
+                    "status" => "success",
+                     "counter"   => $cache[date('Y-m-d')]['counter'],
+                     "code" => $number1." & ".$number2,
                      "kbn_int" => $seri,
                      ];
 

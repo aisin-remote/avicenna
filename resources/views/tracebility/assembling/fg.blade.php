@@ -462,6 +462,11 @@
                         window.location.replace("{{url('/trace/logout')}}");
 
                 }
+                else if (barcodecomplete == "DOUBLE")
+                {
+                        window.location.replace("{{url('/trace/scan/assembling/fg-double')}}");
+
+                }
                 else if (barcodecomplete == "RELOAD")
                 {
                         location.reload();

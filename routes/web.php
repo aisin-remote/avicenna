@@ -179,6 +179,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/assembling/check-fg/{line}', 'TraceScanController@checkassemblingfg');
 	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
 
+
+	Route::get('/trace/scan/assembling/fg-double', 'TraceScanController@assemblingfgdouble');
+	Route::get('/trace/assembling/cek-part-double', 'TraceScanController@cekCodePartDouble');
+	Route::get('/trace/scan/assembling/AjaxFGDouble', 'TraceScanController@getAjaxassemblingfgDouble');
+
 		//Traceability Stock
 	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
 	Route::get('/trace/stock/filter/{start}/{end}/{product}', 'Avicenna\TraceStockController@filter')->name('trace.stock.filter');
