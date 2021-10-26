@@ -490,7 +490,7 @@ class TraceScanController extends Controller
 
     }
 
-    public function getAjaxdeliveryApi($seri, $wimcycle, $customer, $npk)
+    public function getAjaxdeliveryApi($seri, $back_number, $wimcycle, $customer, $npk)
     {
         try{
             $cek    = avi_trace_kanban::where('no_seri', $seri)->whereNotNull('code_part')->first();
@@ -505,14 +505,14 @@ class TraceScanController extends Controller
                     $scan->status               = 1;
                     $scan->save();
                     if ($cek->code_part_2) {
-                        $scan                       = new avi_trace_delivery;
-                        $scan->code                 = $cek->code_part_2;
-                        $scan->cycle                = $wimcycle;
-                        $scan->customer             = $customer;
-                        $scan->npk                  = $npk;
-                        $scan->date                 = date('Y-m-d');
-                        $scan->status               = 1;
-                        $scan->save();
+                        $scan2                       = new avi_trace_delivery;
+                        $scan2->code                 = $cek->code_part_2;
+                        $scan2->cycle                = $wimcycle;
+                        $scan2->customer             = $customer;
+                        $scan2->npk                  = $npk;
+                        $scan2->date                 = date('Y-m-d');
+                        $scan2->status               = 1;
+                        $scan2->save();
                     }
 
                     $cek->code_part = null;
