@@ -493,7 +493,8 @@ class TraceScanController extends Controller
     public function getAjaxdeliveryApi($seri, $back_number, $wimcycle, $customer, $npk)
     {
         try{
-            $cek    = avi_trace_kanban::where('no_seri', $seri)->whereNotNull('code_part')->first();
+            $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back_number)->first();
+            $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->whereNotNull('code_part')->first();
             if ($cek) {
                 DB::beginTransaction();
                     $scan                       = new avi_trace_delivery;

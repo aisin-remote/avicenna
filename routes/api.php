@@ -34,7 +34,7 @@ Route::group(['prefix' => 'v1'], function() {
 
     Route::group(['middleware' => 'auth:api'], function() {
         // Traceablity Routes
-        Route::get('/trace/scan/delivery/getAjax/{seri}/{wimcycle}/{customer}/{npk}', 'TraceScanController@getAjaxdeliveryApi');
+        Route::get('/trace/scan/delivery/getAjax/{seri}/{back_number}/{wimcycle}/{customer}/{npk}', 'TraceScanController@getAjaxdeliveryApi');
         Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
         // End Traceability Routes
     });
