@@ -154,36 +154,6 @@
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script type="text/javascript">
 
-    // var tablekbn = $('#kanban_int').DataTable({
-    //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-    //     processing: true,
-    //     serverSide: true,
-    //     searching: false,
-    //     paging: false,
-    //     ajax: '{{ url ("/trace/machining/indexfgkbn") }}',
-    //     columns: [
-
-    //         {data: 'kbn_int', name: 'kbn_int'},
-
-    //     ],
-
-    // });
-
-    // var tablecode = $('#nopart').DataTable({
-    //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-    //     processing: true,
-    //     serverSide: true,
-    //     searching: false,
-    //     paging: false,
-    //     ajax: '{{ url ("/trace/machining/indexfgcode") }}',
-    //     columns: [
-
-    //         {data: 'code', name: 'code'},
-
-    //     ],
-
-    // });
-
     let line = '';
 
     function initApp() {
@@ -253,17 +223,17 @@
 
                 else if (barcodecomplete.length == 13)
                 {
-                        window.location.replace("{{url('/trace/logout')}}");
+                    window.location.replace("{{url('/trace/logout')}}");
 
                 }
                 else if (barcodecomplete == "DOUBLE")
                 {
-                        window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
+                    window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
 
                 }
                 else if (barcodecomplete == "RELOAD")
                 {
-                        location.reload();
+                    location.reload();
 
                 }
                 else
@@ -296,7 +266,14 @@
                 if (data.code == "false") {
                     notifMessege("error", barcodecomplete+" Sudah ada");
                 } else {
-                    saveDataLocalStorage(data.code);
+                    let partCode1 = localStorage.getItem('avi_assy_double_code1');
+                    if (partCode1 == barcodecomplete) {
+                        notifMessege("error", "Part sudah discan sebelumnya");
+                    } else {
+                        saveDataLocalStorage(data.code);
+                    }
+
+
                 }
             },
             error: function (xhr) {
@@ -374,7 +351,11 @@
                 } else if (data.code == "notregistered") {
                     notifMessege("error", "Kanban Tidak Terdaftar");
                     return false
-                }else if (data.code == "notmatch") {
+                } else if (data.code == "partdouble") {
+                    notifMessege("error", "Part double, ulangi proses scan part");
+                    clearLocalStorage()
+                    return false
+                } else if (data.code == "notmatch") {
                     notifMessege("error", "Part dan Kanban Tidak Cocok");
                     clearLocalStorage()
                     return false

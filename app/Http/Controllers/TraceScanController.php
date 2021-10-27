@@ -1142,6 +1142,10 @@ class TraceScanController extends Controller
        $number2 = isset($input['code2']) ? $input['code2'] : '';
        $numcek = substr($number1, 0, 2);
 
+       if ($number1 == $number2) {
+            return ["code" => "partdouble"];
+        }
+
        if ($kbn_int) {
             $arr = preg_split('/ +/', $kbn_int);
 
