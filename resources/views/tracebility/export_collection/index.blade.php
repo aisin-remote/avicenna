@@ -68,6 +68,37 @@
         </div>
     </div>
 </div>
+
+<h3>Cek Isi Kanban</h3>
+<div class="box box-primary">
+    <div class="box-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>Filter Back Number</label>
+                    <select class="form-control" id="back_no">
+                        @foreach ($back_no as $back_nos)
+                        <option value="{{ $back_nos->id }}">{{ $back_nos->back_nmr }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="text-danger">
+                    <i><b>* Data yang diexport adalah semua data kanban yang sudah berisi part</b></i>
+                </p>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <button class="btn btn-success btn-sm" id="btn-export-kanban">Export To Excel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('scripts')
@@ -114,6 +145,15 @@
             url.searchParams.set('start_date', startDate);
             url.searchParams.set('end_date', endDate);
             url.searchParams.set('line', line);
+
+            window.location.href = url.toString();
+        });
+
+        $('#btn-export-kanban').on('click', function() {
+            var urlExport = "{{ route('trace.export-collection.generateKanban') }}";
+            var url = new URL(urlExport);
+            var back_no = $('#back_no').val();
+            url.searchParams.set('back_no', back_no);
 
             window.location.href = url.toString();
         });

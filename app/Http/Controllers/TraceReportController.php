@@ -7,6 +7,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Avicenna\avi_trace_casting;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_assembling;
+use App\Models\Avicenna\avi_trace_kanban_master;
+use App\Models\Avicenna\avi_trace_kanban;
 use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_cycle;
@@ -471,8 +473,9 @@ class TraceReportController extends Controller
     public function exportCollectionIndex()
     {
         $lines = config('traceability.production_lines');
+        $back_no = avi_trace_kanban_master::all();
 
-        return view('tracebility.export_collection.index', compact('lines'));
+        return view('tracebility.export_collection.index', compact('lines', 'back_no'));
     }
 
     /**
@@ -543,6 +546,23 @@ class TraceReportController extends Controller
         return Excel::create('TRACE_' . $line . '_' . date('Y-m-d', strtotime($startDate)) . '_' . date('Y-m-d', strtotime($endDate)), function($excel) use ($data){
             $excel->sheet('TRACEABILITY', function($sheet) use ($data) {
                 $sheet->fromArray(json_decode($data, true));
+            });
+        })->export('xlsx');
+    }
+    /**
+     * Export trace data to excel
+     */
+    public function exportCollectionkanban(Request $request)
+    {
+        // use query builder
+        $data = avi_trace_kanban::select('*')
+            ->where('master_id', $request->back_no)->whereNotNull('code_part')->get();
+
+        $back_no = avi_trace_kanban_master::where('id', $request->back_no)->first();
+
+        return Excel::create('TRACEABILITY_KANBAN_' . $back_no->back_nmr , function($excel) use ($data){
+            $excel->sheet('TRACEABILITY', function($sheet) use ($data) {
+                $sheet->fromArray($data);
             });
         })->export('xlsx');
     }

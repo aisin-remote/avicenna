@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Avicenna;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Avicenna\avi_trace_kanban_master;
+use App\Models\Avicenna\avi_trace_delivery;
 use App\Models\Avicenna\avi_trace_kanban;
 use Carbon\Carbon;
 use Datatables;
+use Auth;
+use DB;
 
 class RegisController extends Controller
 {
@@ -47,7 +51,7 @@ class RegisController extends Controller
         $data = $request->tipe;
 
         if ($data == 'reguler') {
-            
+
             $kanban = $request->scan;
                 $arr = preg_split('/ +/', $kanban);
 
@@ -62,7 +66,7 @@ class RegisController extends Controller
                          ]);
                     }
                     elseif ($arr[9] == '0') {
-                        
+
                         $lenght = strlen($arr[11]);
                         $result = substr($arr[11], $lenght-4);
 
@@ -81,14 +85,14 @@ class RegisController extends Controller
                             'jenis_kanban' => $request->tipe,
                          ]);
                     }
-            
+
             return [
                         "error" => false,
                         "messege" => "Registrasi ". $result . " Sukses Disimpan !"
                     ];
         }
         elseif ($data == 'buffer') {
-            
+
             $kanban = $request->scan;
                 $arr = preg_split('/ +/', $kanban);
 
@@ -103,7 +107,7 @@ class RegisController extends Controller
                          ]);
                     }
                     elseif ($arr[9] == '0') {
-                        
+
                         $lenght = strlen($arr[11]);
                         $result = substr($arr[11], $lenght-4);
 
@@ -122,7 +126,7 @@ class RegisController extends Controller
                             'jenis_kanban' => $request->tipe,
                          ]);
                     }
-            
+
             return [
                         "error" => false,
                         "messege" => "Registrasi ". $result . " Sukses Disimpan !"
@@ -135,7 +139,7 @@ class RegisController extends Controller
                         "messege" => "Registrasi ". $result . " Gagal!"
                     ];
         }
-               
+
     }
 
     /**
@@ -173,6 +177,104 @@ class RegisController extends Controller
         $delete = avi_trace_kanban::find($id);
         $delete->delete();
         return redirect('/trace/regis-kanban')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function manualDeliveryView()
+    {
+        return view('tracebility.registrasi.manual-delivery');
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function manualDelivery(Request $request)
+    {
+        $user = Auth::user();
+        $npk = $user->npk;
+        $kanban = $request->scan;
+        $arr = preg_split('/ +/', $kanban);
+
+        if ($arr[8] == '0') {
+
+            $lenght = strlen($arr[10]);
+            $seri = substr($arr[10], $lenght-4);
+            $back = $arr[9];
+        }
+        elseif ($arr[9] == '0') {
+
+            $lenght = strlen($arr[11]);
+            $seri = substr($arr[11], $lenght-4);
+            $back = $arr[10];
+        }
+        else {
+
+            $lenght = strlen($arr[9]);
+            $seri = substr($arr[9], $lenght-4);
+            $back = $arr[8];
+        }
+        try{
+            $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back)->first();
+            $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->whereNotNull('code_part')->first();
+            if ($cek) {
+                DB::beginTransaction();
+                    $scan                       = new avi_trace_delivery;
+                    $scan->code                 = $cek->code_part;
+                    $scan->cycle                = $request->cycle;
+                    $scan->customer             = $request->customer;
+                    $scan->npk                  = $npk;
+                    $scan->date                 = date('Y-m-d');
+                    $scan->status               = 1;
+                    $scan->save();
+                    if ($cek->code_part_2) {
+                        $scan2                       = new avi_trace_delivery;
+                        $scan2->code                 = $cek->code_part_2;
+                        $scan2->cycle                = $request->cycle;
+                        $scan2->customer             = $request->customer;
+                        $scan2->npk                  = $npk;
+                        $scan2->date                 = date('Y-m-d');
+                        $scan2->status               = 1;
+                        $scan2->save();
+                    }
+
+                    $cek->code_part = null;
+                    $cek->code_part_2 = null;
+                    $cek->save();
+
+
+
+                DB::commit();
+
+                return [
+                        "error" => false,
+                        "messege" => "Delivery ". $seri . " Sukses!"
+                    ];
+            }else{
+                return [
+                        "error" => true,
+                        "messege" => "Data ". $seri . " Not Found!"
+                    ];
+            }
+
+        }catch(\Exception $e){
+
+         DB::rollBack();
+            return [
+                        "error" => true,
+                        "messege" => $e->getMessage()
+                    ];
+        }
+
+
     }
 
 }

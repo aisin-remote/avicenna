@@ -190,6 +190,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	Route::get('/trace/export-collection', 'TraceReportController@exportCollectionIndex')->name('trace.export-collection');
 	Route::get('/trace/export-collection/generate', 'TraceReportController@exportCollection')->name('trace.export-collection.generate');
+	Route::get('/trace/export-collection/generateKanban', 'TraceReportController@exportCollectionKanban')->name('trace.export-collection.generateKanban');
 
 		//Strainer
 	Route::get('/trace/view/strainer', 'Avicenna\StrainerController@index');
@@ -204,6 +205,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::post('/trace/regis-kanban/tambah-ajax', 'Avicenna\RegisController@tambahAjax')->name('tambah-ajax');
 	Route::get('/trace/regis-kanban/getData', 'Avicenna\RegisController@getData');
 	Route::get('/trace/regis-kanban/delete/{id}', 'Avicenna\RegisController@destroy');
+	Route::get('/manual-delivery-view', 'Avicenna\RegisController@manualDeliveryView');
+	Route::post('/manual-delivery', 'Avicenna\RegisController@manualDelivery')->name('manual-delivery');
 
 
 	//end of tracebility ====================================================================================================

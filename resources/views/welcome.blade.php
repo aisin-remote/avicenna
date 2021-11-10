@@ -73,7 +73,7 @@
 								<div class="rectangle" >
 									<div class="plant">
 										Traceability
-									</div>								
+									</div>
 								</div>
 								</a>
 							</div>
@@ -83,7 +83,7 @@
 									<div class="plant">
 										Andon
 										<div class="quote">Monitoring</div>
-										
+
 									</div>
 								</div>
 								</a>
@@ -94,7 +94,7 @@
 									<div class="plant">
 										Stock
 										<div class="quote">Monitoring</div>
-										
+
 									</div>
 								</div>
 								</a>
@@ -109,9 +109,9 @@
 								<a href="direct/line" style="text-decoration:none">
 								<div class="rectangle">
 									<div class="plant">
-										All Line 
+										All Line
 										<div class="quote">Monitoring</div>
-										
+
 									</div>
 								</div>
 								</a>
@@ -122,7 +122,7 @@
 									<div class="plant">
 										Alcolla
 										<div class="quote">IOT Monitoring</div>
-										
+
 									</div>
 								</div>
 								</a>
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 				<br><br><br><br><br>
-				<div class="quote"> <a href="login" style="text-decoration:none">Login</a></div>		
+				<div class="quote"> <a href="login" style="text-decoration:none">Login</a></div>
 			</div>
 		</div>
 	</body>
