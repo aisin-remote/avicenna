@@ -20,6 +20,7 @@ use App\Models\Avicenna\avi_trace_kanban_master;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendDataDowa;
 use Datatables;
+use Carbon\Carbon;
 
 class TraceScanController extends Controller
 {
@@ -492,10 +493,12 @@ class TraceScanController extends Controller
 
     public function getAjaxdeliveryApi($seri, $back_number, $wimcycle, $customer, $npk)
     {
+
         try{
             $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back_number)->first();
-            $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->whereNotNull('code_part')->first();
-            if ($cek) {
+            $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+
+            if ($cek->code_part) {
                 DB::beginTransaction();
                     $scan                       = new avi_trace_delivery;
                     $scan->code                 = $cek->code_part;
@@ -530,12 +533,23 @@ class TraceScanController extends Controller
 
                 return $arrJSON;
             }else{
-                return array("code" => "0");
+                $today = Carbon::now();
+                $subminutes = Carbon::now()->subMinutes(2);
+                $cekDelivery = avi_trace_delivery::where('created_at', $cek->updated_at)->first();
+                if ($cekDelivery->created_at <= $today && $cekDelivery->created_at >= $subminutes ) {
+                    $arrJSON = array(
+                        "code"      => $seri
+                    );
+
+                    return $arrJSON;
+                } else {
+                    return array("code" => "0");
+                }
             }
 
         }catch(\Exception $e){
 
-         DB::rollBack();
+            DB::rollBack();
             return array( "code" => "error", "error" => $e->getMessage() );
         }
 
