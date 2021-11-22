@@ -117,6 +117,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');
 	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
+
+
+
 		//SCAN PART
 		//Casting Dowa
 	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
@@ -132,6 +135,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/ng/{line}', 'TraceScanController@castingng');
 	Route::get('/trace/scan/casting/ng/{id_product}/{date}/{line}', 'TraceScanController@getAjaxcastingng');
 	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
+
+
+
 		//Machining
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}/{strainer}', 'TraceScanController@getAjaxmachining');
 	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
@@ -142,9 +148,13 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/machining/cek-part', 'TraceScanController@cekCodePart');
 	Route::get('/trace/scan/machining/check-fg/{line}', 'TraceScanController@checkmachiningfg');
 	Route::get('/trace/scan/machining/AjaxFG', 'TraceScanController@getAjaxmachiningfg');
-		//NG Machining
-	Route::get('/trace/scan/machining/ng/{line}', 'TraceScanController@machiningng');
-	Route::get('/trace/scan/machining/getAjax2', 'TraceScanController@getAjaxmachiningng');
+		//NG FG Machining
+	Route::get('/trace/scan/machining/fg-machining-ng', 'TraceScanController@machiningfgng');
+	Route::post('/trace/scan/machining/fg-machining-ng/Ajax', 'TraceScanController@machiningfgngAjax')->name('machining-fg-ng-Ajax');
+	Route::get('/trace/machining/fg-machining-update', 'TraceScanController@getAjaxmachiningng');
+
+
+
 
 		//Delivery Dowa
 	Route::get('/trace/scan/delivery/dowa', 'TraceScanController@scanDeliveryDowa');
@@ -167,6 +177,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/delivery/ng/index', 'TraceScanController@getAjaxdeliveryngtable');
 	Route::get('/trace/delivery/ng/update', 'TraceScanController@getAjaxdeliveryngupdate');
 
+
+
 		//Assembling
 	Route::get('/trace/scan/assembling/', 'TraceScanController@scanassembling');
 	Route::get('/trace/scan/assembling/getAjax/{number}/{line}', 'TraceScanController@getAjaxassembling');
@@ -178,6 +190,10 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/assembling/cek-part', 'TraceScanController@cekCodePart2');
 	Route::get('/trace/scan/assembling/check-fg/{line}', 'TraceScanController@checkassemblingfg');
 	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
+		//NG FG Assembling
+	Route::get('/trace/scan/assembling/fg-assembling-ng', 'TraceScanController@assemblingfgng');
+	Route::post('/trace/scan/assembling/fg-assembling-ng/Ajax', 'TraceScanController@assemblingfgngAjax')->name('assembling-fg-ng-Ajax');
+	Route::get('/trace/assembling/fg-assembling-update', 'TraceScanController@getAjaxassemblingng');
 
 
 	Route::get('/trace/scan/assembling/fg-double', 'TraceScanController@assemblingfgdouble');
@@ -208,6 +224,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/manual-delivery-view', 'Avicenna\RegisController@manualDeliveryView');
 	Route::post('/manual-delivery', 'Avicenna\RegisController@manualDelivery')->name('manual-delivery');
 
+		//Reset Kanban Part NG
+	Route::get('/reset-kanban-partng-View-MA', 'Avicenna\ResetController@resetngViewMA');
+	Route::post('/reset-kanban-partng-MA', 'Avicenna\ResetController@resetngMA')->name('reset-ng-MA');
+	Route::get('/reset-kanban-partng-View-AS', 'Avicenna\ResetController@resetngViewAS');
+	Route::post('/reset-kanban-partng-AS', 'Avicenna\ResetController@resetngAS')->name('reset-ng-AS');
 
 	//end of tracebility ====================================================================================================
 

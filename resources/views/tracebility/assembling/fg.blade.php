@@ -467,6 +467,11 @@
                         window.location.replace("{{url('/trace/scan/assembling/fg-double')}}");
 
                 }
+                else if (barcodecomplete == "FGNG")
+                {
+                        window.location.replace("{{url('/trace/scan/assembling/fg-assembling-ng')}}");
+
+                }
                 else if (barcodecomplete == "RELOAD")
                 {
                         location.reload();

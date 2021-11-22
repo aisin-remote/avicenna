@@ -46,7 +46,7 @@
 
         <div class="col-md-8">
             <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
+                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>SCAN KANBAN ATAU PART YANG NG</div></h4>
                 <div id="alert-body" style="font-size : 51px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
             </div>
 
@@ -144,7 +144,7 @@
         serverSide: true,
         searching: false,
         paging: false,
-        ajax: '{{ url ("trace/machining/index") }}',
+        ajax: '{{ url ("trace/machining/fg-machining-update") }}',
         columns: [
 
             {data: 'code', name: 'code'},
@@ -161,6 +161,8 @@
     function initApp() {
         let line_number = localStorage.getItem('avi_line_number');
         let strainer_id = localStorage.getItem('strainer_id');
+        let isPart = 1;
+        console.log(isPart);
         if (line_number == null || line_number == undefined) {
             $('#modalLineScan').on('shown.bs.modal', function () {
                 $('#input-line').focus();
@@ -179,28 +181,8 @@
                 success: function (data) {
                     console.log(data);
                     if (data.line != null) {
-                        window.location.replace("{{url('/trace/scan/machining/fg-machining')}}");
+                        isPart = 0;
                     } 
-                },
-                error: function (xhr) {
-                }
-            });
-
-            $.ajax({
-                type: 'get',           // {{-- POST Request --}}
-                url: "{{ url('/trace/scan/machining/getStrainerMachining') }}"+'/'+line,
-                _token: "{{ csrf_token() }}",
-                dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                success: function (data) {
-                    console.log(data);
-                    if (data.class != null) {
-                        $('#strainer-banner').addClass(data.class);
-                        $('#strainer-text').text('STRAINER '+ data.customer);
-                        localStorage.setItem('strainer_id', data.id);
-                        $('#strainer').removeAttr('hidden');
-                    } else {
-                        localStorage.setItem('strainer_id', 0);
-                    }
                 },
                 error: function (xhr) {
                 }
@@ -208,6 +190,37 @@
 
             $('#detail_no').focus();
         }
+    }
+
+
+    function ajax(isPart, scan) {
+        $.ajax({
+            type: 'post',
+            url: "{{ route('machining-fg-ng-Ajax') }}",
+            dataType: 'json',
+              data: {
+                _token: "{{ csrf_token() }}",
+                isPart : isPart,
+                scan : scan
+              } ,
+            success: function (data) {
+              if (data.error == false ) {
+                  $('#alert-header').html(data.messege);
+                  table.ajax.url("{{ url ('trace/machining/fg-machining-update')}}").load();
+                  $('#alert').removeClass('alert-danger');
+                  $('#alert').addClass('alert-info');
+                  $('#scan').val("");
+                  $('#scan').focus();
+                } else if (data.error == true) {
+                  $('#alert-header').html(data.messege);
+                  $('#alert').removeClass('alert-info');
+                  $('#alert').addClass('alert-danger');
+                  $('#scan').val("");
+                  $('#scan').focus();
+                }
+            },
+
+          });
     }
 
     var barcode   ="";
@@ -241,86 +254,27 @@
                 barcode = "";
                 $('#detail_no').val('');
                 if (barcodecomplete.length == 15) {
-                    let strainer_id = localStorage.getItem('strainer_id');
-                    $.ajax({
-                            type: 'get',           // {{-- POST Request --}}
-                            url: "{{ url('/trace/scan/machining/getAjax') }}"+'/'+barcodecomplete+'/'+line+'/'+strainer_id,
-                            _token: "{{ csrf_token() }}",
-                            dataType: 'json',       // {{-- Data Type of the Transmit --}}
-                            success: function (data) {
-                                code = data.code;
-                                if(code == "" ){
-                                    $('#detail_no').prop('readonly', false);
-                                    $('#detail_no').val(barcode);
-                                    $('#alert').removeClass('alert-success');
-                                    $('#alert').addClass('alert-danger');
-                                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
-                                    $('#alert-body').text('Data sudah ada');
-                                    $('#detail_no').prop('readonly', true);
-                                    $('#detail_no').focus();
-
-                                } else{
-                                    table.ajax.url("{{ url ('trace/machining/update')}}").load();
-                                    $('#alert').removeClass('alert-danger');
-                                    $('#alert').addClass('alert-success');
-                                    $('#alert-header').html('<i class="icon fa fa-check"></i>'+'BERHASIL !!');
-                                    $('#alert-body').text(barcodecomplete);
-                                    $('#detail_no').val(rep2);
-                                    $('#detail_no').prop('readonly', true);
-                                    // {{-- dev-1.0, 20170913, Ferry, Fungsi informasi display --}}
-                                    $('#counter').text(data.counter);
-                                    $('#detail_no').focus();
-
-
-                                }
-
-                                if (data.model_strainer == 0) {
-                                    $('#strainer').attr('hidden', 'true');
-                                } else {
-                                    $('#strainer').removeAttr('hidden');
-                                }
-                            },
-                            error: function (xhr) {
-                                // if (xhr.status) {
-                                //     location.reload();
-                                // }
-
-                                $('#alert').removeClass('alert-success');
-                                $('#alert').addClass('alert-danger');
-                                $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'@lang("avicenna/pis.error_scan")'+xhr.status+" - "+xhr.statusText);
-
-                                if (xhr.status == 0) {
-                                    $('#alert-body').text('@lang("avicenna/pis.connection_error")');
-                                    return;
-                                }
-
-                                $('#alert-body').text('@lang("avicenna/pis.fatal_error")');
-                            }
-                        });
-
+                    ajax(1, barcodecomplete);
+                    
+                }if (barcodecomplete.length == 230) {
+                    ajax(0, barcodecomplete);
+                    
                 }
                 else if (barcodecomplete.length == 13)
                 {
                         window.location.replace("{{url('/trace/logout')}}");
 
                 }
+
                 else if (barcodecomplete == "FGNG")
                 {
-                        window.location.replace("{{url('/trace/scan/machining/fg-machining-ng')}}");
+                    window.location.replace("{{url('/trace/scan/machining')}}");
 
                 }
                 else if (barcodecomplete == "RELOAD")
                 {
                         location.reload();
 
-                }
-                else
-                {
-                    $('#alert').removeClass('alert-success');
-                    $('#alert').addClass('alert-danger');
-                    $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'GAGAL !!');
-                    $('#alert-body').text('Mohon Scan Ulang');
-                    $('#detail_no').prop('readonly', true);
                 }
 
 

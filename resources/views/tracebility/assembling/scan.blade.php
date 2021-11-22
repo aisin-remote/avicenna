@@ -262,6 +262,11 @@
                 {
                         window.location.replace("{{url('/trace/logout')}}");
                 }
+                else if (barcodecomplete == "FGNG")
+                {
+                        window.location.replace("{{url('/trace/scan/assembling/fg-assembling-ng')}}");
+
+                }
                 else if (barcodecomplete == "RELOAD")
                 {
                         location.reload();

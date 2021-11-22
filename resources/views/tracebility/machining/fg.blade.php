@@ -481,6 +481,11 @@
                         window.location.replace("{{url('/trace/logout')}}");
 
                 }
+                else if (barcodecomplete == "FGNG")
+                {
+                        window.location.replace("{{url('/trace/scan/machining/fg-machining-ng')}}");
+
+                }
                 else if (barcodecomplete == "RELOAD")
                 {
                         location.reload();
