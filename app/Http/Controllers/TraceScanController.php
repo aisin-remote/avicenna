@@ -805,6 +805,132 @@ class TraceScanController extends Controller
             return ["code" => "notregistered"];
         }
     }
+
+    public function machiningfgng()
+    {
+        return view('tracebility/machining/fg-ng');
+    }
+
+    public function machiningfgngAjax(Request $request)
+    {
+        $user = Auth::user();
+        $npk = $user->npk;
+        $kanban = $request->scan;
+
+        if ($request->ispart == 0) {
+            $arr = preg_split('/ +/', $kanban);
+
+            if ($arr[8] == '0') {
+
+                $lenght = strlen($arr[10]);
+                $seri = substr($arr[10], $lenght-4);
+                $back = $arr[9];
+            }
+            elseif ($arr[9] == '0') {
+
+                $lenght = strlen($arr[11]);
+                $seri = substr($arr[11], $lenght-4);
+                $back = $arr[10];
+            }
+            else {
+
+                $lenght = strlen($arr[9]);
+                $seri = substr($arr[9], $lenght-4);
+                $back = $arr[8];
+            }
+            try{
+                $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back)->first();
+                $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->whereNotNull('code_part')->first();
+                if ($cek) {
+                    DB::beginTransaction();
+
+                        $machining = avi_trace_machining::where('code', $cek->code_part)->first();
+                        $machining->status = 0;
+                        $machining->save();
+                        if ($cek->code_part_2) {
+                            $machining2 = avi_trace_machining::where('code', $cek->code_part)->first();
+                            $machining2->status = 0;
+                            $machining2->save();
+                        }
+
+                        $cek->code_part = null;
+                        $cek->code_part_2 = null;
+                        $cek->save();
+
+                    DB::commit();
+
+                    return [
+                            "error" => false,
+                            "messege" => "Kanban ". $seri . " berhasil dinyatakan NG!"
+                        ];
+                }else{
+                    return [
+                            "error" => true,
+                            "messege" => "kanban ". $seri . " Kosong!"
+                        ];
+                }
+
+            }catch(\Exception $e){
+
+             DB::rollBack();
+                return [
+                            "error" => true,
+                            "messege" => $e->getMessage()
+                        ];
+            }
+        } else {
+            $machining3 = avi_trace_machining::where('code', $kanban)->first();
+            if ($machining3) {
+                $machining3->status = 0;
+                $machining3->save();
+
+                return [
+                            "error" => false,
+                            "messege" => "Part ". $kanban . " berhasil dinyatakan NG!"
+                        ];
+
+            } else {
+                return [
+                            "error" => true,
+                            "messege" => "part ". $kanban . " tidak ditemukan!"
+                        ];
+            }
+            
+        }       
+
+
+    }
+
+    public function getAjaxmachiningng(){
+        $user                       = Auth::user();
+        $create= avi_trace_machining::select('code','npk','date')
+                ->where('npk', $user->npk)
+                ->where('date', date('Y-m-d'))
+                ->where('status', 0)
+                ->orderBy('id', 'DESC')
+                ->take(5);
+        return Datatables::of($create)
+                ->addColumn('product', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('product')->where('code', $code)->first();
+                    return $models ? $models->product : '--No Product--';
+                })
+                ->addColumn('model', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('back_number')->where('code', $code)->first();
+                    return $models ? $models->back_number : '--No Back Number--';
+                })
+                ->addIndexColumn()
+                ->make(true);
+
+    }
+
+
+
     public function getAjaxmachining($number, $line, $strainer)
     {
         try{
@@ -1406,6 +1532,130 @@ class TraceScanController extends Controller
                 ->make(true);
 
     }
+
+
+    public function assemblingfgng()
+    {
+        return view('tracebility/assembling/fg-ng');
+    }
+
+    public function assemblingfgngAjax(Request $request)
+    {
+        $user = Auth::user();
+        $npk = $user->npk;
+        $kanban = $request->scan;
+        if ($request->isPart == 0) {
+            $arr = preg_split('/ +/', $kanban);
+
+            if ($arr[8] == '0') {
+
+                $lenght = strlen($arr[10]);
+                $seri = substr($arr[10], $lenght-4);
+                $back = $arr[9];
+            }
+            elseif ($arr[9] == '0') {
+
+                $lenght = strlen($arr[11]);
+                $seri = substr($arr[11], $lenght-4);
+                $back = $arr[10];
+            }
+            else {
+
+                $lenght = strlen($arr[9]);
+                $seri = substr($arr[9], $lenght-4);
+                $back = $arr[8];
+            }
+            try{
+                $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back)->first();
+                $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->whereNotNull('code_part')->first();
+                if ($cek) {
+                    DB::beginTransaction();
+
+                        $assembling = avi_trace_assembling::where('code', $cek->code_part)->first();
+                        $assembling->status = 0;
+                        $assembling->save();
+                        if ($cek->code_part_2) {
+                            $assembling2 = avi_trace_assembling::where('code', $cek->code_part)->first();
+                            $assembling2->status = 0;
+                            $assembling2->save();
+                        }
+
+                        $cek->code_part = null;
+                        $cek->code_part_2 = null;
+                        $cek->save();
+
+                    DB::commit();
+
+                    return [
+                            "error" => false,
+                            "messege" => "Kanban ". $seri . " berhasil dinyatakan NG!"
+                        ];
+                }else{
+                    return [
+                            "error" => true,
+                            "messege" => "kanban ". $seri . " Kosong!"
+                        ];
+                }
+
+            }catch(\Exception $e){
+
+             DB::rollBack();
+                return [
+                            "error" => true,
+                            "messege" => $e->getMessage()
+                        ];
+            }
+        } else {
+            $assembling3 = avi_trace_assembling::where('code', $kanban)->first();
+            if ($assembling3) {
+                $assembling3->status = 0;
+                $assembling3->save();
+
+                return [
+                            "error" => false,
+                            "messege" => "Part ". $kanban . " berhasil dinyatakan NG!"
+                        ];
+
+            } else {
+                return [
+                            "error" => true,
+                            "messege" => "part ". $kanban . " tidak ditemukan!"
+                        ];
+            }
+            
+        }       
+
+
+    }
+
+    public function getAjaxassemblingng(){
+        $user                       = Auth::user();
+        $create= avi_trace_assembling::select('code','npk','date')
+                ->where('npk', $user->npk)
+                ->where('date', date('Y-m-d'))
+                ->where('status', 0)
+                ->orderBy('id', 'DESC')
+                ->take(5);
+        return Datatables::of($create)
+                ->addColumn('product', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('product')->where('code', $code)->first();
+                    return $models ? $models->product : '--No Product--';
+                })
+                ->addColumn('model', function($create) {
+
+                    $codes  = $create->code ;
+                    $code   = substr($create->code, 0, 2);
+                    $models = avi_trace_program_number::select('back_number')->where('code', $code)->first();
+                    return $models ? $models->back_number : '--No Back Number--';
+                })
+                ->addIndexColumn()
+                ->make(true);
+
+    }
+
     //MODUL TORIMETRON DOWA
     //==================================================================================================================================================
     public function scanTorimetron() {
