@@ -59,31 +59,64 @@ class RegisController extends Controller
 
                         $lenght = strlen($arr[10]);
                         $result = substr($arr[10], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
                     elseif ($arr[9] == '0') {
 
                         $lenght = strlen($arr[11]);
                         $result = substr($arr[11], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
                     else {
 
                         $lenght = strlen($arr[9]);
                         $result = substr($arr[9], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
 
             return [
@@ -100,31 +133,64 @@ class RegisController extends Controller
 
                         $lenght = strlen($arr[10]);
                         $result = substr($arr[10], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
                     elseif ($arr[9] == '0') {
 
                         $lenght = strlen($arr[11]);
                         $result = substr($arr[11], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
                     else {
 
                         $lenght = strlen($arr[9]);
                         $result = substr($arr[9], $lenght-4);
+                        $master = avi_trace_kanban_master::where('back_nmr', $arr[9])->select('id')->first();
+                        $valid = avi_trace_kanban::where('no_seri', $result)->where('master_id', $master->id)->first();
 
+                        if ($valid == null) {
                         avi_trace_kanban::create([
                             'no_seri' => $result,
                             'jenis_kanban' => $request->tipe,
+                            'master_id' => $master->id,
                          ]);
+                        }else {
+
+                            return [
+                        "error" => true,
+                        "messege" => "Registrasi ". $result . " Gagal!"
+                    ];
+                        }
                     }
 
             return [
