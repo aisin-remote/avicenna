@@ -98,16 +98,15 @@
           if (data.error == false ) {
               $('#error').html(data.messege);
               $('#alert-container').removeClass('alert-danger');
-                        $('#alert-container').addClass('alert-info');
-                        $('#tipe').val("");
+                        $('#alert-container').addClass('alert-success');
                         $('#scan').val("");
                         $('#scan').focus();
             } else if (data.error == true) {
               $('#error').html(data.messege);
-              $('#alert-container').removeClass('alert-info');
+              $('#alert-container').removeClass('alert-success');
                         $('#alert-container').addClass('alert-danger');
-                        $('#tipe').val("");
                         $('#scan').val("");
+                        $('#scan').focus();
             }
         },
 
