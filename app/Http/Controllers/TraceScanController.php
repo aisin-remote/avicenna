@@ -269,62 +269,72 @@ class TraceScanController extends Controller
         $kbn_int = $code['kbn_int'];
 
         $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->first();
-        if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
-            return array(
-                "status" => "exist"
-            );
-        }
-        foreach ($partcodes as $key => $value) {
-            $dataCasting = array(
-                'code'=>$value,
-                'npk'=>$user,
-                'line'=>$line,
-                'status'=>"1",
-                'date'=>date('Y-m-d')
-            );
-            $dataCastingDowa = array(
-                'code'=>$value,
-                'kbn_int_casting'=>$kbn_int
-            );
-            $key = 'casting_dowa'.$line;
-            if (Cache::has($key)) {
-                $cache = Cache::get($key);
-                if(!isset($cache[date('Y-m-d')])) {
-                    $cache = [];
+
+        // if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
+        //     return array(
+        //         "status" => "exist"
+        //     );
+        // }
+        if (is_null($data)) {
+            
+        
+            foreach ($partcodes as $key => $value) {
+                $dataCasting = array(
+                    'code'=>$value,
+                    'npk'=>$user,
+                    'line'=>$line,
+                    'status'=>"1",
+                    'date'=>date('Y-m-d')
+                );
+                $dataCastingDowa = array(
+                    'code'=>$value,
+                    'kbn_int_casting'=>$kbn_int
+                );
+                $key = 'casting_dowa'.$line;
+                if (Cache::has($key)) {
+                    $cache = Cache::get($key);
+                    if(!isset($cache[date('Y-m-d')])) {
+                        $cache = [];
+                        $cache = [
+                            date('Y-m-d') => [
+                                'counter' => 1
+                            ]
+                        ];
+                    } else {
+                        $cache[date('Y-m-d')]['counter'] += 1;
+                    }
+                } else {
                     $cache = [
                         date('Y-m-d') => [
                             'counter' => 1
                         ]
                     ];
-                } else {
-                    $cache[date('Y-m-d')]['counter'] += 1;
                 }
-            } else {
-                $cache = [
-                    date('Y-m-d') => [
-                        'counter' => 1
-                    ]
-                ];
-            }
 
-            Cache::forever($key, $cache);
-            try {
-                DB::beginTransaction();
-                $casting = avi_trace_casting::create($dataCasting);
-                $dowaProcess = avi_dowa_process::create($dataCastingDowa);
-                DB::commit();
-            } catch (\Throwable $th) {
-                DB::rollBack();
-                return [
-                    "status" => "error",
-                    "messege" => "Data Not Saved, Please Rescan Part & Kanban"
-                ];
-            }
-        };
-        return [
-            "status" => "success",
-            "counter"   => $cache[date('Y-m-d')]['counter']
-        ];
+                Cache::forever($key, $cache);
+                try {
+                    DB::beginTransaction();
+                    $casting = avi_trace_casting::create($dataCasting);
+                    $dowaProcess = avi_dowa_process::create($dataCastingDowa);
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return [
+                        "status" => "error",
+                        "messege" => "Data Not Saved, Please Rescan Part & Kanban"
+                    ];
+                }
+            };
+            return [
+                "status" => "success",
+                "counter"   => $cache[date('Y-m-d')]['counter']
+            ];
+        }
+        elseif ($data && $data->kbn_supply == null){
+            return array(
+                "status" => "exist"
+            );
+        }
     }
 
     //MODUL DELIVERY DOWA
