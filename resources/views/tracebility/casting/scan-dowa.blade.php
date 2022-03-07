@@ -318,7 +318,7 @@
                 clearLocalStorage();
             } else {
                 localStorage.removeItem('avi_casting_kanban_int');
-                clearLocalStorage()
+                
                 $('#part-internal').text('');
             }
         }
@@ -361,7 +361,6 @@
                     return false
                 } else if (data.status == "exist") {
                     notifMessege("error", "Kanban already exist, please scan another kanban");
-                    clearLocalStorage()
                     return false
                 }
             },

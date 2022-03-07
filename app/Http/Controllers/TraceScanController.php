@@ -269,48 +269,45 @@ class TraceScanController extends Controller
         $line = $code['line'];
         $kbn_int = $code['kbn_int'];
 
-        $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->first();
-
+        $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', null)->first();
         // if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
         //     return array(
         //         "status" => "exist"
         //     );
         // }
         if (is_null($data)) {
-            
-        
-            foreach ($partcodes as $key => $value) {
-                $dataCasting = array(
-                    'code'=>$value,
-                    'npk'=>$user,
-                    'line'=>$line,
-                    'status'=>"1",
-                    'date'=>date('Y-m-d')
-                );
-                $dataCastingDowa = array(
-                    'code'=>$value,
-                    'kbn_int_casting'=>$kbn_int
-                );
-                $key = 'casting_dowa'.$line;
-                if (Cache::has($key)) {
-                    $cache = Cache::get($key);
-                    if(!isset($cache[date('Y-m-d')])) {
-                        $cache = [];
+                foreach ($partcodes as $key => $value) {
+                    $dataCasting = array(
+                        'code'=>$value,
+                        'npk'=>$user,
+                        'line'=>$line,
+                        'status'=>"1",
+                        'date'=>date('Y-m-d')
+                    );
+                    $dataCastingDowa = array(
+                        'code'=>$value,
+                        'kbn_int_casting'=>$kbn_int
+                    );
+                    $key = 'casting_dowa'.$line;
+                    if (Cache::has($key)) {
+                        $cache = Cache::get($key);
+                        if(!isset($cache[date('Y-m-d')])) {
+                            $cache = [];
+                            $cache = [
+                                date('Y-m-d') => [
+                                    'counter' => 1
+                                ]
+                            ];
+                        } else {
+                            $cache[date('Y-m-d')]['counter'] += 1;
+                        }
+                    } else {
                         $cache = [
                             date('Y-m-d') => [
                                 'counter' => 1
                             ]
                         ];
-                    } else {
-                        $cache[date('Y-m-d')]['counter'] += 1;
                     }
-                } else {
-                    $cache = [
-                        date('Y-m-d') => [
-                            'counter' => 1
-                        ]
-                    ];
-                }
 
                 Cache::forever($key, $cache);
                 try {
@@ -330,8 +327,7 @@ class TraceScanController extends Controller
                 "status" => "success",
                 "counter"   => $cache[date('Y-m-d')]['counter']
             ];
-        }
-        elseif ($data && $data->kbn_supply == null){
+        }else{
             return array(
                 "status" => "exist"
             );
