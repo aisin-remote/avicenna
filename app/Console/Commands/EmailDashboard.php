@@ -62,7 +62,7 @@ class EmailDashboard extends Command
         foreach ($lines as $line ) {
             $now = Carbon::now();
 
-            if ($line->error_at) {
+              if ($line->error_at) {
                 $error1 = Carbon::parse($line->error_at);
                 $error2 = Carbon::parse($line->error_at);
                 $error3 = Carbon::parse($line->error_at);
@@ -74,7 +74,7 @@ class EmailDashboard extends Command
                 $c = $error3->addSeconds($tiga);
 
                 if ($a < $now && $now < $b) {
-                    echo "tai";
+
                     $d = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($d->status == 2 || $d->status == 3 || $d->status == 4 ) {
                         if ($d->flag_spv == 0 ) {
@@ -136,6 +136,7 @@ class EmailDashboard extends Command
                 $tiga   = env('AVI_EMAIL_LINE_3', 900);
 
                 if ($satu < $rangeTime && $rangeTime < $dua) {
+
                     $satu = avi_andon_status::select('avi_andon_status.line','avi_andon_status.status', 'users.name as name', 'users.email as email','avi_andon_status.flag_spv as flag_spv','avi_andon_status.cc_spv as cc','avi_andon_status.error_at')->join('users','users.npk','avi_andon_status.pic_spv')->where('line', $line->line)->first();
                     if ($andonFinished->status == 2 || $andonFinished->status == 3 || $andonFinished->status == 4 ) {
                         $time = round($rangeTime/60);
@@ -242,17 +243,17 @@ class EmailDashboard extends Command
                         );
 
         //Resume next
-        try {
-            Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
-            $message->to($email)
-                        ->subject($line);
-            $message->cc($penerima);
-            $message->from('aisinbisa@aiia.co.id');
-            });
+        // try {
+        //     Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
+        //     $message->to($email)
+        //                 ->subject($line);
+        //     $message->cc($penerima);
+        //     $message->from('aisinbisa@aiia.co.id');
+        //     });
 
-        } catch (Exception $e) {
+        // } catch (Exception $e) {
 
-        }
+        // }
 
         // email sudah selesai urusannya
         // dilanjutkan SMS blast
@@ -273,7 +274,7 @@ class EmailDashboard extends Command
                 if (!$firstVal) {
                     DB::connection('mysql2')->table('tw_message')->insert([
                         'nowa' => $user->phone_number,
-                        'pesan' => sprintf("```---- ``` *REAL TIME ALERT* ``` ----%cID       : ALERT-$id %cTGL      : $errordate %cJAM      : $errortime %cLINE     : ``` *$line* ``` %cSTATUS   : $textstatus %cDOWNTIME : $time Minutes %c-------------------------``` ", 13, 13, 13, 13, 13, 13, 13, 13)
+                        'pesan' => sprintf("```---- ``` *REAL TIME ALERT* ``` ----%cID          : ALERT-$id %cTGL       : $errordate %cJAM     : $errortime %cLINE     : ``` *$line* ``` %cSTATUS   : $textstatus %cDOWNTIME : $time Minutes %c-------------------------``` ", 10, 10, 10, 10, 10, 10, 10, 10)
                     ]);
 
                     $param++;
@@ -299,17 +300,7 @@ class EmailDashboard extends Command
         }else{
             $penerima = [];
         }
-        // $value = array ('tanggal' => $error,
-        //                 'status' => $textstatus,
-        //                 'line' => $line,
-        //                 'time' => $time,
-        //                 );
-        // Mail::send('tracebility.email.linestatus', $value, function($message) use ($email,$line,$penerima)  {
-        //     $message->to($email)
-        //                 ->subject($line);
-        //     $message->cc($penerima);
-        //     $message->from('aisinbisa@aiia.co.id');
-        // });
+
 
         $users = User::whereIn('npk', explode(",", $cc))
                         ->orWhere('email', $email)
@@ -324,7 +315,7 @@ class EmailDashboard extends Command
                 if (!$firstVal) {
                     DB::connection('mysql2')->table('tw_message')->insert([
                         'nowa' => $user->phone_number,
-                        'pesan' => sprintf("```---- ``` *REAL TIME ALERT* ``` ----%cID       : ALERT-$id %cLINE     : ``` *$line* ``` %cSTATUS   : $textstatus %cSOLVETIME: $time Minutes %c-------------------------``` ", 13, 13, 13, 13, 13)
+                        'pesan' => sprintf("```---- ``` *REAL TIME ALERT* ``` ----%cID       : ALERT-$id %cLINE     : ``` *$line* ``` %cSTATUS   : $textstatus %cSOLVETIME: $time Minutes %c-------------------------``` ", 10, 10, 10, 10, 10)
                     ]);
 
                     $param++;
