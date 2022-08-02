@@ -17,6 +17,8 @@ use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_ng_casting_temp;
 use App\Models\Avicenna\avi_trace_kanban;
 use App\Models\Avicenna\avi_trace_kanban_master;
+use App\Models\Avicenna\avi_trace_ng;
+use App\Models\Avicenna\avi_trace_ng_master;
 use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendDataDowa;
 use Datatables;
@@ -99,6 +101,11 @@ class TraceScanController extends Controller
                                 "counter"   => $cache[date('Y-m-d')]['counter']
                         );
 
+                // Fitur maps inject
+
+
+                // End Fitur
+
                 return $arrJSON;
         }else{
 				// return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
@@ -114,9 +121,48 @@ class TraceScanController extends Controller
 
     }
 
-    public function castingng($line)
+    public function castingng()
     {
-        return view('tracebility/casting/ng',compact('line'));
+        return view('tracebility/casting/ng');
+    }
+
+    /**
+     * Fungsi get data part
+     *
+     */
+    public function getPartNg($part)
+    {
+        return $part;
+    }
+
+    /**
+     * Fungsi get data part
+     *
+     */
+    public function inputPartNg($part, $ng, $line)
+    {
+        $user = Auth::user();
+        $cekNg = avi_trace_ng_master::where('id', $ng)->first();
+        if (!$cekNg) {
+            return [
+                "status" => "error",
+                "messege" => "DATA ID NG TIDAK DITEMUKAN"
+            ];
+        }
+        $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
+        if ($partNg) {
+            $partNg->delete();
+        } else {
+            $inputNg = avi_trace_ng::create([
+                'code' => $part,
+                'date' => date('Y-m-d'),
+                'id_ng' => $ng,
+                'line' => $line,
+                'pic' => $user->npk
+            ]);
+        }
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        return $aviNg;
     }
 
     public function getAjaxcastingng($number, $date, $line)
@@ -901,8 +947,8 @@ class TraceScanController extends Controller
                             "messege" => "part ". $kanban . " tidak ditemukan!"
                         ];
             }
-            
-        }       
+
+        }
 
 
     }
@@ -1628,8 +1674,8 @@ class TraceScanController extends Controller
                             "messege" => "part ". $kanban . " tidak ditemukan!"
                         ];
             }
-            
-        }       
+
+        }
 
 
     }

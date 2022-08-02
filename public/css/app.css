@@ -6741,3 +6741,20 @@ button.close {
     background-color: #747574 !important;
     color: white;
 }
+
+/**
+ * Custom CSS
+ */
+
+.bg-merah {
+    background-color: #dc3545;
+}
+
+.ng-header {
+    margin-top: 2rem;
+    padding: 0.5rem;
+}
+
+.text-white {
+    color: white;
+}

@@ -126,13 +126,17 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
 	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
 		//Casting
-	Route::get('/trace/scan/casting/{line?}', 'TraceScanController@scancasting');
+	Route::get('/trace/scan/casting/', 'TraceScanController@scancasting');
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 	Route::get('/trace/casting/index', 'TraceScanController@getAjaxcastingtable');
 	Route::get('/trace/casting/update', 'TraceScanController@getAjaxcastingupdate');
+
 		//NG Casting
-	Route::get('/trace/scan/casting/ng/{line}', 'TraceScanController@castingng');
+	Route::get('/trace/scan/casting/ng', 'TraceScanController@castingng');
+	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartNg');
+	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartNg');
+
 	Route::get('/trace/scan/casting/ng/{id_product}/{date}/{line}', 'TraceScanController@getAjaxcastingng');
 	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
 

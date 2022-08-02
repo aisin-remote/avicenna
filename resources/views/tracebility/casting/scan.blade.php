@@ -204,6 +204,10 @@
                     window.location.replace("{{url('/trace/scan/casting/dowa')}}");
                     return;
                 }
+                if (barcodecomplete == "NGMODE") {
+                    window.location.replace("{{url('/trace/scan/casting/ng')}}");
+                    return;
+                }
                 if (barcodecomplete.length == 15) {
                     $.ajax({
                         type: 'get',           // {{-- POST Request --}}
