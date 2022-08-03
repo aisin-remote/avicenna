@@ -76,7 +76,7 @@
             </div>
             <div class="row" style="margin-top: 3rem; margin-bottom: 4rem">
                 <div class="col-md-12 text-center">
-                    <button style="width: 100%;font-size: 40pt; color: white; background-color: #32a852" onclick="done()"> KONFIRMASI </button>
+                    <button style="width: 100%;font-size: 40pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
                 </div>
             </div>
 
@@ -117,6 +117,12 @@
             let code = (e.keyCode ? e.keyCode : e.which);
             if(code==13) {
                 part = $('#code').val();
+
+                if (part == "NGMODE") {
+                    window.location.replace("{{url('/trace/scan/casting')}}");
+                    return;
+                }
+
                 if (part.length == 15) {
                     cekPart(part);
                 } else {
@@ -126,7 +132,7 @@
                         clearInterval(interval);
                         $('#code').val("");
                         $('#code').focus();
-                    }, 2000);
+                    }, 1000);
                 }
             }
         });
@@ -137,22 +143,19 @@
             let ng = "";
             if(code==13) {
                 ng = $('#ng').val();
-                if (ng.length < 3) {
-                    // console.log(ng);
+                if (ng.length > 0 && ng.length < 3) {
                     inputNg(part, ng);
                 } else {
-                    notif("error", "TOLONG SCAN PART KEMBALI");
+                    notif("error", "DATA NG TIDAK DITEMUKAN, ULANGI PROSES SCAN ID NG");
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
                         clearInterval(interval);
-                        $('#code').val("");
-                        $('#code').focus();
+                        $('#ng').val("");
+                        $('#ng').focus();
                     }, 2000);
                 }
             }
         });
-
-
     });
 
     function cekPart(part) {
@@ -161,13 +164,22 @@
             url: "{{ url('/trace/scan/casting/getPartNg') }}"+'/'+part,
             dataType: 'json',
             success: function (data) {
+                $("#ngdetail > tbody").empty();
+                data.forEach((item, index) => {
+                    $("#ngdetail").find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                    .text(item.ngdetail.name)
+                            )
+                        );
+                });
 
                 notif("success", "PART BERHASIL DISCAN, SILAHKAN SCAN QR CODE NG");
                 let interval = setInterval( function(){
                     $('#notifModal').modal('hide');
                     clearInterval(interval);
                     $('#ng').focus();
-                }, 2000);
+                }, 1000);
             }
 
         });
@@ -187,11 +199,10 @@
                         clearInterval(interval);
                         $('#ng').val("");
                         $('#ng').focus();
-                    }, 2000);
+                    }, 1000);
                 } else {
                     $("#ngdetail > tbody").empty();
                     data.forEach((item, index) => {
-                        console.log(item.ngdetail.name);
                         $("#ngdetail").find('tbody')
                             .append($('<tr>')
                                 .append($('<td>')
@@ -199,13 +210,13 @@
                                 )
                             );
                     });
-                    notif("success", "PART BERHASIL DISCAN, SILAHKAN SCAN QR CODE NG");
+                    notif("success", "ID NG BERHASIL DISCAN");
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
                         clearInterval(interval);
                         $('#ng').val("");
                         $('#ng').focus();
-                    }, 2000);
+                    }, 1000);
 
                 }
             }

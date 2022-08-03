@@ -132,6 +132,16 @@ class TraceScanController extends Controller
      */
     public function getPartNg($part)
     {
+        $aviCasting = avi_trace_casting::where('code', $part)->first();
+        if ($aviCasting) {
+            $aviCasting->status = 0;
+            $aviCasting->save();
+        }
+
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        if ($aviNg) {
+            return $aviNg;
+        }
         return $part;
     }
 
