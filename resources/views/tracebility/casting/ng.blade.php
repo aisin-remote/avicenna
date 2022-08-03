@@ -143,6 +143,10 @@
             let ng = "";
             if(code==13) {
                 ng = $('#ng').val();
+                if (ng == "DONE") {
+                    done();
+                    return;
+                }
                 if (ng.length > 0 && ng.length < 3) {
                     inputNg(part, ng);
                 } else {
@@ -240,9 +244,16 @@
     }
 
     function done() {
+        notif("success", "DATA PART NG SUDAH DISIMPAN, TERIMA KASIH");
+        let interval = setInterval( function(){
+            $('#notifModal').modal('hide');
+            clearInterval(interval);
+            $('#code').val("");
+            $('#ng').val("");
+            $('#code').focus();
+        }, 1000);
+
         $("#ngdetail > tbody").empty();
-        $('#code').val("");
-        $('#code').focus();
     }
 
     </script>
