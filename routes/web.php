@@ -134,12 +134,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 		//NG Casting
 	Route::get('/trace/scan/casting/ng', 'TraceScanController@castingng');
-	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartNg');
-	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartNg');
-
-	Route::get('/trace/scan/casting/ng/{id_product}/{date}/{line}', 'TraceScanController@getAjaxcastingng');
-	Route::get('/trace/scan/casting/getDatacastingng', 'TraceScanController@getDatacastingng');
-
+	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartCastingNg');
+	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartCastingNg');
 
 
 		//Machining
@@ -153,10 +149,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining/check-fg/{line}', 'TraceScanController@checkmachiningfg');
 	Route::get('/trace/scan/machining/AjaxFG', 'TraceScanController@getAjaxmachiningfg');
 		//NG FG Machining
-	Route::get('/trace/scan/machining/fg-machining-ng', 'TraceScanController@machiningfgng');
+	Route::get('/trace/scan/machining/fg-machining-ng', 'TraceScanController@machiningng');
 	Route::post('/trace/scan/machining/fg-machining-ng/Ajax', 'TraceScanController@machiningfgngAjax')->name('machining-fg-ng-Ajax');
 	Route::get('/trace/machining/fg-machining-update', 'TraceScanController@getAjaxmachiningng');
 
+	Route::get('/trace/scan/machining/getPartNg/{part}', 'TraceScanController@getPartMachiningNg');
+	Route::get('/trace/scan/machining/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartMachiningNg');
 
 
 
@@ -195,9 +193,9 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/assembling/check-fg/{line}', 'TraceScanController@checkassemblingfg');
 	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
 		//NG FG Assembling
-	Route::get('/trace/scan/assembling/fg-assembling-ng', 'TraceScanController@assemblingfgng');
-	Route::post('/trace/scan/assembling/fg-assembling-ng/Ajax', 'TraceScanController@assemblingfgngAjax')->name('assembling-fg-ng-Ajax');
-	Route::get('/trace/assembling/fg-assembling-update', 'TraceScanController@getAjaxassemblingng');
+	Route::get('/trace/scan/assembling/fg-assembling-ng', 'TraceScanController@assemblingng');
+	Route::get('/trace/scan/assembling/getPartNg/{part}', 'TraceScanController@getPartAssemblingNg');
+	Route::get('/trace/scan/assembling/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartAssemblingNg');
 
 
 	Route::get('/trace/scan/assembling/fg-double', 'TraceScanController@assemblingfgdouble');

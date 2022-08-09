@@ -171,7 +171,7 @@
                     console.log(data);
                     if (data.line != null) {
                         window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
-                    } 
+                    }
                 },
                 error: function (xhr) {
                 }
@@ -262,7 +262,7 @@
                 {
                         window.location.replace("{{url('/trace/logout')}}");
                 }
-                else if (barcodecomplete == "FGNG")
+                else if (barcodecomplete == "NGMODE")
                 {
                         window.location.replace("{{url('/trace/scan/assembling/fg-assembling-ng')}}");
 

@@ -119,7 +119,7 @@
                 part = $('#code').val();
 
                 if (part == "NGMODE") {
-                    window.location.replace("{{url('/trace/scan/assembling')}}");
+                    window.location.replace("{{url('/trace/scan/machining')}}");
                     return;
                 }
 
@@ -165,7 +165,7 @@
     function cekPart(part) {
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/assembling/getPartNg') }}"+'/'+part,
+            url: "{{ url('/trace/scan/machining/getPartNg') }}"+'/'+part,
             dataType: 'json',
             success: function (data) {
                 $("#ngdetail > tbody").empty();
@@ -193,7 +193,7 @@
         let line = localStorage.getItem('avi_line_number');
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/assembling/inputPartNg') }}"+'/'+part+'/'+idNg+'/'+line,
+            url: "{{ url('/trace/scan/machining/inputPartNg') }}"+'/'+part+'/'+idNg+'/'+line,
             dataType: 'json',
             success: function (data) {
                 if (data.status == "error") {

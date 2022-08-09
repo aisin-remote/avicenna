@@ -130,7 +130,7 @@ class TraceScanController extends Controller
      * Fungsi get data part
      *
      */
-    public function getPartNg($part)
+    public function getPartCastingNg($part)
     {
         $aviCasting = avi_trace_casting::where('code', $part)->first();
         if ($aviCasting) {
@@ -146,10 +146,10 @@ class TraceScanController extends Controller
     }
 
     /**
-     * Fungsi get data part
+     * Fungsi input data part
      *
      */
-    public function inputPartNg($part, $ng, $line)
+    public function inputPartCastingNg($part, $ng, $line)
     {
         $user = Auth::user();
         $cekNg = avi_trace_ng_master::where('id', $ng)->first();
@@ -868,10 +868,77 @@ class TraceScanController extends Controller
         }
     }
 
-    public function machiningfgng()
+    public function machiningng()
     {
-        return view('tracebility/machining/fg-ng');
+        return view('tracebility/machining/ng');
     }
+
+    /**
+     * Fungsi get data part
+     *
+     */
+    public function getPartMachiningNg($part)
+    {
+
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        if ($aviNg) {
+            return $aviNg;
+        }
+        return $part;
+    }
+
+    /**
+     * Fungsi input data part
+     *
+     */
+    public function inputPartMachiningNg($part, $ng, $line)
+    {
+
+        $user = Auth::user();
+        $cekNg = avi_trace_ng_master::where('id', $ng)->first();
+        if (!$cekNg) {
+            return [
+                "status" => "error",
+                "messege" => "DATA ID NG TIDAK DITEMUKAN"
+            ];
+        }
+
+        // DO: cek di avi kanban dan reset kanban
+        $aviMachining = avi_trace_kanban::where('code_part', $part)->orWhere('code_part_2', $part)->first();
+        if ($aviMachining) {
+
+            $deletePartSatu = avi_trace_machining::where('code', $aviMachining->code_part)->first();
+            if ($deletePartSatu) {
+                $deletePartSatu->delete();
+            }
+
+            $deletePartDua = avi_trace_machining::where('code', $aviMachining->code_part_2)->first();
+            if ($deletePartDua) {
+                $deletePartDua->delete();
+            }
+
+            $aviMachining->code_part = NULL;
+            $aviMachining->code_part_2 = NULL;
+            $aviMachining->save();
+
+        }
+
+        $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
+        if ($partNg) {
+            $partNg->delete();
+        } else {
+            $inputNg = avi_trace_ng::create([
+                'code' => $part,
+                'date' => date('Y-m-d'),
+                'id_ng' => $ng,
+                'line' => $line,
+                'pic' => $user->npk
+            ]);
+        }
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        return $aviNg;
+    }
+
 
     public function machiningfgngAjax(Request $request)
     {
@@ -1595,10 +1662,75 @@ class TraceScanController extends Controller
 
     }
 
-
-    public function assemblingfgng()
+    public function assemblingng()
     {
-        return view('tracebility/assembling/fg-ng');
+        return view('tracebility/assembling/ng');
+    }
+
+    /**
+     * Fungsi get data part
+     *
+     */
+    public function getPartAssemblingNg($part)
+    {
+
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        if ($aviNg) {
+            return $aviNg;
+        }
+        return $part;
+    }
+
+    /**
+     * Fungsi input data part
+     *
+     */
+    public function inputPartAssemblingNg($part, $ng, $line)
+    {
+
+        $user = Auth::user();
+        $cekNg = avi_trace_ng_master::where('id', $ng)->first();
+        if (!$cekNg) {
+            return [
+                "status" => "error",
+                "messege" => "DATA ID NG TIDAK DITEMUKAN"
+            ];
+        }
+
+        // DO: cek di avi kanban dan reset kanban
+        $aviAssembling = avi_trace_kanban::where('code_part', $part)->orWhere('code_part_2', $part)->first();
+        if ($aviAssembling) {
+
+            $deletePartSatu = avi_trace_assembling::where('code', $aviAssembling->code_part)->first();
+            if ($deletePartSatu) {
+                $deletePartSatu->delete();
+            }
+
+            $deletePartDua = avi_trace_assembling::where('code', $aviAssembling->code_part_2)->first();
+            if ($deletePartDua) {
+                $deletePartDua->delete();
+            }
+
+            $aviAssembling->code_part = NULL;
+            $aviAssembling->code_part_2 = NULL;
+            $aviAssembling->save();
+
+        }
+
+        $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
+        if ($partNg) {
+            $partNg->delete();
+        } else {
+            $inputNg = avi_trace_ng::create([
+                'code' => $part,
+                'date' => date('Y-m-d'),
+                'id_ng' => $ng,
+                'line' => $line,
+                'pic' => $user->npk
+            ]);
+        }
+        $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
+        return $aviNg;
     }
 
     public function assemblingfgngAjax(Request $request)
