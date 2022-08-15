@@ -37,27 +37,27 @@
 
      <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
         <div class="bg-merahs ng-header">
-            <h1 class="font-weight-bold text-white text-center" style="font-size: 50pt">
+            <h1 class="text-center" style="font-size: 40pt; color: white">
                 INPUT PART NG - LINE <span id="line-display"></span>
             </h1>
         </div>
         <div style="background-color: black;">
 
-            <div class="row" style="margin-top: 1rem">
+            <div class="row">
                 <div class="col-md-12 text-center" style="">
-                        <input id="code" style="font-size: 25pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE PART">
+                    <input id="code" style="font-size: 15pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE PART">
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; ">
+                <div class="col-md-9 text-center border" style="height: 350px;  margin-top: 2rem; ">
                     <table style="width: 100%; height: 100%">
                         <tr>
                             <td></td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-3 text-center border" style="height: 400px; margin-top: 2rem; color: white; overflow-y: auto;">
-                    <table id="ngdetail" style="width: 100%; height: 100%; border: white; color: white">
+                <div class="col-md-3 text-center border" style="height: 350px; margin-top: 2rem; color: white; overflow-y: auto;">
+                    <table id="ngdetail" style="width: 100%; height: 100%; border: white; color: red">
                         <thead>
                             <td style="height: 15px" class="text-center" colspan="2">NAMA NG</td>
                         </thead>
@@ -69,20 +69,20 @@
                     </table>
                 </div>
             </div>
-            <div class="row" style="margin-top: .5rem">
+            <div class="row" style="margin-top: 2rem">
                 <div class="col-md-12 text-center" >
-                        <input id="ng" style="font-size: 25pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE NG">
+                        <input id="ng" style="font-size: 15pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE NG">
                 </div>
             </div>
-            <div class="row" style="margin-top: 3rem; margin-bottom: 4rem">
+            <div class="row" style="margin-top: 2rem; margin-bottom: 2rem">
                 <div class="col-md-12 text-center">
-                    <button style="width: 100%;font-size: 40pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
+                    <button style="width: 100%;font-size: 30pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
                 </div>
             </div>
 
 
         </div>
-        <div class="card-footer p-3  bg-merahs text-center">
+        <div class="card-footer bg-merahs text-center">
             <h5 class="right text-white" style="padding: 0.5rem; height: 4rem; font-size: 2rem">
                 Powered by ITD - PT Aisin Indonesia Automotive - 2021
             </h5>
@@ -251,6 +251,8 @@
             $('#code').val("");
             $('#ng').val("");
             $('#code').focus();
+            window.location.replace("{{url('/trace/scan/casting')}}");
+            return;
         }, 1000);
 
         $("#ngdetail > tbody").empty();
