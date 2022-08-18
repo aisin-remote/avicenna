@@ -126,6 +126,12 @@ class TraceScanController extends Controller
         return view('tracebility/casting/ng');
     }
 
+
+    public function castingng2()
+    {
+        return view('tracebility/casting/ng2');
+    }
+
     /**
      * Fungsi get data part
      *

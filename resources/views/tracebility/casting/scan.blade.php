@@ -92,6 +92,13 @@
 
 
     </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2">
+            <button class="text-center" style="width: 100%" onclick="window.location.replace(`{{url('/trace/scan/casting/ng2')}}`)" >MODE NG</button>
+        </div>
+    </div>
 </div>
 
 
