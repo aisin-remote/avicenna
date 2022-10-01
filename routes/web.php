@@ -203,6 +203,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/assembling/cek-part-double', 'TraceScanController@cekCodePartDouble');
 	Route::get('/trace/scan/assembling/AjaxFGDouble', 'TraceScanController@getAjaxassemblingfgDouble');
 
+	// Traceability back office
 		//Traceability Stock
 	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
 	Route::get('/trace/stock/filter/{start}/{end}/{product}', 'Avicenna\TraceStockController@filter')->name('trace.stock.filter');
@@ -233,6 +234,16 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/reset-kanban-partng-View-AS', 'Avicenna\ResetController@resetngViewAS');
 	Route::post('/reset-kanban-partng-AS', 'Avicenna\ResetController@resetngAS')->name('reset-ng-AS');
 
+
+	// NG Master
+	Route::get('/trace/ng/view', 'Avicenna\NgController@index')->name('trace.ng.view');
+	Route::get('/trace/ng/view/getData/{line}/{start}/{end}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
+	Route::post('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
+	Route::get('/trace/ng/view/exportData/{line}/{start}/{end}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
+
+
+
+
 	//end of tracebility ====================================================================================================
 
 
@@ -259,6 +270,8 @@ Route::get('/dashboard/datatools2/{id_mesin}','Avicenna\UnitDashboardController@
 
 
 //Dashboard andon
+
+Route::get('direct/andon/problem', 'DashboardController@directAndonProblem')->name('direct.andon.problem'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/', 'DashboardController@choose');
 Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.andon'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.andon2'); //dev-1.0, 20180416, Andon Monitoring
