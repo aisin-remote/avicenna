@@ -241,6 +241,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::post('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
 	Route::get('/trace/ng/view/exportData/{line}/{start}/{end}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
 
+	// OK Master
+	Route::get('/trace/ok/view', 'Avicenna\DashboardController@index')->name('trace.ng.view');
+	Route::get('/trace/ok/view/getData/{area}/{start}/{end}', 'Avicenna\DashboardController@getData')->name('trace.ng.view.getData');
+	Route::post('/trace/ok/view/getDataChart', 'Avicenna\DashboardController@getDataChart')->name('trace.ng.view.getDataChart');
+	Route::get('/trace/ok/view/exportData/{area}/{start}/{end}', 'Avicenna\DashboardController@exportData')->name('trace.ng.view.exportData');
 
 
 
@@ -277,6 +282,7 @@ Route::get('/direct/andon', 'DashboardController@direct_andon')->name('direct.an
 Route::get('/direct/andon2', 'DashboardController@direct_andon2')->name('direct.andon2'); //dev-1.0, 20180416, Andon Monitoring
 Route::get('/direct/line', 'DashboardController@direct_line')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
 Route::get('/direct/line/index', 'DashboardController@direct_line_index')->name('direct.line'); //dev-1.0.0, 20180416, Handika, dashboard line status
+Route::get('/direct/andoncharts', 'DashboardController@andon_charts')->name('direct.andoncharts'); //dev-1.0, 20180416, Andon Monitoring
 
 Route::get('/direct/mobileline', 'DashboardController@direct_line')->name('direct.mobileline'); //dev-1.0.0, 20180416, Handika, dashboard line status
 //List Traceability

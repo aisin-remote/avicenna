@@ -13,8 +13,11 @@ use App\Models\Avicenna\avi_andon;
 use App\Models\Avicenna\avi_andon_color;
 use App\Models\Avicenna\avi_andon_status;
 use App\Models\Avicenna\avi_furnace_status;
+use App\Models\Avicenna\avi_trace_torimetron;
+use App\Models\Avicenna\avi_andon_charts;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -50,8 +53,8 @@ class DashboardController extends Controller
 
     function getAjaxModel()
     {
-        $arr_result = avi_dashboard_models::all();
-        return $arr_result;
+        // $arr_result = avi_dashboard_models::all();
+        // return $arr_result;
     }
 
     function andon()
@@ -171,6 +174,114 @@ class DashboardController extends Controller
         }
 
         return $lines;
+    }
+
+    function andon_charts()
+    {
+        $prevMonthStart = Carbon::now()->subMonth()->startOfMonth();
+        $prevMonthEnd = Carbon::now()->subMonth()->endOfMonth();
+        $start = Carbon::now()->startOfMonth();
+        $today = Carbon::now()->startOfDay();
+        $end = Carbon::now();
+        $startMonth = Carbon::now()->startOfMonth();
+        $endMonth = Carbon::now()->endofMonth();
+        $notNgToday = avi_trace_torimetron::where('status', 1)->whereBetween('updated_at', [$today, $end])->count();
+        $ngToday = avi_trace_torimetron::where('status', 0)->whereBetween('updated_at', [$today, $end])->count();
+        $notNgMonth = avi_trace_torimetron::where('status', 1)->whereBetween('updated_at', [$startMonth, $endMonth])->count();
+        $ngMonth = avi_trace_torimetron::where('status', 0)->whereBetween('updated_at', [$startMonth, $endMonth])->count();
+        $solved = avi_andon_charts::whereNotNull('finish_at')
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->count();
+        $unsolved = avi_andon_charts::whereNull('finish_at')
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->count();
+        $prevSolved = avi_andon_charts::whereNotNull('finish_at')
+        ->whereBetween('error_at', [$prevMonthStart, Carbon::parse($prevMonthEnd)->endOfDay()])
+        ->count();
+        $prevUnsolved = avi_andon_charts::whereNull('finish_at')
+        ->whereBetween('error_at', [$prevMonthStart, Carbon::parse($prevMonthEnd)->endOfDay()])
+        ->count();
+        $type2 = avi_andon_charts::where('status', 2)
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->count();
+        $type3 = avi_andon_charts::where('status', 3)
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->count();
+        $type4 = avi_andon_charts::where('status', 4)
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->count();
+        $avgType2 = avi_andon_charts::where('status', 2)
+        ->where(DB::raw('TIMEDIFF(finish_at, error_at)'), '>=', 5)
+        ->whereNotNull('finish_at')
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->avg(DB::raw('TIMEDIFF(finish_at, error_at)'));
+        $avgType3 = avi_andon_charts::where('status', 3)
+        ->where(DB::raw('TIMEDIFF(finish_at, error_at)'), '>=', 5)
+        ->whereNotNull('finish_at')
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->avg(DB::raw('TIMEDIFF(finish_at, error_at)'));
+        $avgType4 = avi_andon_charts::where('status', 4)
+        ->where(DB::raw('TIMEDIFF(finish_at, error_at)'), '>=', 5)
+        ->whereNotNull('finish_at')
+        ->whereBetween('error_at', [$start, Carbon::parse($end)->endOfDay()])
+        ->avg(DB::raw('TIMEDIFF(finish_at, error_at)'));
+        if ($avgType2 == null) {
+            $avgType2 = 0;
+        } else {
+            $avgType2 = $avgType2;
+        }
+        if ($avgType3 == null) {
+            $avgType3 = 0;
+        } else {
+            $avgType3 = $avgType3;
+        }
+        if ($avgType4 == null) {
+            $avgType4 = 0;
+        } else {
+            $avgType4 = $avgType4;
+        }
+        $avgType2 = round($avgType2, 0);
+        $avgType3 = round($avgType3, 0);
+        $avgType4 = round($avgType4, 0);
+        $labelStart = $start->format('d-m-Y');
+        $labelEnd = $end->format('d-m-Y');  
+        $total = $solved + $unsolved;
+        if ($solved == 0 && $unsolved == 0) {
+            $percentageSolved = 0;
+            $percentageUnsolved = 0;
+        } else {
+            $percentageSolved = round(($solved / $total) * 100, 0);
+            $percentageUnsolved = round(($unsolved / $total) * 100, 0);
+        }
+        $percentageSolved = round($percentageSolved, 1);
+        $percentageUnsolved = round($percentageUnsolved, 1);
+        $avgMin2 = gmdate("H:i:s", $avgType3);
+        $avgMin3 = gmdate("H:i:s", $avgType3);
+        $avgMin4 = gmdate("H:i:s", $avgType4);
+
+        return view('adminlte::dashboard.direct.andon_charts', [
+            'solved' => $solved,
+            'unsolved' => $unsolved,
+            'type2' => $type2,
+            'type3' => $type3,
+            'type4' => $type4,
+            'avgType2' => $avgType2,
+            'avgType3' => $avgType3,
+            'avgType4' => $avgType4,
+            'start' => $labelStart,
+            'end' => $labelEnd,
+            'prevSolved' => $prevSolved,
+            'prevUnsolved' => $prevUnsolved,
+            'notNgToday' => $notNgToday,
+            'ngToday' => $ngToday,
+            'notNgMonth' => $notNgMonth,
+            'ngMonth' => $ngMonth,
+            'avgMin2' => $avgMin2,
+            'avgMin3' => $avgMin3,
+            'avgMin4' => $avgMin4,
+            'percentageSolved' => $percentageSolved,
+            'percentageUnsolved' => $percentageUnsolved,
+        ]);
     }
 
 }
