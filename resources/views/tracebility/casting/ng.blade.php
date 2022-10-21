@@ -220,6 +220,7 @@
                         clearInterval(interval);
                         $('#ng').val("");
                         $('#ng').focus();
+                        window.location.replace("{{url('/trace/scan/casting')}}");
                     }, 1000);
 
                 }
