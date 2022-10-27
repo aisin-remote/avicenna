@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Andon Charts</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
+  <link rel="stylesheet" href="{{ asset('css/bootstrap-5.css') }}">
+ </head>
 <body class="bg-light">
   {{-- <style>
     .apexcharts-tooltip {
@@ -110,8 +108,8 @@
   </div>
   
   
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/apexcharts.js') }}"></script>
+  <script src="{{ asset('js/jquery.js') }}" ></script>
   <script type="text/javascript">
     var solveRate = {
       series: [{{ $solved }}, {{ $unsolved }}],
@@ -298,48 +296,6 @@
       }]
     };
     
-    var ngMonth = {
-      series: [{{ $notNgMonth }}, {{ $ngMonth }}],
-      chart: {
-        width: 317,
-        type: 'donut',
-      },
-      colors: ['#198754', '#dc3545'],
-      labels: ['Good', 'NG'],
-      plotOptions: {
-        pie: {
-          expandOnClick: true,
-          donut: {
-            size: '55%',
-            labels: {
-              show: true,
-              total: {
-                show: true,
-                showAlways: true,
-                label: 'Total Product',
-                fontSize: '12px'
-              },
-              value: {
-                show: true,
-                fontSize: '14px',
-                fontWeight: 'bold'
-              }
-            }
-          }
-        }
-      },
-      responsive: [{
-        breakpoint: 1192,
-        options: {
-          chart: {
-            width: 150,
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }]
-    };
     
     var chart1 = new ApexCharts(document.querySelector("#problemCount"), averageAndon);
     chart1.render();
@@ -347,14 +303,8 @@
     var chart2 = new ApexCharts(document.querySelector("#solvedThisTime"), solveRate);
     chart2.render();
     
-    var chart3 = new ApexCharts(document.querySelector("#solvedLastMonth"), lastMonth);
-    chart3.render();
-    
     var chart4 = new ApexCharts(document.querySelector("#ngToday"), ngToday);
     chart4.render();
-    
-    var chart5 = new ApexCharts(document.querySelector("#ngMonth"), ngMonth);
-    chart5.render();
     
     function date_time(id) {
       date = new Date;
