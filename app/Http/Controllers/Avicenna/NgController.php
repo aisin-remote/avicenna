@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Avicenna\avi_trace_ng;
 use Datatables;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class NgController extends Controller
@@ -32,13 +33,22 @@ class NgController extends Controller
         $line = $request->line;
         $start_date = $request->start_date;
         $end_date = $request->end_date;
+        $programnumber = $request->programnumber;
         $date = date('Y-m-d');
 
 
         $data = avi_trace_ng::select('*')->with('ngdetail');
 
         if ($start_date == 'null' && $end_date == 'null') {
-            $data = $data->where('date', '=', $date);
+            $from = date_create($date);
+            $to = date('Y-m-d', strtotime("+1 day", strtotime($date)));
+            $to = date_create($to);
+            $from =  date_format($from, "Y-m-d 06:00:00");
+
+            $to = date_format($to, "Y-m-d 06:00:00");
+
+            $data = $data->where('created_at', '>=', $from);
+            $data = $data->where('created_at', '<=', $to);
         }
 
         if ($line != 'null') {
@@ -46,24 +56,37 @@ class NgController extends Controller
         }
 
         if ($start_date != 'null') {
-            $data = $data->where('date', '>=', $start_date);
+            $from = date_create($start_date);
+            $from =  date_format($from, "Y-m-d 06:00:00");
+            $data = $data->where('created_at', '>=', $from);
         }
 
         if ($end_date != 'null') {
-            $data = $data->where('date', '<=', $end_date);
+            $to = date('Y-m-d', strtotime("+1 day", strtotime($end_date)));
+            $to = date_create($to);
+
+            $to = date_format($to, "Y-m-d 06:00:00");
+            $data = $data->where('created_at', '<=', $to);
+        }
+
+        if ($programnumber != 'null') {
+            $data = $data->where(DB::raw('substring(code,1,2)'), '=', $programnumber);
         }
 
         $data = $data->get()->groupBy('id_ng');
         $labelChart = [];
         $valueChart = [];
+        $totalLine = 0;
         foreach ($data as $datum) {
             array_push($labelChart, $datum[0]->ngdetail->name);
             array_push($valueChart, count($datum));
+            $totalLine = $totalLine + count($datum);
         }
 
         $line =  $request->line == 'null' ? '' : $request->line;
 
         return [
+            'totalLine' => $totalLine,
             'lineChart' => $line,
             'labelChart' => $labelChart,
             'valueChart' => $valueChart
@@ -129,23 +152,22 @@ class NgController extends Controller
         }
 
         $data = $data->get()->groupBy('id_ng');
-        Excel::load('/storage/template/Export_NG.xlsx',  function($file) use($data, $start_date, $end_date){
+        Excel::load('/storage/template/Export_NG.xlsx',  function ($file) use ($data, $start_date, $end_date) {
 
             $row = "3";
             $no = "1";
-            $file->setActiveSheetIndex(0)->setCellValue('A1', 'DATA NG PERIODE '.$start_date.' - '.$end_date);
+            $file->setActiveSheetIndex(0)->setCellValue('A1', 'DATA NG PERIODE ' . $start_date . ' - ' . $end_date);
             foreach ($data as $datum) {
 
-                $file->setActiveSheetIndex(0)->setCellValue('A'.$row.'', $no);
-                $file->setActiveSheetIndex(0)->setCellValue('B'.$row.'', $datum[0]->ngdetail->name);
-                $file->setActiveSheetIndex(0)->setCellValue('C'.$row.'', $datum[0]->line);
-                $file->setActiveSheetIndex(0)->setCellValue('D'.$row.'', count($datum));
+                $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
+                $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $datum[0]->ngdetail->name);
+                $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', $datum[0]->line);
+                $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', count($datum));
 
                 $row++;
                 $no++;
             }
-        })->setFilename("NG PERIODE ".$start_date.' - '.$end_date)->export('xlsx');
-
+        })->setFilename("NG PERIODE " . $start_date . ' - ' . $end_date)->export('xlsx');
     }
 
     /**

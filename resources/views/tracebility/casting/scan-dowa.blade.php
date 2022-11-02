@@ -4,9 +4,13 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div id="line" class="panel panel-default" >
-                <span style="font-size : 50px "> <center> LINE CASTING DOWA <span id="line-display"></span> </center> </span>
-                <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
+            <div id="line" class="panel panel-default">
+                <span style="font-size : 50px ">
+                    <center> LINE CASTING DOWA <span id="line-display"></span> </center>
+                </span>
+                <span style="font-size : 30px ">
+                    <center> PT AISIN INDONESIA AUTOMOTIVE </center>
+                </span>
             </div>
         </div>
     </div>
@@ -32,9 +36,11 @@
         </div>
 
         <div class="col-md-8">
-            <div id="alert" class="alert alert-{{ session('message')['type'] ? session('message')['type'] : 'success' }}">
-                <h4><div id="alert-header"> <i class="icon fa fa-check"></i>SCAN PART</div></h4>
-                <div id="alert-body" style="font-size : 51px; text-align: center; ">{{ session('message')['text'] ? session('message')['text'] : ' ' }}</div>
+            <div id="alert" class="alert alert-{{(isset(session('message')['type'])) ? session('message')['type'] : 'success' }}">
+                <h4>
+                    <div id="alert-header"> <i class="icon fa fa-check"></i>SCAN PART</div>
+                </h4>
+                <div id="alert-body" style="font-size : 51px; text-align: center; ">{{ isset(session('message')['text']) ? session('message')['text'] : ' ' }}</div>
             </div>
 
         </div>
@@ -49,7 +55,10 @@
                             <tbody>
                                 <tr>
                                     <td align="center" height=60>
-                                        <font size=35><div id="counter">0</div></font></td>
+                                        <font size=35>
+                                            <div id="counter">0</div>
+                                        </font>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -71,7 +80,10 @@
                             <tbody>
                                 <tr>
                                     <td align="center" height=180 style="vertical-align: middle">
-                                    <font size=5><div id="part-internal"></div></font></td>
+                                        <font size=5>
+                                            <div id="part-internal"></div>
+                                        </font>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -87,13 +99,25 @@
                         <table class="table table-bordered responsive-utilities jambo_table">
                             <tbody>
                                 <tr>
-                                    <td align="center" height=60><font size=5><div id="code1"></div></font></td>
+                                    <td align="center" height=60>
+                                        <font size=5>
+                                            <div id="code1"></div>
+                                        </font>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td align="center" height=60><font size=5><div id="code2"></div></font></td>
+                                    <td align="center" height=60>
+                                        <font size=5>
+                                            <div id="code2"></div>
+                                        </font>
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td align="center" height=60><font size=5><div id="code3"></div></font></td>
+                                    <td align="center" height=60>
+                                        <font size=5>
+                                            <div id="code3"></div>
+                                        </font>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -138,13 +162,12 @@
 <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
 <script src="{{ asset('/js/jquery-cookie.js') }}"></script>
 <script type="text/javascript">
-
     let line = '';
 
     function initApp() {
         let line_number = localStorage.getItem('avi_line_number');
         if (line_number == null || line_number == undefined) {
-            $('#modalLineScan').on('shown.bs.modal', function () {
+            $('#modalLineScan').on('shown.bs.modal', function() {
                 $('#input-line').focus();
             })
             $('#modalLineScan').modal('show');
@@ -154,7 +177,7 @@
             $('#detail_no').focus();
         }
 
-        if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
+        if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null) {
             sendDataAjax();
         }
     }
@@ -169,7 +192,7 @@
 
         $('#input-line').keypress(function(e) {
             let code = (e.keyCode ? e.keyCode : e.which);
-            if(code==13) {
+            if (code == 13) {
                 localStorage.setItem('avi_line_number', $(this).val());
                 initApp();
                 $('#modalLineScan').modal('hide');
@@ -178,7 +201,7 @@
         });
 
         if (localStorage.getItem('avi_casting_kanban_int') != null) {
-            $('#part-internal').text(localStorage.getItem('avi_casting_kanban_int').substring(41,53).concat(' (',localStorage.getItem('avi_casting_kanban_int').substring(100,104),')'));
+            $('#part-internal').text(localStorage.getItem('avi_casting_kanban_int').substring(41, 53).concat(' (', localStorage.getItem('avi_casting_kanban_int').substring(100, 104), ')'));
         }
 
         $('#code1').text(localStorage.getItem('avi_casting_code1'));
@@ -188,15 +211,15 @@
         $('#detail_no').prop('readonly', true);
         document.body.style.backgroundColor = '#dddddd';
         // end of dev-1.1.0 : 20190801 Handika , Optimasi line,
-        let barcode   = "";
-        let rep2      = "";
+        let barcode = "";
+        let rep2 = "";
         let detail_no = $('#detail_no');
 
-        $('#detail_no').keypress( function(e) {
+        $('#detail_no').keypress(function(e) {
             e.preventDefault();
             let code = (e.keyCode ? e.keyCode : e.which);
             // key enter
-            if(code==13) {
+            if (code == 13) {
                 barcodecomplete = barcode;
                 barcode = "";
                 // end of isi dengan line
@@ -205,22 +228,26 @@
                     window.location.replace("{{url('/trace/scan/casting')}}");
                     return;
                 }
+                if (barcodecomplete == "NGMODE") {
+                    window.location.replace("{{url('/trace/scan/casting/ng')}}");
+                    return;
+                }
                 if (barcodecomplete.length == 15) {
-                    var partType = barcodecomplete.substring(0,2);
+                    var partType = barcodecomplete.substring(0, 2);
                     if (!dowaParts.includes(partType)) {
                         notifMessege("error", "Is not a CSH D05");
                         return;
                     }
 
-                    if (checkDataLocal(barcodecomplete, 'code') == true ){
+                    if (checkDataLocal(barcodecomplete, 'code') == true) {
                         checkDataAjax(barcodecomplete, 'code');
-                    }else{
-                        notifMessege("error", barcodecomplete+" Already Exist");
+                    } else {
+                        notifMessege("error", barcodecomplete + " Already Exist");
                     }
-                } else if(barcodecomplete.length == 230) {
-                    if (checkDataLocal(barcodecomplete, 'kbnint') == true ){
+                } else if (barcodecomplete.length == 230) {
+                    if (checkDataLocal(barcodecomplete, 'kbnint') == true) {
                         checkDataAjax(barcodecomplete, 'kbnint');
-                    }else{
+                    } else {
                         notifMessege("error", "Scan Part First");
                     }
 
@@ -233,7 +260,7 @@
                     $('#detail_no').prop('readonly', true);
                 }
             } else {
-                barcode=barcode+String.fromCharCode(e.which);
+                barcode = barcode + String.fromCharCode(e.which);
             }
         });
 
@@ -264,20 +291,20 @@
             type: 'get',
             url: "{{ url('/trace/scan/casting/dowa/check-code') }}",
             data: {
-                type : type,
-                code : barcodecomplete,
+                type: type,
+                code: barcodecomplete,
             },
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 if (data.code == "false") {
-                    notifMessege("error", data.codesubstr+" Already Exist");
-                } else if(data.code == "unregistered") {
-                    notifMessege("error", data.codesubstr+" Unregistered");
+                    notifMessege("error", data.codesubstr + " Already Exist");
+                } else if (data.code == "unregistered") {
+                    notifMessege("error", data.codesubstr + " Unregistered");
                 } else {
                     saveDataLocalStorage(data.type, data.code);
                 }
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 if (xhr.status == 0) {
                     notifMessege("error", '@lang("avicenna/pis.connection_error")');
                     return;
@@ -294,8 +321,8 @@
         let partCode3 = localStorage.getItem('avi_casting_code3');
         if (type == 'kbnint') {
             localStorage.setItem('avi_casting_kanban_int', code);
-            $('#part-internal').text(code.substring(41,53).concat(' (',code.substring(100,104),')'));
-            notifMessege("success", code.substring(100,104));
+            $('#part-internal').text(code.substring(41, 53).concat(' (', code.substring(100, 104), ')'));
+            notifMessege("success", code.substring(100, 104));
         } else if (type == 'code') {
             if (partCode1 == null || partCode1 == undefined) {
                 localStorage.setItem('avi_casting_code1', code);
@@ -313,12 +340,12 @@
                 notifMessege("error", "Parts is Complete, Scan Kanban!");
             }
         }
-        if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null ) {
+        if (localStorage.getItem('avi_casting_kanban_int') !== null && localStorage.getItem('avi_casting_code1') !== null && localStorage.getItem('avi_casting_code2') !== null && localStorage.getItem('avi_casting_code3') !== null) {
             if (sendDataAjax()) {
                 clearLocalStorage();
             } else {
                 localStorage.removeItem('avi_casting_kanban_int');
-                
+
                 $('#part-internal').text('');
             }
         }
@@ -340,16 +367,16 @@
             type: 'get',
             url: "{{ url('/trace/scan/casting/dowa/input-code') }}",
             data: {
-                kbn_int : localStorage.getItem('avi_casting_kanban_int').substring(123,127),
-                line : localStorage.getItem('avi_line_number'),
-                code : [
+                kbn_int: localStorage.getItem('avi_casting_kanban_int').substring(123, 127),
+                line: localStorage.getItem('avi_line_number'),
+                code: [
                     localStorage.getItem('avi_casting_code1'),
                     localStorage.getItem('avi_casting_code2'),
                     localStorage.getItem('avi_casting_code3')
                 ]
             },
             dataType: 'json',
-            success: function (data) {
+            success: function(data) {
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
                     $('#counter').text(data.counter);
@@ -364,7 +391,7 @@
                     return false
                 }
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 if (xhr.status == 0) {
                     notifMessege("error", '@lang("avicenna/pis.connection_error")');
                     return;
@@ -378,12 +405,12 @@
         if (type == "error") {
             $('#alert').removeClass('alert-success');
             $('#alert').addClass('alert-danger');
-            $('#alert-header').html('<i class="icon fa fa-warning"></i>'+'ERROR');
+            $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'ERROR');
             $('#alert-body').text(messege);
         } else if (type == "success") {
             $('#alert').removeClass('alert-danger');
             $('#alert').addClass('alert-success');
-            $('#alert-header').html('<i class="icon fa fa-success"></i>'+'SUCCESS');
+            $('#alert-header').html('<i class="icon fa fa-success"></i>' + 'SUCCESS');
             $('#alert-body').text(messege);
         }
     }
