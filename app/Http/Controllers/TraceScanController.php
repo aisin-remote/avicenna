@@ -155,7 +155,7 @@ class TraceScanController extends Controller
      * Fungsi input data part
      *
      */
-    public function inputPartCastingNg($part, $ng, $line)
+    public function inputPartCastingNg($part, $ng)
     {
         $user = Auth::user();
         $cekNg = avi_trace_ng_master::where('id', $ng)->first();
@@ -165,6 +165,13 @@ class TraceScanController extends Controller
                 "messege" => "DATA ID NG TIDAK DITEMUKAN"
             ];
         }
+
+        $b 				= substr($part, 5, 1);
+		$line 			= "DCAA0".$b."";
+		if ($b == "A") {
+			$line 			= "DCAA10";
+		}
+
         $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
         if ($partNg) {
             $partNg->delete();

@@ -38,7 +38,7 @@
      <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
         <div class="bg-merahs ng-header">
             <h1 class="text-center" style="font-size: 40pt; color: white">
-                INPUT PART NG - LINE <span id="line-display"></span>
+                INPUT PART NG
             </h1>
         </div>
         <div style="background-color: black;">
@@ -190,10 +190,10 @@
     }
 
     function inputNg(part, idNg) {
-        let line = localStorage.getItem('avi_line_number');
+        
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/casting/inputPartNg') }}"+'/'+part+'/'+idNg+'/'+line,
+            url: "{{ url('/trace/scan/casting/inputPartNg') }}"+'/'+part+'/'+idNg,
             dataType: 'json',
             success: function (data) {
                 if (data.status == "error") {
@@ -218,9 +218,9 @@
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
                         clearInterval(interval);
+                        $('#code').val("");
                         $('#ng').val("");
-                        $('#ng').focus();
-                        window.location.replace("{{url('/trace/scan/casting')}}");
+                        $('#code').focus();
                     }, 1000);
 
                 }

@@ -136,7 +136,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/ng', 'TraceScanController@castingng');
 	Route::get('/trace/scan/casting/ng2', 'TraceScanController@castingng2');
 	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartCastingNg');
-	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartCastingNg');
+	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}', 'TraceScanController@inputPartCastingNg');
 
 
 		//Machining
