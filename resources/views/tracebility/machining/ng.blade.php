@@ -206,7 +206,7 @@
                     }, 1000);
                 } else {
                     $("#ngdetail > tbody").empty();
-                    data.forEach((item, index) => {
+                    data.data.forEach((item, index) => {
                         $("#ngdetail").find('tbody')
                             .append($('<tr>')
                                 .append($('<td>')

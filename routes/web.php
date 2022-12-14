@@ -137,6 +137,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/ng2', 'TraceScanController@castingng2');
 	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartCastingNg');
 	Route::get('/trace/scan/casting/inputPartNg/{part}/{ng}', 'TraceScanController@inputPartCastingNg');
+	Route::get('/trace/scan/casting/getLine/{part}', 'TraceScanController@getLineCasting');
 
 
 		//Machining
@@ -240,6 +241,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ng/view/getData/{line}/{start}/{end}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
 	Route::post('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
 	Route::get('/trace/ng/view/exportData/{line}/{start}/{end}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
+	Route::get('/trace/ng/getLineData/{line}', 'TraceScanController@getNgData')->name('trace.ng.getLineData');
 
 	// OK Master
 	Route::get('/trace/ok/view', 'Avicenna\DashboardController@index')->name('trace.ng.view');
@@ -248,6 +250,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ok/view/exportData/{area}/{start}/{end}', 'Avicenna\DashboardController@exportData')->name('trace.ng.view.exportData');
 
 
+	// API
+	Route::get('/trace/api/getqty', 'Avicenna\Api\ApiController@getQty');
 
 	//end of tracebility ====================================================================================================
 

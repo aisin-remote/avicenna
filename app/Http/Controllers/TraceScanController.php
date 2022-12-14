@@ -175,6 +175,7 @@ class TraceScanController extends Controller
         $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
         if ($partNg) {
             $partNg->delete();
+            $type = 'delete';
         } else {
             $inputNg = avi_trace_ng::create([
                 'code' => $part,
@@ -183,9 +184,319 @@ class TraceScanController extends Controller
                 'line' => $line,
                 'pic' => $user->npk
             ]);
+            $type = 'input';
         }
         $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
-        return $aviNg;
+        return [
+            "type" => $type,
+            "data" => $aviNg
+        ];
+    }
+
+    public function getLineCasting($part){
+        $today = date('Y-m-d');
+        $tomorrow = date('Y-m-d', strtotime('+1 days'));
+        $yesterday = date('Y-m-d', strtotime('-1 days'));
+        $b = substr($part, 5, 1);
+		$line = "DCAA0".$b."";
+		if ($b == "A") {
+			$line 			= "DCAA10";
+		}
+        $counter = [];
+        $lineName = [];
+
+        if (date('H:i') >= '06:00' && date('H:i') <= '13:59') {
+            if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA01')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA02')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA03')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA01';
+                $lineName[1] = 'DCAA02';
+                $lineName[2] = 'DCAA03';
+            }
+            if($line == 'DCAA04' || $line == 'DCAA05'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA04')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA05')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA04';
+                $lineName[1] = 'DCAA05';
+            }
+            if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA06')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA07')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA08')
+                ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA06';
+                $lineName[1] = 'DCAA07';
+                $lineName[2] = 'DCAA08';
+            }
+        } elseif(date('H:i') >= '14:00' && date('H:i') <= '21:59'){
+            if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA01')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA02')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA03')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA01';
+                $lineName[1] = 'DCAA02';
+                $lineName[2] = 'DCAA03';
+            }
+            if($line == 'DCAA04' || $line == 'DCAA05'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA04')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA05')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA04';
+                $lineName[1] = 'DCAA05';
+            }
+            if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA06')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA07')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA08')
+                ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA06';
+                $lineName[1] = 'DCAA07';
+                $lineName[2] = 'DCAA08';
+            }
+        } elseif(date('H:i') >= '22:00' && date('H:i') <= '23:59'){
+            if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA01')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA02')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA03')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA01';
+                $lineName[1] = 'DCAA02';
+                $lineName[2] = 'DCAA03';
+            }
+            if($line == 'DCAA04' || $line == 'DCAA05'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA04')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA05')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA04';
+                $lineName[1] = 'DCAA05';
+            }
+            if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA06')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA07')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA08')
+                ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA06';
+                $lineName[1] = 'DCAA07';
+                $lineName[2] = 'DCAA08';
+            }
+        } elseif(date('H:i') >= '00:00' && date('H:i') <= '05:59'){
+            $today = date('Y-m-d', strtotime('-1 days'));
+            $tomorrow = date('Y-m-d');
+            if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA01')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA02')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA03')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA01';
+                $lineName[1] = 'DCAA02';
+                $lineName[2] = 'DCAA03';
+            }
+            if($line == 'DCAA04' || $line == 'DCAA05'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA04')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA05')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA04';
+                $lineName[1] = 'DCAA05';
+            }
+            if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
+                $counter[0] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA06')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[1] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA07')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $counter[2] =  DB::table('avi_trace_ngs as a')
+                ->select('b.name', DB::raw('count(a.id) as counter'))
+                ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+                ->where('a.line', 'DCAA08')
+                ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->groupBy('a.id_ng')
+                ->get();
+                $lineName[0] = 'DCAA06';
+                $lineName[1] = 'DCAA07';
+                $lineName[2] = 'DCAA08';
+            }
+        }
+
+        return [
+            'data' => $counter,
+            'lineName' => $lineName
+        ];
     }
 
     public function getAjaxcastingng($number, $date, $line)
@@ -939,6 +1250,7 @@ class TraceScanController extends Controller
         $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
         if ($partNg) {
             $partNg->delete();
+            $type = 'delete';
         } else {
             $inputNg = avi_trace_ng::create([
                 'code' => $part,
@@ -947,9 +1259,13 @@ class TraceScanController extends Controller
                 'line' => $line,
                 'pic' => $user->npk
             ]);
+            $type = 'input';
         }
         $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
-        return $aviNg;
+        return [
+            "type" => $type,
+            "data" => $aviNg
+        ];
     }
 
 
@@ -1733,6 +2049,7 @@ class TraceScanController extends Controller
         $partNg = avi_trace_ng::where('code', $part)->where('id_ng', $ng)->first();
         if ($partNg) {
             $partNg->delete();
+            $type = 'delete';
         } else {
             $inputNg = avi_trace_ng::create([
                 'code' => $part,
@@ -1741,9 +2058,13 @@ class TraceScanController extends Controller
                 'line' => $line,
                 'pic' => $user->npk
             ]);
+            $type = 'input';
         }
         $aviNg = avi_trace_ng::with('ngdetail')->where('code', $part)->get();
-        return $aviNg;
+        return [
+            "type" => $type,
+            "data" => $aviNg
+        ];
     }
 
     public function assemblingfgngAjax(Request $request)
@@ -1977,6 +2298,53 @@ class TraceScanController extends Controller
         };
         return [
             "status" => "success"
+        ];
+    }
+
+    
+    public function getNgData($line){
+        $today = date('Y-m-d');
+        $tomorrow = date('Y-m-d', strtotime('+1 days'));
+        $yesterday = date('Y-m-d', strtotime('-1 days'));
+        $lineName = $line;
+
+        if(date('H:i') >= '06:00' && date('H:i') <= '13:59'){
+            $counter = DB::table('avi_trace_ngs as a')
+            ->select('b.name', DB::raw('count(a.id) as counter'))
+            ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+            ->where('a.line', $line)
+            ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+            ->groupBy('a.id_ng')
+            ->get();
+        } elseif(date('H:i') >= '14:00' && date('H:i') <= '21:59'){
+            $counter = DB::table('avi_trace_ngs as a')
+            ->select('b.name', DB::raw('count(a.id) as counter'))
+            ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+            ->where('a.line', $line)
+            ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+            ->groupBy('a.id_ng')
+            ->get();
+        } elseif(date('H:i') >= '22:00' && date('H:i') <= '23:59'){
+            $counter = DB::table('avi_trace_ngs as a')
+            ->select('b.name', DB::raw('count(a.id) as counter'))
+            ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+            ->where('a.line', $line)
+            ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 06:00:00'])
+            ->groupBy('a.id_ng')
+            ->get();
+        } elseif(date('H:i') >= '00:00' && date('H:i') <= '05:59'){
+            $counter = DB::table('avi_trace_ngs as a')
+            ->select('b.name', DB::raw('count(a.id) as counter'))
+            ->join('avi_trace_ng_masters as b', 'a.id_ng', '=', 'b.id')
+            ->where('a.line', $line)
+            ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 06:00:00'])
+            ->groupBy('a.id_ng')
+            ->get();
+        }
+
+        return [
+            "counter" => $counter,
+            "line" => $lineName
         ];
     }
 
