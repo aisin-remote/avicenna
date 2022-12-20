@@ -36,9 +36,18 @@
 <body style="background-color: black"> 
     <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
         <div class="bg-merahs ng-header">
-            <h1 class="text-center" style="font-size: 40pt; color: white">
-                INPUT PART NG
-            </h1>
+            <div class="row">
+                <div class="col-md-10">
+                    <h1 class="text-center" style="font-size: 40pt; color: white; margin-left: 150px">
+                        INPUT PART NG 
+                    </h1>
+                </div>
+                <div class="col-md-2">
+                    <h3 class="text-center text-white badge" style="font-size: 20px">
+                        {{ Auth::user()->name }}
+                    </h3>
+                </div>
+            </div>
         </div>
         <div style="background-color: black;">
             <div class="row">
@@ -133,6 +142,10 @@
                 }
             }
         });
+
+        let interval = setInterval( function(){
+            window.location.replace("{{url('/trace/logout')}}");
+        }, 3600000);
         
         $('#ng').keypress( function(e) {
             // e.preventDefault();
@@ -142,6 +155,7 @@
                 ng = $('#ng').val();
                 if (ng == "DONE") {
                     done();
+                    window.location.replace("{{url('/trace/logout')}}");
                     return;
                 }
                 if (ng.length > 0 && ng.length < 3) {
@@ -197,12 +211,10 @@
                         for(var i = 0; i < data.data.length; i++){
                             $('#table-here').append(`<div class="col-md-4" id="div${data.lineName[i]}"></div>`);
                             $('#div'+data.lineName[i]).append(`<table style="width: 100%; color: white; overflow-y: auto;"><thead><td style="height: 15px" class="text-center" colspan="2">${data.lineName[i]}</td></thead><tbody id="body${data.lineName[i]}"></tbody></thead></table>`);
-                            let total = 0;
                             for(var j = 0; j < data.data[i].length; j++){
                                 $('#body'+data.lineName[i]).append(`<tr><td style="height: 15px">${data.data[i][j].name}</td><td style="height: 15px">${data.data[i][j].counter}</td></tr>`);
-                                total += data.data[i][j].counter;
                             }
-                            $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.lineName[i]}</td><td style="height: 15px">${total}</td></tr>`);
+                            $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.lineName[i]}</td><td style="height: 15px">${data.totalPart[i]}</td></tr>`);
                         }
                     }
                 })
@@ -282,6 +294,7 @@
                         
                         $("#ngdetail > tbody").empty();
                     }
+
                     
                 </script>
             </body>

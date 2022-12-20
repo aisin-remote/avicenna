@@ -140,6 +140,10 @@
             }
         });
 
+        let interval = setInterval( function(){
+            window.location.replace("{{url('/trace/logout')}}");
+        }, 3600000);
+
         $('#ng').keypress( function(e) {
             // e.preventDefault();
             let code = (e.keyCode ? e.keyCode : e.which);
@@ -187,7 +191,6 @@
                     $('#notifModal').modal('hide');
                     clearInterval(interval);
                     $('#ng').focus();
-
                 }, 1000);
             }
 
@@ -230,7 +233,6 @@
                         clearInterval(interval);
                         $('#ng').val("");
                         $('#ng').focus();
-                        window.location.replace("{{url('/trace/scan/assembling')}}");
                     }, 1000);
 
                 }
@@ -248,13 +250,11 @@
                 $('#tbody-ngtotal').html('');
                 $('#table-here').append(`<div class="col-md-12" id="div${data.line}"></div>`);
                 $('#div'+data.line).append(`<table style="width: 100%; color: white; overflow-y: auto;"><thead><td style="height: 15px" class="text-center" colspan="2">${data.line}</td></thead><tbody id="body${data.line}"></tbody></thead></table>`);
-                let total = 0;
                 for(var i = 0; i < data.counter.length; i++){
                     console.log(data.counter[i]);
                     $('#body'+data.line).append(`<tr><td style="height: 15px">${data.counter[i].name}</td><td style="height: 15px">${data.counter[i].counter}</td></tr>`);
-                    total += data.counter[i].counter;
                 }
-                $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.line}</td><td style="height: 15px">${total}</td></tr>`);
+                $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.line}</td><td style="height: 15px">${data.totalPart}</td></tr>`);
             }
         })
     }

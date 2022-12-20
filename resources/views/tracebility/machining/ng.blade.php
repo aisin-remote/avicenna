@@ -49,15 +49,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; ">
-                    <table style="width: 100%; height: 100%">
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </table>
-                </div>
+                <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; " id="table-here"></div>
                 <div class="col-md-3 text-center border" style="height: 350px; margin-top: 2rem; color: white; overflow-y: auto;">
-                    <table id="ngdetail" style="width: 100%; height: 100%; border: white; color: red">
+                    <table id="ngdetail" style="width: 100%; border: white; color: red">
                         <thead>
                             <td style="height: 15px" class="text-center" colspan="2">NAMA NG</td>
                         </thead>
@@ -65,6 +59,13 @@
                             <tr>
                                 <td></td>
                             </tr>
+                        </tbody>
+                    </table>
+                    <table id="ngtotal" style="margin-top: 4%; width: 100%; border: white; color: red">
+                        <thead>
+                            <td style="height: 15px; color: white;" class="text-center" colspan="2">TOTAL NG</td>
+                        </thead>
+                        <tbody id="tbody-ngtotal">
                         </tbody>
                     </table>
                 </div>
@@ -109,6 +110,7 @@
     $(document).ready(function() {
         let line_number = localStorage.getItem('avi_line_number');
         let part = "";
+        getLineData(line_number);
         $('#line-display').text(line_number);
 
         $('#code').focus();
@@ -125,6 +127,7 @@
 
                 if (part.length == 15) {
                     cekPart(part);
+                    getLineData(line_number);
                 } else {
                     notif("error", "TOLONG SCAN PART KEMBALI");
                     let interval = setInterval( function(){
@@ -136,6 +139,10 @@
                 }
             }
         });
+
+        let interval = setInterval( function(){
+            window.location.replace("{{url('/trace/logout')}}");
+        }, 3600000);
 
         $('#ng').keypress( function(e) {
             // e.preventDefault();
@@ -149,6 +156,7 @@
                 }
                 if (ng.length > 0 && ng.length < 3) {
                     inputNg(part, ng);
+                    getLineData(line_number);
                 } else {
                     notif("error", "DATA NG TIDAK DITEMUKAN, ULANGI PROSES SCAN ID NG");
                     let interval = setInterval( function(){
@@ -189,6 +197,24 @@
         });
     }
 
+    function getLineData(line){
+        $.ajax({
+            type: 'get',
+            url: "{{ url('/trace/ng/getLineData') }}"+'/'+line,
+            success: function (data) {
+                $('#table-here').html('');
+                $('#tbody-ngtotal').html('');
+                $('#table-here').append(`<div class="col-md-12" id="div${data.line}"></div>`);
+                $('#div'+data.line).append(`<table style="width: 100%; color: white; overflow-y: auto;"><thead><td style="height: 15px" class="text-center" colspan="2">${data.line}</td></thead><tbody id="body${data.line}"></tbody></thead></table>`);
+                for(var i = 0; i < data.counter.length; i++){
+                    console.log(data.counter[i]);
+                    $('#body'+data.line).append(`<tr><td style="height: 15px">${data.counter[i].name}</td><td style="height: 15px">${data.counter[i].counter}</td></tr>`);
+                }
+                $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.line}</td><td style="height: 15px">${data.totalPart}</td></tr>`);
+            }
+        })
+    }
+
     function inputNg(part, idNg) {
         let line = localStorage.getItem('avi_line_number');
         $.ajax({
@@ -196,7 +222,7 @@
             url: "{{ url('/trace/scan/machining/inputPartNg') }}"+'/'+part+'/'+idNg+'/'+line,
             dataType: 'json',
             success: function (data) {
-                if (data.status == "error") {
+                if (data.data.status == "error") {
                     notif("error", data.messege);
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
@@ -214,7 +240,12 @@
                                 )
                             );
                     });
-                    notif("success", "ID NG BERHASIL DISCAN");
+                    if(data.type == 'input'){
+                        notif("success", `ID NG BERHASIL DISCAN`);
+                    }
+                    else{
+                        notif("error", "ID NG BERHASIL DIHAPUS");
+                    }
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
                         clearInterval(interval);

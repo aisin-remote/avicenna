@@ -204,6 +204,7 @@ class TraceScanController extends Controller
 		}
         $counter = [];
         $lineName = [];
+        $totalPart = [];
 
         if (date('H:i') >= '06:00' && date('H:i') <= '13:59') {
             if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
@@ -231,6 +232,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA01';
                 $lineName[1] = 'DCAA02';
                 $lineName[2] = 'DCAA03';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA01')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA02')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA03')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA04' || $line == 'DCAA05'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -249,6 +262,14 @@ class TraceScanController extends Controller
                 ->get();
                 $lineName[0] = 'DCAA04';
                 $lineName[1] = 'DCAA05';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA04')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA05')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -275,6 +296,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA06';
                 $lineName[1] = 'DCAA07';
                 $lineName[2] = 'DCAA08';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA06')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA07')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA08')
+                ->whereBetween('created_at', [$today.' 06:00:00', $today.' 14:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
         } elseif(date('H:i') >= '14:00' && date('H:i') <= '21:59'){
             if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
@@ -302,6 +335,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA01';
                 $lineName[1] = 'DCAA02';
                 $lineName[2] = 'DCAA03';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA01')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA02')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA03')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA04' || $line == 'DCAA05'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -320,6 +365,14 @@ class TraceScanController extends Controller
                 ->get();
                 $lineName[0] = 'DCAA04';
                 $lineName[1] = 'DCAA05';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA04')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA05')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -346,6 +399,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA06';
                 $lineName[1] = 'DCAA07';
                 $lineName[2] = 'DCAA08';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA06')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA07')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA08')
+                ->whereBetween('created_at', [$today.' 14:00:00', $today.' 22:00:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
         } elseif(date('H:i') >= '22:00' && date('H:i') <= '23:59'){
             if($line == 'DCAA01' || $line == 'DCAA02' || $line == 'DCAA03'){
@@ -373,6 +438,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA01';
                 $lineName[1] = 'DCAA02';
                 $lineName[2] = 'DCAA03';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA01')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA02')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA03')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA04' || $line == 'DCAA05'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -391,6 +468,14 @@ class TraceScanController extends Controller
                 ->get();
                 $lineName[0] = 'DCAA04';
                 $lineName[1] = 'DCAA05';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA04')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA05')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -417,6 +502,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA06';
                 $lineName[1] = 'DCAA07';
                 $lineName[2] = 'DCAA08';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA06')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA07')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA08')
+                ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
         } elseif(date('H:i') >= '00:00' && date('H:i') <= '05:59'){
             $today = date('Y-m-d', strtotime('-1 days'));
@@ -446,6 +543,18 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA01';
                 $lineName[1] = 'DCAA02';
                 $lineName[2] = 'DCAA03';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA01')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA02')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA03')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA04' || $line == 'DCAA05'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -464,6 +573,14 @@ class TraceScanController extends Controller
                 ->get();
                 $lineName[0] = 'DCAA04';
                 $lineName[1] = 'DCAA05';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA04')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA05')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
             if($line == 'DCAA06' || $line == 'DCAA07' || $line == 'DCAA08'){
                 $counter[0] =  DB::table('avi_trace_ngs as a')
@@ -490,12 +607,25 @@ class TraceScanController extends Controller
                 $lineName[0] = 'DCAA06';
                 $lineName[1] = 'DCAA07';
                 $lineName[2] = 'DCAA08';
+                $totalPart[0] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA06')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[1] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA07')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
+                $totalPart[2] = DB::table('avi_trace_ngs')
+                ->where('line', 'DCAA08')
+                ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+                ->count(DB::raw('DISTINCT code'));
             }
         }
 
         return [
             'data' => $counter,
-            'lineName' => $lineName
+            'lineName' => $lineName,
+            'totalPart' => $totalPart
         ];
     }
 
@@ -2316,6 +2446,10 @@ class TraceScanController extends Controller
             ->whereBetween('a.created_at', [$today.' 06:00:00', $today.' 14:00:00'])
             ->groupBy('a.id_ng')
             ->get();
+            $totalPart = DB::table('avi_trace_ngs')
+            ->where('line', $line)
+            ->whereBetween('created_at', [$today.' 06:00:00', $today.' 13:59:00'])
+            ->count(DB::raw('DISTINCT code'));
         } elseif(date('H:i') >= '14:00' && date('H:i') <= '21:59'){
             $counter = DB::table('avi_trace_ngs as a')
             ->select('b.name', DB::raw('count(a.id) as counter'))
@@ -2324,6 +2458,10 @@ class TraceScanController extends Controller
             ->whereBetween('a.created_at', [$today.' 14:00:00', $today.' 22:00:00'])
             ->groupBy('a.id_ng')
             ->get();
+            $totalPart = DB::table('avi_trace_ngs')
+            ->where('line', $line)
+            ->whereBetween('created_at', [$today.' 14:00:00', $today.' 21:59:00'])
+            ->count(DB::raw('DISTINCT code'));
         } elseif(date('H:i') >= '22:00' && date('H:i') <= '23:59'){
             $counter = DB::table('avi_trace_ngs as a')
             ->select('b.name', DB::raw('count(a.id) as counter'))
@@ -2332,6 +2470,10 @@ class TraceScanController extends Controller
             ->whereBetween('a.created_at', [$today.' 22:00:00', $tomorrow.' 06:00:00'])
             ->groupBy('a.id_ng')
             ->get();
+            $totalPart = DB::table('avi_trace_ngs')
+            ->where('line', $line)
+            ->whereBetween('created_at', [$today.' 22:00:00', $tomorrow.' 05:59:00'])
+            ->count(DB::raw('DISTINCT code'));
         } elseif(date('H:i') >= '00:00' && date('H:i') <= '05:59'){
             $counter = DB::table('avi_trace_ngs as a')
             ->select('b.name', DB::raw('count(a.id) as counter'))
@@ -2340,11 +2482,16 @@ class TraceScanController extends Controller
             ->whereBetween('a.created_at', [$yesterday.' 22:00:00', $today.' 06:00:00'])
             ->groupBy('a.id_ng')
             ->get();
+            $totalPart = DB::table('avi_trace_ngs')
+            ->where('line', $line)
+            ->whereBetween('created_at', [$yesterday.' 22:00:00', $today.' 05:59:00'])
+            ->count(DB::raw('DISTINCT code'));
         }
 
         return [
             "counter" => $counter,
-            "line" => $lineName
+            "line" => $lineName,
+            "totalPart" => $totalPart
         ];
     }
 
