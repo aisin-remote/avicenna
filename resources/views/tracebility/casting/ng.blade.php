@@ -123,6 +123,12 @@
             if(code==13) {
                 part = $('#code').val();
                 
+                if (part == "DONE") {
+                    done();
+                    window.location.replace("{{url('/trace/logout')}}");
+                    return;
+                }
+
                 if (part == "NGMODE") {
                     window.location.replace("{{url('/trace/scan/casting')}}");
                     return;
