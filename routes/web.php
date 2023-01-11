@@ -238,10 +238,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// NG Master
 	Route::get('/trace/ng/view', 'Avicenna\NgController@index')->name('trace.ng.view');
-	Route::get('/trace/ng/view/getData/{line}/{start}/{end}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
-	Route::post('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
-	Route::get('/trace/ng/view/exportData/{line}/{start}/{end}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
-	Route::get('/trace/ng/getLineData/{line}', 'TraceScanController@getNgData')->name('trace.ng.getLineData');
+
+	// update by fabian 12272022 || get data only by month
+	Route::get('/trace/ng/view/getData/{line}/{month}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
+
+
+	Route::get('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
+	Route::get('/trace/ng/view/exportData/{line}/{month}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
+	// end update
 
 	// OK Master
 	Route::get('/trace/ok/view', 'Avicenna\DashboardController@index')->name('trace.ng.view');
