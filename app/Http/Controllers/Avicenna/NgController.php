@@ -13,226 +13,202 @@ use Maatwebsite\Excel\Facades\Excel;
 class NgController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function index()
     {
         return view('tracebility.ng.index');
     }
-
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
     public function getDataChart(Request $request)
     {
-
+        // update
         $line = $request->line;
-        $start_date = $request->start_date;
-        $end_date = $request->end_date;
-        $programnumber = $request->programnumber;
-        $date = date('Y-m-d');
+        $date = $request->keyMonth;
+        
+        $data = avi_trace_ng::select('*')
+                ->with('ngdetail')
+                ->where('line', $line)
+                ->where('date', 'LIKE' , $date . '%')
+                ->groupBy('id_ng')
+                ->first();
+                
 
-
-        $data = avi_trace_ng::select('*')->with('ngdetail');
-
-        if ($start_date == 'null' && $end_date == 'null') {
-            $from = date_create($date);
-            $to = date('Y-m-d', strtotime("+1 day", strtotime($date)));
-            $to = date_create($to);
-            $from =  date_format($from, "Y-m-d 06:00:00");
-
-            $to = date_format($to, "Y-m-d 06:00:00");
-
-            $data = $data->where('created_at', '>=', $from);
-            $data = $data->where('created_at', '<=', $to);
-        }
-
-        if ($line != 'null') {
-            $data = $data->where('line', $line);
-        }
-
-        if ($start_date != 'null') {
-            $from = date_create($start_date);
-            $from =  date_format($from, "Y-m-d 06:00:00");
-            $data = $data->where('created_at', '>=', $from);
-        }
-
-        if ($end_date != 'null') {
-            $to = date('Y-m-d', strtotime("+1 day", strtotime($end_date)));
-            $to = date_create($to);
-
-            $to = date_format($to, "Y-m-d 06:00:00");
-            $data = $data->where('created_at', '<=', $to);
-        }
-
-        if ($programnumber != 'null') {
-            $data = $data->where(DB::raw('substring(code,1,2)'), '=', $programnumber);
-        }
-
-        $data = $data->get()->groupBy('id_ng');
         $labelChart = [];
         $valueChart = [];
         $totalLine = 0;
+        
         foreach ($data as $datum) {
-            array_push($labelChart, $datum[0]->ngdetail->name);
+            array_push($labelChart, $datum->name);
             array_push($valueChart, count($datum));
             $totalLine = $totalLine + count($datum);
         }
-
-        $line =  $request->line == 'null' ? '' : $request->line;
-
-        return [
+        
+        // $line =  $request->line == 'null' ? '' : $request->line;
+        
+        return response()->json([
             'totalLine' => $totalLine,
             'lineChart' => $line,
             'labelChart' => $labelChart,
-            'valueChart' => $valueChart
-        ];
+            'valueChart' => $valueChart,
+        ]);
     }
-
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getData($line, $start, $end)
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function getData($line, $month)
     {
-        $date = date('Y-m-d');
+        $date = date('Y-m');
         $data = avi_trace_ng::select('*')->with('ngdetail');
-
-        if ($start == 'null' && $end == 'null') {
-            $data = $data->where('date', '=', $date);
+        
+        if ($month == 'null') {
+            $data = $data->where('date', 'like', $date .'%');
         }
-
+        
+        if ($month != 'null') {
+            $data = $data->where('date', 'like', $month .'%');
+        }
+        
         if ($line != 'null') {
             $data = $data->where('line', $line);
         }
-
-        if ($start != 'null') {
-            $data = $data->where('date', '>=', $start);
-        }
-
-        if ($end != 'null') {
-            $data = $data->where('date', '<=', $end);
-        }
-
-        return DataTables::eloquent($data)
-            ->make(true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function exportData($line, $start_date, $end_date)
-    {
-        $date = date('Y-m-d');
-
-
-        $data = avi_trace_ng::select('*')->with('ngdetail');
-
-        if ($start_date == 'null' && $end_date == 'null') {
-            $data = $data->where('date', '=', $date);
-        }
-
-        if ($line != 'null') {
-            $data = $data->where('line', $line);
-        }
-
-        if ($start_date != 'null') {
-            $data = $data->where('date', '>=', $start_date);
-        }
-
-        if ($end_date != 'null') {
-            $data = $data->where('date', '<=', $end_date);
-        }
-
-        $data = $data->get()->groupBy('id_ng');
-        Excel::load('/storage/template/Export_NG.xlsx',  function ($file) use ($data, $start_date, $end_date) {
-
-            $row = "3";
-            $no = "1";
-            $file->setActiveSheetIndex(0)->setCellValue('A1', 'DATA NG PERIODE ' . $start_date . ' - ' . $end_date);
-            foreach ($data as $datum) {
-
-                $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
-                $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $datum[0]->ngdetail->name);
-                $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', $datum[0]->line);
-                $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', count($datum));
-
-                $row++;
-                $no++;
+        
+        // if ($start != 'null') {
+            //     $data = $data->where('date', '>=', $start);
+            // }
+            
+            // if ($end != 'null') {
+                //     $data = $data->where('date', '<=', $end);
+                // }
+                
+                return DataTables::eloquent($data)
+                ->make(true);
             }
-        })->setFilename("NG PERIODE " . $start_date . ' - ' . $end_date)->export('xlsx');
-    }
+            
+            /**
+            * Show the form for creating a new resource.
+            *
+            * @return \Illuminate\Http\Response
+            */
+            public function exportData($line, $month)
+            {
+                // Update 
+                Excel::load('/storage/template/Export_NG.xlsx',  function ($file) use ($line, $month) {
+                    
+                    $row = "3";
+                    $dataNg = [];
+                    $col = [];
+                    
+                    $dates = date_parse($month);
+                    $total_days = cal_days_in_month(CAL_GREGORIAN, $dates['month'], $dates['year']);
+                    
+                    for ($days = 1; $days <= $total_days; $days++) {
+                        $ng_data = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'id_ng', 'line', 'date')
+                        ->with('ngdetail')->where('line', $line)
+                        ->where('date', $month .'-'. $days)
+                        ->orderBy('id_ng','desc')
+                        ->groupBy('id_ng')
+                        ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-}
+                        foreach ($ng_data as $ng){
+                            if(!in_array($ng->id_ng, $dataNg)){
+                                $dataNg[$ng->id_ng] = $ng->ngdetail->name;
+                            }
+                            $jumlah_ng[$ng->id_ng]['jumlah'][] = $ng->jumlah_ng;
+                            $jumlah_ng[$ng->id_ng]['date'][] = date('d', strtotime($ng->date));
+                        }
+                        $column = '';
+                        if ($days >= 26) {
+                            $column .= chr(65 + floor(($days) / 26) - 1);
+                        }
+                        $column .= chr(65 + ($days) % 26);
+                        $col[] = $column;
+                        $file->setActiveSheetIndex(0)->setCellValue($column. '2' , $days);
+                    }
+                    foreach ($dataNg as $key => $value) {
+                        $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $value);
+                        for($i = 0; $i < count($jumlah_ng[$key]['jumlah']); $i++){
+                            $file->setActiveSheetIndex(0)->setCellValue($col[$jumlah_ng[$key]['date'][$i] - 1] . $row . '', $jumlah_ng[$key]['jumlah'][$i]);
+                        }
+                        $row++;
+                    }
+                    
+                })->setFilename("NG PERIODE " . $month . " LINE " . $line)->export('xlsx');
+            }
+            
+            /**
+            * Show the form for creating a new resource.
+            *
+            * @return \Illuminate\Http\Response
+            */
+            public function create()
+            {
+                //
+            }
+            
+            /**
+            * Store a newly created resource in storage.
+            *
+            * @param  \Illuminate\Http\Request  $request
+            * @return \Illuminate\Http\Response
+            */
+            public function store(Request $request)
+            {
+                //
+            }
+            
+            /**
+            * Display the specified resource.
+            *
+            * @param  int  $id
+            * @return \Illuminate\Http\Response
+            */
+            public function show($id)
+            {
+                //
+            }
+            
+            /**
+            * Show the form for editing the specified resource.
+            *
+            * @param  int  $id
+            * @return \Illuminate\Http\Response
+            */
+            public function edit($id)
+            {
+                //
+            }
+            
+            /**
+            * Update the specified resource in storage.
+            *
+            * @param  \Illuminate\Http\Request  $request
+            * @param  int  $id
+            * @return \Illuminate\Http\Response
+            */
+            public function update(Request $request, $id)
+            {
+                //
+            }
+            
+            /**
+            * Remove the specified resource from storage.
+            *
+            * @param  int  $id
+            * @return \Illuminate\Http\Response
+            */
+            public function destroy($id)
+            {
+                //
+            }
+        }

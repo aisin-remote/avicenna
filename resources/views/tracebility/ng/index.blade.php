@@ -27,7 +27,7 @@ NG Data Detail
         <h3 class="box-title">Chart line <span id="lineChart"></span></h3>
         <!-- /.box-header -->
         <div class="box-body">
-
+          
           <canvas id="myChart" style="position: relative; height:30vh; width:80vw"></canvas>
         </div>
         <!-- /.box-body -->
@@ -35,7 +35,7 @@ NG Data Detail
       <div class="box-header">
         <!-- /.box-header -->
         <div class="box-body">
-
+          
           <div class="row">
             <div class="col-lg-3">
               <div class="form-group">
@@ -66,9 +66,9 @@ NG Data Detail
               <div class="form-group">
                 <label for="exampleInputEmail1">Program Number</label>
                 <?php
-
+                
                 use App\Models\Avicenna\avi_trace_program_number;
-
+                
                 $programnumber = avi_trace_program_number::select('code', 'product')->groupBy('code', 'product')->orderBy('code', 'asc')->get(); ?>
                 <select class="form-control select2" id="programnumber">
                   <option value="">--pilih--</option>
@@ -78,16 +78,19 @@ NG Data Detail
                 </select>
               </div>
             </div><!-- /.col-lg-6 -->
-            <div class="col-lg-3">
+            {{-- update by fabian 12272022 || report excel by month --}}
+            <div class="col-lg-6">
               <div class="form-group">
-                <label for="exampleInputEmail1">Start Date</label>
-                <input type="date" class="form-control" id="start_date" placeholder="Start Date">
-              </div>
-            </div><!-- /.col-lg-6 -->
-            <div class="col-lg-3">
-              <div class="form-group">
-                <label for="exampleInputEmail1">End Date</label>
-                <input type="date" class="form-control" id="end_date" placeholder="End Date">
+                <div>
+                  <label for="keyMonth">
+                    <i class='fa fa-calendar'></i>&nbsp;&nbsp;<font face='calibri'><b>Select Month</b></font>
+                  </label>
+                </div>
+                <select class="form-control select2" name="keyMonth" id="keyMonth" style="width: 100%;">
+                  @for ($i = 0; $i < 12; $i++)
+                  <option value="{{ \Carbon\Carbon::now()->startOfMonth()->subMonths($i)->format('Y-m') }}">{{ \Carbon\Carbon::now()->startOfMonth()->subMonths($i)->format('Y-m') }}</option>
+                  @endfor
+                </select>
               </div>
             </div><!-- /.col-lg-6 -->
           </div><!-- /.row -->
@@ -97,15 +100,15 @@ NG Data Detail
               <button type="button" id="btnExport" class="btn btn-success" onclick="exportData()"> Export To Excel</button>
             </div>
           </div>
-
-
-
+          
+          
+          
         </div>
         <!-- /.box-body -->
       </div>
     </div>
   </div>
-
+  
 </div>
 
 <div class="row">
@@ -132,7 +135,7 @@ NG Data Detail
       </div>
     </div>
   </div>
-
+  
 </div>
 
 @endsection
@@ -170,10 +173,10 @@ NG Data Detail
         label: 'Jenis NG',
         data: [],
         backgroundColor: [
-          'rgba(54, 162, 235, 0.2)'
+        'rgba(54, 162, 235, 0.2)'
         ],
         borderColor: [
-          'rgba(54, 162, 235, 1)',
+        'rgba(54, 162, 235, 1)',
         ],
         borderWidth: 1
       }]
@@ -186,95 +189,104 @@ NG Data Detail
       }
     }
   });
-
-
+  
+  
   // End Chart
   //
   let line = $('#line').val() ? $('#line').val() : 'null';
   let start_date = $('#start_date').val() ? $('#start_date').val() : 'null';
   let end_date = $('#end_date').val() ? $('#end_date').val() : 'null';
 
+  // data_month
+  let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+  
   var table = $('#tabel_all').DataTable({
     processing: true,
     serverSide: true,
-    ajax: '{{ url ("/trace/ng/view/getData") }}/' + line + '/' + start_date + '/' + end_date,
+    ajax: '{{ url ("/trace/ng/view/getData") }}/' + line + '/' + date,
     columns: [{
-        data: null,
-        name: 'no',
-        orderable: false,
-        searchable: false,
-        render: function(data, type, row, meta) {
-          return meta.row + meta.settings._iDisplayStart + 1;
-        }
-      },
-      {
-        data: 'code',
-        name: 'code'
-      },
-      {
-        data: 'created_at',
-        name: 'created_at'
-      },
-      {
-        data: 'ngdetail.name',
-        name: 'ngdetail.name'
-      },
-      {
-        data: 'line',
-        name: 'line'
-      },
-      {
-        data: 'pic',
-        name: 'pic'
-      },
+      data: null,
+      name: 'no',
+      orderable: false,
+      searchable: false,
+      render: function(data, type, row, meta) {
+        return meta.row + meta.settings._iDisplayStart + 1;
+      }
+    },
+    {
+      data: 'code',
+      name: 'code'
+    },
+    {
+      data: 'created_at',
+      name: 'created_at'
+    },
+    {
+      data: 'ngdetail.name',
+      name: 'ngdetail.name'
+    },
+    {
+      data: 'line',
+      name: 'line'
+    },
+    {
+      data: 'pic',
+      name: 'pic'
+    },
     ],
     language: {
       search: "Search :"
     },
   });
-
+  
   function filterData() {
-
+    
+    // update
     let line = $('#line').val() ? $('#line').val() : 'null';
-    let start_date = $('#start_date').val() ? $('#start_date').val() : 'null';
-    let end_date = $('#end_date').val() ? $('#end_date').val() : 'null';
     let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
 
+    // data_month
+    let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+    
     myChart.data.labels.splice(0, myChart.data.labels.length);
     myChart.data.datasets[0].data.splice(0, myChart.data.datasets[0].data.length);
-
-    table.ajax.url('{{ url ("/trace/ng/view/getData") }}/' + line + '/' + start_date + '/' + end_date).load();
-
+    
+    table.ajax.url('{{ url ("/trace/ng/view/getData") }}/' + line + '/' + date).load();
+    
     $.ajax({
-      type: 'post',
+      type: 'get',
       url: '{{ url ("/trace/ng/view/getDataChart") }}',
       dataType: 'json',
       data: {
-        _token: "{{ csrf_token() }}",
+        // _token: "{{ csrf_token() }}",
         line: line,
-        start_date: start_date,
-        end_date: end_date,
-        programnumber: programnumber
+        date: date,
+        // programnumber: programnumber
       },
       success: function(data) {
         myChart.data.labels = data.labelChart;
         myChart.data.datasets.forEach(dataset => {
           dataset.data = data.valueChart;
         });
-        $('#lineChart').text(data.lineChart + ' ' + data.totalLine);
+        $('#lineChart').text(data.lineChart + ' ' + data.labelChart);
+        
         myChart.update();
-
+        
       },
-
+      
     });
-
+    
   }
-
+  
   function exportData() {
     let line = $('#line').val() ? $('#line').val() : 'null';
     let start_date = $('#start_date').val() ? $('#start_date').val() : 'null';
     let end_date = $('#end_date').val() ? $('#end_date').val() : 'null';
-    location.href = '{{ url ("/trace/ng/view/exportData") }}/' + line + '/' + start_date + '/' + end_date;
+
+    // data_month
+    let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+    
+    location.href = '{{ url ("/trace/ng/view/exportData") }}/' + line + '/' + date;
   }
 </script>
 
