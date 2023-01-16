@@ -73,13 +73,41 @@ NG Data Detail
                 <select class="form-control select2" id="programnumber">
                   <option value="">--pilih--</option>
                   @foreach($programnumber as $val)
-                  <option value="{{$val->code}}">{{$val->product}}</option>
+                  <option value="{{$val->code}}" id="model">{{$val->product}}</option>
                   @endforeach
                 </select>
               </div>
             </div><!-- /.col-lg-6 -->
+            {{-- update dies fabian 01162023 --}}
+            <div class="col-lg-3">
+              <div class="form-group">
+                <label for="exampleInputEmail1">Dies</label>
+                <select class="form-control" id="dies">
+                  <option value="null">Pilih Dies</option>
+                  <option value="01">Die #1</option>
+                  <option value="02">Die #2</option>
+                  <option value="03">Die #3</option>
+                  <option value="04">Die #4</option>
+                  <option value="05">Die #5</option>
+                  <option value="06">Die #6</option>
+                  <option value="07">Die #7</option>
+                  <option value="08">Die #8</option>
+                  <option value="09">Die #9</option>
+                  <option value="10">Die #10</option>
+                  <option value="11">Die #11</option>
+                  <option value="12">Die #12</option>
+                  <option value="13">Die #13</option>
+                  <option value="14">Die #14</option>
+                  <option value="15">Die #15</option>
+                  <option value="16">Die #16</option>
+                  <option value="17">Die #17</option>
+                  <option value="18">Die #18</option>
+                  <option value="19">Die #19</option>
+                </select>
+              </div>
+            </div>
             {{-- update by fabian 12272022 || report excel by month --}}
-            <div class="col-lg-6">
+            <div class="col-lg-3">
               <div class="form-group">
                 <div>
                   <label for="keyMonth">
@@ -170,7 +198,7 @@ NG Data Detail
     data: {
       labels: [],
       datasets: [{
-        label: 'Jenis NG',
+        label: 'Jumlah NG',
         data: [],
         backgroundColor: [
         'rgba(54, 162, 235, 0.2)'
@@ -194,8 +222,8 @@ NG Data Detail
   // End Chart
   //
   let line = $('#line').val() ? $('#line').val() : 'null';
-  let start_date = $('#start_date').val() ? $('#start_date').val() : 'null';
-  let end_date = $('#end_date').val() ? $('#end_date').val() : 'null';
+  let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+  let dies = $('#dies').val() ? $('#dies').val() : 'null';
 
   // data_month
   let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
@@ -203,7 +231,7 @@ NG Data Detail
   var table = $('#tabel_all').DataTable({
     processing: true,
     serverSide: true,
-    ajax: '{{ url ("/trace/ng/view/getData") }}/' + line + '/' + date,
+    ajax: '{{ url ("/trace/ng/view/getData") }}/' + line + '/' + programnumber + '/' + dies + '/' + date,
     columns: [{
       data: null,
       name: 'no',
@@ -244,31 +272,35 @@ NG Data Detail
     // update
     let line = $('#line').val() ? $('#line').val() : 'null';
     let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+    let model = $('#model').text() ? $('#model').text() : 'null';
+    let dies = $('#dies').val() ? $('#dies').val() : 'null';
 
     // data_month
     let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
-    
     myChart.data.labels.splice(0, myChart.data.labels.length);
     myChart.data.datasets[0].data.splice(0, myChart.data.datasets[0].data.length);
     
-    table.ajax.url('{{ url ("/trace/ng/view/getData") }}/' + line + '/' + date).load();
+    table.ajax.url('{{ url ("/trace/ng/view/getData") }}/' + line + '/' + programnumber + '/' + dies + '/' + date).load();
     
     $.ajax({
       type: 'get',
       url: '{{ url ("/trace/ng/view/getDataChart") }}',
       dataType: 'json',
       data: {
-        // _token: "{{ csrf_token() }}",
+        _token: "{{ csrf_token() }}",
         line: line,
         date: date,
-        // programnumber: programnumber
+        programnumber: programnumber,
+        dies: dies,
+        // model: model
       },
       success: function(data) {
+        console.log(data);
         myChart.data.labels = data.labelChart;
         myChart.data.datasets.forEach(dataset => {
           dataset.data = data.valueChart;
         });
-        $('#lineChart').text(data.lineChart + ' ' + data.labelChart);
+        $('#lineChart').text(data.lineChart + ' Total NG: ' + data.totalLine);
         
         myChart.update();
         
@@ -280,13 +312,13 @@ NG Data Detail
   
   function exportData() {
     let line = $('#line').val() ? $('#line').val() : 'null';
-    let start_date = $('#start_date').val() ? $('#start_date').val() : 'null';
-    let end_date = $('#end_date').val() ? $('#end_date').val() : 'null';
+    let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+    let dies = $('#dies').val() ? $('#dies').val() : 'null';
 
     // data_month
     let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
     
-    location.href = '{{ url ("/trace/ng/view/exportData") }}/' + line + '/' + date;
+    location.href = '{{ url ("/trace/ng/view/exportData") }}/' + line + '/' + programnumber + '/' + dies + '/' + date;
   }
 </script>
 
