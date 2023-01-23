@@ -844,6 +844,43 @@ class TraceScanController extends Controller
         }
     }
 
+    //MODUL DELIVERY D98
+    //==================================================================================================================================================
+    public function scanDeliveryD98() {
+        return view('tracebility/delivery/scan-d98');
+
+    }
+
+    public function checkCodeDeliveryD98(Request $request)
+    {
+        try {
+            $code = $request->all();
+            $kbn_int = $code['kbnint'];
+            $data = avi_dowa_process::select('id')
+                ->where('kbn_int_casting', $kbn_int)
+                ->where('kbn_supply', NULL)
+                ->first();
+
+            if ($data != null) {
+                return array(
+                    "code" => $kbn_int,
+                    "codesubstr" => $kbn_int
+                );
+            }
+            return array(
+                "code" => "false",
+                "codesubstr" => $kbn_int
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+            return array(
+                "code" => "error",
+                "codesubstr" => $th->getMessage()
+            );
+        }
+
+    }
+
     //MODUL DELIVERY DOWA
     //==================================================================================================================================================
     public function scanDeliveryDowa() {
@@ -878,6 +915,47 @@ class TraceScanController extends Controller
             );
         }
 
+    }
+    public function inputCodeDeliveryD98(Request $request)
+    {
+        try {
+            $user = Auth::user()->npk;
+            $kbn_int = $request->kbn_int;
+            $kbn_sup = $request->kbn_sup;
+            $deliveryAt = date('Y-m-d H:i:s');
+            $partcodes = avi_dowa_process::select('code', 'kbn_int_casting')
+                ->where('kbn_int_casting', $kbn_int)
+                ->where('kbn_supply', NULL)
+                ->limit(3);
+
+            $dataSends = $partcodes->get();
+
+            $partcodes->update([
+                'kbn_supply' => $kbn_sup,
+                'scan_delivery_dowa_at' => $deliveryAt,
+                'npk_delivery_dowa' => $user
+            ]);
+
+            $sendJson = [];
+            foreach ($dataSends as $value) {
+                $sendJson[] = [
+                    'code' => $value->code,
+                    'delivery_aiia_at' => $deliveryAt,
+                    'kanban' => $kbn_sup
+                ];;
+            };
+
+            SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
+
+            return [
+                "status" => "success"
+            ];
+        } catch (\Throwable $e) {
+            return [
+                "status" => "error",
+                "messege" => $e->getMessage()
+            ];
+        }
     }
 
     public function inputCodeDeliveryDowa(Request $request)
@@ -923,6 +1001,7 @@ class TraceScanController extends Controller
     }
     // MODUL DELIVERY
     //=======================================================================================================================================================
+    
     public function scandelivery()
     {
         return view('tracebility/delivery/scan');

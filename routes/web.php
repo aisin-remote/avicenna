@@ -165,6 +165,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/delivery/dowa/check-code', 'TraceScanController@checkCodeDeliveryDowa');
 	Route::get('/trace/scan/delivery/dowa/input-code', 'TraceScanController@inputCodeDeliveryDowa');
 
+
+		//Delivery D98
+	Route::get('/trace/scan/delivery/d98', 'TraceScanController@scanDeliveryD98');
+	Route::get('/trace/scan/delivery/d98/check-code', 'TraceScanController@checkCodeDeliveryD98');
+	Route::get('/trace/scan/delivery/d98/input-code', 'TraceScanController@inputCodeDeliveryD98');
+
 		//Torimetron Dowa
 	Route::get('/trace/scan/torimetron', 'TraceScanController@scanTorimetron');
 	Route::get('/trace/scan/torimetron/check-code', 'TraceScanController@checkCodeTorimetron');

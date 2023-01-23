@@ -66,6 +66,10 @@
                 window.location.replace("{{url('/trace/scan/delivery/dowa')}}");
                 return;
             }
+            if (barcodecomplete == "D98E") {
+                window.location.replace("{{url('/trace/scan/delivery/d98')}}");
+                return;
+            }
             // remove * from qr
             if (barcodecomplete.length == 17) {
                 if (barcodecomplete[0] == '*' && barcodecomplete[16] == '*') {
