@@ -243,6 +243,11 @@
                     window.location.replace("{{url('/trace/scan/casting/ng')}}");
                     return;
                 }
+                // update part csh d983 by Fabian 
+                if (barcodecomplete == "D98E"){
+                    window.location.replace("{{url('/trace/scan/casting/d98e')}}");
+                    return;
+                }
                 if (barcodecomplete.length == 15) {
                     $.ajax({
                         type: 'get', // {{-- POST Request --}}

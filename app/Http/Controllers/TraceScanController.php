@@ -35,6 +35,11 @@ class TraceScanController extends Controller
         return view('tracebility/casting/scan');
     }
 
+    // update part d98e by fabian 01232023
+    public function scancastingd98e(){
+        return view('tracebility.casting.d98e');
+    }
+
     public function getAjaxcasting($number, $line)
     {
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
@@ -119,6 +124,161 @@ class TraceScanController extends Controller
         }
 
 
+    }
+
+    // update by fabian 01232023 || MODUL Casting part d98e
+    public function cekPartD98e(Request $request)
+    {
+
+        $codePart = $request->get('code');
+
+        $cek = avi_trace_casting::where('code', $codePart)->first();
+
+        if ($cek) {
+            return array(
+                "code" => "false",
+            );
+        }
+         else {
+            return array(
+                "code" => $codePart,
+            );
+        }
+    }
+
+    public function getAjaxCastingD98e(Request $request)
+    {
+       $user = Auth::user()->npk;
+       $kbn_int = $request->kbn_int;
+       $line = isset($request->line) ? $request->line : '';
+       $number1 = isset($request->code1) ? $request->code1 : '';
+       $number2 = isset($request->code2) ? $request->code2 : '';
+       $numcek = substr($number1, 0, 2);
+
+       if ($number1 == $number2) {
+            return ["code" => "partdouble"];
+        }
+
+       if ($kbn_int) {
+            $arr = preg_split('/ +/', $kbn_int);
+            if ($arr[8] == '0') {
+                $length = strlen($arr[10]);
+                $seri = substr($arr[10], $length-7);
+                $back_number = $arr[9];
+            }
+            elseif ($arr[7] == '0') {
+                $length = strlen($arr[9]);
+                $seri = substr($arr[9], $length-4);
+                $back_number = $arr[8];
+            }
+            elseif ($arr[9] == '0') {
+
+                $length = strlen($arr[11]);
+                $seri = substr($arr[11], $length-4);
+                $back_number = $arr[10];
+            }
+            else {
+
+                $length = strlen($arr[9]);
+                $seri = substr($arr[9], $length-4);
+                $back_number = $arr[8];
+            }
+
+            // Check back number data in kanban master table
+            $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
+            if (!$cekMaster) {
+                return ["code" => "notregistered"];
+            }
+
+            // check back number data in program number table based on first digit of code
+            $cekProgNums = avi_trace_program_number::select('back_number')->where('code',  $numcek)->get();
+            $isReturn = 0;
+
+            foreach ($cekProgNums as $cekProgNum) {
+                // match the data from kanban master table and program number table
+                if ($cekMaster->back_nmr == $cekProgNum->back_number) {
+                    $isReturn = 1;
+                }
+            }
+
+
+
+            if ($isReturn == 0 ) {
+                return ["code" => "notmatch"];
+            }
+
+            // check code part in kanban table based on serial number (kanban scan) and master_id (id of back_nummber)
+            $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+
+            if ($cek == null) {
+                return ["code" => "notregistered"];
+            }
+
+            if ($cek->code_part == null) {
+                $key = 'casting_'.$line;
+                if (Cache::has($key)) {
+                $cache = Cache::get($key);
+                if(!isset($cache[date('Y-m-d')])) {
+                    $cache = [];
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                } else {
+                    $cache[date('Y-m-d')]['counter'] += 1;
+                    }
+                } else {
+                    $cache = [
+                        date('Y-m-d') => [
+                            'counter' => 1
+                        ]
+                    ];
+                }
+
+                Cache::forever($key, $cache);
+                try {
+                    DB::beginTransaction();
+                    $update = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->update(['code_part' => $number1, 'code_part_2' => $number2]);
+                    $casting = avi_trace_casting::create([
+                        'date' => date('Y-m-d'),
+                        'line' => $line,
+                        'npk' => $user,
+                        'status' => "1",
+                        'code' => $number1,
+                    ]);
+                    $casting = avi_trace_casting::create([
+                        'date' => date('Y-m-d'),
+                        'line' => $line,
+                        'npk' => $user,
+                        'status' => "1",
+                        'code' => $number2,
+                    ]);
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return [
+                        "status" => "error",
+                        "messege" => "Data Not Saved, Please Rescan Part & Kanban"
+                        ];
+                }
+
+                return [
+                     "status" => "success",
+                     "counter"   => $cache[date('Y-m-d')]['counter'],
+                     "code" => $number1." & ".$number2,
+                     "kbn_int" => $seri,
+                ];
+
+
+            }
+            else{
+                return ["code" =>"Kanbannotreset"];
+            }
+        }
+        else {
+            return ["code" => "notregistered"];
+        }
     }
 
     public function castingng()

@@ -127,6 +127,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
 		//Casting
 	Route::get('/trace/scan/casting/', 'TraceScanController@scancasting');
+
+	// update by fabian 01232023 || part d98e
+	Route::get('/trace/scan/casting/d98e', 'TraceScanController@scancastingd98e');
+	Route::get('/trace/scan/casting/cek-part-d98e', 'TraceScanController@cekPartD98e');
+	Route::get('/trace/scan/casting/ajaxCastingD98e', 'TraceScanController@getAjaxCastingD98e');
+
 	Route::get('/trace/scan/casting/getAjax/{number}/{line}', 'TraceScanController@getAjaxcasting');
 	Route::get('/trace/scan/casting/getAjax2', 'TraceScanController@getAjax2');
 	Route::get('/trace/casting/index', 'TraceScanController@getAjaxcastingtable');

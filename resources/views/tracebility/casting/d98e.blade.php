@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div id="line" class="panel panel-default" >
 
-                <span style="font-size : 50px "> <center> LINE ASSEMBLING <span id="line-display"></span> </center> </span>
+                <span style="font-size : 50px "> <center> LINE CASTING D98E <span id="line-display"></span> </center> </span>
                 <span style="font-size : 30px "> <center> PT AISIN INDONESIA AUTOMOTIVE </center> </span>
             </div>
         </div>
@@ -158,11 +158,10 @@
 
     function initApp() {
         let line_number = localStorage.getItem('avi_line_number');
-        let partCode1 = localStorage.getItem('avi_assy_double_code1');
-        let partCode2 = localStorage.getItem('avi_assy_double_code2');
+        let partCode1 = localStorage.getItem('avi_casting_d98e_code1');
+        let partCode2 = localStorage.getItem('avi_casting_d98e_code2');
         $('#code1').text(partCode1);
         $('#code2').text(partCode2);
-        // let strainer_id = localStorage.getItem('strainer_id');
         if (line_number == null || line_number == undefined) {
             $('#modalLineScan').on('shown.bs.modal', function () {
                 $('#input-line').focus();
@@ -177,7 +176,7 @@
         }
     }
 
-    var barcode   ="";
+    var barcode   = "";
     var rep2      = "";
     var detail_no = $('#detail_no');
 
@@ -196,8 +195,6 @@
             }
         });
 
-        $('#nopart').text(localStorage.getItem('avi_assembling_nopart'));
-
         $('#detail_no').prop('readonly', true);
 
         document.body.style.backgroundColor = '#dddddd';
@@ -210,9 +207,12 @@
 
                 barcodecomplete = barcode;
                 barcode = "";
+
                 if (barcodecomplete.length == 15) {
+                    // done check
                     checkDataAjax(barcodecomplete)
                 } else if(barcodecomplete.length == 230) {
+                    // done check
                     if (checkDataLocalCode() == true ){
                         sendDataAjax(barcodecomplete)
                     }else{
@@ -221,25 +221,27 @@
 
                 }
 
-                else if (barcodecomplete.length == 13)
+                if (barcodecomplete.length == 13)
                 {
                     window.location.replace("{{url('/trace/logout')}}");
 
                 }
-                else if (barcodecomplete == "DOUBLE")
-                {
-                    window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
-
+                if (barcodecomplete == "D98E"){
+                    window.location.replace("{{url('/trace/scan/casting')}}");
+                    return;
                 }
-                else if (barcodecomplete == "NGMODE")
-                {
-                        window.location.replace("{{url('/trace/scan/assembling/fg-assembling-ng')}}");
-
+                if (barcodecomplete == "DOWA") {
+                    window.location.replace("{{url('/trace/scan/casting/dowa')}}");
+                    return;
                 }
-                else if (barcodecomplete == "RELOAD")
+                if (barcodecomplete == "NGMODE")
+                {
+                    window.location.replace("{{url('/trace/scan/casting/ng')}}");
+                    return;
+                }
+                if (barcodecomplete == "RELOAD")
                 {
                     location.reload();
-
                 }
                 else
                 {
@@ -249,8 +251,6 @@
                     $('#alert-body').text('Mohon Scan Ulang');
                     $('#detail_no').prop('readonly', true);
                 }
-
-
             }
             else
             {
@@ -262,16 +262,16 @@
     function checkDataAjax(barcodecomplete) {
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/assembling/cek-part-double') }}",
+            url: "{{ url('/trace/scan/casting/cek-part-d98e') }}",
             data: {
                 code : barcodecomplete,
             },
             dataType: 'json',
             success: function (data) {
                 if (data.code == "false") {
-                    notifMessege("error", barcodecomplete+" Sudah ada");
+                    notifMessege("error", barcodecomplete + " Sudah ada");
                 } else {
-                    let partCode1 = localStorage.getItem('avi_assy_double_code1');
+                    let partCode1 = localStorage.getItem('avi_casting_d98e_code1');
                     if (partCode1 == barcodecomplete) {
                         notifMessege("error", "Part sudah discan sebelumnya");
                     } else {
@@ -292,15 +292,15 @@
     };
 
     function saveDataLocalStorage(code) {
-        let partCode1 = localStorage.getItem('avi_assy_double_code1');
-        let partCode2 = localStorage.getItem('avi_assy_double_code2');
+        let partCode1 = localStorage.getItem('avi_casting_d98e_code1');
+        let partCode2 = localStorage.getItem('avi_casting_d98e_code2');
 
         if (partCode1 == null || partCode1 == undefined) {
-            localStorage.setItem('avi_assy_double_code1', code);
+            localStorage.setItem('avi_casting_d98e_code1', code);
             $('#code1').text(code);
             notifMessege("success", code);
         } else if (partCode2 == null || partCode2 == undefined) {
-            localStorage.setItem('avi_assy_double_code2', code);
+            localStorage.setItem('avi_casting_d98e_code2', code);
             $('#code2').text(code);
             notifMessege("success", code);
         } else {
@@ -310,15 +310,15 @@
     }
 
     function clearLocalStorage() {
-        localStorage.removeItem('avi_assy_double_code1');
+        localStorage.removeItem('avi_casting_d98e_code1');
         $('#code1').text('');
-        localStorage.removeItem('avi_assy_double_code2');
+        localStorage.removeItem('avi_casting_d98e_code2');
         $('#code2').text('');
     }
 
     function checkDataLocalCode() {
-        let partCode1 = localStorage.getItem('avi_assy_double_code1');
-        let partCode2 = localStorage.getItem('avi_assy_double_code2');
+        let partCode1 = localStorage.getItem('avi_casting_d98e_code1');
+        let partCode2 = localStorage.getItem('avi_casting_d98e_code2');
 
         if (partCode1 == null || partCode1 == undefined) {
             return false
@@ -332,15 +332,16 @@
     function sendDataAjax(kbn_int) {
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/assembling/AjaxFGDouble') }}",
+            url: "{{ url('/trace/scan/casting/ajaxCastingD98e') }}",
             data: {
                 kbn_int : kbn_int,
                 line : localStorage.getItem('avi_line_number'),
-                code1 : localStorage.getItem('avi_assy_double_code1'),
-                code2 : localStorage.getItem('avi_assy_double_code2')
+                code1 : localStorage.getItem('avi_casting_d98e_code1'),
+                code2 : localStorage.getItem('avi_casting_d98e_code2')
             },
             dataType: 'json',
             success: function (data) {
+                console.log(data);
                 if (data.status == "success") {
                     notifMessege("success", "Data Saved");
                     $('#counter').text(data.counter);

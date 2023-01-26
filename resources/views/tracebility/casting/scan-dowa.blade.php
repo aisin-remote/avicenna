@@ -228,6 +228,10 @@
                     window.location.replace("{{url('/trace/scan/casting')}}");
                     return;
                 }
+                if (barcodecomplete == "D98E"){
+                    window.location.replace("{{url('/trace/scan/casting/d98e')}}");
+                    return;
+                }
                 if (barcodecomplete == "NGMODE") {
                     window.location.replace("{{url('/trace/scan/casting/ng')}}");
                     return;
