@@ -17,15 +17,15 @@
                     <strong><font size=4><span id="customer"> - </span></font></strong>
                     <br>
                     <span><font size=2>Cycle :</font></span>
-                    <strong><font size=4><span id="cycle">-</span></font></strong>
+                    <strong><font size=4><span id="cycle"> - </span></font></strong>
                     <br>
                     <span><font size=2>Kanban Internal :</font></span>
                     <br>
                     <strong><font size=4><span id="part-internal">-</span></font></strong>
                     <br>
-                    <span><font size=2>Kanban Supply :</font></span>
+                    <span><font size=2>Kanban Customer :</font></span>
                     <br>
-                    <strong><font size=4><span id="part-supply">-</span></font></strong>
+                    <strong><font size=4><span id="part-cust">-</span></font></strong>
                 </div>
             </div>
         </div>
@@ -49,7 +49,8 @@
   var barcode   ="";
   var rep2      = "";
   var detail_no = $('#detail_no');
-  var flag=1;
+  var flag      =1;
+  var total_scan = 0;
   $( document ).ready(function() {
         $("#cycle").html("");
         $("#customer").html("");
@@ -80,27 +81,27 @@
                 }
             } else if( barcodecomplete.length > 2 && barcodecomplete.length < 10 ){
                 if ($.cookie("cycle") != undefined) {
-                    notifMessege("success", "Horee Pulling telah Siap, Ayo Scan Kanban Internal !");
+                    notifMessege("success", "Horee Pulling telah Siap, Ayo Scan Kanban Cycle !");
                 } else {
-                    notifMessege("success", "Kamu berhasil, Ayo Scan Cycle untuk Customer "+barcodecomplete);
+                    notifMessege("success", "Kamu berhasil, Ayo Scan Cycle untuk Customer "+ barcodecomplete);
                 }
                 $.cookie("customer",""+barcodecomplete+"");
                 $("#customer").html(barcodecomplete);
             } else if (barcodecomplete.length == 230) {
-                barcodesub = barcodecomplete.substring(123,127)
+                barcodesub = barcodecomplete;
                 if (checkDataCookie()) {
                     checkDataAjax(barcodesub);
                 } else {
                     notifMessege("error", "Rescan Internal Kanban");
                     clearCookie();
                 }
-            } else if (barcodecomplete.length == 234) {
+            } else if (barcodecomplete.length == 40) {
                 if ($.cookie('avi_kanban_int') == null || $.cookie('avi_kanban_int') == undefined) {
-                    notifMessege("error", "Scan Internal Kanban First !");
+                    notifMessege("error",  "Kamu salah, seharusnya Scan kanban internal dulu, lalu scan Kanban customer !");
                     return;
                 }
-                barcodesub = barcodecomplete.substring(119,124);
-                $('#part-supply').text(barcodesub);
+                barcodesub = barcodecomplete
+                $('#part-cust').text(barcodesub);
                 notifMessege("success", barcodesub);
                 sendDataAjax(barcodesub);
             }
@@ -138,8 +139,14 @@
 
     function clearCookie() {
         $.removeCookie('avi_kanban_int');
+        $.removeCookie('avi_kanban_seri');
+        $.removeCookie('avi_kanban_partnum');
+        $.removeCookie('cycle');
+        $.removeCookie('customer');
         $('#part-internal').text('-');
-        $('#part-supply').text('-');
+        $('#customer').text('-');
+        $('#cycle').text('-');
+        $('#part-cust').text('-');
     };
 
     function notifMessege(type, messege) {
@@ -166,28 +173,33 @@
     function checkDataAjax(barcodecomplete) {
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/delivery/d98e/check-code') }}",
+            url: "{{ url('/trace/scan/delivery/d98/check-code') }}",
             data: {
                 kbnint : barcodecomplete
             },
             dataType: 'json',
             success: function (data) {
                 if (data.code == "false") {
-                    notifMessege("error", data.codesubstr+" Not Found");
+                    notifMessege("error", "Kanban masih kosong!");
                     return false;
                 } else if(data.code == "error") {
-                    alert("Please resecan kanban");
+                    alert("Please rescan kanban");
                     notifMessege("error", barcodesub);
                     return false;
+                } else if(data.code == "notRegistered") {
+                    notifMessege("error", "Kanban tidak ditemukan");
+                    return false;
                 } else {
-                    notifMessege("success", "Kbn int "+barcodesub);
-                    $.cookie('avi_kanban_int', barcodesub);
-                    $('#part-internal').text(barcodesub);
+                    notifMessege("success", "Horee kanban berhasil discan, ayo scan kanban cutomer");
+                    $.cookie('avi_kanban_seri', data.seri);
+                    $.cookie('avi_kanban_int', data.backnum);
+                    $.cookie('avi_kanban_partnum', data.partnum);
+                    $('#part-internal').text(data.backnum);
                     return true;
                 }
             },
             error: function (xhr) {
-                alert("Please resecan kanban");
+                alert("Please rescan kanban");
                 return false;
             }
         });
@@ -196,23 +208,30 @@
     function sendDataAjax(code) {
         $.ajax({
             type: 'get',
-            url: "{{ url('/trace/scan/delivery/dowa/input-code') }}",
+            url: "{{ url('/trace/scan/delivery/d98/input-code') }}",
             data: {
                 kbn_int : $.cookie('avi_kanban_int'),
-                kbn_sup : code
+                kbn_cust : code,
+                seri : $.cookie('avi_kanban_seri'),
+                customer : $.cookie('customer'),
+                cycle : $.cookie('cycle'),
             },
             dataType: 'json',
             success: function (data) {
                 if (data.status == "error") {
                     notifMessege("error", "Kanban Supply Exist")
                     clearCookie();
+                } else if (data.status == "partExist") {
+                    notifMessege("error", "Part Sudah ada!")
+                    clearCookie();
                 } else if(data.status == "success") {
-                    notifMessege("success", "Data Saved");
-                    if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined ) {
-                        $.cookie('total_scan', 1);
+                    notifMessege("success", "Horee, Data telah tersimpan");
+                    if ($.cookie('total_scan') == null || $.cookie('total_scan') == undefined || $.cookie('total_scan') == 0) {
+                        total_scan = 1;
+                        $.cookie('total_scan', total_scan);
                         clearCookie();
                     } else {
-                        $.cookie('total_scan', $.cookie('total_scan')++);
+                        $.cookie('total_scan', total_scan++);
                         clearCookie();
                     }
                     $('#total_scan').text($.cookie('total_scan'));
