@@ -1004,6 +1004,64 @@ class TraceScanController extends Controller
         }
     }
 
+    //MODUL DELIVERY D98
+    //==================================================================================================================================================
+    public function scanDeliveryD98() {
+        return view('tracebility/delivery/scan-d98');
+
+    }
+
+    // update by fabian 01272023 || part d98e (delivery)
+    public function checkCodeDeliveryD98(Request $request)
+    {
+        try {
+            $kbn_int = $request->kbnint;
+            $arr = preg_split('/ +/', $kbn_int);
+            $seri_length = strlen($arr[9]);
+
+            $part_number = $arr[4];
+            $seri = substr($arr[9], $seri_length-4);
+            $back_number = $arr[8];
+
+            // cek master back number
+            $cek_master = avi_trace_kanban_master::select('id')
+                        ->where('back_nmr', $back_number)
+                        ->first();
+
+            // Cek apakah ada part pada kanban
+            $cek_kanban = avi_trace_kanban::select('code_part')
+                        ->where('no_seri', $seri)
+                        ->where('master_id', $cek_master->id)->first();
+            
+            if($cek_kanban == null){
+                return array(
+                    "code" => 'notRegistered',
+                    "codesubstr" => $kbn_int
+                );
+            }
+
+            if ($cek_kanban->code_part == null) {
+                return array(
+                    "code" => 'false',
+                    "codesubstr" => $kbn_int
+                );
+            }
+            return array(
+                "code" => $kbn_int,
+                "seri" => $seri,
+                "backnum" => $back_number,
+                "partnum" => $part_number
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+            return array(
+                "code" => "error",
+                "codesubstr" => $th->getMessage()
+            );
+        }
+
+    }
+
     //MODUL DELIVERY DOWA
     //==================================================================================================================================================
     public function scanDeliveryDowa() {
@@ -1038,6 +1096,82 @@ class TraceScanController extends Controller
             );
         }
 
+    }
+
+    // update by fabian 01272023 || part d98e (delivery)
+    public function inputCodeDeliveryD98(Request $request)
+    {
+        try {
+            // kanban internal
+            $back_number = $request->kbn_int;
+            $seri = $request->seri;
+            $customer   = $request->customer;
+            $cycle = $request->cycle;
+
+            // kanban customer
+            $kbn_cust = $request->kbn_cust;
+            $arr_cust = explode('-', $kbn_cust);
+            $seri_cust = $arr_cust[7];
+
+            $user = Auth::user()->npk;
+            $deliveryAt = date('Y-m-d H:i:s');
+
+            // cek master back number
+            $cek_master = avi_trace_kanban_master::select('id')
+                        ->where('back_nmr', $back_number)
+                        ->first();
+
+            // get part 
+            $part = avi_trace_kanban::select('id','code_part','code_part_2')
+                            ->where('no_seri', $seri)
+                            ->where('master_id', $cek_master->id)
+                            ->first();
+
+            $data = [
+                [
+                    'code' => $part->code_part,
+                    'npk' => $user,
+                    'date' => $deliveryAt,
+                    'cycle' => $cycle,
+                    'customer' => $customer,
+                    'status' => 1,
+                    'created_at' => $deliveryAt,
+                ],
+                [
+                    'code' => $part->code_part_2,
+                    'npk' => $user,
+                    'date' => $deliveryAt,
+                    'cycle' => $cycle,
+                    'customer' => $customer,
+                    'status' => 1,
+                    'created_at' => $deliveryAt,
+                ],
+            ];
+            
+            // check if the part code exist in avi trace delivery
+            $part_delivery = avi_trace_delivery::whereIn('code', [$part->code_part, $part->code_part_2])->first();
+
+            if ($part_delivery != null) {
+                return [
+                    "status" => "partExist"
+                ];
+            }
+
+            // insert 
+            DB::table('avi_trace_delivery')->insert($data);
+
+            // reset kanban
+            $part->update(['code_part'=> null,'code_part_2'=> null]);
+
+            return [
+                "status" => "success"
+            ];
+        } catch (\Throwable $e) {
+            return [
+                "status" => "error",
+                "messege" => $e->getMessage()
+            ];
+        }
     }
 
     public function inputCodeDeliveryDowa(Request $request)
@@ -1083,6 +1217,7 @@ class TraceScanController extends Controller
     }
     // MODUL DELIVERY
     //=======================================================================================================================================================
+    
     public function scandelivery()
     {
         return view('tracebility/delivery/scan');
