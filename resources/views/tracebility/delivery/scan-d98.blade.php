@@ -89,6 +89,10 @@
                 $("#customer").html(barcodecomplete);
             } else if (barcodecomplete.length == 230) {
                 barcodesub = barcodecomplete;
+                if ($.cookie('customer') == null || $.cookie('customer') == undefined) {
+                    notifMessege("error",  "Kamu salah, seharusnya Scan barcode customer dulu");
+                    return;
+                }
                 if (checkDataCookie()) {
                     checkDataAjax(barcodesub);
                 } else {

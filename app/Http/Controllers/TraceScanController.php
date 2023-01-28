@@ -163,7 +163,7 @@ class TraceScanController extends Controller
             $arr = preg_split('/ +/', $kbn_int);
             if ($arr[8] == '0') {
                 $length = strlen($arr[10]);
-                $seri = substr($arr[10], $length-7);
+                $seri = substr($arr[10], $length-4);
                 $back_number = $arr[9];
             }
             elseif ($arr[7] == '0') {
@@ -200,8 +200,6 @@ class TraceScanController extends Controller
                     $isReturn = 1;
                 }
             }
-
-
 
             if ($isReturn == 0 ) {
                 return ["code" => "notmatch"];
@@ -1017,11 +1015,11 @@ class TraceScanController extends Controller
         try {
             $kbn_int = $request->kbnint;
             $arr = preg_split('/ +/', $kbn_int);
-            $seri_length = strlen($arr[9]);
+            $seri_length = strlen($arr[10]);
 
             $part_number = $arr[4];
-            $seri = substr($arr[9], $seri_length-4);
-            $back_number = $arr[8];
+            $seri = substr($arr[10], $seri_length-4);
+            $back_number = $arr[9];
 
             // cek master back number
             $cek_master = avi_trace_kanban_master::select('id')

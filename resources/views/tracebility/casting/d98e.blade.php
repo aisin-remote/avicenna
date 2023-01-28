@@ -210,11 +210,13 @@
 
                 if (barcodecomplete.length == 15) {
                     // done check
-                    checkDataAjax(barcodecomplete)
+                    checkDataAjax(barcodecomplete);
+                    return;
                 } else if(barcodecomplete.length == 230) {
                     // done check
                     if (checkDataLocalCode() == true ){
-                        sendDataAjax(barcodecomplete)
+                        sendDataAjax(barcodecomplete);
+                        return;
                     }else{
                         notifMessege("error", "Scan Part First");
                     }
