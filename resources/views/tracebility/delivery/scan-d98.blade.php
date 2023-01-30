@@ -14,10 +14,10 @@
                     <font size=4><strong><span style="float: left" id="total_scan">-</strong></font></span>
                     <br>
                     <span><font size=2>Customer :</font></span>
-                    <strong><font size=4><span id="customer"> - </span></font></strong>
+                    <strong><font size=4><span id="customer">-</span></font></strong>
                     <br>
                     <span><font size=2>Cycle :</font></span>
-                    <strong><font size=4><span id="cycle"> - </span></font></strong>
+                    <strong><font size=4><span id="cycle">-</span></font></strong>
                     <br>
                     <span><font size=2>Kanban Internal :</font></span>
                     <br>
@@ -52,8 +52,8 @@
   var flag      =1;
   var total_scan = 0;
   $( document ).ready(function() {
-        $("#cycle").html("");
-        $("#customer").html("");
+        $("#cycle").html("-");
+        $("#customer").html("-");
   });
 
   $(document).keypress(function(e) {
@@ -71,17 +71,16 @@
                 window.location.replace("{{url('/trace/logout')}}");
             } else if (barcodecomplete.length == 2){
                 if (barcodecomplete == "EN") {
-                    $.removeCookie("cycle");
-                    $.removeCookie("customer");
-                    $("#cycle").html("");
-                    $("#customer").html("");
-                    notifMessege("success", "Yey Pulling Selesai, Ayo Scan Customer Lagi !");
+                    clearAllCookie();
+                    $("#cycle").html("-");
+                    $("#customer").html("-");
+                    notifMessege("success", "Yey Pulling Selesai, Ayo Scan Barcode Customer Lagi !");
                 } else {
                     getAjaxCycle();
                 }
             } else if( barcodecomplete.length > 2 && barcodecomplete.length < 10 ){
                 if ($.cookie("cycle") != undefined) {
-                    notifMessege("success", "Horee Pulling telah Siap, Ayo Scan Kanban Cycle !");
+                    notifMessege("success", "Horee Pulling telah Siap, Ayo Scan Barcode Cycle !");
                 } else {
                     notifMessege("success", "Kamu berhasil, Ayo Scan Cycle untuk Customer "+ barcodecomplete);
                 }
@@ -145,8 +144,16 @@
         $.removeCookie('avi_kanban_int');
         $.removeCookie('avi_kanban_seri');
         $.removeCookie('avi_kanban_partnum');
-        $.removeCookie('cycle');
+        $('#part-internal').text('-');
+        $('#part-cust').text('-');
+    };
+    
+    function clearAllCookie() {
+        $.removeCookie('avi_kanban_int');
+        $.removeCookie('avi_kanban_seri');
+        $.removeCookie('avi_kanban_partnum');
         $.removeCookie('customer');
+        $.removeCookie('cycle');
         $('#part-internal').text('-');
         $('#customer').text('-');
         $('#cycle').text('-');
@@ -235,7 +242,7 @@
                         $.cookie('total_scan', total_scan);
                         clearCookie();
                     } else {
-                        $.cookie('total_scan', total_scan++);
+                        $.cookie('total_scan', ++total_scan);
                         clearCookie();
                     }
                     $('#total_scan').text($.cookie('total_scan'));
