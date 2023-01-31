@@ -18,6 +18,9 @@ Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna
 Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
 Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
 
+// API
+Route::get('/trace/api/getqty/{line}/{time_start}/{time_end}', 'Avicenna\Api\ApiController@getQty');
+
 // dev-1.1.0, Ferry, 20190103, Dengan otentikasi
 Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
     //    Route::get('/link1', function ()    {
@@ -264,9 +267,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ok/view/exportData/{area}/{start}/{end}', 'Avicenna\DashboardController@exportData')->name('trace.ng.view.exportData');
 
 
-	// API
-	Route::get('/trace/api/getqty', 'Avicenna\Api\ApiController@getQty');
-
+	
 	//end of tracebility ====================================================================================================
 
 
