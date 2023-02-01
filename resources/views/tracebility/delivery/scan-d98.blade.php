@@ -98,7 +98,7 @@
                     notifMessege("error", "Rescan Internal Kanban");
                     clearCookie();
                 }
-            } else if (barcodecomplete.length == 40) {
+            } else if (barcodecomplete.length >= 40 && barcodecomplete.length <= 42) {
                 if ($.cookie('avi_kanban_int') == null || $.cookie('avi_kanban_int') == undefined) {
                     notifMessege("error",  "Kamu salah, seharusnya Scan kanban internal dulu, lalu scan Kanban customer !");
                     return;
@@ -107,10 +107,11 @@
                 $('#part-cust').text(barcodesub);
                 notifMessege("success", barcodesub);
                 sendDataAjax(barcodesub);
+            }else{
+                notifMessege("error",  "Maaf, Barcode tidak dikenali!");
+                return;
             }
-        }
-        else
-        {
+        }else{
             barcode=barcode+String.fromCharCode(e.which);
         }
 
