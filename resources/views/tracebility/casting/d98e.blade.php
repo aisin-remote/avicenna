@@ -363,6 +363,10 @@
                     notifMessege("error", "Part double, ulangi proses scan part");
                     clearLocalStorage()
                     return false
+                } else if (data.code == "partExist") {
+                    notifMessege("error", "Part sudah pernah di scan!");
+                    clearLocalStorage()
+                    return false
                 } else if (data.code == "notmatch") {
                     notifMessege("error", "Part dan Kanban Tidak Cocok");
                     clearLocalStorage()

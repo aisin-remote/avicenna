@@ -208,6 +208,13 @@ class TraceScanController extends Controller
             // check code part in kanban table based on serial number (kanban scan) and master_id (id of back_nummber)
             $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
 
+            // check existing code part in casting
+            $cekPartCasting = avi_trace_casting::where('code', $number1)->first();
+
+            if($cekPartCasting) {
+                return ["code" => "partExist"];
+            }
+            
             if ($cek == null) {
                 return ["code" => "notregistered"];
             }
@@ -220,16 +227,16 @@ class TraceScanController extends Controller
                     $cache = [];
                     $cache = [
                         date('Y-m-d') => [
-                            'counter' => 1
+                            'counter' => 2
                         ]
                     ];
                 } else {
-                    $cache[date('Y-m-d')]['counter'] += 1;
+                    $cache[date('Y-m-d')]['counter'] += 2;
                     }
                 } else {
                     $cache = [
                         date('Y-m-d') => [
-                            'counter' => 1
+                            'counter' => 2
                         ]
                     ];
                 }
@@ -1014,12 +1021,24 @@ class TraceScanController extends Controller
     {
         try {
             $kbn_int = $request->kbnint;
-            $arr = preg_split('/ +/', $kbn_int);
-            $seri_length = strlen($arr[10]);
 
-            $part_number = $arr[4];
-            $seri = substr($arr[10], $seri_length-4);
-            $back_number = $arr[9];
+            if ($kbn_int) {
+                $arr = preg_split('/ +/', $kbn_int);
+                // new kanban
+                if ($arr[8] == '0') {
+                    $seri_length = strlen($arr[10]);
+                    $part_number = $arr[4];
+                    $seri = substr($arr[10], $seri_length-4);
+                    $back_number = $arr[9];
+                }
+                // old kanban
+                elseif ($arr[7] == '0') {
+                    $seri_length = strlen($arr[9]);
+                    $part_number = $arr[4];
+                    $seri = substr($arr[9], $seri_length-4);
+                    $back_number = $arr[8];
+                }
+            }
 
             // cek master back number
             $cek_master = avi_trace_kanban_master::select('id')
