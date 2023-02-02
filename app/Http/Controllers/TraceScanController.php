@@ -227,16 +227,16 @@ class TraceScanController extends Controller
                     $cache = [];
                     $cache = [
                         date('Y-m-d') => [
-                            'counter' => 2
+                            'counter' => 1
                         ]
                     ];
                 } else {
-                    $cache[date('Y-m-d')]['counter'] += 2;
+                    $cache[date('Y-m-d')]['counter'] += 1;
                     }
                 } else {
                     $cache = [
                         date('Y-m-d') => [
-                            'counter' => 2
+                            'counter' => 1
                         ]
                     ];
                 }
