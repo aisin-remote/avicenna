@@ -206,7 +206,7 @@
                     $.cookie('avi_kanban_seri', data.seri);
                     $.cookie('avi_kanban_int', data.backnum);
                     $.cookie('avi_kanban_partnum', data.partnum);
-                    $('#part-internal').text(data.backnum);
+                    $('#part-internal').text(data.partnum + ' ' + data.seri + ' ' + data.backnum);
                     return true;
                 }
             },
