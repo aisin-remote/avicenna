@@ -1636,7 +1636,15 @@ class TraceScanController extends Controller
 
     public function machiningng()
     {
-        return view('tracebility/machining/ng');
+        $code = 0;
+        return view('tracebility/machining/ng', compact('code'));
+    }
+
+    public function machiningng2($code)
+    {
+        $ngName = avi_trace_ng_master::select('name')->where('id',$code)->first();
+        
+        return view('tracebility/machining/ng', compact('code','ngName'));
     }
 
     /**

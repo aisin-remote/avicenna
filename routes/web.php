@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/machining/AjaxFG', 'TraceScanController@getAjaxmachiningfg');
 		//NG FG Machining
 	Route::get('/trace/scan/machining/fg-machining-ng', 'TraceScanController@machiningng');
+	Route::get('/trace/scan/machining/fg-machining-ng2/{code}', 'TraceScanController@machiningng2');
 	Route::post('/trace/scan/machining/fg-machining-ng/Ajax', 'TraceScanController@machiningfgngAjax')->name('machining-fg-ng-Ajax');
 	Route::get('/trace/machining/fg-machining-update', 'TraceScanController@getAjaxmachiningng');
 
