@@ -53,4 +53,20 @@ class ApiController extends Controller
             'dcQty' => $dcQty,
         ]);
     }
+
+    public function getNgQty($line,$date){
+
+        // get quantity NG
+        $ngQty = DB::table('avi_trace_ngs')
+        ->where('line', $line)
+        ->where('date', $date)
+        ->count();
+
+        return response()->json([
+            'line' => $line,
+            'date' => $date,
+            'ngQty' => $ngQty,
+        ]);
+
+    }
 }

@@ -20,6 +20,7 @@ Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_d
 
 // API
 Route::get('/trace/api/getqty/{line}/{time_start}/{time_end}', 'Avicenna\Api\ApiController@getQty');
+Route::get('/trace/api/getNgQty/{line}/{date}', 'Avicenna\Api\ApiController@getNgQty');
 
 // dev-1.1.0, Ferry, 20190103, Dengan otentikasi
 Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
