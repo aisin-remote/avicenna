@@ -27,13 +27,13 @@ class ApiController extends Controller
 
         // $hour = date('H');
         
-        // return response()->json([
-        //     'line' => 'cek',
-        //     'ngQty' => 'cek',
-        //     'dcQty' => $dcQty,
-        // ]);
+        return response()->json([
+            'line' => '0',
+            'ngQty' => '0',
+            'dcQty' => '0',
+        ]);
 
-        return 'bismillah';
+        // return 'bismillah';
     }
 
     public function getNgQty($line,$date){
