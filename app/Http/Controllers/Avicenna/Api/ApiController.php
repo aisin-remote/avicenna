@@ -21,17 +21,17 @@ class ApiController extends Controller
 
 
         // get quantity DC
-        $dcQty = DB::table('avi_trace_trial')
-        ->where('line', $line)
-        ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
-        ->count();
+        // $dcQty = DB::table('avi_trace_trial')
+        // ->where('line', $line)
+        // ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
+        // ->count();
 
         // $hour = date('H');
         
         return response()->json([
-            'line' => $line,
-            // 'ngQty' => $ngQty,
-            'dcQty' => $dcQty,
+            'line' => '0',
+            'ngQty' => '0',
+            'dcQty' => '0',
         ]);
     }
 
