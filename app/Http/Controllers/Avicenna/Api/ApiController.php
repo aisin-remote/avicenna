@@ -19,20 +19,27 @@ class ApiController extends Controller
         // ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
         // ->count();
 
+        try {
+            // get quantity DC
+            $dcQty = DB::table('avi_trace_trial')
+            ->where('line', $line)
+            ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
+            ->count();
 
-        // get quantity DC
-        // $dcQty = DB::table('avi_trace_trial')
-        // ->where('line', $line)
-        // ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
-        // ->count();
+            // $hour = date('H');
+            
+            return response()->json([
+                'line' => 0,
+                // 'ngQty' => $ngQty,
+                'dcQty' => 0,
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+            ],500);
+        }
 
-        // $hour = date('H');
         
-        return response()->json([
-            'line' => '0',
-            'ngQty' => '0',
-            'dcQty' => '0',
-        ]);
     }
 
     public function getNgQty($line,$date){
