@@ -1025,7 +1025,7 @@ class TraceScanController extends Controller
                     // create new instance
                     $client = new Client();
                     // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
-                    $response = $client->get('http://172.18.10.157:8000/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1929,7 +1929,7 @@ class TraceScanController extends Controller
                 // create new instance
                 $client = new Client();
                 // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
-                $response = $client->get('http://172.18.10.157:8000/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
+                $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
 
                 $key = 'machining_'.$user->npk;
                 if (Cache::has($key)) {
@@ -2361,7 +2361,7 @@ class TraceScanController extends Controller
                     // create new instance
                     $client = new Client();
                     // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
-                    $response = $client->get('http://172.18.10.157:8000/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
 
                     DB::commit();
                 } catch (\Throwable $th) {
