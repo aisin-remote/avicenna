@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Cache;
 use App\Jobs\SendDataDowa;
 use Datatables;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 
 class TraceScanController extends Controller
 {
@@ -63,9 +64,23 @@ class TraceScanController extends Controller
                         // $product                = new avi_trace_program_number();
                         return "Not OPN 889F Model";
                 }
+
                 $scan->save();
 
                 DB::commit();
+                
+                // hit api rts
+                // parse line
+                $area = substr($line, 0,2);
+
+                // get back number
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
+
+                // create new instance
+                $client = new Client();
+                $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -241,6 +256,8 @@ class TraceScanController extends Controller
                     ];
                 }
 
+
+
                 Cache::forever($key, $cache);
                 try {
                     DB::beginTransaction();
@@ -259,6 +276,16 @@ class TraceScanController extends Controller
                         'status' => "1",
                         'code' => $number2,
                     ]);
+
+                    // hit api rts
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 2;
+
+                    // create new instance
+                    $client = new Client();
+                    $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+
                     DB::commit();
                 } catch (\Throwable $th) {
                     DB::rollBack();
@@ -276,8 +303,7 @@ class TraceScanController extends Controller
                 ];
 
 
-            }
-            else{
+            }else{
                 return ["code" =>"Kanbannotreset"];
             }
         }
@@ -989,6 +1015,18 @@ class TraceScanController extends Controller
                     DB::beginTransaction();
                     $casting = avi_trace_casting::create($dataCasting);
                     $dowaProcess = avi_dowa_process::create($dataCastingDowa);
+
+                    // hit api rts
+                    $area = substr($line, 0,2);
+                    $partCode = substr($partcodes, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
+                    $qty = 3;
+
+                    // create new instance
+                    $client = new Client();
+                    // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
+                    $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+
                     DB::commit();
                 } catch (\Throwable $th) {
                     DB::rollBack();
@@ -1607,6 +1645,16 @@ class TraceScanController extends Controller
                             'strainer_id' => $strainer,
                             'code' => $number,
                         ]);
+
+                        // hit api rts
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
+
+                        // create new instance
+                        $client = new Client();
+                        $response = $client->get('https://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+
                         DB::commit();
                  } catch (\Throwable $th) {
                     DB::rollBack();
@@ -1868,6 +1916,20 @@ class TraceScanController extends Controller
                 }
 
                 $scan->save();
+
+                // hit api rts
+                // parse line
+                $area = substr($line, 0,2);
+
+                // get back number
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
+
+                // create new instance
+                $client = new Client();
+                // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
+                $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
 
                 $key = 'machining_'.$user->npk;
                 if (Cache::has($key)) {
@@ -2134,6 +2196,16 @@ class TraceScanController extends Controller
                             // 'strainer_id' => $strainer,
                             'code' => $number,
                         ]);
+
+                        // hit api rts
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
+
+                        // create new instance
+                        $client = new Client();
+                        $response = $client->get('https://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+
                         DB::commit();
                  } catch (\Throwable $th) {
                     DB::rollBack();
@@ -2280,6 +2352,17 @@ class TraceScanController extends Controller
                         'status' => "1",
                         'code' => $number2,
                     ]);
+
+                    // hit api rts
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 2;
+
+                    // create new instance
+                    $client = new Client();
+                    // $response = $client->get('https://rts/api/stock-control/'. $area .'/'. $backNum);
+                    $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+
                     DB::commit();
                 } catch (\Throwable $th) {
                 DB::rollBack();
