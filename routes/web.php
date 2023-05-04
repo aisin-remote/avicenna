@@ -213,6 +213,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
 		//NG FG Assembling
 	Route::get('/trace/scan/assembling/fg-assembling-ng', 'TraceScanController@assemblingng');
+	Route::get('/trace/scan/assembling/fg-assembling-ng2/{code}', 'TraceScanController@assemblingng2');
 	Route::get('/trace/scan/assembling/getPartNg/{part}', 'TraceScanController@getPartAssemblingNg');
 	Route::get('/trace/scan/assembling/inputPartNg/{part}/{ng}/{line}', 'TraceScanController@inputPartAssemblingNg');
 

@@ -2528,6 +2528,12 @@ class TraceScanController extends Controller
     {
         return view('tracebility/assembling/ng');
     }
+    public function assemblingng2($code)
+    {
+        $ngName = avi_trace_ng_master::select('name')->where('id',$code)->first();
+        
+        return view('tracebility/assembling/ng', compact('code','ngName'));
+    }
 
     /**
      * Fungsi get data part

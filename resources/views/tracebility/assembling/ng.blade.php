@@ -35,7 +35,7 @@
 </head>
 <body style="background-color: black">
 
-     <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
+    <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
         <div class="bg-merahs ng-header">
             <h1 class="text-center" style="font-size: 40pt; color: white">
                 INPUT PART NG - LINE <span id="line-display"></span>
@@ -43,38 +43,24 @@
         </div>
         <div style="background-color: black;">
 
+        <div class="row">
+                <!-- <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; " id="table-here"></div> -->
+                <div class="col-md-12 text-center border" style="height: 350px; margin-top: 2rem; color: white; overflow-y: auto;">
+                    <table id="ngdetail" style="width: 100%; color: red; border: none" cellspacing="0" cellpadding="0">
+                        <tbody style="border: none" >
+                            <tr style="border: none">
+                                <td class="text-center" style="font-size: 100px; border: none;">{{ $ngName->name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12 text-center" style="">
                         <input id="code" style="font-size: 25pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE PART">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; " id="table-here"></div>
-                <div class="col-md-3 text-center border" style="height: 350px; margin-top: 2rem; color: white; overflow-y: auto;">
-                    <table id="ngdetail" style="width: 100%; border: white; color: red">
-                        <thead>
-                            <td style="height: 15px" class="text-center" colspan="2">NAMA NG</td>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table id="ngtotal" style="margin-top: 4%; width: 100%; border: white; color: red">
-                        <thead>
-                            <td style="height: 15px; color: white;" class="text-center" colspan="2">TOTAL NG</td>
-                        </thead>
-                        <tbody id="tbody-ngtotal">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 2rem">
-                <div class="col-md-12 text-center" >
-                        <input id="ng" style="font-size: 15pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE NG">
-                </div>
-            </div>
+            
             <div class="row" style="margin-top: 2rem; margin-bottom: 2rem">
                 <div class="col-md-12 text-center">
                     <button style="width: 100%;font-size: 30pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
@@ -92,13 +78,13 @@
     </div>
 
     <div class="modal fade gfont" id="notifModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" id="divNotif" style="border-radius: 0px !important;">
-          <div class="modal-body text-center">
-            <span style="color: white; font-size: 30pt" id="notif"> Scan Part</span>
-          </div>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" id="divNotif" style="border-radius: 0px !important;">
+                <div class="modal-body text-center">
+                    <span style="color: white; font-size: 30pt" id="notif"> Scan Part</span>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
     <script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
@@ -176,15 +162,16 @@
             url: "{{ url('/trace/scan/assembling/getPartNg') }}"+'/'+part,
             dataType: 'json',
             success: function (data) {
-                $("#ngdetail > tbody").empty();
-                data.forEach((item, index) => {
-                    $("#ngdetail").find('tbody')
-                        .append($('<tr>')
-                            .append($('<td>')
-                                    .text(item.ngdetail.name)
-                            )
-                        );
-                });
+                let ngcode = "{{$code}}";
+                // $("#ngdetail > tbody").empty();
+                // data.forEach((item, index) => {
+                //     $("#ngdetail").find('tbody')
+                //         .append($('<tr>')
+                //             .append($('<td>')
+                //                     .text(item.ngdetail.name)
+                //             )
+                //         );
+                // });
 
                 notif("success", "PART BERHASIL DISCAN, SILAHKAN SCAN QR CODE NG");
                 let interval = setInterval( function(){
@@ -192,6 +179,10 @@
                     clearInterval(interval);
                     $('#ng').focus();
                 }, 1000);
+
+                if (ngcode != 0 ) {
+                    inputNg(part, ngcode);
+                }
             }
 
         });
@@ -213,15 +204,15 @@
                         $('#ng').focus();
                     }, 1000);
                 } else {
-                    $("#ngdetail > tbody").empty();
-                    data.data.forEach((item, index) => {
-                        $("#ngdetail").find('tbody')
-                            .append($('<tr>')
-                                .append($('<td>')
-                                        .text(item.ngdetail.name)
-                                )
-                            );
-                    });
+                    // $("#ngdetail > tbody").empty();
+                    // data.data.forEach((item, index) => {
+                    //     $("#ngdetail").find('tbody')
+                    //         .append($('<tr>')
+                    //             .append($('<td>')
+                    //                     .text(item.ngdetail.name)
+                    //             )
+                    //         );
+                    // });
                     if(data.type == 'input'){
                         notif("success", `ID NG BERHASIL DISCAN`);
                     }
@@ -233,6 +224,7 @@
                         clearInterval(interval);
                         $('#ng').val("");
                         $('#ng').focus();
+                        window.location.replace("{{url('/trace/scan/assembling/fg-double')}}");
                     }, 1000);
 
                 }

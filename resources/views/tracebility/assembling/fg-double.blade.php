@@ -226,6 +226,12 @@
                     window.location.replace("{{url('/trace/logout')}}");
 
                 }
+                // improve ng at double scan part
+                else if (barcodecomplete.length <= 2)
+                {
+                    window.location.replace("{{url('/trace/scan/assembling/fg-assembling-ng2/')}}"+"/"+barcodecomplete);
+
+                }
                 else if (barcodecomplete == "DOUBLE")
                 {
                     window.location.replace("{{url('/trace/scan/assembling/fg-assembling')}}");
