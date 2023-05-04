@@ -1018,7 +1018,7 @@ class TraceScanController extends Controller
 
                     // hit api rts
                     $area = substr($line, 0,2);
-                    $partCode = substr($partcodes, 0,2);
+                    $partCode = substr(array_first($partcodes), 0,2);
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
                     $qty = 3;
 
