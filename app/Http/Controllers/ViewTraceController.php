@@ -16,6 +16,7 @@ use DateTime;
 use Yajra\Datatables\Datatables;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Cache;
+use GuzzleHttp\Exception\ClientException;
 use Storage;
 
 class ViewTraceController extends Controller
@@ -199,7 +200,7 @@ class ViewTraceController extends Controller
 					]
 				]);
 				$api = $response->json();
-			} catch (\Throwable $th) {
+			} catch (ClientException $th) {
 				$api = null;
 			}
 
