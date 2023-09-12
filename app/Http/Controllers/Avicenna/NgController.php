@@ -189,6 +189,43 @@ class NgController extends Controller
             
         })->setFilename("NG PERIODE " . $month . " LINE " . $line . " MODEL " . $model)->export('xlsx');
     }
+
+
+    /**
+    * Show the form for creating a new resource.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function exportDataHarpan($line, $model, $dies, $month)
+    {
+        
+        // Update 
+        Excel::load('/storage/template/Export_NG_Harpan.xlsx',  function ($file) use ($line,$model,$dies,$month) {
+            
+            $row = "2";
+            $no = '1';
+            $datas = avi_trace_ng::where('date', 'like', '%'. $month . '%');
+            if ($line != 'null') {
+                $datas = $datas->where('line', $line);
+            };
+            // dd(avi_trace_ng::where('date', 'like', '%'. $month . '%')->orderBy('created_at', 'DESC')->get());
+
+            $datas = $datas->orderBy('created_at', 'DESC')->get();
+            // dd($datas);
+            
+            foreach ($datas as $key => $value) {
+                $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
+                $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->code);
+                $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', $value->line);
+                $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', $value->pic);
+                $file->setActiveSheetIndex(0)->setCellValue('E' . $row . '', $value->date);
+                
+                $row++;
+                $no++;
+            }
+            
+        })->setFilename("NG PERIODE " . $month . " LINE " . $line . " MODEL " . $model)->export('xlsx');
+    }
     
     /**
     * Show the form for creating a new resource.

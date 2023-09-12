@@ -126,6 +126,7 @@ NG Data Detail
             <div class="col-lg-4">
               <button type="button" id="btnFilter" class="btn btn-primary" onclick="filterData()">Filter</button>
               <button type="button" id="btnExport" class="btn btn-success" onclick="exportData()"> Export To Excel</button>
+              <button type="button" id="btnExport" class="btn btn-success" onclick="exportDataHarpan()"> Export Pak Harpan</button>
             </div>
           </div>
           
@@ -319,6 +320,18 @@ NG Data Detail
     let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
     
     location.href = '{{ url ("/trace/ng/view/exportData") }}/' + line + '/' + programnumber + '/' + dies + '/' + date;
+  }
+
+
+  function exportDataHarpan() {
+    let line = $('#line').val() ? $('#line').val() : 'null';
+    let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+    let dies = $('#dies').val() ? $('#dies').val() : 'null';
+
+    // data_month
+    let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+    
+    location.href = '{{ url ("/trace/ng/view/exportDataHarpan") }}/' + line + '/' + programnumber + '/' + dies + '/' + date;
   }
 </script>
 
