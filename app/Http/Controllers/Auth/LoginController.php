@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 // dev-1.0, 20170906, Ferry, Declare disini jika butuh Class bawaan laravel yang tidak auto-generated
 
@@ -79,18 +79,18 @@ class LoginController extends Controller
             return $this->attempLoginUsingUsernameAsAnEmail($request);
         } else {
             // nembak api
-            $client = new Client();
-            $response = $client->post(env('DOWA_BASE_URL').'/auth/login', [
-                'body' => [
-                    'email' => env('DOWA_USER_MAIL'),
-                    'password' => env('DOWA_USER_PASSWORD')
-                ],
-                'headers' => [
-                    'Accept' => 'application/json'
-                ]
-            ]);
-            $json = $response->json();
-            Cache::forever('dowa_token', $json['access_token']);
+            // $client = new Client();
+            // $response = $client->post(env('DOWA_BASE_URL').'/auth/login', [
+            //     'body' => [
+            //         'email' => env('DOWA_USER_MAIL'),
+            //         'password' => env('DOWA_USER_PASSWORD')
+            //     ],
+            //     'headers' => [
+            //         'Accept' => 'application/json'
+            //     ]
+            // ]);
+            // $json = $response->json();
+            // Cache::forever('dowa_token', $json['access_token']);
         }
         return false;
     }
