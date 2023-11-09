@@ -43,6 +43,31 @@ class TraceScanController extends Controller
 
     public function getAjaxcasting($number, $line)
     {
+        
+        $area = substr($line, 0,2);
+        $a    = substr($number, 0, 2);
+
+                // get back number
+        $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+        $backNum = $fgPart->back_number;
+        $qty = 1;
+
+        // create new instance
+    //     $client = new Client([
+    //     'verify' => false, // Temporarily disabling SSL verification
+    // ]);
+        // $response = $client->get('https://rts-qa.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
+        // Inisialisasi cURL
+        $ch = curl_init('https://rts-qa.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+        // Mengabaikan verifikasi SSL
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        // Eksekusi permintaan
+        $response = curl_exec($ch);
+        // dd($response);
+
+
         // dev-1.0, Ferry, 20170926, Normalisasi string barcode
         try{
 
@@ -71,16 +96,6 @@ class TraceScanController extends Controller
                 
                 // hit api rts
                 // parse line
-                $area = substr($line, 0,2);
-
-                // get back number
-                // $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
-                // $backNum = $fgPart->back_number;
-                // $qty = 1;
-
-                // // create new instance
-                // $client = new Client();
-                // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -278,13 +293,16 @@ class TraceScanController extends Controller
                     ]);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    // $qty = 2;
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 2;
 
-                    // // create new instance
-                    // $client = new Client();
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    // create new instance
+                    $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                    $response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $number1);
+                    $response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $number2);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1017,15 +1035,19 @@ class TraceScanController extends Controller
                     $dowaProcess = avi_dowa_process::create($dataCastingDowa);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $partCode = substr(array_first($partcodes), 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
-                    // $qty = 3;
+                    $area = substr($line, 0,2);
+                    $partCode = substr(array_first($partcodes), 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
+                    $qty = 3;
 
-                    // // create new instance
-                    // $client = new Client();
-                    // // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    // create new instance
+                    $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                    // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
+                    foreach ($partcodes as $key => $value){
+                        $response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
+                    }
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1258,7 +1280,7 @@ class TraceScanController extends Controller
                 ];;
             };
 
-            SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
+            //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
             return [
                 "status" => "success"
@@ -1371,6 +1393,7 @@ class TraceScanController extends Controller
                     $scan->cycle                = $wimcycle;
                     $scan->customer             = $customer;
                     $scan->npk                  = $npk;
+                    $scan->seri                 = $seri;
                     $scan->date                 = date('Y-m-d');
                     $scan->status               = 1;
                     $scan->save();
@@ -1380,6 +1403,7 @@ class TraceScanController extends Controller
                         $scan2->cycle                = $wimcycle;
                         $scan2->customer             = $customer;
                         $scan2->npk                  = $npk;
+                        $scan2->seri                 = $seri;
                         $scan2->date                 = date('Y-m-d');
                         $scan2->status               = 1;
                         $scan2->save();
@@ -1647,13 +1671,15 @@ class TraceScanController extends Controller
                         ]);
 
                         // hit api rts
-                        // $area = substr($line, 0,2);
-                        // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                        // $qty = 1;
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
 
-                        // // create new instance
-                        // $client = new Client();
-                        // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                        // create new instance
+                        $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                        $response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/'. $qty . '/' . $number);
 
                         DB::commit();
                  } catch (\Throwable $th) {
@@ -1685,14 +1711,15 @@ class TraceScanController extends Controller
     public function machiningng()
     {
         $code = 0;
-        return view('tracebility/machining/ng', compact('code'));
+        $ngName = avi_trace_ng_master::select('name', 'id')->where('category', 'ma')->get();
+        // dd($ngName);
+        return view('tracebility/machining/ng', compact('ngName'));
     }
 
     public function machiningng2($code)
     {
-        $ngName = avi_trace_ng_master::select('name')->where('id',$code)->first();
-        
-        return view('tracebility/machining/ng', compact('code','ngName'));
+        $ngName = avi_trace_ng_master::select('name', 'id')->get();
+        return view('tracebility/machining/ng', compact('ngName'));
     }
 
     /**
@@ -1922,14 +1949,16 @@ class TraceScanController extends Controller
                 $area = substr($line, 0,2);
 
                 // get back number
-                // $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
-                // $backNum = $fgPart->back_number;
-                // $qty = 1;
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
 
-                // // create new instance
-                // $client = new Client();
-                // // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
+                // create new instance
+                $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
+                $response = $client->get(env('API_RTS').'/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 $key = 'machining_'.$user->npk;
                 if (Cache::has($key)) {
@@ -2198,13 +2227,15 @@ class TraceScanController extends Controller
                         ]);
 
                         // hit api rts
-                        // $area = substr($line, 0,2);
-                        // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                        // $qty = 1;
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
 
-                        // // create new instance
-                        // $client = new Client();
-                        // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                        // create new instance
+                        $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                        $response = $client->get(env('API_RTS') . '/'. $area .'/'. $backNum->back_number .'/'. $qty . '/' . $number);
 
                         DB::commit();
                  } catch (\Throwable $th) {
@@ -2354,14 +2385,17 @@ class TraceScanController extends Controller
                     ]);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    // $qty = 2;
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 2;
 
-                    // // create new instance
-                    // $client = new Client();
-                    // // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    // create new instance
+                    $client = new Client([
+                'verify' => false, // Temporarily disabling SSL verification
+            ]);
+                    // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
+                    $response = $client->get(env('API_RTS') . '/'. $area .'/'. $backNum->back_number .'/1/'. $number1);
+                    $response2 = $client->get(env('API_RTS') . '/'. $area .'/'. $backNum->back_number .'/1/'. $number2);
 
                     DB::commit();
                 } catch (\Throwable $th) {

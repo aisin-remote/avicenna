@@ -58,19 +58,9 @@
             <div class="row" style="color: white">
                 <div class="col-md-9 text-center border" style="height: 350px;  margin-top: 2rem; overflow-y: auto;" id="table-here"></div>
                 <div class="col-md-3 text-center border" style="height: 350px; margin-top: 2rem; color: white; ">
-                    <table id="ngdetail" style="width: 100%; height: 38%; border: white; color: red; overflow-y: auto;">
-                        <thead>
-                            <td style="height: 15px" class="text-center" colspan="2">NAMA NG</td>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <table id="ngtotal" style="margin-top: 4%; width: 100%; height: 58%; border: white; color: red; overflow-y: auto;">
                         <thead>
-                            <td style="height: 15px; color: white;" class="text-center" colspan="2">TOTAL NG</td>
+                            <td style="height: 15px; color: white;" class="text-center" colspan="2">TOTAL PART NG</td>
                         </thead>
                         <tbody id="tbody-ngtotal">
                         </tbody>

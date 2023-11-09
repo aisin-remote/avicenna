@@ -35,39 +35,62 @@
 </head>
 <body style="background-color: black">
 
-     <div style="background-color: black; border: 1px solid white; margin-top: 1rem " class="container gfont">
-        <div class="bg-merahs ng-header">
-            <h1 class="text-center" style="font-size: 40pt; color: white">
-                INPUT PART NG - LINE <span id="line-display"></span>
+     <div style="background-color: black; border: 1px solid white; margin-top: 1rem ;height : 97% " class="container gfont">
+        <div class="bg-merahs ng-header text-center">
+            <h1 class="text-center" style="font-size: 20pt; color: white">
+                NG MACHINING & ASSY
             </h1>
         </div>
-        <div style="background-color: black;">
-
-        <div class="row">
-                <!-- <div class="col-md-9 text-center border" style="height: 400px;  margin-top: 2rem; " id="table-here"></div> -->
-                <div class="col-md-12 text-center border" style="height: 350px; margin-top: 2rem; color: white; overflow-y: auto;">
-                    <table id="ngdetail" style="width: 100%; color: red; border: none" cellspacing="0" cellpadding="0">
-                        <tbody style="border: none" >
-                            <tr style="border: none">
-                                <td class="text-center" style="font-size: 100px; border: none;">{{ $ngName->name }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div style="background-color: black; border: 1px solid white; padding: 1rem ">
             <div class="row">
+                <div class="col-md-12" style="">
+                    <h1 style="font-size: 15pt; color: white">
+                        Pilih Line :
+                    </h1>
+                </div>
                 <div class="col-md-12 text-center" style="">
-                        <input id="code" style="font-size: 25pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE PART">
+                    <select id="line" style="font-size: 10pt !important; width: 100% ; padding: 1rem;" >
+                        <option value="MA001">MA001</option>
+                        <option value="MA002">MA002</option>
+                        <option value="MA003">MA003</option>
+                        <option value="MA004">MA004</option>
+                        <option value="MA005">MA005</option>
+                        <option value="MA006">MA006</option>
+                        <option value="AS001">AS001</option>
+                        <option value="AS002">AS002</option>
+                        <option value="AS003">AS003</option>
+                        <option value="AS004">AS004</option>
+                    </select>
+                </div>
+                <div class="col-md-12" style="">
+                    <h1 class="" style="font-size: 15pt; color: white">
+                        Pilih Jenis NG :
+                    </h1>
+                </div>
+                <div class="col-md-12 text-center" style="">
+                    <select id="ng" style="font-size: 10pt !important; width: 100% ; padding: 1rem;" >
+                            @foreach ($ngName as $item)
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                            
+                    </select>
                 </div>
             </div>
-            
+        </div>
+        <div style="background-color: black; ">    
             <div class="row" style="margin-top: 2rem; margin-bottom: 2rem">
+                <div class="col-md-12" style="">
+                    <h1 class="" style="font-size: 15pt; color: white">
+                        Scan Part NG :
+                    </h1>
+                </div>
+                <div class="col-md-12 text-center" style="">
+                    <input id="code" style="font-size: 10pt !important; width: 100% ; padding: 1rem;" type="text" name="" placeholder="SCAN KODE PART">
+                </div>
                 <div class="col-md-12 text-center">
-                    <button style="width: 100%;font-size: 30pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
+                    <button style="margin-top:3rem; width: 100%;font-size: 15pt; color: white; background-color: #32a852" onclick="done()"> SELESAI </button>
                 </div>
             </div>
-
-
         </div>
         <div class="card-footer p-3  bg-merahs text-center">
             <h5 class="right text-white" style="padding: 0.5rem; height: 4rem; font-size: 2rem">
@@ -88,24 +111,19 @@
     </div>
 
     <script src="{{ url (mix('/js/app.js')) }}" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script>
+    
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="{{ asset('/js/jquery-cookie.js') }}"></script>
     <script type="text/javascript">
 
     $(document).ready(function() {
-        let line_number = localStorage.getItem('avi_line_number');
-        let part = "";
-        let ngcode = "{{$code}}";
-        console.log(ngcode);
-        getLineData(line_number);
-        $('#line-display').text(line_number);
-
         $('#code').focus();
         $('#code').keypress( function(e) {
             // e.preventDefault();
             let code = (e.keyCode ? e.keyCode : e.which);
             if(code==13) {
+                line = $('#line').val();
+                ng = $('#ng').val();
                 part = $('#code').val();
 
                 if (part == "NGMODE") {
@@ -114,7 +132,7 @@
                 }
 
                 if (part.length == 15) {
-                    cekPart(part);
+                    inputNg(part, ng, line);
                     getLineData(line_number);
                 } else {
                     notif("error", "TOLONG SCAN PART KEMBALI");
@@ -131,85 +149,9 @@
         let interval = setInterval( function(){
             window.location.replace("{{url('/trace/logout')}}");
         }, 3600000);
-
-        $('#ng').keypress( function(e) {
-            // e.preventDefault();
-            let code = (e.keyCode ? e.keyCode : e.which);
-            let ng = "";
-            if(code==13) {
-                ng = $('#ng').val();
-                if (ng == "DONE") {
-                    done();
-                    return;
-                }
-                if (ng.length > 0 && ng.length < 3) {
-                    inputNg(part, ng);
-                    getLineData(line_number);
-                } else {
-                    notif("error", "DATA NG TIDAK DITEMUKAN, ULANGI PROSES SCAN ID NG");
-                    let interval = setInterval( function(){
-                        $('#notifModal').modal('hide');
-                        clearInterval(interval);
-                        $('#ng').val("");
-                        $('#ng').focus();
-                    }, 2000);
-                }
-            }
-        });
     });
 
-    function cekPart(part) {
-        $.ajax({
-            type: 'get',
-            url: "{{ url('/trace/scan/machining/getPartNg') }}"+'/'+part,
-            dataType: 'json',
-            success: function (data) {
-                let ngcode = "{{$code}}";
-                // $("#ngdetail > tbody").empty();
-                // data.forEach((item, index) => {
-                //     $("#ngdetail").find('tbody')
-                //         .append($('<tr>')
-                //             .append($('<td>')
-                //                     .text(item.ngdetail.name)
-                //             )
-                //         );
-                // });
-
-                notif("success", "PART BERHASIL DISCAN, SILAHKAN SCAN QR CODE NG");
-                let interval = setInterval( function(){
-                    $('#notifModal').modal('hide');
-                    clearInterval(interval);
-                    $('#ng').focus();
-                }, 1000);
-
-                if (ngcode != 0 ) {
-                    inputNg(part, ngcode);
-                }
-            }
-
-        });
-    }
-
-    function getLineData(line){
-        $.ajax({
-            type: 'get',
-            url: "{{ url('/trace/ng/getLineData') }}"+'/'+line,
-            success: function (data) {
-                $('#table-here').html('');
-                $('#tbody-ngtotal').html('');
-                $('#table-here').append(`<div class="col-md-12" id="div${data.line}"></div>`);
-                $('#div'+data.line).append(`<table style="width: 100%; color: white; overflow-y: auto;"><thead><td style="height: 15px" class="text-center" colspan="2">${data.line}</td></thead><tbody id="body${data.line}"></tbody></thead></table>`);
-                for(var i = 0; i < data.counter.length; i++){
-                    console.log(data.counter[i]);
-                    $('#body'+data.line).append(`<tr><td style="height: 15px">${data.counter[i].name}</td><td style="height: 15px">${data.counter[i].counter}</td></tr>`);
-                }
-                $('#tbody-ngtotal').append(`<tr><td style="height: 15px; color: white">${data.line}</td><td style="height: 15px">${data.totalPart}</td></tr>`);
-            }
-        })
-    }
-
-    function inputNg(part, idNg) {
-        let line = localStorage.getItem('avi_line_number');
+    function inputNg(part, idNg, line) {
         $.ajax({
             type: 'get',
             url: "{{ url('/trace/scan/machining/inputPartNg') }}"+'/'+part+'/'+idNg+'/'+line,
@@ -234,7 +176,7 @@
                     //         );
                     // });
                     if(data.type == 'input'){
-                        notif("success", `ID NG BERHASIL DISCAN`);
+                        notif("success", part + ` NG BERHASIL DISCAN`);
                     }
                     else{
                         notif("error", "ID NG BERHASIL DIHAPUS");
@@ -242,9 +184,8 @@
                     let interval = setInterval( function(){
                         $('#notifModal').modal('hide');
                         clearInterval(interval);
-                        $('#ng').val("");
-                        $('#ng').focus();
-                        window.location.replace("{{url('/trace/scan/machining')}}");
+                        $('#code').val("");
+                        $('#code').focus();
                     }, 1000);
 
                 }

@@ -296,7 +296,7 @@
                             },
                             error: function(xhr) {
                                 if (xhr.status) {
-                                    location.reload();
+                                    // location.reload();
                                 }
 
                                 $('#alert').removeClass('alert-success');
