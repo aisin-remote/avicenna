@@ -39,7 +39,7 @@ class EmailTraceability extends Command
     public function handle()
     {
         $jam_7 = \Carbon\Carbon::now();
-        if ($jam_7->hour == 8) {
+        if ($jam_7->hour == 7) {
             $tracepartreport = new TraceListController;
             return $tracepartreport->tracepartreport();
         }

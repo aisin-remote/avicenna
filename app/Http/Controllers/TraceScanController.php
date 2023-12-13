@@ -1023,13 +1023,13 @@ class TraceScanController extends Controller
                     $qty = 3;
 
                     // create new instance
-                    $client = new Client([
-                'verify' => false, // Temporarily disabling SSL verification
-            ]);
+                    //$client = new Client([
+                //'verify' => false, // Temporarily disabling SSL verification
+            //]);
                     // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                    foreach ($partcodes as $key => $value){
-                        $response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
-                    }
+                    //foreach ($partcodes as $key => $value){
+                        //$response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
+                   // }
 
                     DB::commit();
                 } catch (\Throwable $th) {

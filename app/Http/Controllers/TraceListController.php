@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 use App\Models\Avicenna\avi_trace_program_number;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_casting;
-use App\Models\Avicenna\avi_trace_cycle;
+use App\Models\Avicenna\avi_tmmin_log;
 use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_strainer_master;
 use App\Models\Avicenna\avi_trace_delivery;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Response;
 use DB;
 use App\Mail\TmminReport;
@@ -300,82 +301,122 @@ class TraceListController extends Controller
 
 	public function tracepartreport()
     {
-    	try{
-    		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
-    		$now = \Carbon\Carbon::now()->format('Ymdhis');
-    		$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.date as date_delivery',
-    			'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.date as date_casting',
-    			'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.date as date_machining')
-    		->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
-    		->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
-    		->where('avi_trace_delivery.date', $yesterday)
-    		->where('avi_trace_delivery.customer','TMMIN')
-    		->get();
+		$client = new Client();
+        $response = $client->post('http://18.140.222.208:8010/scc/api/identity/v1/login', ['verify' => false, 'json' => [
+			'username' => 'adminAisinKrw',
+			'password' => 'c3VwZXJhZG1pbjEyMw==',
+		]]);
+        $data = json_decode($response->getBody(), true);
+		$token = 'Bearer ' . $data['data']['accessToken'];
 
-    		$delimiter = config::set('excel.csv.delimiter', ';');
-    		$enclosure = config::set('excel.csv.enclosure', '');
-    		Excel::load('/storage/template/print_part_tmiin.csv',  function($file) use($query){
+		if ($data['data']['accessToken']) {
+			//DO
+			try{
+				$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
+				$now = \Carbon\Carbon::now()->format('Ymdhis');
+				$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.created_at as date_delivery',
+					'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.created_at as date_casting',
+					'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.created_at as date_machining')
+				->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
+				->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
+				->where('avi_trace_delivery.date', $yesterday)
+				->where('avi_trace_delivery.customer','7A00035')
+				->get();
 
-    			$a = "2";
-    			foreach ($query as $queries){
-    				$code_delivery	= $queries->code_delivery;
-    				$line_casting	= $queries->line_casting;
-    				$npk_casting	= $queries->npk_casting;
-    				$date_casting	= date("Y/m/d", strtotime($queries->date_casting));
-    				$line_machining	= $queries->line_machining;
-    				$npk_machining	= $queries->npk_machining;
-    				$date_machining	= date("Y/m/d", strtotime($queries->date_machining));
-    				$cycle_delivery	= avi_trace_cycle::select('name')->where('code',$queries->cycle_delivery)->first();
-    				$npk_delivery	= $queries->npk_delivery;
-    				$date_delivery	= date("Y/m/d", strtotime($queries->date_delivery));
-    				$c 				= substr($queries->code_delivery, 0, 2);
-    				$part_number	= avi_trace_program_number::where('code',$c)->first();
+				$sendData = [];
+
+				foreach ($query as $key => $value) {
+					$code_delivery	= $value->code_delivery;
+					$line_casting	= $value->line_casting;
+					$npk_casting	= $value->npk_casting;
+					$date_casting	= Carbon::createFromFormat('Y-m-d H:i:s', $value->date_casting)->format('d-M-Y H:i:s');
+					$line_machining	= $value->line_machining;
+					$npk_machining	= $value->npk_machining;
+					$date_machining	= Carbon::createFromFormat('Y-m-d H:i:s', $value->date_machining)->format('d-M-Y H:i:s');
+					$npk_delivery	= $value->npk_delivery;
+					$date_delivery	= Carbon::createFromFormat('Y-m-d H:i:s', $value->date_delivery)->format('d-M-Y H:i:s');
+					$c 				= substr($value->code_delivery, 0, 2);
+					$part_number	= avi_trace_program_number::where('code',$c)->first();
+					$date_now		= Carbon::now()->format('d-M-Y H:i:s');
 
 
-    				$file->setActiveSheetIndex(0)->setCellValue('A'.$a.'', $part_number->company_code);
-    				$file->setActiveSheetIndex(0)->setCellValue('B'.$a.'', $part_number->plant_code);
-    				$file->setActiveSheetIndex(0)->setCellValue('C'.$a.'', $part_number->supplier_code);
-    				$file->setActiveSheetIndex(0)->setCellValue('D'.$a.'', $part_number->supplier_plant);
-    				$file->setActiveSheetIndex(0)->setCellValue('E'.$a.'', $code_delivery);
-    				$file->setActiveSheetIndex(0)->setCellValue('F'.$a.'', $part_number->part_name);
-    				$file->setActiveSheetIndex(0)->setCellValue('G'.$a.'', $line_casting);
-    				$file->setActiveSheetIndex(0)->setCellValue('H'.$a.'', $date_casting);
-    				$file->setActiveSheetIndex(0)->setCellValue('I'.$a.'', $npk_casting);
-    				$file->setActiveSheetIndex(0)->setCellValue('J'.$a.'', $line_machining);
-    				$file->setActiveSheetIndex(0)->setCellValue('K'.$a.'', $date_machining);
-    				$file->setActiveSheetIndex(0)->setCellValue('L'.$a.'', $npk_machining);
-    				$file->setActiveSheetIndex(0)->setCellValue('M'.$a.'', $cycle_delivery->name);
-    				$file->setActiveSheetIndex(0)->setCellValue('N'.$a.'', $date_delivery);
-    				$file->setActiveSheetIndex(0)->setCellValue('O'.$a.'', $npk_delivery);
-    				$file->setActiveSheetIndex(0)->setCellValue('P'.$a.'', $part_number->part_number);
+					$dataArray = [
+						"itemCd" => $part_number->part_number,
+						"supplierCd" => "AISIN-KRW",
+						"inputDt" => $date_now,
+						"attribute_key" => (object)[
+							"PART_CODE" => $code_delivery,
+						],
+						"attribute" => (object)[
+							"dateScanMA" => $date_machining,
+							"NPKDelivery" => $npk_delivery,
+							"custPartNumber" => $part_number->part_number,
+							"proDt" => $date_now,
+							"uomType" => "UNIT",
+							"partCode" => $code_delivery,
+							"supplierCode" => $part_number->supplier_code,
+							"NPKMA" => $npk_machining,
+							"lineMA" => $line_machining,
+							"partName" => $part_number->part_name,
+							"plantCode1" => $part_number->plant_code,
+							"supplierPlant" => $part_number->supplier_plant,
+							"uom" => "PCS",
+							"companyCd" => $part_number->company_code,
+							"lineDelivery" => "Cycle " . $value->cycle_delivery,
+							"dateScanDC" => $date_casting,
+							"lineDC" => $line_casting,
+							"qty" => "1",
+							"NPKDC" => $npk_casting,
+							"dateScanDelivery" => $date_delivery,
+						],
+						"statusData" => "New"
+					];
+					
+					// Membuat objek PHP dari array
+					$object = (object)$dataArray;
+					array_push($sendData, $object);
+					
+				}
 
-    				$a++;
-    			}
+				$tempSend = [
+					"pointCd" => "PT_GENERAL_TP1_OILPAN_005",
+					"inputTypeCd" => "IT_AGENT",
+					"rawTypeCd" => "RT_ITEM",
+					"data" => $sendData
+				];
 
-    		})->save('csv', storage_path('traceability'), true);
-    		$file = Storage::disk('public')->get('print_part_tmiin.csv');
-    			    Storage::disk('myftp')->put('\data_'.$now.'.csv',$file); /* ---- for saving CSV file to  AIIA-SVR-WX04 ---- */
+				
+				$jsonSend = (object)$tempSend;
 
-    		//	    $this->tes(); //dev-1.1.0 , Handika, Non aktif fitur email
-    	}catch(\Exception $e){
-    		echo "Error ".$e;
-    	}
+				$client2 = new Client();
+				$response = $client2->post('http://18.140.222.208:9040/scc/api/raw/item/v1/raw', [
+					'verify' => false,
+					'headers' => [
+						'Authorization' => $token,
+						'Content-Type' => 'application/json',
+						'X-Client-Id' => 'AISIN-KRW-Agent' // Sesuaikan dengan tipe konten yang dikirimkan
+					],
+					'json' => $jsonSend, // Mengirimkan data sebagai JSON (jika ada)
+				]);
+				
+				// Mendekode respons JSON menjadi array
+				$data2 = json_decode($response->getBody(), true);
+				
+				$avi_tmmin_log = new avi_tmmin_log;
+				$avi_tmmin_log->message = $data2['message']. '|' . $data2['data']['processID'];
+				$avi_tmmin_log->save();
+
+				
+
+				//	    $this->tes(); //dev-1.1.0 , Handika, Non aktif fitur email
+			}catch(\Exception $e){
+				echo "Error ".$e;
+			}
+		}
+
+
+    	
 
     }
 
-    /* ----------- Function Email  --------------------
-    function tes(){  //dev-1.1.0 , Handika, Non aktif fitur email
-		$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
-		$tmmin = array('tanggal' => $yesterday);
-		$penerima = array('audi.r@aiia.co.id');
-
-		Mail::send('tracebility.email.index', $tmmin, function($message) use ($penerima)  {
-		$message->to('handika@aiia.co.id')
-					->subject('Traceability')
-					->attach(storage_path('traceability/print_part_tmiin.csv'));
-		$message->cc($penerima);
-		$message->from('aisinbisa@aiia.co.id');
-		});
-	}
-	*/
 }
