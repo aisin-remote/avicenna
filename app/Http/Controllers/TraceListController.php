@@ -320,7 +320,13 @@ class TraceListController extends Controller
 				->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
 				->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
 				->where('avi_trace_delivery.date', $yesterday)
-				->where('avi_trace_delivery.customer','7A00035')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '10%')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '15%')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '18%')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '11%')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '19%')
+				->orWhere('avi_trace_delivery.code', 'LIKE' , '14%')
+				->where('avi_trace_delivery.customer','7A00034')
 				->get();
 
 				$sendData = [];
@@ -387,6 +393,7 @@ class TraceListController extends Controller
 
 				
 				$jsonSend = (object)$tempSend;
+				dd($jsonSend);
 
 				$client2 = new Client();
 				$response = $client2->post('http://18.140.222.208:9040/scc/api/raw/item/v1/raw', [
