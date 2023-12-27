@@ -314,21 +314,31 @@ class TraceListController extends Controller
 			try{
 				$yesterday = \Carbon\Carbon::yesterday()->format('Y-m-d');
 				$now = \Carbon\Carbon::now()->format('Ymdhis');
-				$query = avi_trace_delivery::select('avi_trace_delivery.code as code_delivery','avi_trace_delivery.npk as npk_delivery','avi_trace_delivery.cycle as cycle_delivery','avi_trace_delivery.created_at as date_delivery',
-					'avi_trace_casting.line as line_casting','avi_trace_casting.npk as npk_casting','avi_trace_casting.created_at as date_casting',
-					'avi_trace_machining.line as line_machining','avi_trace_machining.npk as npk_machining','avi_trace_machining.created_at as date_machining')
-				->join('avi_trace_casting','avi_trace_delivery.code','=','avi_trace_casting.code')
-				->join('avi_trace_machining','avi_trace_delivery.code','=','avi_trace_machining.code')
-				->where('avi_trace_delivery.date', $yesterday)
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '10%')
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '15%')
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '18%')
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '11%')
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '19%')
-				->orWhere('avi_trace_delivery.code', 'LIKE' , '14%')
-				->where('avi_trace_delivery.customer','7A00034')
+				$query = avi_trace_delivery::select(
+					'avi_trace_delivery.code as code_delivery',
+					'avi_trace_delivery.npk as npk_delivery',
+					'avi_trace_delivery.cycle as cycle_delivery',
+					'avi_trace_delivery.created_at as date_delivery',
+					'avi_trace_casting.line as line_casting',
+					'avi_trace_casting.npk as npk_casting',
+					'avi_trace_casting.created_at as date_casting',
+					'avi_trace_machining.line as line_machining',
+					'avi_trace_machining.npk as npk_machining',
+					'avi_trace_machining.created_at as date_machining'
+				)
+				->join('avi_trace_casting', 'avi_trace_delivery.code', '=', 'avi_trace_casting.code')
+				->join('avi_trace_machining', 'avi_trace_delivery.code', '=', 'avi_trace_machining.code')
+				->where('avi_trace_delivery.customer', '7A00034')
+				->where(function($query) {
+					$query->where('avi_trace_delivery.code', 'LIKE', '10%')
+						  ->orWhere('avi_trace_delivery.code', 'LIKE', '15%')
+						  ->orWhere('avi_trace_delivery.code', 'LIKE', '18%')
+						  ->orWhere('avi_trace_delivery.code', 'LIKE', '11%')
+						  ->orWhere('avi_trace_delivery.code', 'LIKE', '19%')
+						  ->orWhere('avi_trace_delivery.code', 'LIKE', '14%');
+				})
+				->whereDate('avi_trace_delivery.created_at', $yesterday)
 				->get();
-
 				$sendData = [];
 
 				foreach ($query as $key => $value) {
