@@ -15,7 +15,7 @@ class TraceTorimetronController extends Controller
     public function index(Request $request)
     {
         $status = $request->status;
-        $torimetrons = avi_trace_torimetron::when(!is_null($status), function($q) use($status) {
+        $torimetrons = avi_trace_torimetron::when(!is_null($status), function ($q) use ($status) {
             $q->where('status', $status);
         })->get();
 
@@ -44,7 +44,7 @@ class TraceTorimetronController extends Controller
         unset($data['result']);
         unset($data['datetime_machine']);
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             if (substr($key, 0, 4) === 'avgt') {
                 $dataToSave[$key] = $value;
             }
@@ -70,15 +70,14 @@ class TraceTorimetronController extends Controller
                 $users = User::where('torimetron_notif', User::RECEIVE_TORIMETRON_NOTIF)->get();
 
                 foreach ($users as $user) {
-                        $firstVal = DB::connection('mysql2')->table('tw_message')->first();
-                        $errorDate = date('Y-m-d', strtotime($dataToSave['datetime_machine']));
-                        $errorTime = date('H:i:s', strtotime($dataToSave['datetime_machine']));
-                        $productCode = $dataToSave['product_code'];
+                    $errorDate = date('Y-m-d', strtotime($dataToSave['datetime_machine']));
+                    $errorTime = date('H:i:s', strtotime($dataToSave['datetime_machine']));
+                    $productCode = $dataToSave['product_code'];
 
-                        $token = "v2n49drKeWNoRDN4jgqcdsR8a6bcochcmk6YphL6vLcCpRZdV1";
-                        $message = sprintf("```---- TORIMETRON NOTIF ----%cTGL      : $errorDate %cJAM      : $errorTime %cPART     : $productCode %cSTATUS   : NG PART %c------------------------``` ", 13, 13, 13, 13, 13, 13);
-                        $curl = curl_init();
-                        curl_setopt_array($curl, array(
+                    $token = "v2n49drKeWNoRDN4jgqcdsR8a6bcochcmk6YphL6vLcCpRZdV1";
+                    $message = sprintf("```----  ``` *TORIMETRON NOTIF* ``` ----%cTGL      : $errorDate %cJAM      : $errorTime %cPART     : $productCode %cSTATUS   : NG PART %c------------------------``` ", 10, 10, 10, 10, 10, 10);
+                    $curl = curl_init();
+                    curl_setopt_array($curl, array(
                         CURLOPT_URL => 'https://app.ruangwa.id/api/send_message',
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_ENCODING => '',
@@ -87,12 +86,12 @@ class TraceTorimetronController extends Controller
                         CURLOPT_FOLLOWLOCATION => true,
                         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                         CURLOPT_CUSTOMREQUEST => 'POST',
-                        CURLOPT_POSTFIELDS => 'token='.$token.'&number='.$user->phone_number.'&message='.$message,
-                        ));
-                        $response = curl_exec($curl);
-                        curl_close($curl);
-                        sleep(10);
-                        echo $response;
+                        CURLOPT_POSTFIELDS => 'token=' . $token . '&number=' . $user->phone_number . '&message=' . $message,
+                    ));
+                    $response = curl_exec($curl);
+                    curl_close($curl);
+                    sleep(10);
+                    echo $response;
                 }
             }
         }
