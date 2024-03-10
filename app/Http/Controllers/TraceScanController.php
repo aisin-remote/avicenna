@@ -80,10 +80,14 @@ class TraceScanController extends Controller
                 $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
-                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
                 $response = curl_exec($ch);
+
+                if ($response === false) {
+                    $error = curl_error($ch);
+                }
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -129,7 +133,7 @@ class TraceScanController extends Controller
 
                 // End Fitur
 
-                return array($response);
+                return array($error);
         }else{
 				// return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
 	            return array("code" => "");
