@@ -291,10 +291,9 @@ class TraceScanController extends Controller
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    
-                        // Execute the request
-                        $response = curl_exec($ch);                    
                     }
+                    // Execute the request
+                    $response = curl_exec($ch);                    
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -2391,10 +2390,9 @@ class TraceScanController extends Controller
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    
-                        // Execute the request
-                        $response = curl_exec($ch);                    
                     }
+                    // Execute the request
+                    $response = curl_exec($ch);                    
 
                     DB::commit();
                 } catch (\Throwable $th) {
