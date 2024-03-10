@@ -80,7 +80,7 @@ class TraceScanController extends Controller
                 $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
                 $response = curl_exec($ch);
@@ -290,7 +290,7 @@ class TraceScanController extends Controller
                         $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     
                         // Execute the request
                         $response = curl_exec($ch);                    
@@ -1035,7 +1035,7 @@ class TraceScanController extends Controller
                         $ch = curl_init(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
                         
                         // Mengabaikan verifikasi SSL
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     
                         // Eksekusi permintaan
                         $response = curl_exec($ch);
@@ -1670,7 +1670,7 @@ class TraceScanController extends Controller
                         $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                         // Eksekusi permintaan
                         $response = curl_exec($ch);
@@ -1949,7 +1949,7 @@ class TraceScanController extends Controller
                 $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
                 $response = curl_exec($ch);
@@ -2228,7 +2228,7 @@ class TraceScanController extends Controller
                         $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                         // Eksekusi permintaan
                         $response = curl_exec($ch);
@@ -2390,7 +2390,7 @@ class TraceScanController extends Controller
                         $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     
                         // Execute the request
                         $response = curl_exec($ch);                    
