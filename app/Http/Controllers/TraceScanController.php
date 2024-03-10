@@ -77,7 +77,7 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -133,7 +133,7 @@ class TraceScanController extends Controller
 
                 // End Fitur
 
-                return array($error);
+                return $arrJSON;
         }else{
 				// return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
 	            return array("code" => "");
