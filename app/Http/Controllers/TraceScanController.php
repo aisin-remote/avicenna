@@ -68,6 +68,22 @@ class TraceScanController extends Controller
                 $scan->save();
 
                 DB::commit();
+                
+                // hit api rts
+                $area = substr($line, 0,2);
+
+                // get back number
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
+
+                $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                // Eksekusi permintaan
+                curl_exec($ch);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -112,22 +128,7 @@ class TraceScanController extends Controller
 
 
                 // End Fitur
-
-                // hit api rts
-                $area = substr($line, 0,2);
-
-                // get back number
-                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
-                $backNum = $fgPart->back_number;
-                $qty = 1;
-
-                $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
-
-                // Mengabaikan verifikasi SSL
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-                // Eksekusi permintaan
-                curl_exec($ch);
+                dd($arrJSON);
 
                 return $arrJSON;
         }else{
