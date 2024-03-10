@@ -287,7 +287,7 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -1667,7 +1667,7 @@ class TraceScanController extends Controller
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -1946,7 +1946,7 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2225,7 +2225,7 @@ class TraceScanController extends Controller
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2387,7 +2387,7 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
