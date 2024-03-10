@@ -80,14 +80,10 @@ class TraceScanController extends Controller
                 $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
-                $verifyFalse = curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                $response = curl_exec($ch);
-
-                if ($response === false) {
-                    $error = curl_error($ch);
-                }
+                curl_exec($ch);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
