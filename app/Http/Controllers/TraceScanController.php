@@ -1032,6 +1032,7 @@ class TraceScanController extends Controller
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
 
                     foreach ($partcodes as $key => $value){
+                        dd($partcodes);
                         $ch = curl_init(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
                         
                         // Mengabaikan verifikasi SSL
