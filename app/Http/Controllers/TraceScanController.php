@@ -287,7 +287,7 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -1667,7 +1667,7 @@ class TraceScanController extends Controller
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum->back_number .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2223,11 +2223,9 @@ class TraceScanController extends Controller
                         // hit api rts
                         $area = substr($line, 0,2);
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-
-                        dd($backNum);
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area .'/'. $backNum->back_number .'/'. $qty .'/'. $number);
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2389,7 +2387,7 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number);
                     
                         // Ignore SSL verification
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
