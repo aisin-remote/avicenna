@@ -70,17 +70,20 @@ class TraceScanController extends Controller
                 DB::commit();
                 
                 // hit api rts
-                // parse line
                 $area = substr($line, 0,2);
 
                 // get back number
-                // $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
-                // $backNum = $fgPart->back_number;
-                // $qty = 1;
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
 
-                // // create new instance
-                // $client = new Client();
-                // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
+                $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                // Eksekusi permintaan
+                $response = curl_exec($ch);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -278,13 +281,20 @@ class TraceScanController extends Controller
                     ]);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    // $qty = 2;
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 1;
+                    $numbers = [$number1, $number2];
 
-                    // // create new instance
-                    // $client = new Client();
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    foreach ($numbers as $number) {
+                        $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                    
+                        // Ignore SSL verification
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    
+                        // Execute the request
+                        $response = curl_exec($ch);                    
+                    }
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1020,16 +1030,16 @@ class TraceScanController extends Controller
                     $area = substr($line, 0,2);
                     $partCode = substr(array_first($partcodes), 0,2);
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
-                    $qty = 3;
 
-                    // create new instance
-                    //$client = new Client([
-                //'verify' => false, // Temporarily disabling SSL verification
-            //]);
-                    // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                    //foreach ($partcodes as $key => $value){
-                        //$response = $client->get(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
-                   // }
+                    foreach ($partcodes as $key => $value){
+                        $ch = curl_init(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
+                        
+                        // Mengabaikan verifikasi SSL
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    
+                        // Eksekusi permintaan
+                        $response = curl_exec($ch);
+                    }
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1653,13 +1663,17 @@ class TraceScanController extends Controller
                         ]);
 
                         // hit api rts
-                        // $area = substr($line, 0,2);
-                        // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                        // $qty = 1;
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
 
-                        // // create new instance
-                        // $client = new Client();
-                        // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                        $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+                        // Mengabaikan verifikasi SSL
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                        // Eksekusi permintaan
+                        $response = curl_exec($ch);
 
                         DB::commit();
                  } catch (\Throwable $th) {
@@ -1925,18 +1939,20 @@ class TraceScanController extends Controller
                 $scan->save();
 
                 // hit api rts
-                // parse line
                 $area = substr($line, 0,2);
 
                 // get back number
-                // $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
-                // $backNum = $fgPart->back_number;
-                // $qty = 1;
+                $fgPart = avi_trace_program_number::select('back_number')->where('code', $a)->first();
+                $backNum = $fgPart->back_number;
+                $qty = 1;
 
-                // // create new instance
-                // $client = new Client();
-                // // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum .'/'. $qty);
+                $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                // Eksekusi permintaan
+                $response = curl_exec($ch);
 
                 $key = 'machining_'.$user->npk;
                 if (Cache::has($key)) {
@@ -2205,13 +2221,17 @@ class TraceScanController extends Controller
                         ]);
 
                         // hit api rts
-                        // $area = substr($line, 0,2);
-                        // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                        // $qty = 1;
+                        $area = substr($line, 0,2);
+                        $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                        $qty = 1;
 
-                        // // create new instance
-                        // $client = new Client();
-                        // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                        $ch = curl_init(env('API_RTS'). $area .'/'. $backNum .'/'. $qty .'/'. $number);
+
+                        // Mengabaikan verifikasi SSL
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                        // Eksekusi permintaan
+                        $response = curl_exec($ch);
 
                         DB::commit();
                  } catch (\Throwable $th) {
@@ -2361,14 +2381,20 @@ class TraceScanController extends Controller
                     ]);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    // $qty = 2;
+                    $area = substr($line, 0,2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 1;
+                    $numbers = [$number1, $number2];
 
-                    // // create new instance
-                    // $client = new Client();
-                    // // $response = $client->get('http://rts/api/stock-control/'. $area .'/'. $backNum);
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    foreach ($numbers as $number) {
+                        $ch = curl_init(env('API_RTS') . $area . '/' . $backNum . '/' . $qty . '/' . $number);
+                    
+                        // Ignore SSL verification
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    
+                        // Execute the request
+                        $response = curl_exec($ch);                    
+                    }
 
                     DB::commit();
                 } catch (\Throwable $th) {
