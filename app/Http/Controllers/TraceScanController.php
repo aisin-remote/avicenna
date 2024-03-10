@@ -80,7 +80,7 @@ class TraceScanController extends Controller
                 $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
 
                 // Mengabaikan verifikasi SSL
-                // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                $verifyFalse = curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
                 $response = curl_exec($ch);
