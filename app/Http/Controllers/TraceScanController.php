@@ -83,7 +83,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                $resp = curl_exec($ch);
+                curl_exec($ch);
 
                 $key = 'casting_'.$user->npk;
                 if (Cache::has($key)) {
@@ -128,7 +128,6 @@ class TraceScanController extends Controller
 
 
                 // End Fitur
-                dd($arrJSON);
 
                 return $arrJSON;
         }else{
