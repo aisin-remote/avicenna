@@ -129,7 +129,7 @@ class TraceScanController extends Controller
 
                 // End Fitur
 
-                return $response;
+                return array($response);
         }else{
 				// return response()->json($part);      // dev-1.0, Ferry, Commented ganti yg lebih bersih
 	            return array("code" => "");
