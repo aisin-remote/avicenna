@@ -1269,8 +1269,32 @@ class TraceScanController extends Controller
                     'code' => $value->code,
                     'delivery_aiia_at' => $deliveryAt,
                     'kanban' => $kbn_sup
-                ];;
+                ];
             };
+
+            // hit API rts
+            $area = 'PULL';
+            $backNum = null;
+            $first = true;
+            foreach ($dataSends as $value) {
+                if ($first) {
+                    // This part of the code runs only for the first element
+                    $partCode = substr(array_first($value->code), 0, 2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
+
+                    // set to false
+                    $first = false;
+                }
+
+                // Make sure $backNum is defined before this foreach if it's used here
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/1/' . $value->code);
+                
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            }
+            
+            // Eksekusi permintaan
+            $response = curl_exec($ch);
 
             //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
