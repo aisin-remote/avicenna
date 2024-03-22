@@ -18,10 +18,17 @@ class ApiController extends Controller
                     ->where('line', $line)
                     ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
                     ->count();
+
+            // get quantity NG
+            $ngQty = DB::table('avi_trace_ngs')
+                ->where('line', $line)
+                ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
+                ->count();
             
             return response()->json([
                 'line' => $line,
-                'qty' => $dcQty,
+                'ok_qty' => $dcQty,
+                'ng_qty' => $ngQty,
             ],200);
             
         } catch (\Throwable $th) {
