@@ -11,49 +11,38 @@ class ApiController extends Controller
 {
     //
     public function getQty($line,$start_time,$end_time)
-{
-
-        // get quantity NG
-        // $ngQty = DB::table('avi_trace_ngs')
-        // ->where('line', $line)
-        // ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
-        // ->count();
-
+    {
         try {
             // get quantity DC
-            $dcQty = DB::table('avi_trace_trial')
-            ->where('line', $line)
-            ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
-            ->count();
-
-            // $hour = date('H');
+            $dcQty = DB::table('avi_trace_casting')
+                    ->where('line', $line)
+                    ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
+                    ->count();
             
             return response()->json([
-                'line' => 0,
-                // 'ngQty' => $ngQty,
-                'dcQty' => 0,
+                'line' => $line,
+                'qty' => $dcQty,
             ],200);
+            
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
             ],500);
         }
-
-        
     }
 
     public function getNgQty($line,$date){
 
         // get quantity NG
         $ngQty = DB::table('avi_trace_ngs')
-        ->where('line', $line)
-        ->where('date', $date)
-        ->count();
+                ->where('line', $line)
+                ->where('date', $date)
+                ->count();
 
         return response()->json([
             'line' => $line,
             'date' => $date,
-            'ngQty' => $ngQty,
+            'qty' => $ngQty,
         ]);
 
     }
