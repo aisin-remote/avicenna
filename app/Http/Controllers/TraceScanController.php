@@ -1274,20 +1274,16 @@ class TraceScanController extends Controller
 
             // hit API rts
             $area = 'PULL';
-            // foreach ($dataSends as $value) {
-            //     // This part of the code runs only for the first element
-            //     $partCode = substr(array_first($value->code), 0, 2);
-            //     $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
-
-            //     // Make sure $backNum is defined before this foreach if it's used here
-            //     $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/1/' . $value->code);
+            foreach ($dataSends as $value) {
+                // Make sure $backNum is defined before this foreach if it's used here
+                $ch = curl_init(env('API_RTS') . '/PULL/DI02/1/');
                     
-            //     // Mengabaikan verifikasi SSL
-            //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            // }
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            }
             
-            // // Eksekusi permintaan
-            // $response = curl_exec($ch);
+            // Eksekusi permintaan
+            $response = curl_exec($ch);
 
             //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
