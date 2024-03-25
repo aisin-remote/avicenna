@@ -1274,13 +1274,12 @@ class TraceScanController extends Controller
 
             // hit API rts
             $area = 'PULL';
-            foreach ($dataSends as $value) {
-                // Make sure $backNum is defined before this foreach if it's used here
-                $ch = curl_init(env('API_RTS') . '/PULL/DI02/1/');
-                    
-                // Mengabaikan verifikasi SSL
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            }
+            
+            // Make sure $backNum is defined before this foreach if it's used here
+            $ch = curl_init(env('API_RTS') . '/PULL/DI02/3/');
+                
+            // Mengabaikan verifikasi SSL
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             
             // Eksekusi permintaan
             $response = curl_exec($ch);

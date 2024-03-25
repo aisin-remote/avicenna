@@ -21,9 +21,9 @@ class ApiController extends Controller
 
             // get quantity NG
             $ngQty = DB::table('avi_trace_ngs')
-                ->where('line', $line)
-                ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
-                ->count();
+                    ->where('line', $line)
+                    ->whereBetween('created_at', [$start_time .'%', $end_time .'%'])
+                    ->count();
             
             return response()->json([
                 'line' => $line,
