@@ -77,7 +77,7 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                $ch = curl_init(env('API_RTS') . '/' . $area .'/'. $backNum .'/'. $qty .'/'. $number .'/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -283,18 +283,18 @@ class TraceScanController extends Controller
                     // hit api rts
                     $area = substr($line, 0,2);
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    $qty = 1;
+                    $qty = 2;
                     $numbers = [$number1, $number2];
 
-                    foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number);
+                    // foreach ($numbers as $number) {
+                    $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $backNum->back_number . '/' . $qty .'/');
+                
+                    // Ignore SSL verification
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     
-                        // Ignore SSL verification
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                        
-                        // Execute the request
-                        $response = curl_exec($ch);                    
-                    }
+                    // Execute the request
+                    $response = curl_exec($ch);                    
+                    // }
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1031,12 +1031,12 @@ class TraceScanController extends Controller
                     $partCode = substr(array_first($partcodes), 0,2);
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $partCode)->first();
 
-                    foreach ($partcodes as $key => $value){
-                        $ch = curl_init(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/1/'. $value);
-                        
-                        // Mengabaikan verifikasi SSL
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    }
+                    // foreach ($partcodes as $key => $value){
+                    $ch = curl_init(env('API_RTS') .'/'. $area .'/'. $backNum->back_number .'/3/'. $value);
+                    
+                    // Mengabaikan verifikasi SSL
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    // }
                     
                     // Eksekusi permintaan
                     $response = curl_exec($ch);
@@ -1679,7 +1679,7 @@ class TraceScanController extends Controller
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum->back_number .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum->back_number .'/'. $qty .'/'. $number .'/');
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -1958,7 +1958,7 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum .'/'. $qty .'/'. $number);
+                $ch = curl_init(env('API_RTS'). '/'. $area .'/'. $backNum .'/'. $qty .'/'. $number .'/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2237,7 +2237,7 @@ class TraceScanController extends Controller
                         $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                         $qty = 1;
 
-                        $ch = curl_init(env('API_RTS'). '/' . $area .'/'. $back_number .'/'. $qty .'/'. $number);
+                        $ch = curl_init(env('API_RTS'). '/' . $area .'/'. $back_number .'/'. $qty .'/'. $number .'/');
 
                         // Mengabaikan verifikasi SSL
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -2395,18 +2395,18 @@ class TraceScanController extends Controller
                     // hit api rts
                     $area = substr($line, 0,2);
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    $qty = 1;
+                    $qty = 2;
                     $numbers = [$number1, $number2];
 
-                    foreach ($numbers as $number) {
-                        $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $back_number . '/' . $qty . '/' . $number);
+                    // foreach ($numbers as $number) {
+                    $ch = curl_init(env('API_RTS'). '/' . $area . '/' . $back_number . '/' . $qty .'/');
+                
+                    // Ignore SSL verification
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     
-                        // Ignore SSL verification
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                        
-                        // Execute the request
-                        $response = curl_exec($ch);                    
-                    }
+                    // Execute the request
+                    $response = curl_exec($ch);                    
+                    // }
 
                     DB::commit();
                 } catch (\Throwable $th) {
