@@ -12,11 +12,11 @@
 */
 
 // dev-1.1.0, Ferry, 20190103, Tanpa otentikasi
-Route::get('/avicenna/stock/mutation',"Avicenna\StockMutationController@getView");
-Route::get('/avicenna/stock/mutation/ajax/getHeader','Avicenna\StockMutationController@getAjaxHeader');
-Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}','Avicenna\StockMutationController@getAjaxDetailHead');
-Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxFilter');
-Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}','Avicenna\StockMutationController@getAjaxDetailFilter');
+Route::get('/avicenna/stock/mutation', "Avicenna\StockMutationController@getView");
+Route::get('/avicenna/stock/mutation/ajax/getHeader', 'Avicenna\StockMutationController@getAjaxHeader');
+Route::get('/avicenna/stock/mutation/ajax/getDetailHead/{part_number}', 'Avicenna\StockMutationController@getAjaxDetailHead');
+Route::get('/avicenna/stock/mutation/filter/{start_date}/{end_date}', 'Avicenna\StockMutationController@getAjaxFilter');
+Route::get('/avicenna/stock/mutation/ajax/getDetailFilter/{part_number}/{start_date}/{end_date}', 'Avicenna\StockMutationController@getAjaxDetailFilter');
 
 // API
 Route::get('/trace/api/getqty/{line}/{time_start}/{time_end}', 'Avicenna\Api\ApiController@getQty');
@@ -24,7 +24,7 @@ Route::get('/trace/api/getNgQty/{line}/{date}', 'Avicenna\Api\ApiController@getN
 
 // dev-1.1.0, Ferry, 20190103, Dengan otentikasi
 Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
-    //    Route::get('/link1', function ()    {
+	//    Route::get('/link1', function ()    {
 	//        // Uses Auth Middleware
 	//    });
 
@@ -36,12 +36,12 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	//
 
 	// dev-1.0, Ferry, 20170830, Route STOCK OPNAME ===================================================
-	Route::get('opname2',function(){
+	Route::get('opname2', function () {
 		return view('opname.CreateOpname');
 	}); // Dev-10, Alliq, 20170816, Route untuk tampil page stock opname di luar folder adminlte
-	Route::get('/opname',"CreateOpnameController@Opname"); // Dev-10, Alliq, 20170816, Route untuk tampil page stock opname di dalam folder adminlte
-	Route::get('/getajaxpart',"CreateOpnameController@GetAjaxPart");
-	Route::post('/saveopname',"CreateOpnameController@SaveOpname");
+	Route::get('/opname', "CreateOpnameController@Opname"); // Dev-10, Alliq, 20170816, Route untuk tampil page stock opname di dalam folder adminlte
+	Route::get('/getajaxpart', "CreateOpnameController@GetAjaxPart");
+	Route::post('/saveopname', "CreateOpnameController@SaveOpname");
 
 	//
 	// dev-1.0, Ferry, 20170830, Route PIS ============================================================
@@ -53,24 +53,24 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/pis/preview/{img}', 'PisController@PisPreview'); //dev-1.0, 20170926, view
 	Route::get('/pis/edit/{id}', 'PisController@UpdatePis'); //dev-1.0, 20170926, view update pis
 	Route::get('/pis/update/{id}', 'PisController@UpdatePisProses'); //dev-1.0, 20170926, view update pis
-	Route::post('/updatepis','PisController@UpdatePisProses');
-	Route::post('/pis/search','PisController@PisSearch');
+	Route::post('/updatepis', 'PisController@UpdatePisProses');
+	Route::post('/pis/search', 'PisController@PisSearch');
 	Route::get('/pis/getAjaxImage/{image}/{type}/{dock}', 'PisController@getAjaxImage');
 	Route::post('/pis/add', 'PisController@AddNewPis'); //dev-1.0, 20170926, view master pis
 	Route::get('/pis/add', 'PisController@AddNewPis');
 	Route::post('/pis/addpis', 'PisController@addpis');
 	Route::post('/pis/addpart', 'PisController@addpart');
 	Route::get('pis/validasi/', 'PisController@validasi'); //dev-1.0, 20171031, validasi
-	Route::get('/getajaxpartPis','PisController@GetAjaxPartPis');
+	Route::get('/getajaxpartPis', 'PisController@GetAjaxPartPis');
 
 
 	//end of modul pis
 
 	// dev-1.0, Ario, 20171010, Route Part Master
-	Route::get('/part/master','PartController@index');
-	Route::post('/part/master','PartController@AddNewParts');
+	Route::get('/part/master', 'PartController@index');
+	Route::post('/part/master', 'PartController@AddNewParts');
 	Route::get('/part/edit/{id}', 'PartController@UpdateParts'); //dev-1.0, 20170926, view update pis
-	Route::post('/updatepart','PartController@UpdatePartProses');
+	Route::post('/updatepart', 'PartController@UpdatePartProses');
 
 
 
@@ -100,14 +100,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 	// dev-1.0, Handika, 20180702, Route TRACEBILITY =========================================================================
 
-		// view trace product
+	// view trace product
 	Route::get('/trace/view/part', 'ViewTraceController@index');
 	Route::get('/trace/view/part/search/{barcode}', 'ViewTraceController@search');
 	Route::get('/trace/view/part/index', 'ViewTraceController@getAjaxIndex');
 	Route::get('/trace/view/part/{id_product}', 'ViewTraceController@getAjaxData');
 	Route::get('/trace/view/product/{id_product}', 'ViewTraceController@getAjaxProduct');
 
-		//dev-1.1.0, Audi, 20180702 View Trace List
+	//dev-1.1.0, Audi, 20180702 View Trace List
 	Route::get('/trace/view/list', 'TraceListController@index');
 	Route::get('/trace/view/listout', 'TraceListController@indexout');
 	Route::get('/trace/view/filter', 'TraceListController@indexFilter');
@@ -117,19 +117,19 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/view/list/machining', 'TraceListController@getAjaxDataMachining');
 	Route::get('/trace/view/list/assembling', 'TraceListController@getAjaxDataAssembling');
 	Route::get('/trace/view/list/delivery', 'TraceListController@getAjaxDataPulling');
-		// view delivered product
+	// view delivered product
 	Route::get('/trace/view/delivered', 'ViewDeliveryController@index');
 	Route::get('/trace/view/delivered/data', 'ViewDeliveryController@getAjaxData');
 	Route::get('/trace/view/delivered/filter/{date}', 'ViewDeliveryController@getAjaxFilter');
 
 
 
-		//SCAN PART
-		//Casting Dowa
+	//SCAN PART
+	//Casting Dowa
 	Route::get('/trace/scan/casting/dowa', 'TraceScanController@scanCastingDowa');
 	Route::get('/trace/scan/casting/dowa/check-code', 'TraceScanController@checkCodeCastingDowa');
 	Route::get('/trace/scan/casting/dowa/input-code', 'TraceScanController@inputCodeCastingDowa');
-		//Casting
+	//Casting
 	Route::get('/trace/scan/casting/', 'TraceScanController@scancasting');
 
 	// update by fabian 01232023 || part d98e
@@ -142,7 +142,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/casting/index', 'TraceScanController@getAjaxcastingtable');
 	Route::get('/trace/casting/update', 'TraceScanController@getAjaxcastingupdate');
 
-		//NG Casting
+	//NG Casting
 	Route::get('/trace/scan/casting/ng', 'TraceScanController@castingng');
 	Route::get('/trace/scan/casting/ng2', 'TraceScanController@castingng2');
 	Route::get('/trace/scan/casting/getPartNg/{part}', 'TraceScanController@getPartCastingNg');
@@ -150,17 +150,18 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/casting/getLine/{part}', 'TraceScanController@getLineCasting');
 
 
-		//Machining
+	//Machining
 	Route::get('/trace/scan/machining/getAjax/{number}/{line}/{strainer}', 'TraceScanController@getAjaxmachining');
 	Route::get('/trace/scan/machining', 'TraceScanController@scanmachining');
 	Route::get('/trace/machining/index', 'TraceScanController@getAjaxmachiningtable');
 	Route::get('/trace/machining/update', 'TraceScanController@getAjaxmachiningupdate');
-		//FG Machining
+	//FG Machining
 	Route::get('/trace/scan/machining/fg-machining', 'TraceScanController@machiningfg');
+	Route::get('/trace/scan/machining/fg-machining-tmmin', 'TraceScanController@machiningfgtmmin');
 	Route::get('/trace/machining/cek-part', 'TraceScanController@cekCodePart');
 	Route::get('/trace/scan/machining/check-fg/{line}', 'TraceScanController@checkmachiningfg');
 	Route::get('/trace/scan/machining/AjaxFG', 'TraceScanController@getAjaxmachiningfg');
-		//NG FG Machining
+	//NG FG Machining
 	Route::get('/trace/scan/machining/fg-machining-ng', 'TraceScanController@machiningng');
 	Route::get('/trace/scan/machining/fg-machining-ng2/{code}', 'TraceScanController@machiningng2');
 	Route::post('/trace/scan/machining/fg-machining-ng/Ajax', 'TraceScanController@machiningfgngAjax')->name('machining-fg-ng-Ajax');
@@ -171,28 +172,28 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 
 
-		//Delivery Dowa
+	//Delivery Dowa
 	Route::get('/trace/scan/delivery/dowa', 'TraceScanController@scanDeliveryDowa');
 	Route::get('/trace/scan/delivery/dowa/check-code', 'TraceScanController@checkCodeDeliveryDowa');
 	Route::get('/trace/scan/delivery/dowa/input-code', 'TraceScanController@inputCodeDeliveryDowa');
 
 
-		//Delivery D98
+	//Delivery D98
 	Route::get('/trace/scan/delivery/d98', 'TraceScanController@scanDeliveryD98');
 	Route::get('/trace/scan/delivery/d98/check-code', 'TraceScanController@checkCodeDeliveryD98');
 	Route::get('/trace/scan/delivery/d98/input-code', 'TraceScanController@inputCodeDeliveryD98');
 
-		//Torimetron Dowa
+	//Torimetron Dowa
 	Route::get('/trace/scan/torimetron', 'TraceScanController@scanTorimetron');
 	Route::get('/trace/scan/torimetron/check-code', 'TraceScanController@checkCodeTorimetron');
 	Route::get('/trace/scan/torimetron/input-code', 'TraceScanController@inputCodeTorimetron');
-		//Delivery
+	//Delivery
 	Route::get('/trace/scan/delivery', 'TraceScanController@scandelivery');
 	Route::get('/trace/scan/delivery/getAjax/{number}/{wimcycle}/{customer}', 'TraceScanController@getAjaxdelivery');
 	Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
 	Route::get('/trace/logout', 'Auth\LoginController@logout');
 
-		//NG Delivery
+	//NG Delivery
 	Route::get('/trace/scan/delivery/ng', 'TraceScanController@scandeliveryng');
 	Route::get('/trace/scan/delivery/getAjaxng/{number}', 'TraceScanController@getAjaxdeliveryng');
 	Route::get('/trace/delivery/ng/index', 'TraceScanController@getAjaxdeliveryngtable');
@@ -200,18 +201,19 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 
 
 
-		//Assembling
+	//Assembling
 	Route::get('/trace/scan/assembling/', 'TraceScanController@scanassembling');
 	Route::get('/trace/scan/assembling/getAjax/{number}/{line}', 'TraceScanController@getAjaxassembling');
 	Route::get('/trace/assembling/index', 'TraceScanController@getAjaxassemblingtable');
 	Route::get('/trace/assembling/update', 'TraceScanController@getAjaxassemblingupdate');
 
-		//Assembling-Ariansyah 10/2/2021
+	//Assembling-Ariansyah 10/2/2021
 	Route::get('/trace/scan/assembling/fg-assembling', 'TraceScanController@assemblingfg');
+	Route::get('/trace/scan/assembling/fg-assembling-tmmin', 'TraceScanController@assemblingfgtmmin');
 	Route::get('/trace/assembling/cek-part', 'TraceScanController@cekCodePart2');
 	Route::get('/trace/scan/assembling/check-fg/{line}', 'TraceScanController@checkassemblingfg');
 	Route::get('/trace/scan/assembling/AjaxFG', 'TraceScanController@getAjaxassemblingfg');
-		//NG FG Assembling
+	//NG FG Assembling
 	Route::get('/trace/scan/assembling/fg-assembling-ng', 'TraceScanController@assemblingng');
 	Route::get('/trace/scan/assembling/fg-assembling-ng2/{code}', 'TraceScanController@assemblingng2');
 	Route::get('/trace/scan/assembling/getPartNg/{part}', 'TraceScanController@getPartAssemblingNg');
@@ -223,7 +225,8 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/scan/assembling/AjaxFGDouble', 'TraceScanController@getAjaxassemblingfgDouble');
 
 	// Traceability back office
-		//Traceability Stock
+
+	//Traceability Stock
 	Route::get('/trace/stock/index', 'Avicenna\TraceStockController@index')->name('trace.stock.index');
 	Route::get('/trace/stock/filter/{start}/{end}/{product}', 'Avicenna\TraceStockController@filter')->name('trace.stock.filter');
 
@@ -231,14 +234,14 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/export-collection/generate', 'TraceReportController@exportCollection')->name('trace.export-collection.generate');
 	Route::get('/trace/export-collection/generateKanban', 'TraceReportController@exportCollectionKanban')->name('trace.export-collection.generateKanban');
 
-		//Strainer
+	//Strainer
 	Route::get('/trace/view/strainer', 'Avicenna\StrainerController@index');
 	Route::get('/trace/view/strainer/getData', 'Avicenna\StrainerController@getDataStrainer');
 	Route::get('/trace/view/strainer/create', 'Avicenna\StrainerController@create');
 	Route::get('/trace/view/strainer/delete/{id}', 'Avicenna\StrainerController@destroy');
 	Route::get('/trace/scan/machining/getStrainerMachining/{line}', 'Avicenna\StrainerController@getStrainerMachining');
 
-		//Registrasi Kanban
+	//Registrasi Kanban
 	Route::get('/trace/regis-kanban', 'Avicenna\RegisController@index');
 	Route::get('/trace/regis-kanban/tambah', 'Avicenna\RegisController@tambah')->name('tambah');
 	Route::post('/trace/regis-kanban/tambah-ajax', 'Avicenna\RegisController@tambahAjax')->name('tambah-ajax');
@@ -247,7 +250,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/manual-delivery-view', 'Avicenna\RegisController@manualDeliveryView');
 	Route::post('/manual-delivery', 'Avicenna\RegisController@manualDelivery')->name('manual-delivery');
 
-		//Reset Kanban Part NG
+	//Reset Kanban Part NG
 	Route::get('/reset-kanban-partng-View-MA', 'Avicenna\ResetController@resetngViewMA');
 	Route::post('/reset-kanban-partng-MA', 'Avicenna\ResetController@resetngMA')->name('reset-ng-MA');
 	Route::get('/reset-kanban-partng-View-AS', 'Avicenna\ResetController@resetngViewAS');
@@ -271,28 +274,28 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ok/view/exportData/{area}/{start}/{end}', 'Avicenna\DashboardController@exportData')->name('trace.ng.view.exportData');
 
 
-	
+
 	//end of tracebility ====================================================================================================
 
 
 
 });
 
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    #adminlte_routes
+//Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
+#adminlte_routes
 // });
 
 //Dandori Page===============================================================
-Route::get('/dandori/make/{line_number}','CreateDandoriController@viewpage');
-Route::post('/dandori/make','CreateDandoriController@Create');
-Route::get('/dandori/quantity','CreateDandoriController@GetQuantityRunningModel');
+Route::get('/dandori/make/{line_number}', 'CreateDandoriController@viewpage');
+Route::post('/dandori/make', 'CreateDandoriController@Create');
+Route::get('/dandori/quantity', 'CreateDandoriController@GetQuantityRunningModel');
 //End Dandori Page ============================================================================
 
 //Unit Plant Dashboard=======================================================
-Route::get('/dashboard/unittools','Avicenna\UnitDashboardController@viewpage');
-Route::get('/dashboard/dataunittools','Avicenna\UnitDashboardController@getAjaxData');
-Route::get('/dashboard/datatools/{id_mesin}','Avicenna\UnitDashboardController@getAjaxMesin');
-Route::get('/dashboard/datatools2/{id_mesin}','Avicenna\UnitDashboardController@getAjaxMesin2');
+Route::get('/dashboard/unittools', 'Avicenna\UnitDashboardController@viewpage');
+Route::get('/dashboard/dataunittools', 'Avicenna\UnitDashboardController@getAjaxData');
+Route::get('/dashboard/datatools/{id_mesin}', 'Avicenna\UnitDashboardController@getAjaxMesin');
+Route::get('/dashboard/datatools2/{id_mesin}', 'Avicenna\UnitDashboardController@getAjaxMesin2');
 
 //End Unit Plant Dashboard
 
@@ -328,13 +331,13 @@ Route::get('/trace/reportdetail/assembling', 'TraceReportController@assemblingAj
 Route::get('/trace/reportdetail/delivery', 'TraceReportController@deliveryAjaxdata');
 
 //export detail - Machining
-Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterMachiningDetail');
+Route::get('/trace/reportdetail/list/machining/filter/{start_date}/{end_date}', 'TraceReportController@getAjaxFilterMachiningDetail');
 //export detail - Assembling
-Route::get('/trace/reportdetail/list/assembling/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterAssemblingDetail');
+Route::get('/trace/reportdetail/list/assembling/filter/{start_date}/{end_date}', 'TraceReportController@getAjaxFilterAssemblingDetail');
 //export detail - Casting
-Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterCastingDetail');
+Route::get('/trace/reportdetail/list/casting/filter/{start_date}/{end_date}', 'TraceReportController@getAjaxFilterCastingDetail');
 //export detail - Delivery
-Route::get('/trace/reportdetail/list/delivery/filter/{start_date}/{end_date}','TraceReportController@getAjaxFilterDeliveryDetail');
+Route::get('/trace/reportdetail/list/delivery/filter/{start_date}/{end_date}', 'TraceReportController@getAjaxFilterDeliveryDetail');
 //Export
 Route::get('/trace/report/list/{barcode}', 'TraceReportController@traceviewreport');
 
@@ -344,9 +347,9 @@ Route::get('/tmmin', 'TraceListController@tracepartreport');
 // dev-1.1.0: Ferry, merging test untuk koneksi ke MSSQL
 Route::get('/test', 'HomeController@test');
 
-	// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
-	Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {
+// dev-1.1.0, Ferry, 20190315, Menangani semua IoT
+Route::group(['middleware' => ['auth', 'role.menu', 'role.load'], 'prefix'	=> 'iot'], function () {
 
-		Route::get('/prodplan', 'Avicenna\IoTController@showProdPlan');
-		Route::post('/prodplan', 'Avicenna\IoTController@verifyProdPlan');
-	});
+	Route::get('/prodplan', 'Avicenna\IoTController@showProdPlan');
+	Route::post('/prodplan', 'Avicenna\IoTController@verifyProdPlan');
+});

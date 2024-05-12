@@ -7,7 +7,7 @@
                 <div id="line" class="panel panel-default">
 
                     <span style="font-size : 50px ">
-                        <center> LINE MACHINING <span id="line-display"></span> </center>
+                        <center> LINE ASSEMBLING TMMIN <span id="line-display"></span> </center>
                     </span>
                     <span style="font-size : 30px ">
                         <center> PT AISIN INDONESIA AUTOMOTIVE </center>
@@ -18,15 +18,13 @@
 
         </div>
 
-        <div class="row" id="strainer" hidden>
-            <div class="col-md-12">
-                <div id="strainer-banner" class="panel panel-default">
-                    <span style="font-size : 30px; ">
-                        <center> <span id="strainer-text"></span> </center>
-                    </span>
-                </div>
-            </div>
-        </div>
+        <!-- <div class="row" id="strainer" hidden>
+                    <div class="col-md-12">
+                        <div id="strainer-banner" class="panel panel-default" >
+                            <span style="font-size : 30px; " ><center> <span id="strainer-text"></span> </center>  </span>
+                        </div>
+                    </div>
+                </div> -->
 
         <div class="row">
 
@@ -166,41 +164,12 @@
     <script src="{{ asset('/plugins/moment.min.js') }}"></script>
     <script src="{{ asset('/plugins/daterangepicker.js') }}"></script>
     <script type="text/javascript">
-        // var tablekbn = $('#kanban_int').DataTable({
-        //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-        //     processing: true,
-        //     serverSide: true,
-        //     searching: false,
-        //     paging: false,
-        //     ajax: '{{ url('/trace/machining/indexfgkbn') }}',
-        //     columns: [
-
-        //         {data: 'kbn_int', name: 'kbn_int'},
-
-        //     ],
-
-        // });
-
-        // var tablecode = $('#nopart').DataTable({
-        //     "dom":' <"search"f><"top"l>rt<"bottom"ip><"clear">',
-        //     processing: true,
-        //     serverSide: true,
-        //     searching: false,
-        //     paging: false,
-        //     ajax: '{{ url('/trace/machining/indexfgcode') }}',
-        //     columns: [
-
-        //         {data: 'code', name: 'code'},
-
-        //     ],
-
-        // });
 
         let line = '';
 
         function initApp() {
             let line_number = localStorage.getItem('avi_line_number');
-            let strainer_id = localStorage.getItem('strainer_id');
+            // let strainer_id = localStorage.getItem('strainer_id');
             if (line_number == null || line_number == undefined) {
                 $('#modalLineScan').on('shown.bs.modal', function() {
                     $('#input-line').focus();
@@ -211,33 +180,13 @@
 
                 $('#line-display').text(line_number);
                 line = line_number;
-                //cek strainer
-
-                $.ajax({
-                    type: 'get', // {{-- POST Request --}}
-                    url: "{{ url('/trace/scan/machining/getStrainerMachining') }}" + '/' + line,
-                    _token: "{{ csrf_token() }}",
-                    dataType: 'json', // {{-- Data Type of the Transmit --}}
-                    success: function(data) {
-                        if (data.class != null) {
-                            $('#strainer-banner').addClass(data.class);
-                            $('#strainer-text').text('STRAINER ' + data.customer);
-                            localStorage.setItem('strainer_id', data.id);
-                            $('#strainer').removeAttr('hidden');
-                        } else {
-                            localStorage.setItem('strainer_id', 0);
-                        }
-                    },
-                    error: function(xhr) {}
-                });
-
                 $('#detail_no').focus();
             }
         }
 
 
         function checkDataLocal(barcodecomplete) {
-            let partCode = localStorage.getItem('avi_machining_nopart');
+            let partCode = localStorage.getItem('avi_assembling_nopart');
 
             if (code == "code") {
                 if (barcodecomplete == partCode) {
@@ -251,16 +200,16 @@
         }
 
         function saveDataLocal(code) {
-            let partCode = localStorage.getItem('avi_machining_nopart');
+            let partCode = localStorage.getItem('avi_assembling_nopart');
 
             if (code == 'code') {
-                localStorage.setItem('avi_machining_nopart', code);
+                localStorage.setItem('avi_assembling_nopart', code);
                 $('#nopart').text(code);
                 notifMessege("success", code);
             } else {
                 notifMessege("error", "Parts is Complete, Scan Kanban!");
             }
-            if (localStorage.setItem('avi_machining_nopart') != null) {
+            if (localStorage.setItem('avi_assembling_nopart') != null) {
                 if (sendDataAjax()) {
                     clearLocalStorage();
                 } else {
@@ -272,7 +221,7 @@
 
         function clearLocalStorage() {
 
-            localStorage.removeItem('avi_machining_nopart');
+            localStorage.removeItem('avi_assembling_nopart');
             $('#nopart').text('');
 
         }
@@ -318,7 +267,7 @@
                 }
             });
 
-            $('#nopart').text(localStorage.getItem('avi_machining_nopart'));
+            $('#nopart').text(localStorage.getItem('avi_assembling_nopart'));
 
             $('#detail_no').prop('readonly', true);
 
@@ -335,10 +284,10 @@
                     console.log(barcodecomplete.length);
                     $('#detail_no').val('');
                     if (barcodecomplete.length == 15) {
-                        let strainer_id = localStorage.getItem('strainer_id');
+                        // let strainer_id = localStorage.getItem('strainer_id');
                         $.ajax({
                             type: 'get', // {{-- POST Request --}}
-                            url: "{{ url('/trace/machining/cek-part') }}",
+                            url: "{{ url('/trace/assembling/cek-part') }}",
                             data: {
                                 code: barcodecomplete,
                             },
@@ -367,17 +316,17 @@
                                     $('#detail_no').val(rep2);
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
-                                    localStorage.setItem('avi_machining_nopart', data.code);
+                                    localStorage.setItem('avi_assembling_nopart', data.code);
                                     $('#nopart').text(localStorage.getItem(
-                                        'avi_machining_nopart'));
+                                        'avi_assembling_nopart'));
                                     $('#kanban_int').text("");
                                 }
 
-                                if (data.model_strainer == 0) {
-                                    $('#strainer').attr('hidden', 'true');
-                                } else {
-                                    $('#strainer').removeAttr('hidden');
-                                }
+                                // if (data.model_strainer == 0) {
+                                //     $('#strainer').attr('hidden', 'true');
+                                // } else {
+                                //     $('#strainer').removeAttr('hidden');
+                                // }
                             },
                             error: function(xhr) {
                                 // if (xhr.status) {
@@ -399,15 +348,16 @@
                             }
                         });
 
-                    } else if (barcodecomplete.length == 230) {
-                        let strainer_id = localStorage.getItem('strainer_id');
+                    } else if (barcodecomplete.length == 37) {
+                        console.log(barcodecomplete);
+                        // let strainer_id = localStorage.getItem('strainer_id');
                         $.ajax({
                             type: 'get', // {{-- POST Request --}}
-                            url: "{{ url('/trace/scan/machining/AjaxFG') }}",
+                            url: "{{ url('/trace/scan/assembling/AjaxFG') }}",
                             data: {
-                                code: localStorage.getItem('avi_machining_nopart'),
+                                code: localStorage.getItem('avi_assembling_nopart'),
                                 line: localStorage.getItem('avi_line_number'),
-                                strainer: localStorage.getItem('strainer_id'),
+                                // strainer : localStorage.getItem('strainer_id'),
                                 kbn_int: barcodecomplete,
 
                             },
@@ -472,18 +422,18 @@
                                     $('#detail_no').val(rep2);
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
-                                    localStorage.getItem('avi_machining_nopart', data.code);
+                                    localStorage.getItem('avi_assembling_nopart', data.code);
                                     $('#kanban_int').text(data.kbn_int);
                                     $('#counter').text(data.counter);
 
 
                                 }
 
-                                if (data.model_strainer == 0) {
-                                    $('#strainer').attr('hidden', 'true');
-                                } else {
-                                    $('#strainer').removeAttr('hidden');
-                                }
+                                // if (data.model_strainer == 0) {
+                                //     $('#strainer').attr('hidden', 'true');
+                                // } else {
+                                //     $('#strainer').removeAttr('hidden');
+                                // }
                             },
                             error: function(xhr) {
                                 // if (xhr.status) {
@@ -508,11 +458,14 @@
                     } else if (barcodecomplete.length == 13) {
                         window.location.replace("{{ url('/trace/logout') }}");
 
-                    } else if (barcodecomplete == "NGMODE") {
-                        window.location.replace("{{ url('/trace/scan/machining/fg-machining-ng') }}");
+                    } else if (barcodecomplete == "DOUBLE") {
+                        window.location.replace("{{ url('/trace/scan/assembling/fg-double') }}");
 
-                    } else if (barcodecomplete == "TMMIN") {
-                        window.location.replace("{{ url('/trace/scan/machining/fg-machining-tmmin') }}");
+                    } else if (barcodecomplete == "NGMODE") {
+                        window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-ng') }}");
+
+                    }else if (barcodecomplete == "TMMIN") {
+                        window.location.replace("{{ url('/trace/scan/assembling/fg-assembling') }}");
 
                     } else if (barcodecomplete == "RELOAD") {
                         location.reload();

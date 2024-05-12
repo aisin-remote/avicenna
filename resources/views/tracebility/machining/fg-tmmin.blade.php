@@ -7,7 +7,7 @@
                 <div id="line" class="panel panel-default">
 
                     <span style="font-size : 50px ">
-                        <center> LINE MACHINING <span id="line-display"></span> </center>
+                        <center> LINE MACHINING TMMIN <span id="line-display"></span> </center>
                     </span>
                     <span style="font-size : 30px ">
                         <center> PT AISIN INDONESIA AUTOMOTIVE </center>
@@ -399,7 +399,8 @@
                             }
                         });
 
-                    } else if (barcodecomplete.length == 230) {
+                    } else if (barcodecomplete.length == 37) {
+
                         let strainer_id = localStorage.getItem('strainer_id');
                         $.ajax({
                             type: 'get', // {{-- POST Request --}}
@@ -512,7 +513,7 @@
                         window.location.replace("{{ url('/trace/scan/machining/fg-machining-ng') }}");
 
                     } else if (barcodecomplete == "TMMIN") {
-                        window.location.replace("{{ url('/trace/scan/machining/fg-machining-tmmin') }}");
+                        window.location.replace("{{ url('/trace/scan/machining/fg-machining') }}");
 
                     } else if (barcodecomplete == "RELOAD") {
                         location.reload();

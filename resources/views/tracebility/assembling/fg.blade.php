@@ -492,6 +492,9 @@
                     } else if (barcodecomplete == "NGMODE") {
                         window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-ng') }}");
 
+                    }else if (barcodecomplete == "TMMIN") {
+                        window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-tmmin') }}");
+
                     } else if (barcodecomplete == "RELOAD") {
                         location.reload();
 
