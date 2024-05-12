@@ -1428,12 +1428,14 @@ class TraceScanController extends Controller
                 $today = Carbon::now();
                 $subminutes = Carbon::now()->subMinutes(2);
                 $cekDelivery = avi_trace_delivery::where('created_at', $cek->updated_at)->first();
-                if ($cekDelivery->created_at <= $today && $cekDelivery->created_at >= $subminutes) {
-                    $arrJSON = array(
-                        "code"      => $seri
-                    );
+                if ($cekDelivery) {
+                    if ($cekDelivery->created_at <= $today && $cekDelivery->created_at >= $subminutes) {
+                        $arrJSON = array(
+                            "code"      => $seri
+                        );
 
-                    return $arrJSON;
+                        return $arrJSON;
+                    }
                 } else {
                     return array("code" => "0", "seri" => $seri);
                 }
