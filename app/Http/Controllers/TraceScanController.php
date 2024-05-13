@@ -1435,6 +1435,8 @@ class TraceScanController extends Controller
                         );
 
                         return $arrJSON;
+                    } else {
+                        return array("code" => "0", "seri" => $seri);
                     }
                 } else {
                     return array("code" => "0", "seri" => $seri);
@@ -1639,10 +1641,8 @@ class TraceScanController extends Controller
             if ($isReturn == 0) {
                 return ["code" => "notmatch"];
             }
-
             $cek = avi_trace_kanban::select('code_part')->where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
             if ($cek == null) {
-
                 return ["code" => "notregistered"];
             }
 
