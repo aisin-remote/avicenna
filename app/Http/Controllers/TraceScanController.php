@@ -1693,7 +1693,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1960,7 +1960,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                $response = curl_exec($ch);
+                // $response = curl_exec($ch);
 
                 $key = 'machining_' . $user->npk;
                 if (Cache::has($key)) {
