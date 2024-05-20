@@ -12,30 +12,34 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'v1'], function() {
+
+Route::group(['prefix' => 'v1'], function () {
     Route::group([
         'prefix' => 'auth', 'namespace' => 'Avicenna\Api'
-        ], function () {
+    ], function () {
 
-            Route::post('login', 'AuthController@login');
+        Route::post('login', 'AuthController@login');
 
-            Route::group(['middleware' => 'auth:api'], function() {
-                Route::post('logout', 'AuthController@logout');
-                Route::post('refresh', 'AuthController@refresh');
-            });
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::post('logout', 'AuthController@logout');
+            Route::post('refresh', 'AuthController@refresh');
+        });
     });
 
 
-    Route::group(['middleware' => 'auth:api', 'namespace' => 'Avicenna\Api'], function() {
+    Route::group(['middleware' => 'auth:api', 'namespace' => 'Avicenna\Api'], function () {
         Route::post('torimetron', 'TraceTorimetronController@store');
         Route::get('torimetron', 'TraceTorimetronController@index');
         Route::get('torimetron/{product}', 'TraceTorimetronController@show');
     });
 
-    Route::group(['middleware' => 'auth:api'], function() {
+    Route::group(['middleware' => 'auth:api'], function () {
         // Traceablity Routes
         Route::get('/trace/scan/delivery/getAjax/{seri}/{back_number}/{wimcycle}/{customer}/{npk}', 'TraceScanController@getAjaxdeliveryApi');
         Route::get('/trace/scan/delivery/getAjaxcycle/{code}', 'TraceScanController@getAjaxcycle');
         // End Traceability Routes
     });
+
+
+    Route::get('/trace/scan/delivery/getAjax/{seri}/{back_number}/{wimcycle}/{customer}/{npk}', 'TraceScanController@getAjaxdeliveryApi');
 });
