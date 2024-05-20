@@ -85,7 +85,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                //curl_exec($ch);
+                // curl_exec($ch);
 
                 $key = 'casting_' . $user->npk;
                 if (Cache::has($key)) {
@@ -288,7 +288,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    //$response = curl_exec($ch);
+                    // $response = curl_exec($ch);
                     // }
 
                     DB::commit();
@@ -1042,7 +1042,7 @@ class TraceScanController extends Controller
                     // }
 
                     // Eksekusi permintaan
-                    //$response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1683,13 +1683,17 @@ class TraceScanController extends Controller
                     ]);
 
                     // hit api rts
-                    // $area = substr($line, 0,2);
-                    // $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
-                    // $qty = 1;
+                    $area = substr($line, 0, 2);
+                    $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
+                    $qty = 1;
 
-                    // // create new instance
-                    // $client = new Client();
-                    // $response = $client->get('http://rts.aiia.co.id/api/stock-control/'. $area .'/'. $backNum->back_number .'/'. $qty);
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number . '/');
+
+                    // Mengabaikan verifikasi SSL
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                    // Eksekusi permintaan
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1956,7 +1960,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                //$response = curl_exec($ch);
+                $response = curl_exec($ch);
 
                 $key = 'machining_' . $user->npk;
                 if (Cache::has($key)) {
@@ -2248,7 +2252,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    //$response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
