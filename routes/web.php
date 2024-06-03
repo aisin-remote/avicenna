@@ -267,6 +267,13 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ng/view/exportDataHarpan/{line}/{model}/{dies}/{month}', 'Avicenna\NgController@exportDataHarpan')->name('trace.ng.view.exportDataHarpan');
 	// end update
 
+	// NG Rekap || update by diki 31052024
+	Route::get('/trace/ng/rekap/list', 'Avicenna\RekapNgController@list')->name('trace.ng.rekap.list');
+	Route::post('/trace/ng/rekap/store', 'Avicenna\RekapNgController@store')->name('trace.ng.rekap.store');
+	Route::get('/trace/ng/rekap/getData/{programnumber}/{dies}/{line}/{area}/{date}', 'Avicenna\RekapNgController@getData')->name('trace.ng.rekap.getData');
+	Route::get('/trace/ng/rekap/getDataChart', 'Avicenna\RekapNgController@getDataChart')->name('trace.ng.rekap.getDataChart');
+	// end update
+
 	// OK Master
 	Route::get('/trace/ok/view', 'Avicenna\DashboardController@index')->name('trace.ng.view');
 	Route::get('/trace/ok/view/getData/{area}/{start}/{end}', 'Avicenna\DashboardController@getData')->name('trace.ng.view.getData');
