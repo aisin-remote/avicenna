@@ -28,9 +28,16 @@ class RekapNgController extends Controller
     {
         // Validasi data input
         // $request->validate([
-        //     'code' => 'required|string|max:255',
+        //     // 'code' => 'required|string|max:255',
         //     // 'id_ng' => 'required|string|max:255',
         // ]);
+        $rekap = avi_trace_rekap_ng::pluck('code');
+        if ($rekap->contains($request->code)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'code sudah ada',
+            ]);
+        }
 
         try {
             // Simpan data ke database
@@ -45,7 +52,7 @@ class RekapNgController extends Controller
             if (is_numeric($monthDigit)) {
                 $month = str_pad($monthDigit, 2, '0', STR_PAD_LEFT);
             } else {
-                $month = 10 + ord(strtoupper($monthDigit)) - ord('A') + 1;
+                $month = 9 + ord(strtoupper($monthDigit)) - ord('A') + 1;
                 $month = str_pad($month, 2, '0', STR_PAD_LEFT);
             }
     
@@ -79,12 +86,12 @@ class RekapNgController extends Controller
 
     public function getData($programnumber, $dies, $line, $area, $date)
     {
-        $date = date('Y-m');
-        $data = avi_trace_rekap_ng::select('*');
+        $now = date('Y-m');
+        $data = avi_trace_rekap_ng::select('*')->orderBy('created_at', 'desc');
 
-        if ($date == 'null') {
-            $data = $data->where('date', 'like', '%' . $date . '%');
-        }
+        // if ($date == 'null') {
+        //     $data = $data->where('date', 'like', '%' . $now . '%');
+        // }
 
         if ($programnumber != 'null') {
             $data = $data->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
@@ -118,12 +125,19 @@ class RekapNgController extends Controller
         $area = $request->area;
         $date = $request->date;
         
-        $data = avi_trace_rekap_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'area', 'date')
-        ->where('code', 'like', $programnumber . $dies . $line .'%')
-        ->where('date', 'like', '%' . $date . '%')
-        ->orderBy('area','desc')
-        ->groupBy('area')
-        ->get();
+        $query = avi_trace_rekap_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'area')
+        ->orderBy('area', 'asc')
+        ->groupBy('area');
+
+        if ($date !== 'null') {
+            $query->where('date', 'like', '%' . $date . '%');
+        }
+
+        if ($programnumber !== 'null') {
+            $query->where('code', 'like', $programnumber . $dies . $line .'%');
+        }
+    
+        $data = $query->get();
         
         $labelChart = [];
         $valueChart = [];
