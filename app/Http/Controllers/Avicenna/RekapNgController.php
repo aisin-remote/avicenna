@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RekapNgController extends Controller
 {
-    public function list()
+    public function index()
     {
         return view('tracebility.rekap_ng.list');
     }
@@ -110,7 +111,7 @@ class RekapNgController extends Controller
         }
 
         if ($date != 'null') {
-            $data = $data->where('date', 'like', '%' . $date . '%');
+            $data = $data->whereRaw('SUBSTRING(code, 7, 3) = ?',  '20 '. [$date]);
         }
 
         return DataTables::eloquent($data)->make(true);
@@ -159,5 +160,167 @@ class RekapNgController extends Controller
             'labelChart' => $labelChart,
             'valueChart' => $valueChart,
         ];
+    }
+
+    public function exportData($programnumber, $dies, $line, $area, $date)
+    {
+        if ($dies !== 'null') {
+            $filenamedies = '_DIES-' . $dies; 
+        } else {
+            $filenamedies = '';
+        }
+
+        if ($line !== 'null') {
+            $filenameline = '_LINE-DCAA0' . substr($line, 1, 1); 
+        } else {
+            $filenameline = '';
+        }
+
+        if ($area !== 'null') {
+            $filenamearea = '_AREA-' . $area; 
+        } else {
+            $filenamearea = '';
+        }
+
+        if ($date !== 'null') {
+            $filenamedate = '_LOT-' . $date; 
+        } else {
+            $filenamedate = '';
+        }
+
+        // CSH D98E dan CSH D05E
+        if ($programnumber == '07') {
+            Excel::load('/storage/template/Export_Rekap_NG_CSH_D98E.xlsx',  function ($file) use ($programnumber, $dies, $line, $area, $date) {
+                
+                $row = "21";
+                $no = '1';
+                $datas = avi_trace_rekap_ng::orderBy('created_at', 'DESC')->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
+
+                if ($dies !== 'null') {
+                    $datas = $datas->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+                }
+
+                if ($line !== 'null') {
+                    $datas = $datas->whereRaw('SUBSTRING(code, 5, 2) = ?', [$line]);
+                }
+
+                if ($area !== 'null') {
+                    $datas = $datas->where('area', 'like', '%' . $area . '%');
+                }
+                
+                if ($date != 'null') {
+                    $year = substr($date, 2, 2);
+                    $month = substr($date, 5, 2);
+                    if ($month == '10'){
+                        $monthDatas = 'A';
+                    } else if ($month == '11'){
+                        $monthDatas = 'B';
+                    } else if ($month == '12'){
+                        $monthDatas = 'C';
+                    } else {
+                        $monthDatas = ltrim($month, '0'); // Remove leading zero
+                    }
+                    $datas = $datas->whereRaw('SUBSTRING(code, 7, 3) = ?', [$year . $monthDatas]);
+                }
+
+                $datas = $datas->get();
+
+                foreach ($datas as $key => $value) {
+                    $year = '20' . substr($value->code, 6, 2);
+                    $month = $value->code[8];
+                    if ($month === 'A') {
+                        $month = '10';
+                    } elseif ($month === 'B') {
+                        $month = '11';
+                    } elseif ($month === 'C') {
+                        $month = '12';
+                    } elseif ($month >= '1' && $month <= '9') {
+                        $month = '0' . $month;
+                    }
+                    $day = substr($value->code, 9, 2);
+                
+                    $formatted_date = $day . '/' . $month . '/' . $year;
+                
+                    $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
+                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->date);
+                    $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', substr($value->code, 5, 1));
+                    $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', $formatted_date);
+                    $file->setActiveSheetIndex(0)->setCellValue('E' . $row . '', substr($value->code, 2, 2));
+                    $file->setActiveSheetIndex(0)->setCellValue('F' . $row . '', substr($value->code, 12, 3));
+                    $file->setActiveSheetIndex(0)->setCellValue('G' . $row . '', $value->pic);
+                    $file->setActiveSheetIndex(0)->setCellValue('H' . $row . '', $value->area);
+                    
+                    $row++;
+                    $no++;
+                }
+                
+            })->setFilename("REKAP_NG_CSH_D98E" . $filenamedies . $filenameline . $filenamearea . $filenamedate)->export('xlsx');
+        } else if ($programnumber == '08') {
+            Excel::load('/storage/template/Export_Rekap_NG_CSH_D05E.xlsx',  function ($file) use ($programnumber, $dies, $line, $area, $date) {
+                
+                $row = "21";
+                $no = '1';
+                $datas = avi_trace_rekap_ng::orderBy('created_at', 'DESC')->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
+
+                if ($dies !== 'null') {
+                    $datas = $datas->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+                }
+
+                if ($line !== 'null') {
+                    $datas = $datas->whereRaw('SUBSTRING(code, 5, 2) = ?', [$line]);
+                }
+
+                if ($area !== 'null') {
+                    $datas = $datas->where('area', 'like', '%' . $area . '%');
+                }
+                
+                if ($date != 'null') {
+                    $year = substr($date, 2, 2);
+                    $month = substr($date, 5, 2);
+                    if ($month == '10'){
+                        $monthDatas = 'A';
+                    } else if ($month == '11'){
+                        $monthDatas = 'B';
+                    } else if ($month == '12'){
+                        $monthDatas = 'C';
+                    } else {
+                        $monthDatas = ltrim($month, '0'); // Remove leading zero
+                    }
+                    $datas = $datas->whereRaw('SUBSTRING(code, 7, 3) = ?', [$year . $monthDatas]);
+                }
+
+                $datas = $datas->get();
+
+                foreach ($datas as $key => $value) {
+                    $year = '20' . substr($value->code, 6, 2);
+                    $month = $value->code[8];
+                    if ($month === 'A') {
+                        $month = '10';
+                    } elseif ($month === 'B') {
+                        $month = '11';
+                    } elseif ($month === 'C') {
+                        $month = '12';
+                    } elseif ($month >= '1' && $month <= '9') {
+                        $month = '0' . $month;
+                    }
+                    $day = substr($value->code, 9, 2);
+                
+                    $formatted_date = $day . '/' . $month . '/' . $year;
+                
+                    $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
+                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->date);
+                    $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', substr($value->code, 5, 1));
+                    $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', $formatted_date);
+                    $file->setActiveSheetIndex(0)->setCellValue('E' . $row . '', substr($value->code, 2, 2));
+                    $file->setActiveSheetIndex(0)->setCellValue('F' . $row . '', substr($value->code, 12, 3));
+                    $file->setActiveSheetIndex(0)->setCellValue('G' . $row . '', $value->pic);
+                    $file->setActiveSheetIndex(0)->setCellValue('H' . $row . '', $value->area);
+                    
+                    $row++;
+                    $no++;
+                }
+                
+            })->setFilename("REKAP_NG_CSH_D05E" . $filenamedies . $filenameline . $filenamearea . $filenamedate)->export('xlsx');
+        }
     }
 }

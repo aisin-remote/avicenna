@@ -63,6 +63,7 @@
                                     <label for="exampleInputEmail1">Line</label>
                                     <select class="form-control" id="line">
                                         <option value="null">Pilih Line</option>
+                                        <option value="16">DCAA06</option>
                                         <option value="17">DCAA07</option>
                                         <option value="18">DCAA08</option>
                                     </select>
@@ -131,13 +132,13 @@
                                 <div class="form-group">
                                     <div>
                                         <label for="keyMonth">
-                                            <i class='fa fa-calendar'></i>&nbsp;&nbsp;<font face='calibri'><b>Tanggal
-                                                    Produksi</b></font>
+                                            <i class='fa fa-calendar'></i>&nbsp;&nbsp;<font face='calibri'><b>LOT</b>
+                                            </font>
                                         </label>
                                     </div>
                                     <select class="form-control select2" name="keyMonth" id="keyMonth"
                                         style="width: 100%;">
-                                        <option value="null">Pilih Tanggal</option>
+                                        <option value="null">Pilih LOT</option>
                                         @for ($i = 0; $i < 12; $i++)
                                             <option
                                                 value="{{ \Carbon\Carbon::now()->startOfMonth()->subMonths($i)->format('Y-m') }}">
@@ -152,9 +153,9 @@
                             <div class="col-lg-4">
                                 <button type="button" id="btnFilter" class="btn btn-primary"
                                     onclick="filterData()">Filter</button>
-                                {{-- <button type="button" id="btnExport" class="btn btn-success" onclick="exportData()">
+                                <button type="button" id="btnExport" class="btn btn-success" onclick="exportData()">
                                     Export
-                                    To Excel</button> --}}
+                                    To Excel</button>
                             </div>
                         </div>
                     </div>
@@ -166,7 +167,7 @@
                                     <th>No</th>
                                     <th>Part Code</th>
                                     <th>Area NG</th>
-                                    <th>Tanggal Produksi</th>
+                                    <th>LOT</th>
                                     <th>Tanggal Rekap</th>
                                     <th>PIC Rekap</th>
                                 </tr>
@@ -192,6 +193,7 @@
                                     <label for="exampleInputEmail1">Line</label>
                                     <select class="form-control" id="line_chart">
                                         <option value="null">Pilih Line</option>
+                                        <option value="16">DCAA06</option>
                                         <option value="17">DCAA07</option>
                                         <option value="18">DCAA08</option>
                                     </select>
@@ -260,13 +262,13 @@
                                 <div class="form-group">
                                     <div>
                                         <label for="keyMonth">
-                                            <i class='fa fa-calendar'></i>&nbsp;&nbsp;<font face='calibri'><b>Tanggal
-                                                    Produksi</b></font>
+                                            <i class='fa fa-calendar'></i>&nbsp;&nbsp;<font face='calibri'><b>LOT</b>
+                                            </font>
                                         </label>
                                     </div>
                                     <select class="form-control select2" name="keyMonth" id="keyMonth_chart"
                                         style="width: 100%;">
-                                        <option value="null">Pilih Tanggal</option>
+                                        <option value="null">Pilih LOT</option>
                                         @for ($i = 0; $i < 12; $i++)
                                             <option
                                                 value="{{ \Carbon\Carbon::now()->startOfMonth()->subMonths($i)->format('Y-m') }}">
@@ -471,6 +473,8 @@
                         console.error('Error:', error);
                         alert('Error: ' + error.message);
                     });
+
+
             });
         });
     </script>
@@ -553,6 +557,21 @@
             },
         });
 
+        function reloadDataTable() {
+            let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+            let dies = $('#dies').val() ? $('#dies').val() : 'null';
+            let line = $('#line').val() ? $('#line').val() : 'null';
+            let area = $('#area_ng').val() ? $('#area_ng').val() : 'null';
+            let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+
+            table.ajax.url('{{ url('/trace/ng/rekap/getData') }}/' + programnumber + '/' + dies + '/' + line + '/' + area +
+                    '/' + date)
+                .load();
+        }
+
+        // Call reloadDataTable every 5 seconds
+        setInterval(reloadDataTable, 5000);
+
         function filterData() {
 
             // update
@@ -613,52 +632,50 @@
             let line = $('#line').val() ? $('#line').val() : 'null';
             let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
             let dies = $('#dies').val() ? $('#dies').val() : 'null';
-
-            // data_month
+            let area = $('#area_ng').val() ? $('#area_ng').val() : 'null';
             let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+            if (programnumber == "null") {
+                alert('Minimal pilih Program Number');
+                return;
+            }
 
-            location.href = '{{ url('/trace/ng/view/exportData') }}/' + line + '/' + programnumber + '/' + dies + '/' +
-                date;
-        }
-
-
-        function exportDataHarpan() {
-            let line = $('#line').val() ? $('#line').val() : 'null';
-            let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
-            let dies = $('#dies').val() ? $('#dies').val() : 'null';
-
-            // data_month
-            let date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
-
-            location.href = '{{ url('/trace/ng/view/exportDataHarpan') }}/' + line + '/' + programnumber + '/' + dies +
-                '/' + date;
+            location.href = '{{ url('/trace/ng/rekap/exportData') }}/' + programnumber + '/' + dies + '/' + line + '/' +
+                area + '/' + date;
         }
     </script>
     <script>
-        // Lakukan request AJAX untuk mendapatkan data grafik saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', function() {
+        // Function to fetch and update chart data
+        function updateChartData() {
             fetch('/trace/ng/rekap/getDataChart')
                 .then(response => {
-                    // Pastikan respons adalah JSON yang valid
+                    // Ensure the response is valid JSON
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
                 })
                 .then(data => {
-                    // Mengupdate grafik dengan data yang diterima
+                    // Update the chart with the received data
                     myChart.data.labels = data.labelChart;
                     myChart.data.datasets.forEach(dataset => {
                         dataset.data = data.valueChart;
                     });
                     $('#lineChart').text(' Total NG: ' + data.totalLine);
-                    // Memperbarui grafik
+                    // Refresh the chart
                     myChart.update();
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Error: ' + error.message);
                 });
+        }
+
+        // Execute the updateChartData function when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            updateChartData();
         });
+
+        // Call updateChartData every 5 seconds
+        setInterval(updateChartData, 5000);
     </script>
 @endsection

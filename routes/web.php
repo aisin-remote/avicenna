@@ -268,10 +268,11 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	// end update
 
 	// NG Rekap || update by diki 31052024
-	Route::get('/trace/ng/rekap/list', 'Avicenna\RekapNgController@list')->name('trace.ng.rekap.list');
+	Route::get('/trace/ng/rekap/list', 'Avicenna\RekapNgController@index')->name('trace.ng.rekap.list');
 	Route::post('/trace/ng/rekap/store', 'Avicenna\RekapNgController@store')->name('trace.ng.rekap.store');
 	Route::get('/trace/ng/rekap/getData/{programnumber}/{dies}/{line}/{area}/{date}', 'Avicenna\RekapNgController@getData')->name('trace.ng.rekap.getData');
 	Route::get('/trace/ng/rekap/getDataChart', 'Avicenna\RekapNgController@getDataChart')->name('trace.ng.rekap.getDataChart');
+	Route::get('/trace/ng/rekap/exportData/{programnumber}/{dies}/{line}/{area}/{date}', 'Avicenna\RekapNgController@exportData')->name('trace.ng.view.exportData');
 	// end update
 
 	// OK Master
