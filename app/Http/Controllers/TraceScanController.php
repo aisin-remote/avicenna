@@ -1383,11 +1383,10 @@ class TraceScanController extends Controller
 
     public function getAjaxdeliveryApi($seri, $back_number, $wimcycle, $customer, $npk)
     {
-
+        $qty = 0;
         try {
-            $cekMaster = avi_trace_kanban_master::select('id')->where('back_nmr', $back_number)->first();
+            $cekMaster = avi_trace_kanban_master::select('id','back_nmr')->where('back_nmr', $back_number)->first();
             $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
-
             if ($cek->code_part) {
                 DB::beginTransaction();
                 $scan                       = new avi_trace_delivery;
@@ -1399,6 +1398,7 @@ class TraceScanController extends Controller
                 $scan->date                 = date('Y-m-d');
                 $scan->status               = 1;
                 $scan->save();
+                $qty++;
                 if ($cek->code_part_2) {
                     $scan2                       = new avi_trace_delivery;
                     $scan2->code                 = $cek->code_part_2;
@@ -1409,13 +1409,22 @@ class TraceScanController extends Controller
                     $scan2->date                 = date('Y-m-d');
                     $scan2->status               = 1;
                     $scan2->save();
+                    $qty++;
                 }
 
                 $cek->code_part = null;
                 $cek->code_part_2 = null;
                 $cek->save();
 
+                // hit api rts
+                $area = 'PULL';
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $cekMaster->back_nmr . '/' . $qty . '/');
 
+                // Mengabaikan verifikasi SSL
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                // Eksekusi permintaan
+                $response = curl_exec($ch);
 
                 DB::commit();
 
@@ -1448,6 +1457,7 @@ class TraceScanController extends Controller
             return array("code" => "error", "error" => $e->getMessage());
         }
     }
+    
     public function getAjaxcycle($code)
     {
         // dev-1.0.0, Handika, 20180724, cycle
