@@ -1426,6 +1426,9 @@ class TraceScanController extends Controller
                 // Eksekusi permintaan
                 $response = curl_exec($ch);
 
+                // Close the cURL session
+                curl_close($ch);
+
                 DB::commit();
 
                 $arrJSON = array(
