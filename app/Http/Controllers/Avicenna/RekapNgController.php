@@ -36,13 +36,15 @@ class RekapNgController extends Controller
         if ($rekap->contains($request->code)) {
             return response()->json([
                 'success' => false,
-                'message' => 'code sudah ada',
+                'message' => "code $request->code sudah ada",
+                'type' => 'warning',
             ]);
         }
 
         try {
             // Simpan data ke database
             $code = $request->input('code');
+            $area = $request->input('area');
 
             // Extract year, month, and day from the code
             $year = '20' . substr($code, 6, 2); // 7th and 8th digits
@@ -63,7 +65,7 @@ class RekapNgController extends Controller
             // Create new avi_trace_rekap_ng instance and save to the database
             $rekapNg = new avi_trace_rekap_ng();
             $rekapNg->code = $code;
-            $rekapNg->area = $request->input('area');
+            $rekapNg->area = $area;
             $rekapNg->date = $date;
             $rekapNg->pic = Auth::user()->name; // Mengisi kolom pic dengan ID user yang sedang login
             $rekapNg->save();
@@ -71,7 +73,8 @@ class RekapNgController extends Controller
             // Respons JSON jika berhasil
             return response()->json([
                 'success' => true,
-                'message' => 'Data saved successfully',
+                'message' => "Data berhasil ditambahkan dengan code $code pada area $area",
+                'type' => 'success',
             ]);
         } catch (\Exception $e) {
             // Log error untuk debug
@@ -111,7 +114,7 @@ class RekapNgController extends Controller
         }
 
         if ($date != 'null') {
-            $data = $data->whereRaw('SUBSTRING(code, 7, 3) = ?',  '20 '. [$date]);
+            $data = $data->where('date', 'like', '%' . $date . '%');
         }
 
         return DataTables::eloquent($data)->make(true);
@@ -119,46 +122,62 @@ class RekapNgController extends Controller
 
     public function getDataChart(Request $request)
     {
-        // update by fabian 01142023 || chart NG
-        $programnumber = $request->programnumber;
-        $dies = $request->dies;
-        $line = $request->line;
-        $area = $request->area;
-        $date = $request->date;
-        
+        // update by diki 11062024 || chart Rekap NG
+        $line =  $request->line === 'null' ? null : $request->line;
+        $programnumber =  $request->programnumber === 'null' ? null : $request->programnumber;
+        $dies =  $request->dies === 'null' ? null : $request->dies;
+        $date =  $request->date === 'null' ? null : $request->date;
+        $monthName = null;
+
         $query = avi_trace_rekap_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'area')
-        ->orderBy('area', 'asc')
-        ->groupBy('area');
+            ->orderBy('area', 'asc')
+            ->groupBy('area');
 
-        if ($date !== 'null') {
-            $query->where('date', 'like', '%' . $date . '%');
+        if ($programnumber !== null) {
+            $query->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
         }
 
-        if ($programnumber !== 'null') {
-            $query->where('code', 'like', $programnumber . $dies . $line .'%');
+        if ($line !== null) {
+            $query->whereRaw('SUBSTRING(code, 5, 2) = ?', [$line]);
         }
-    
+
+        if ($dies !== null) {
+            $query->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+        }
+
+        if ($date !== null) {
+            if (strlen($date) == 7) { // yyyy-mm
+                $monthName = Carbon::parse($date . '-01')->format('F Y');
+                $query->where('date', 'like', $date . '%');
+            } else {
+                $monthName = Carbon::createFromFormat('Y-m-d', $date)->format('F Y');
+                $query->where('date', 'like', '%' . $date . '%');
+            }
+        } else {
+            // If date is null, filter data for the current month
+            $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
+            $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+            $monthName = Carbon::now()->format('F Y');
+        }
+
         $data = $query->get();
-        
+
         $labelChart = [];
         $valueChart = [];
         $totalLine = 0;
-        
-        foreach ($data as $datum) { 
-            array_push($labelChart, $datum->area);
-            array_push($valueChart, $datum->jumlah_ng);
-            $totalLine = $totalLine + $datum->jumlah_ng;
+
+        foreach ($data as $datum) {
+            $labelChart[] = $datum->area;
+            $valueChart[] = $datum->jumlah_ng;
+            $totalLine += $datum->jumlah_ng;
         }
-        
-        // $line =  $request->line == 'null' ? '' : $request->line;
-        $programnumber =  $request->programnumber == 'null' ? '' : $request->programnumber;
-        $dies =  $request->dies == 'null' ? '' : $request->dies;
-        
+
         return [
             'totalLine' => $totalLine,
-            // 'lineChart' => $line,
             'labelChart' => $labelChart,
             'valueChart' => $valueChart,
+            'monthName' => $monthName,
         ];
     }
 
