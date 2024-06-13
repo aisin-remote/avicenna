@@ -20,6 +20,7 @@
 
 @section('main-content')
     <div class="row">
+
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header">
@@ -27,6 +28,30 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="row">
+                            <div class="col-lg-12">
+                                {{-- @if (session('error'))
+                                    <div id="alert" class="alert alert-danger mt-2">
+                                        {{ session('error') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @elseif (session('warning'))
+                                    <div id="alert" class="alert alert-warning mt-2">
+                                        {{ session('warning') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @elseif (session('success'))
+                                    <div id="alert" class="alert alert-success mt-2">
+                                        {{ session('success') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif --}}
+                            </div>
                             <div class="col-lg-6 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <label for="code">Code</label>
@@ -104,6 +129,9 @@
                                         <option value="17">Die #17</option>
                                         <option value="18">Die #18</option>
                                         <option value="19">Die #19</option>
+                                        <option value="20">Die #20</option>
+                                        <option value="21">Die #21</option>
+                                        <option value="22">Die #22</option>
                                     </select>
                                 </div>
                             </div>
@@ -184,7 +212,8 @@
         <div class="col-xs-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Chart Rekap NG |<span id="lineChart"></span></h3>
+                    <h3 class="box-title">Chart Rekap NG |<span id="lineChart"></span> |<span id="monthChart"></span>
+                    </h3>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="row">
@@ -203,7 +232,7 @@
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Program Number</label>
                                     <select class="form-control select2" id="programnumber_chart">
-                                        <option value="">Pilih Program Number</option>
+                                        <option value="null">Pilih Program Number</option>
                                         <option value="07">CSH D98E</option>
                                         <option value="08">CSH D05E</option>
                                     </select>
@@ -234,6 +263,9 @@
                                         <option value="17">Die #17</option>
                                         <option value="18">Die #18</option>
                                         <option value="19">Die #19</option>
+                                        <option value="20">Die #20</option>
+                                        <option value="21">Die #21</option>
+                                        <option value="22">Die #22</option>
                                     </select>
                                 </div>
                             </div>
@@ -380,10 +412,28 @@
     </script> --}}
 
     <script>
+        function removeAlert() {
+            const errorAlert = document.querySelector('.alert-danger');
+            const successAlert = document.querySelector('.alert-success');
+            if (errorAlert) {
+                errorAlert.remove();
+            }
+            if (successAlert) {
+                successAlert.remove();
+            }
+        }
         document.addEventListener('DOMContentLoaded', function() {
             const codeInput = document.getElementById('code');
             const areaNgInput = document.getElementById('area');
             const submitButton = document.getElementById('submitRekap');
+
+            codeInput.addEventListener('input', function() {
+                removeAlert(); // Menghapus alert error saat input berubah
+            });
+
+            areaNgInput.addEventListener('input', function() {
+                removeAlert(); // Menghapus alert error saat input berubah
+            });
 
             // Set autofocus to code input when the page loads
             codeInput.focus();
@@ -406,12 +456,17 @@
 
             // Handle the submit button click
             submitButton.addEventListener('click', function() {
+                removeAlert();
                 // Ambil nilai dari input fields
                 const code = codeInput.value;
                 const idNg = areaNgInput.value;
 
                 if (!code) {
-                    alert('Mohon isi code.');
+                    $('.col-lg-12').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">Mohon isi code part<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></div>`
+                    );
                     codeInput.value = '';
                     areaNgInput.value = '';
                     // Set autofocus back to the code input
@@ -421,12 +476,71 @@
 
                 // Validasi panjang code harus 15 karakter
                 if (code.length !== 15) {
-                    alert('Code harus terdiri dari 15 karakter.');
+                    $('.col-lg-12').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">Code harus terdiri dari 15 digit<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></div>`
+                    );
                     codeInput.value = '';
                     areaNgInput.value = '';
                     // Set autofocus back to the code input
                     codeInput.focus();
                     return; // Keluar dari fungsi jika panjang code tidak sama dengan 15
+                }
+
+                if (code.substring(0, 2) !== '07' && code.substring(0, 2) !== '08') {
+                    $('.col-lg-12').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">Code ${code} tidak valid<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></div>`
+                    );
+                    codeInput.value = '';
+                    areaNgInput.value = '';
+                    // Set autofocus back to the code input
+                    codeInput.focus();
+                    return; // Keluar dari fungsi jika code kosong
+                }
+
+                // Ambil digit ke-3 dan ke-4 dari kode
+                let digits34 = code.substring(2, 4);
+
+                // Konversi ke integer untuk memeriksa rentang
+                let digits34Int = parseInt(digits34, 10);
+
+                // Periksa apakah digit ke-3 dan ke-4 berada dalam rentang 01-22
+                if (digits34Int < 1 || digits34Int > 22) {
+                    // Tampilkan alert bahwa kode tidak valid
+                    $('.col-lg-12').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">Code ${code} tidak valid<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button></div>`
+                    );
+                    codeInput.value = '';
+                    areaNgInput.value = '';
+                    // Set autofocus back to the code input
+                    codeInput.focus();
+                    return; // Keluar dari fungsi jika kode tidak valid
+                }
+
+                // Ambil digit ke-3 dan ke-4 dari kode
+                let digit56 = code.substring(4, 6);
+
+                // Konversi ke integer untuk memeriksa rentang
+                let digit56Int = parseInt(digit56, 10);
+
+                // Periksa apakah digit ke-3 dan ke-4 berada dalam rentang 01-22
+                if (digit56Int < 11 || digit56Int > 18) {
+                    // Tampilkan alert bahwa kode tidak valid
+                    $('.col-lg-12').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">Code ${code} tidak valid<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button></div>`
+                    );
+                    codeInput.value = '';
+                    areaNgInput.value = '';
+                    // Set autofocus back to the code input
+                    codeInput.focus();
+                    return; // Keluar dari fungsi jika kode tidak valid
                 }
 
                 // Lakukan request AJAX untuk menyimpan data
@@ -464,9 +578,32 @@
                             areaNgInput.value = '';
                             // Set autofocus back to the code input
                             codeInput.focus();
+
+                            $('.col-lg-12').prepend(
+                                `<div id="alert" class="alert alert-success mt-2">${data.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></div>`
+                            );
                         } else {
                             // Tangani kesalahan jika ada
-                            alert('Error: ' + data.message);
+                            // Tangani kesalahan jika ada
+                            codeInput.value = '';
+                            areaNgInput.value = '';
+                            // Set autofocus back to the code input
+                            let alertType = 'danger';
+                            if (data.message === 'code sudah ada') {
+                                alertType = 'warning';
+                            }
+                            // Remove any existing alert
+                            $('#alert').remove();
+                            // Show the alert
+                            $('.col-lg-12').prepend(
+                                `<div id="alert" class="alert alert-${alertType} mt-2">${data.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></div>`
+                            );
+                            // Keep the focus on the code input
+                            codeInput.focus();
                         }
                     })
                     .catch(error => {
@@ -573,7 +710,6 @@
         setInterval(reloadDataTable, 5000);
 
         function filterData() {
-
             // update
             let programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
             let dies = $('#dies').val() ? $('#dies').val() : 'null';
@@ -586,8 +722,14 @@
                 .load();
         }
 
-        function filterDataChart() {
-            // update
+        document.addEventListener('DOMContentLoaded', function() {
+            realoadDataChart(); // Load data when the page is first accessed or refreshed
+        });
+
+        setInterval(realoadDataChart, 5000);
+
+        function realoadDataChart() {
+            // Update
             let programnumber_chart = $('#programnumber_chart').val() ? $('#programnumber_chart').val() : 'null';
             let dies_chart = $('#dies_chart').val() ? $('#dies_chart').val() : 'null';
             let line_chart = $('#line_chart').val() ? $('#line_chart').val() : 'null';
@@ -613,20 +755,44 @@
                         dataset.data = data.valueChart;
                     });
                     $('#lineChart').text(' Total NG: ' + data.totalLine);
+                    $('#monthChart').text(' Bulan: ' + data.monthName);
                     myChart.update();
                 },
             });
         }
 
-        // const exampleLabels = ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'];
-        // const exampleData = [10, 20, 15, 25, 30];
+        function filterDataChart() {
+            // Update
+            let programnumber_chart = $('#programnumber_chart').val() ? $('#programnumber_chart').val() : 'null';
+            let dies_chart = $('#dies_chart').val() ? $('#dies_chart').val() : 'null';
+            let line_chart = $('#line_chart').val() ? $('#line_chart').val() : 'null';
+            let area_ng_chart = $('#area_ng_chart').val() ? $('#area_ng_chart').val() : 'null';
+            let keyMonth_chart = $('#keyMonth_chart').val() ? $('#keyMonth_chart').val() : 'null';
+            myChart.data.datasets[0].data.splice(0, myChart.data.datasets[0].data.length);
 
-        // // Mengganti isi labels dan data pada grafik
-        // myChart.data.labels = exampleLabels;
-        // myChart.data.datasets[0].data = exampleData;
-
-        // // Memperbarui grafik
-        // myChart.update();
+            $.ajax({
+                type: 'get',
+                url: '{{ url('/trace/ng/rekap/getDataChart') }}',
+                dataType: 'json',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    line: line_chart,
+                    date: keyMonth_chart,
+                    programnumber: programnumber_chart,
+                    dies: dies_chart,
+                    area: area_ng_chart,
+                },
+                success: function(data) {
+                    myChart.data.labels = data.labelChart;
+                    myChart.data.datasets.forEach(dataset => {
+                        dataset.data = data.valueChart;
+                    });
+                    $('#lineChart').text(' Total NG: ' + data.totalLine);
+                    $('#monthChart').text(' Bulan: ' + data.monthName);
+                    myChart.update();
+                },
+            });
+        }
 
         function exportData() {
             let line = $('#line').val() ? $('#line').val() : 'null';
@@ -643,39 +809,45 @@
                 area + '/' + date;
         }
     </script>
-    <script>
-        // Function to fetch and update chart data
-        function updateChartData() {
-            fetch('/trace/ng/rekap/getDataChart')
-                .then(response => {
-                    // Ensure the response is valid JSON
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Update the chart with the received data
-                    myChart.data.labels = data.labelChart;
-                    myChart.data.datasets.forEach(dataset => {
-                        dataset.data = data.valueChart;
-                    });
-                    $('#lineChart').text(' Total NG: ' + data.totalLine);
-                    // Refresh the chart
-                    myChart.update();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error: ' + error.message);
-                });
-        }
-
-        // Execute the updateChartData function when the page is loaded
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
-            updateChartData();
-        });
+            let programnumber_chart = $('#programnumber_chart').val() ? $('#programnumber_chart').val() : 'null';
+            let dies_chart = $('#dies_chart').val() ? $('#dies_chart').val() : 'null';
+            let line_chart = $('#line_chart').val() ? $('#line_chart').val() : 'null';
+            let area_ng_chart = $('#area_ng_chart').val() ? $('#area_ng_chart').val() : 'null';
+            let keyMonth_chart = $('#keyMonth_chart').val() ? $('#keyMonth_chart').val() : 'null';
 
-        // Call updateChartData every 5 seconds
-        setInterval(updateChartData, 5000);
-    </script>
+            function updateChartData() {
+                fetch(
+                        `/trace/ng/rekap/getDataChart?line=${line_chart}&date=${keyMonth_chart}&programnumber=${programnumber_chart}&dies=${dies_chart}&area=${area_ng_chart}`)
+                    .then(response => {
+                        // Ensure the response is valid JSON
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update the chart with the received data
+                        myChart.data.labels = data.labelChart;
+                        myChart.data.datasets.forEach(dataset => {
+                            dataset.data = data.valueChart;
+                        });
+                        $('#lineChart').text(' Total NG: ' + data.totalLine);
+                        // Refresh the chart
+                        myChart.update();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error: ' + error.message);
+                    });
+            }
+
+            // Execute the updateChartData function when the page is loaded
+            updateChartData();
+
+            // Call updateChartData every 5 seconds
+            setInterval(updateChartData, 5000);
+        });
+    </script> --}}
 @endsection
