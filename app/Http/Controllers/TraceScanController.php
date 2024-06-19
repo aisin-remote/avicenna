@@ -1035,7 +1035,7 @@ class TraceScanController extends Controller
                     // }
 
                     // foreach ($partcodes as $key => $value){
-                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/3/' . $value);
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/1/' . $value);
 
                     // Mengabaikan verifikasi SSL
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
