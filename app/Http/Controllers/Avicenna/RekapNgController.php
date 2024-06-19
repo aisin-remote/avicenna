@@ -17,7 +17,12 @@ class RekapNgController extends Controller
 {
     public function index()
     {
-        return view('tracebility.rekap_ng.list');
+        $areas = avi_trace_rekap_ng::select('area')
+                ->distinct()
+                ->orderBy('area', 'ASC')
+                ->pluck('area');
+
+        return view('tracebility.rekap_ng.list', compact('areas'));
     }
 
     public function create()
@@ -85,6 +90,60 @@ class RekapNgController extends Controller
                 'success' => false,
                 'message' => 'Failed to save data: ' . $e->getMessage(),
             ]);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        $id = $request->id;
+        $code = $request->code;
+        $area = $request->area;
+        $type = $request->type;
+
+        $avi_trace_rekap_ng = avi_trace_rekap_ng::findOrFail($id);
+
+        if($type == 'edit') 
+        {
+            try{
+                $avi_trace_rekap_ng->update([
+                    'code' => $code,
+                    'area' => $area,
+                ]);
+                return response()->json([
+                    'success' => true,
+                    'message' => "Data berhasil diupdate dengan code $code pada area $area",
+                    'type' => 'success',
+                ]);
+            } catch (\Exception $e) {
+                // Log error untuk debug
+                Log::error('Failed to save data: ' . $e->getMessage());
+
+                // Respons JSON jika terjadi kesalahan
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to save data: ' . $e->getMessage(),
+                ]);
+            }
+        } else if($type == 'delete') 
+        {
+            try{
+                $avi_trace_rekap_ng->delete();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => "Data berhasil dihapus dengan code $code pada area $area",
+                    'type' => 'success',
+                ]);
+            } catch (\Exception $e) {
+                // Log error untuk debug
+                Log::error('Failed to save data: ' . $e->getMessage());
+
+                // Respons JSON jika terjadi kesalahan
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to save data: ' . $e->getMessage(),
+                ]);
+            }
         }
     }
 

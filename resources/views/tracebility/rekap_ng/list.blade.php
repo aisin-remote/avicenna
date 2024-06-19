@@ -140,18 +140,9 @@
                                     <label for="area">Area NG</label>
                                     <select class="form-control" id="area_ng">
                                         <option value="null">Pilih Area NG</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="E">E</option>
-                                        <option value="F">F</option>
-                                        <option value="G">G</option>
-                                        <option value="H">H</option>
-                                        <option value="M6">M6</option>
-                                        <option value="M7">M7</option>
-                                        <option value="M8">M8</option>
-                                        <option value="M10">M10</option>
+                                        @foreach ($areas as $area)
+                                            <option value="{{ $area }}">{{ $area }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -188,7 +179,8 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
-                    <div class="box-body">
+                    <div class="box-body table-responsive">
+                        <div class="alert-avicenna"></div>
                         <table id="tabel_all" class="table table-bordered table-striped" style="width: 100%">
                             <thead>
                                 <tr>
@@ -198,6 +190,7 @@
                                     <th>LOT</th>
                                     <th>Tanggal Rekap</th>
                                     <th>PIC Rekap</th>
+                                    <th>Option</th>
                                 </tr>
                             </thead>
                         </table>
@@ -326,6 +319,62 @@
                         <canvas id="myChart" style="position: relative; height:30vh; width:80vw"></canvas>
                     </div>
                     <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="editModalLabel">Edit Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>Are you sure you want to edit this item?</h5>
+                    <input type="hidden" id="id_edit">
+                    <div class="form-group">
+                        <label for="code_edit">Code :</label>
+                        <input type="text" class="form-control" id="code_edit">
+                    </div>
+                    <div class="form-group">
+                        <label for="area_edit">Area :</label>
+                        <input type="text" class="form-control" id="area_edit">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="btn-edit">Yes, Edit!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="deleteModalLabel">Delete Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <h5>Are you sure you want to delete this item?</h5>
+                    <input type="hidden" id="id_delete">
+                    <div class="form-group">
+                        <label for="code_delete">Code :</label>
+                        <input type="text" class="form-control" id="code_delete" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="area_delete">Area :</label>
+                        <input type="text" class="form-control" id="area_delete" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="btn-delete">Yes, Delete!</button>
                 </div>
             </div>
         </div>
@@ -688,10 +737,138 @@
                     data: 'pic',
                     name: 'pic'
                 },
+                {
+                    data: null,
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return `
+                        <div class="d-flex justify-content-between text-center">
+                            <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-id="${data.id}" data-code="${data.code}" data-area="${data.area}" style="margin-left: 20px;">Edit</button>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="${data.id}" data-code="${data.code}" data-area="${data.area}">Delete</button>
+                        </div>`;
+                    }
+                }
             ],
             language: {
                 search: "Search :"
             },
+        });
+
+        $('#tabel_all tbody').on('click', 'button[data-target="#editModal"]', function() {
+            var id = $(this).data('id');
+            var code = $(this).data('code');
+            var area = $(this).data('area');
+
+            $('#alert').remove();
+
+            $('#editModal #id_edit').val(id);
+            $('#editModal #code_edit').val(code);
+            $('#editModal #area_edit').val(area);
+        });
+
+        $('#btn-edit').on('click', function() {
+            var id = $('#id_edit').val();
+            var code = $('#code_edit').val();
+            var area = $('#area_edit').val();
+
+            $.ajax({
+                url: '{{ url('/trace/ng/rekap/update') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    type: 'edit',
+                    code: code,
+                    area: area
+                },
+                success: function(response) {
+                    // Check if the response is successful
+                    if (response.success) {
+                        // Display the success message
+                        $('.alert-avicenna').prepend(
+                            `<div id="alert" class="alert alert-success mt-2">${response.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>`
+                        );
+                        $('#editModal').modal('hide');
+                        table.ajax.reload(); // Refresh the DataTable
+                    } else {
+                        // Handle the case where success is false
+                        $('.alert-avicenna').prepend(
+                            `<div id="alert" class="alert alert-danger mt-2">${response.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>`
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Optionally handle the error
+                    $('.alert-avicenna').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">An error occurred while updating the item.<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></div>`
+                    );
+                }
+            });
+        });
+
+        $('#tabel_all tbody').on('click', 'button[data-target="#deleteModal"]', function() {
+            var id = $(this).data('id');
+            var code = $(this).data('code');
+            var area = $(this).data('area');
+
+            $('#alert').remove();
+
+            $('#deleteModal #id_delete').val(id);
+            $('#deleteModal #code_delete').val(code);
+            $('#deleteModal #area_delete').val(area);
+        });
+
+        $('#btn-delete').on('click', function() {
+            var id = $('#id_delete').val();
+            var code = $('#code_delete').val();
+            var area = $('#area_delete').val();
+
+            $.ajax({
+                url: '{{ url('/trace/ng/rekap/update') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: id,
+                    type: 'delete',
+                    code: code,
+                    area: area
+                },
+                success: function(response) {
+                    // Check if the response is successful
+                    if (response.success) {
+                        // Display the success message
+                        $('.alert-avicenna').prepend(
+                            `<div id="alert" class="alert alert-success mt-2">${response.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>`
+                        );
+                        $('#deleteModal').modal('hide');
+                        table.ajax.reload(); // Refresh the DataTable
+                    } else {
+                        // Handle the case where success is false
+                        $('.alert-avicenna').prepend(
+                            `<div id="alert" class="alert alert-danger mt-2">${response.message}<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button></div>`
+                        );
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // Optionally handle the error
+                    $('.alert-avicenna').prepend(
+                        `<div id="alert" class="alert alert-danger mt-2">An error occurred while updating the item.<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button></div>`
+                    );
+                }
+            });
         });
 
         function reloadDataTable() {
