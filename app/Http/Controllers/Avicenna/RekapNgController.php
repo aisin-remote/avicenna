@@ -46,12 +46,18 @@ class RekapNgController extends Controller
             ]);
         }
 
-        try {
-            // Simpan data ke database
-            $code = $request->input('code');
-            $area = $request->input('area');
+        $code = $request->input('code');
+        $area = $request->input('area');
 
-            // Extract year, month, and day from the code
+        if ($code == $area) {
+            return response()->json([
+                'success' => false,
+                'message' => "Area tidak valid. Code $code , Area $area",
+                'type' => 'warning',
+            ]);
+        }
+
+        try {
             $year = '20' . substr($code, 6, 2); // 7th and 8th digits
             $monthDigit = substr($code, 8, 1); // 9th digit
             $day = substr($code, 9, 2); // 10th and 11th digits
@@ -169,7 +175,7 @@ class RekapNgController extends Controller
         }
 
         if ($area != 'null') {
-            $data = $data->where('area', 'like', '%' . $area . '%');
+            $data = $data->where('area', 'like', $area);
         }
 
         if ($date != 'null') {

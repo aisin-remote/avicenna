@@ -755,6 +755,16 @@
             },
         });
 
+        $('#line, #programnumber, #dies, #area_ng, #keyMonth').change(function() {
+            line = $('#line').val() ? $('#line').val() : 'null';
+            programnumber = $('#programnumber').val() ? $('#programnumber').val() : 'null';
+            dies = $('#dies').val() ? $('#dies').val() : 'null';
+            area = $('#area_ng').val() ? $('#area_ng').val() : 'null';
+            date = $('#keyMonth').val() ? $('#keyMonth').val() : 'null';
+            table.ajax.url('{{ url('/trace/ng/rekap/getData') }}/' + programnumber + '/' + dies + '/' + line +
+                '/' + area + '/' + date).load();
+        });
+
         $('#tabel_all tbody').on('click', 'button[data-target="#editModal"]', function() {
             var id = $(this).data('id');
             var code = $(this).data('code');
