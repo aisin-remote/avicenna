@@ -320,7 +320,7 @@ class RekapNgController extends Controller
                     $formatted_date = $day . '/' . $month . '/' . $year;
                 
                     $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
-                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->date);
+                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->created_at->format('d/m/Y'));
                     $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', substr($value->code, 5, 1));
                     $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', $formatted_date);
                     $file->setActiveSheetIndex(0)->setCellValue('E' . $row . '', substr($value->code, 2, 2));
@@ -386,7 +386,7 @@ class RekapNgController extends Controller
                     $formatted_date = $day . '/' . $month . '/' . $year;
                 
                     $file->setActiveSheetIndex(0)->setCellValue('A' . $row . '', $no);
-                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->date);
+                    $file->setActiveSheetIndex(0)->setCellValue('B' . $row . '', $value->created_at->format('d/m/Y'));
                     $file->setActiveSheetIndex(0)->setCellValue('C' . $row . '', substr($value->code, 5, 1));
                     $file->setActiveSheetIndex(0)->setCellValue('D' . $row . '', $formatted_date);
                     $file->setActiveSheetIndex(0)->setCellValue('E' . $row . '', substr($value->code, 2, 2));
