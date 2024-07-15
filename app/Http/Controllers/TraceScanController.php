@@ -85,7 +85,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // curl_exec($ch);
+                curl_exec($ch);
 
                 $key = 'casting_' . $user->npk;
                 if (Cache::has($key)) {
@@ -288,7 +288,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
                     // }
 
                     DB::commit();
@@ -1042,7 +1042,7 @@ class TraceScanController extends Controller
                     // }
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1284,7 +1284,7 @@ class TraceScanController extends Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             // Eksekusi permintaan
-            // $response = curl_exec($ch);
+            $response = curl_exec($ch);
 
             //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
@@ -1385,7 +1385,7 @@ class TraceScanController extends Controller
     {
         $qty = 0;
         try {
-            $cekMaster = avi_trace_kanban_master::select('id','back_nmr')->where('back_nmr', $back_number)->first();
+            $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
             $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
             if ($cek->code_part) {
                 DB::beginTransaction();
@@ -1412,19 +1412,22 @@ class TraceScanController extends Controller
                     $qty++;
                 }
 
+                $code = substr($cek->code_part, 0, 2);
+
                 $cek->code_part = null;
                 $cek->code_part_2 = null;
                 $cek->save();
+                $backNum = avi_trace_program_number::select('back_number')->where('code',  $code)->first();
 
                 // hit api rts
                 $area = 'PULL';
-                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $cekMaster->back_nmr . '/' . $qty . '/');
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // $response = curl_exec($ch);
+                $response = curl_exec($ch);
 
                 // Close the cURL session
                 curl_close($ch);
@@ -1438,18 +1441,13 @@ class TraceScanController extends Controller
                 return $arrJSON;
             } else {
                 $today = Carbon::now();
-                $subminutes = Carbon::now()->subMinutes(2);
-                $cekDelivery = avi_trace_delivery::where('created_at', $cek->updated_at)->first();
-                if ($cekDelivery) {
-                    if ($cekDelivery->created_at <= $today && $cekDelivery->created_at >= $subminutes) {
-                        $arrJSON = array(
-                            "code"      => $seri
-                        );
+                $subminutes = Carbon::now()->subMinutes(20);
+                if ($cek->updated_at <= $today && $cek->updated_at >= $subminutes) {
+                    $arrJSON = array(
+                        "code"      => $seri
+                    );
 
-                        return $arrJSON;
-                    } else {
-                        return array("code" => "0", "seri" => $seri);
-                    }
+                    return $arrJSON;
                 } else {
                     return array("code" => "0", "seri" => $seri);
                 }
@@ -1460,7 +1458,7 @@ class TraceScanController extends Controller
             return array("code" => "error", "error" => $e->getMessage());
         }
     }
-    
+
     public function getAjaxcycle($code)
     {
         // dev-1.0.0, Handika, 20180724, cycle
@@ -1706,7 +1704,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1973,7 +1971,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // $response = curl_exec($ch);
+                $response = curl_exec($ch);
 
                 $key = 'machining_' . $user->npk;
                 if (Cache::has($key)) {
@@ -2265,7 +2263,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -2420,7 +2418,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
                     // }
 
                     DB::commit();
