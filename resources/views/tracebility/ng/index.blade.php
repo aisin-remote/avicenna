@@ -396,6 +396,8 @@
             });
         }
 
+        setInterval(realoadDataChart, 5000);
+
         function resetDataChart() {
             // Reset all form fields to 'null'
             $('#programnumber').val('null').trigger('change');
