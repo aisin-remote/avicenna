@@ -82,10 +82,10 @@ class NgController extends Controller
         $date =  $request->date === 'null' ? null : $request->date;
         $monthName = null;
 
-        if ($date !== null){
+        if ($date !== null && $line === null && $programnumber === null && $dies === null) {
             $query = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'line')
-            ->orderBy('line', 'asc')
-            ->groupBy('line');
+                ->orderBy('line', 'asc')
+                ->groupBy('line');
 
             if ($programnumber !== null) {
                 $query->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
@@ -134,7 +134,7 @@ class NgController extends Controller
                 'monthName' => $monthName,
                 'lineName' => "-",
             ];
-        } else if ($line !== null || $programnumber !== null || $dies !== null || $date !== null) {
+        } elseif ($line !== null || $programnumber !== null || $dies !== null || $date !== null) {
             $query = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'avi_trace_ng_masters.name')
                 ->join('avi_trace_ng_masters', 'avi_trace_ngs.id_ng', 'avi_trace_ng_masters.id')
                 ->orderBy('avi_trace_ng_masters.name', 'asc')
@@ -147,11 +147,11 @@ class NgController extends Controller
             if ($line !== null) {
                 $query->where('line', $line);
             }
-
+            
             if ($dies !== null) {
                 $query->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
             }
-
+            
             if ($date !== null) {
                 if (strlen($date) == 7) { // yyyy-mm
                     $monthName = Carbon::parse($date . '-01')->format('F Y');
@@ -240,7 +240,7 @@ class NgController extends Controller
                 'monthName' => $monthName,
                 'lineName' => "Semua Line",
             ];
-        }        
+        }      
     }
     
     /**

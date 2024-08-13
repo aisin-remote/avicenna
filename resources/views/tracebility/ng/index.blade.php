@@ -70,7 +70,7 @@
                                     
                                     $programnumber = avi_trace_program_number::select('code', 'product')->groupBy('code', 'product')->orderBy('code', 'asc')->get(); ?>
                                     <select class="form-control select2" id="programnumber">
-                                        <option value="">-- Pilih Program Number --</option>
+                                        <option value="null">-- Pilih Program Number --</option>
                                         @foreach ($programnumber as $val)
                                             <option value="{{ $val->code }}" id="model">{{ $val->product }}</option>
                                         @endforeach
@@ -128,13 +128,17 @@
                             </div><!-- /.col-lg-6 -->
                         </div><!-- /.row -->
                         <div class="row">
-                            <div class="col-lg-4">
-                                <button type="button" id="btnFilter" class="btn btn-primary"
+                            <div class="col-lg-6">
+                                <button type="button" id="realoadDataChart" class="btn btn-primary"
                                     onclick="realoadDataChart()">Filter
+                                    Chart</button>
+                                <button type="button" id="resetDataChart" class="btn btn-danger"
+                                    onclick="resetDataChart()">Reset
                                     Chart</button>
                                 <button type="button" id="btnExport" class="btn btn-success" onclick="exportData()"> Export
                                     To Excel</button>
-                                <button type="button" id="btnExport" class="btn btn-success" onclick="exportDataHarpan()">
+                                <button type="button" id="btnExport" class="btn btn-success"
+                                    onclick="exportDataHarpan()">
                                     Export Pak Harpan</button>
                             </div>
                         </div>
@@ -390,6 +394,29 @@
                     myChart.update();
                 },
             });
+        }
+
+        function resetDataChart() {
+            // Reset all form fields to 'null'
+            $('#programnumber').val('null').trigger('change');
+            $('#dies').val('null').trigger('change');
+            $('#line').val('null').trigger('change');
+            $('#keyMonth').val('null').trigger('change');
+            $('#area_ng').val('null').trigger('change');
+
+            // Clear the chart data
+            myChart.data.labels = []; // Clear labels
+            myChart.data.datasets.forEach(dataset => {
+                dataset.data = []; // Clear data
+            });
+
+            // Update chart to reflect the reset state
+            realoadDataChart()
+
+            // Reset text for total NG and month information
+            $('#lineChart').text(' Total NG: 0');
+            $('#monthChart').text(' Bulan: -');
+            $('#lineName').text(' Line: -');
         }
     </script>
     <script>
