@@ -495,6 +495,9 @@
                     }else if (barcodecomplete == "TMMIN") {
                         window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-tmmin') }}");
 
+                    } else if (barcodecomplete == "ADM") {
+                        console.log('tetap');
+
                     } else if (barcodecomplete == "RELOAD") {
                         location.reload();
 

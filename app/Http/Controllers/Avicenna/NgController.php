@@ -9,10 +9,14 @@ use App\Models\Avicenna\avi_trace_ng;
 use App\Models\Avicenna\avi_trace_machining;
 use App\Models\Avicenna\avi_trace_assembling;
 use App\Models\Avicenna\avi_trace_casting;
+use App\Models\Avicenna\avi_trace_rekap_ng;
+
 use Datatables;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
+
 
 class NgController extends Controller
 {
@@ -31,42 +35,212 @@ class NgController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
+    // public function getDataChart(Request $request)
+    // {
+    //     // update by fabian 01142023 || chart NG
+    //     $line = $request->line;
+    //     $date = $request->date;
+    //     $programnumber = $request->programnumber;
+    //     $dies = $request->dies;
+        
+    //     $data = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'id_ng', 'line', 'date')
+    //     ->with('ngdetail')->where('line', $line)
+    //     ->where('code', 'like', $programnumber .$dies .'%')
+    //     ->where('date', 'like', $date . '%')
+    //     ->orderBy('id_ng','desc')
+    //     ->groupBy('id_ng')
+    //     ->get();
+        
+    //     $labelChart = [];
+    //     $valueChart = [];
+    //     $totalLine = 0;
+        
+    //     foreach ($data as $datum) { 
+    //         array_push($labelChart, $datum->ngdetail->name);
+    //         array_push($valueChart, $datum->jumlah_ng);
+    //         $totalLine = $totalLine + $datum->jumlah_ng;
+    //     }
+        
+    //     $line =  $request->line == 'null' ? '' : $request->line;
+    //     $programnumber =  $request->programnumber == 'null' ? '' : $request->programnumber;
+    //     $dies =  $request->dies == 'null' ? '' : $request->dies;
+        
+    //     return [
+    //         'totalLine' => $totalLine,
+    //         'lineChart' => $line,
+    //         'labelChart' => $labelChart,
+    //         'valueChart' => $valueChart,
+    //     ];
+    // }
+
     public function getDataChart(Request $request)
     {
-        // update by fabian 01142023 || chart NG
-        $line = $request->line;
-        $date = $request->date;
-        $programnumber = $request->programnumber;
-        $dies = $request->dies;
-        
-        $data = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'id_ng', 'line', 'date')
-        ->with('ngdetail')->where('line', $line)
-        ->where('code', 'like', $programnumber .$dies .'%')
-        ->where('date', 'like', $date . '%')
-        ->orderBy('id_ng','desc')
-        ->groupBy('id_ng')
-        ->get();
-        
-        $labelChart = [];
-        $valueChart = [];
-        $totalLine = 0;
-        
-        foreach ($data as $datum) { 
-            array_push($labelChart, $datum->ngdetail->name);
-            array_push($valueChart, $datum->jumlah_ng);
-            $totalLine = $totalLine + $datum->jumlah_ng;
-        }
-        
-        $line =  $request->line == 'null' ? '' : $request->line;
-        $programnumber =  $request->programnumber == 'null' ? '' : $request->programnumber;
-        $dies =  $request->dies == 'null' ? '' : $request->dies;
-        
-        return [
-            'totalLine' => $totalLine,
-            'lineChart' => $line,
-            'labelChart' => $labelChart,
-            'valueChart' => $valueChart,
-        ];
+        // update by diki 11062024 || chart Rekap NG
+        $line =  $request->line === 'null' ? null : $request->line;
+        $programnumber =  $request->programnumber === 'null' ? null : $request->programnumber;
+        $dies =  $request->dies === 'null' ? null : $request->dies;
+        $date =  $request->date === 'null' ? null : $request->date;
+        $monthName = null;
+
+        if ($date !== null && $line === null && $programnumber === null && $dies === null) {
+            $query = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'line')
+                ->orderBy('line', 'asc')
+                ->groupBy('line');
+
+            if ($programnumber !== null) {
+                $query->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
+            }
+
+            if ($line !== null) {
+                $query->whereRaw('SUBSTRING(code, 5, 2) = ?', [$line]);
+            }
+
+            if ($dies !== null) {
+                $query->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+            }
+
+            if ($date !== null) {
+                if (strlen($date) == 7) { // yyyy-mm
+                    $monthName = Carbon::parse($date . '-01')->format('F Y');
+                    $query->where('date', 'like', $date . '%');
+                } else {
+                    $monthName = Carbon::createFromFormat('Y-m-d', $date)->format('F Y');
+                    $query->where('date', 'like', '%' . $date . '%');
+                }
+            } else {
+                // If date is null, filter data for the current month
+                $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+                $monthName = Carbon::now()->format('F Y');
+            }
+
+            $data = $query->get();
+
+            $labelChart = [];
+            $valueChart = [];
+            $totalLine = 0;
+
+            foreach ($data as $datum) {
+                $labelChart[] = $datum->line;
+                $valueChart[] = $datum->jumlah_ng;
+                $totalLine += $datum->jumlah_ng;
+            }
+
+            return [
+                'totalLine' => $totalLine,
+                'labelChart' => $labelChart,
+                'valueChart' => $valueChart,
+                'monthName' => $monthName,
+                'lineName' => "-",
+            ];
+        } elseif ($line !== null || $programnumber !== null || $dies !== null || $date !== null) {
+            $query = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'avi_trace_ng_masters.name')
+                ->join('avi_trace_ng_masters', 'avi_trace_ngs.id_ng', 'avi_trace_ng_masters.id')
+                ->orderBy('avi_trace_ng_masters.name', 'asc')
+                ->groupBy('avi_trace_ng_masters.name');
+
+            if ($programnumber !== null) {
+                $query->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
+            }
+
+            if ($line !== null) {
+                $query->where('line', $line);
+            }
+            
+            if ($dies !== null) {
+                $query->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+            }
+            
+            if ($date !== null) {
+                if (strlen($date) == 7) { // yyyy-mm
+                    $monthName = Carbon::parse($date . '-01')->format('F Y');
+                    $query->where('date', 'like', $date . '%');
+                } else {
+                    $monthName = Carbon::createFromFormat('Y-m-d', $date)->format('F Y');
+                    $query->where('date', 'like', '%' . $date . '%');
+                }
+            } else {
+                // If date is null, filter data for the current month
+                $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+                $monthName = Carbon::now()->format('F Y');
+            }
+
+            $data = $query->get();
+
+            $labelChart = [];
+            $valueChart = [];
+            $totalLine = 0;
+            $lineName = 0;
+
+            foreach ($data as $datum) {
+                $labelChart[] = $datum->name;
+                $valueChart[] = $datum->jumlah_ng;
+                $totalLine += $datum->jumlah_ng;
+            }
+
+            return [
+                'totalLine' => $totalLine,
+                'labelChart' => $labelChart,
+                'valueChart' => $valueChart,
+                'monthName' => $monthName,
+                'lineName' => $line,
+            ];
+        } else {
+            $query = avi_trace_ng::select(DB::raw('COUNT(*) as jumlah_ng'), 'line')
+                ->orderBy('line', 'asc')
+                ->groupBy('line');
+
+            if ($programnumber !== null) {
+                $query->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
+            }
+
+            if ($line !== null) {
+                $query->whereRaw('SUBSTRING(code, 5, 2) = ?', [$line]);
+            }
+
+            if ($dies !== null) {
+                $query->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
+            }
+
+            if ($date !== null) {
+                if (strlen($date) == 7) { // yyyy-mm
+                    $monthName = Carbon::parse($date . '-01')->format('F Y');
+                    $query->where('date', 'like', $date . '%');
+                } else {
+                    $monthName = Carbon::createFromFormat('Y-m-d', $date)->format('F Y');
+                    $query->where('date', 'like', '%' . $date . '%');
+                }
+            } else {
+                // If date is null, filter data for the current month
+                $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+                $monthName = Carbon::now()->format('F Y');
+            }
+
+            $data = $query->get();
+
+            $labelChart = [];
+            $valueChart = [];
+            $totalLine = 0;
+
+            foreach ($data as $datum) {
+                $labelChart[] = $datum->line;
+                $valueChart[] = $datum->jumlah_ng;
+                $totalLine += $datum->jumlah_ng;
+            }
+
+            return [
+                'totalLine' => $totalLine,
+                'labelChart' => $labelChart,
+                'valueChart' => $valueChart,
+                'monthName' => $monthName,
+                'lineName' => "Semua Line",
+            ];
+        }      
     }
     
     /**
@@ -74,35 +248,63 @@ class NgController extends Controller
     *
     * @return \Illuminate\Http\Response
     */
-    public function getData($line,$model,$dies,$month)
+    // public function getData($line,$model,$dies,$month)
+    // {
+    //     $date = date('Y-m');
+    //     $data = avi_trace_ng::select('*')->with('ngdetail');
+        
+    //     if ($month == 'null') {
+    //         $data = $data->where('date', 'like', $date .'%');
+    //     }
+        
+    //     if ($month != 'null') {
+    //         $data = $data->where('date', 'like', $month .'%');
+    //     }
+        
+    //     if ($line != 'null') {
+    //         $data = $data->where('line', $line);
+    //     }
+        
+    //     if ($line != 'null') {
+    //         $data = $data->where('line', $line);
+    //     }
+        
+    //     if ($model != 'null') {
+    //         $data = $data->where('code', 'like', $model . $dies .'%');
+    //     }
+        
+    //     return DataTables::eloquent($data)
+    //     ->make(true);
+    // }
+
+    public function getData($programnumber, $dies, $line, $date)
     {
-        
-        $date = date('Y-m');
-        $data = avi_trace_ng::select('*')->with('ngdetail');
-        
-        if ($month == 'null') {
-            $data = $data->where('date', 'like', $date .'%');
+        $now = date('Y-m');
+        $data = avi_trace_ng::select('*')->with('ngdetail')->orderBy('created_at', 'desc');
+
+        // if ($date == 'null') {
+        //     $data = $data->where('date', 'like', '%' . $now . '%');
+        // }
+        if ($programnumber != 'null') {
+            $data = $data->whereRaw('SUBSTRING(code, 1, 2) = ?', [$programnumber]);
         }
-        
-        if ($month != 'null') {
-            $data = $data->where('date', 'like', $month .'%');
+
+        if ($dies != 'null') {
+            $data = $data->whereRaw('SUBSTRING(code, 3, 2) = ?', [$dies]);
         }
-        
+
         if ($line != 'null') {
-            $data = $data->where('line', $line);
+            $data = $data->where('line', 'like', '%' . $line . '%');
         }
-        
-        if ($line != 'null') {
-            $data = $data->where('line', $line);
+
+        if ($date != 'null') {
+            $data = $data->where('date', 'like', '%' . $date . '%');
+        } else {
+            // If no specific date is provided, filter by the current month
+            $data = $data->where('date', 'like', '%' . $now . '%');
         }
-        
-        if ($model != 'null') {
-            $data = $data->where('code', 'like', $model . $dies .'%');
-        }
-        
-        
-        return DataTables::eloquent($data)
-        ->make(true);
+
+        return DataTables::eloquent($data)->make(true);
     }
     
     /**

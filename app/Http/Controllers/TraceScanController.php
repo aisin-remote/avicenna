@@ -1387,6 +1387,25 @@ class TraceScanController extends Controller
         try {
             $cekMaster = avi_trace_kanban_master::select('id', 'back_nmr')->where('back_nmr', $back_number)->first();
             $cek    = avi_trace_kanban::where('no_seri', $seri)->where('master_id', $cekMaster->id)->first();
+
+            if ($back_number == 'AI25' || $back_number == 'BI21' || $back_number == 'BI22') {
+                $scan                       = new avi_trace_delivery;
+                $scan->code                 = '' . date('Y-m-d H:i:s') . '-' . $seri;
+                $scan->cycle                = $wimcycle;
+                $scan->customer             = $customer;
+                $scan->npk                  = $npk;
+                $scan->seri                 = $seri;
+                $scan->date                 = date('Y-m-d');
+                $scan->status               = 1;
+                $scan->save();
+
+                $arrJSON = array(
+                    "code"      => $seri
+                );
+
+                return $arrJSON;
+            }
+
             if ($cek->code_part) {
                 DB::beginTransaction();
                 $scan                       = new avi_trace_delivery;

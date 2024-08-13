@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div id="line" class="panel panel-default">
+                <div id="line" class="panel panel-default" style="background-color: blue; color: white;">
 
                     <span style="font-size : 50px ">
                         <center> LINE MACHINING TMMIN <span id="line-display"></span> </center>
@@ -513,6 +513,9 @@
                         window.location.replace("{{ url('/trace/scan/machining/fg-machining-ng') }}");
 
                     } else if (barcodecomplete == "TMMIN") {
+                        console.log('tidak kemana');
+
+                    } else if (barcodecomplete == "ADM") {
                         window.location.replace("{{ url('/trace/scan/machining/fg-machining') }}");
 
                     } else if (barcodecomplete == "RELOAD") {

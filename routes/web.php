@@ -261,7 +261,7 @@ Route::group(['middleware' => ['auth', 'role.menu', 'role.load']], function () {
 	Route::get('/trace/ng/view', 'Avicenna\NgController@index')->name('trace.ng.view');
 
 	// update by fabian 12272022 || get data by line,model,dies, and month
-	Route::get('/trace/ng/view/getData/{line}/{model}/{dies}/{month}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
+	Route::get('/trace/ng/view/getData/{programnumber}/{dies}/{line}/{date}', 'Avicenna\NgController@getData')->name('trace.ng.view.getData');
 	Route::get('/trace/ng/view/getDataChart', 'Avicenna\NgController@getDataChart')->name('trace.ng.view.getDataChart');
 	Route::get('/trace/ng/view/exportData/{line}/{model}/{dies}/{month}', 'Avicenna\NgController@exportData')->name('trace.ng.view.exportData');
 	Route::get('/trace/ng/view/exportDataHarpan/{line}/{model}/{dies}/{month}', 'Avicenna\NgController@exportDataHarpan')->name('trace.ng.view.exportDataHarpan');
