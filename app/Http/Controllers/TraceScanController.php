@@ -974,6 +974,28 @@ class TraceScanController extends Controller
         $kbn_int = $code['kbn_int'];
 
         $data = avi_dowa_process::select('kbn_int_casting', 'kbn_supply')->where('kbn_int_casting', $kbn_int)->where('kbn_supply', null)->first();
+
+        // CEK APAKAH DIDATABASE SUDAH TERDAFTAR 3 CODE DAN KANBAN
+        $existing_codes = [];
+        foreach ($partcodes as $partcode) {
+            $dataDowa = avi_dowa_process::where('kbn_int_casting', $kbn_int)
+                ->where('code', $partcode)
+                ->first();
+        
+            if ($dataDowa) {
+                $existing_codes[] = $partcode;
+            }
+        }
+
+        if (!empty($existing_codes)) {
+            return [
+                "status" => "success",
+                "messege" => "Data with the following codes and kanban $kbn_int is already registered:",
+                "codes" => $existing_codes
+            ];
+        }
+        // END CEK
+        
         // if ($data->kbn_int_casting != null && $data->kbn_supply == null) {
         //     return array(
         //         "status" => "exist"
@@ -1756,10 +1778,17 @@ class TraceScanController extends Controller
         return view('tracebility/machining/ng', compact('ngName'));
     }
 
+    // public function machiningng2($code)
+    // {
+    //     $ngName = avi_trace_ng_master::select('name', 'id')->get();
+    //     return view('tracebility/machining/ng2', compact('ngName'));
+    // }
+
     public function machiningng2($code)
     {
-        $ngName = avi_trace_ng_master::select('name', 'id')->get();
-        return view('tracebility/machining/ng', compact('ngName'));
+        $ngName = avi_trace_ng_master::select('name')->where('id', $code)->first();
+
+        return view('tracebility/machining/ng2', compact('code', 'ngName'));
     }
 
     /**

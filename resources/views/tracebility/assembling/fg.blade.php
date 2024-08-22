@@ -19,12 +19,12 @@
         </div>
 
         <!-- <div class="row" id="strainer" hidden>
-                    <div class="col-md-12">
-                        <div id="strainer-banner" class="panel panel-default" >
-                            <span style="font-size : 30px; " ><center> <span id="strainer-text"></span> </center>  </span>
-                        </div>
-                    </div>
-                </div> -->
+                            <div class="col-md-12">
+                                <div id="strainer-banner" class="panel panel-default" >
+                                    <span style="font-size : 30px; " ><center> <span id="strainer-text"></span> </center>  </span>
+                                </div>
+                            </div>
+                        </div> -->
 
         <div class="row">
 
@@ -489,10 +489,13 @@
                     } else if (barcodecomplete == "DOUBLE") {
                         window.location.replace("{{ url('/trace/scan/assembling/fg-double') }}");
 
+                    } else if (barcodecomplete.length <= 2) {
+                        window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-ng2/') }}" +
+                            "/" + barcodecomplete);
                     } else if (barcodecomplete == "NGMODE") {
                         window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-ng') }}");
 
-                    }else if (barcodecomplete == "TMMIN") {
+                    } else if (barcodecomplete == "TMMIN") {
                         window.location.replace("{{ url('/trace/scan/assembling/fg-assembling-tmmin') }}");
 
                     } else if (barcodecomplete == "ADM") {

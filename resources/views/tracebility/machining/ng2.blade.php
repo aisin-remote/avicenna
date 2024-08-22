@@ -115,7 +115,7 @@
                     part = $('#code').val();
 
                     if (part == "NGMODE") {
-                        window.location.replace("{{ url('/trace/scan/assembling') }}");
+                        window.location.replace("{{ url('/trace/scan/machining') }}");
                         return;
                     }
 
@@ -167,7 +167,7 @@
         function cekPart(part) {
             $.ajax({
                 type: 'get',
-                url: "{{ url('/trace/scan/assembling/getPartNg') }}" + '/' + part,
+                url: "{{ url('/trace/scan/machining/getPartNg') }}" + '/' + part,
                 dataType: 'json',
                 success: function(data) {
                     let ngcode = "{{ $code }}";
@@ -200,7 +200,7 @@
             let line = localStorage.getItem('avi_line_number');
             $.ajax({
                 type: 'get',
-                url: "{{ url('/trace/scan/assembling/inputPartNg') }}" + '/' + part + '/' + idNg + '/' + line,
+                url: "{{ url('/trace/scan/machining/inputPartNg') }}" + '/' + part + '/' + idNg + '/' + line,
                 dataType: 'json',
                 success: function(data) {
                     if (data.data.status == "error") {
@@ -231,7 +231,7 @@
                             clearInterval(interval);
                             $('#ng').val("");
                             $('#ng').focus();
-                            window.location.replace("{{ url('/trace/scan/assembling/fg-double') }}");
+                            window.location.replace("{{ url('/trace/scan/machining/') }}");
                         }, 1000);
 
                     }
@@ -250,16 +250,16 @@
                     $('#table-here').append(`<div class="col-md-12" id="div${data.line}"></div>`);
                     $('#div' + data.line).append(
                         `<table style="width: 100%; color: white; overflow-y: auto;"><thead><td style="height: 15px" class="text-center" colspan="2">${data.line}</td></thead><tbody id="body${data.line}"></tbody></thead></table>`
-                        );
+                    );
                     for (var i = 0; i < data.counter.length; i++) {
                         console.log(data.counter[i]);
                         $('#body' + data.line).append(
                             `<tr><td style="height: 15px">${data.counter[i].name}</td><td style="height: 15px">${data.counter[i].counter}</td></tr>`
-                            );
+                        );
                     }
                     $('#tbody-ngtotal').append(
                         `<tr><td style="height: 15px; color: white">${data.line}</td><td style="height: 15px">${data.totalPart}</td></tr>`
-                        );
+                    );
                 }
             })
         }

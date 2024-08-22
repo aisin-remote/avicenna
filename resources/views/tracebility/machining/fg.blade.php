@@ -508,6 +508,10 @@
                     } else if (barcodecomplete.length == 13) {
                         window.location.replace("{{ url('/trace/logout') }}");
 
+                    } else if (barcodecomplete.length <= 2) {
+                        window.location.replace("{{ url('/trace/scan/machining/fg-machining-ng2/') }}" +
+                            "/" + barcodecomplete);
+
                     } else if (barcodecomplete == "NGMODE") {
                         window.location.replace("{{ url('/trace/scan/machining/fg-machining-ng') }}");
 

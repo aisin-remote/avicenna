@@ -291,6 +291,20 @@
             let partCode1 = localStorage.getItem('avi_casting_code1');
             let partCode2 = localStorage.getItem('avi_casting_code2');
             let partCode3 = localStorage.getItem('avi_casting_code3');
+
+            // Jika ada kode yang sama, hapus kode yang ada di partCode2 atau partCode3
+            if (partCode1 === partCode2) {
+                localStorage.removeItem('avi_casting_code2');
+                $('#code2').text('');
+                partCode2 = null;
+            }
+
+            if (partCode1 === partCode3) {
+                localStorage.removeItem('avi_casting_code3');
+                $('#code3').text('');
+                partCode3 = null;
+            }
+
             if (type == "code") {
                 if (barcodecomplete == partCode1 || barcodecomplete == partCode2 || barcodecomplete == partCode3) {
                     return false;
