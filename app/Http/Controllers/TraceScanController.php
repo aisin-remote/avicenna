@@ -85,7 +85,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                curl_exec($ch);
+                // curl_exec($ch);
 
                 $key = 'casting_' . $user->npk;
                 if (Cache::has($key)) {
@@ -288,7 +288,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
                     // }
 
                     DB::commit();
@@ -1042,7 +1042,7 @@ class TraceScanController extends Controller
                     // }
 
                     // Eksekusi permintaan
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1284,7 +1284,7 @@ class TraceScanController extends Controller
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             // Eksekusi permintaan
-            $response = curl_exec($ch);
+            // $response = curl_exec($ch);
 
             //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
@@ -1446,7 +1446,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                $response = curl_exec($ch);
+                // $response = curl_exec($ch);
 
                 // Close the cURL session
                 curl_close($ch);
@@ -1723,7 +1723,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1990,7 +1990,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                $response = curl_exec($ch);
+                // $response = curl_exec($ch);
 
                 $key = 'machining_' . $user->npk;
                 if (Cache::has($key)) {
@@ -2282,7 +2282,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -2437,7 +2437,7 @@ class TraceScanController extends Controller
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    $response = curl_exec($ch);
+                    // $response = curl_exec($ch);
                     // }
 
                     DB::commit();
