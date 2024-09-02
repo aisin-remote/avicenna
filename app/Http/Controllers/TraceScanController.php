@@ -85,7 +85,7 @@ class TraceScanController extends Controller
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                //curl_exec($ch);
+                // curl_exec($ch);
 
                 $key = 'casting_' . $user->npk;
                 if (Cache::has($key)) {
