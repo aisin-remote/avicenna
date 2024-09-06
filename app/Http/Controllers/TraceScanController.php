@@ -79,14 +79,13 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number . '/');
-                $ch = curl_init(env('API_TES'));
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number . '/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // curl_exec($ch);
+                curl_exec($ch);
 
                 $key = 'casting_' . $user->npk;
                 if (Cache::has($key)) {
@@ -283,14 +282,13 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     // foreach ($numbers as $number) {
-                    // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
-                    $ch = curl_init(env('API_TES'));
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
 
                     // Ignore SSL verification
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
                     // }
 
                     DB::commit();
@@ -1059,15 +1057,14 @@ class TraceScanController extends Controller
                     // }
 
                     // foreach ($partcodes as $key => $value){
-                    // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/1/' . $value);
-                    $ch = curl_init(env('API_TES'));
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/1/' . $value);
 
                     // Mengabaikan verifikasi SSL
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                     // }
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -1303,14 +1300,13 @@ class TraceScanController extends Controller
             $area = 'PULL';
 
             // Make sure $backNum is defined before this foreach if it's used here
-            // $ch = curl_init(env('API_RTS') . '/PULL/DI02/3/');
-            $ch = curl_init(env('API_TES'));
+            $ch = curl_init(env('API_RTS') . '/PULL/DI02/3/');
 
             // Mengabaikan verifikasi SSL
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
             // Eksekusi permintaan
-            // $response = curl_exec($ch);
+            $response = curl_exec($ch);
 
             //SendDataDowa::dispatch($sendJson, Cache::get('dowa_token'));
 
@@ -1466,14 +1462,13 @@ class TraceScanController extends Controller
 
                 // hit api rts
                 $area = 'PULL';
-                // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
-                $ch = curl_init(env('API_TES'));
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // $response = curl_exec($ch);
+                $response = curl_exec($ch);
 
                 // Close the cURL session
                 curl_close($ch);
@@ -1744,14 +1739,13 @@ class TraceScanController extends Controller
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                     $qty = 1;
 
-                    // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number . '/');
-                    $ch = curl_init(env('API_TES'));
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number . '/');
 
                     // Mengabaikan verifikasi SSL
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -2019,14 +2013,13 @@ class TraceScanController extends Controller
                 $backNum = $fgPart->back_number;
                 $qty = 1;
 
-                // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number . '/');
-                $ch = curl_init(env('API_TES'));
+                $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum . '/' . $qty . '/' . $number . '/');
 
                 // Mengabaikan verifikasi SSL
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                 // Eksekusi permintaan
-                // $response = curl_exec($ch);
+                $response = curl_exec($ch);
 
                 $key = 'machining_' . $user->npk;
                 if (Cache::has($key)) {
@@ -2312,14 +2305,13 @@ class TraceScanController extends Controller
                     $backNum = avi_trace_program_number::select('back_number')->where('code',  $numcek)->first();
                     $qty = 1;
 
-                    // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number . '/');
-                    $ch = curl_init(env('API_TES'));
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/' . $number . '/');
 
                     // Mengabaikan verifikasi SSL
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Eksekusi permintaan
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
 
                     DB::commit();
                 } catch (\Throwable $th) {
@@ -2468,14 +2460,13 @@ class TraceScanController extends Controller
                     $numbers = [$number1, $number2];
 
                     // foreach ($numbers as $number) {
-                    // $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
-                    $ch = curl_init(env('API_TES'));
+                    $ch = curl_init(env('API_RTS') . '/' . $area . '/' . $backNum->back_number . '/' . $qty . '/');
 
                     // Ignore SSL verification
                     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
                     // Execute the request
-                    // $response = curl_exec($ch);
+                    $response = curl_exec($ch);
                     // }
 
                     DB::commit();
