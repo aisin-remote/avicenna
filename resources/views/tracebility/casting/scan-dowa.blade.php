@@ -305,6 +305,12 @@
                 partCode3 = null;
             }
 
+            if (partCode2 === partCode3) {
+                localStorage.removeItem('avi_casting_code3');
+                $('#code3').text('');
+                partCode3 = null;
+            }
+
             if (type == "code") {
                 if (barcodecomplete == partCode1 || barcodecomplete == partCode2 || barcodecomplete == partCode3) {
                     return false;
