@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <audio id="myAudio">
+    <source src="{{ asset('polisi.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+    </audio>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -208,6 +212,7 @@
                 notifMessege("success", code);
             } else {
                 notifMessege("error", "Parts is Complete, Scan Kanban!");
+
             }
             if (localStorage.setItem('avi_assembling_nopart') != null) {
                 if (sendDataAjax()) {
@@ -232,6 +237,9 @@
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'ERROR');
                 $('#alert-body').text(messege);
+                console.log('error');
+                $('#myAudio')[0].play();
+
             } else if (type == "success") {
                 $('#alert').removeClass('alert-danger');
                 $('#alert').addClass('alert-success');
@@ -305,6 +313,7 @@
                                     $('#alert-body').text('Data sudah ada');
                                     $('#detail_no').prop('readonly', true);
                                     $('#detail_no').focus();
+                                    $('#myAudio')[0].play();
 
                                 } else {
 
@@ -332,6 +341,7 @@
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
+                                $('#myAudio')[0].play();
 
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
@@ -366,6 +376,7 @@
                             success: function(data) {
                                 code = data.code;
                                 if (code == "") {
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -377,7 +388,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notmatch") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -389,7 +400,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notregistered") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -401,7 +412,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "Kanbannotreset") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -439,7 +450,7 @@
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
-
+                                $('#myAudio')[0].play();
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' +
@@ -482,6 +493,7 @@
                         $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'GAGAL !!');
                         $('#alert-body').text('Mohon Scan Ulang');
                         $('#detail_no').prop('readonly', true);
+                        $('#myAudio')[0].play();
                     }
 
 

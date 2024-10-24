@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <audio id="myAudio">
+        <source src="{{ asset('polisi.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+    </audio>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -279,6 +284,7 @@
 
         function notifMessege(type, messege) {
             if (type == "error") {
+                $('#myAudio')[0].play();
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'ERROR');
@@ -347,6 +353,7 @@
                             success: function(data) {
                                 code = data.code;
                                 if (code == "") {
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -380,6 +387,7 @@
                                 }
                             },
                             error: function(xhr) {
+                                $('#myAudio')[0].play();
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
@@ -416,6 +424,7 @@
                             success: function(data) {
                                 code = data.code;
                                 if (code == "") {
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -427,6 +436,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notmatch") {
+                                    $('#myAudio')[0].play();
 
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
@@ -439,6 +449,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notregistered") {
+                                    $('#myAudio')[0].play();
 
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
@@ -451,6 +462,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "Kanbannotreset") {
+                                    $('#myAudio')[0].play();
 
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
@@ -489,6 +501,7 @@
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
+                                $('#myAudio')[0].play();
 
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
@@ -525,6 +538,7 @@
                         localStorage.clear();
                         location.reload();
                     } else {
+                        $('#myAudio')[0].play();
                         $('#alert').removeClass('alert-success');
                         $('#alert').addClass('alert-danger');
                         $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'GAGAL !!');

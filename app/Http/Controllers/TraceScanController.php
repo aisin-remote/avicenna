@@ -1482,7 +1482,7 @@ class TraceScanController extends Controller
                 return $arrJSON;
             } else {
                 $today = Carbon::now();
-                $subminutes = Carbon::now()->subMinutes(20);
+                $subminutes = Carbon::now()->subMinutes(180);
                 if ($cek->updated_at <= $today && $cek->updated_at >= $subminutes) {
                     $arrJSON = array(
                         "code"      => $seri
