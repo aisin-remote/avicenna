@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<audio id="myAudio">
-    <source src="{{ asset('polisi.mp3') }}" type="audio/mpeg">
+    <audio id="myAudio">
+        <source src="{{ asset('polisi.mp3') }}" type="audio/mpeg">
             Your browser does not support the audio element.
     </audio>
     <div class="container">
