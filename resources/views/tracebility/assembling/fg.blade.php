@@ -261,6 +261,7 @@
 
         function notifMessege(type, messege) {
             if (type == "error") {
+                $('#myAudio')[0].play();
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'ERROR');
@@ -329,6 +330,7 @@
                             success: function(data) {
                                 code = data.code;
                                 if (code == "") {
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -365,7 +367,7 @@
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
-
+                                $('#myAudio')[0].play();
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' +
@@ -398,6 +400,7 @@
                             success: function(data) {
                                 code = data.code;
                                 if (code == "") {
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -409,7 +412,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notmatch") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -421,7 +424,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "notregistered") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -433,7 +436,7 @@
                                     $('#detail_no').focus();
 
                                 } else if (code == "Kanbannotreset") {
-
+                                    $('#myAudio')[0].play();
                                     $('#detail_no').prop('readonly', false);
                                     $('#detail_no').val(barcode);
                                     $('#alert').removeClass('alert-success');
@@ -471,7 +474,7 @@
                                 // if (xhr.status) {
                                 //     location.reload();
                                 // }
-
+                                $('#myAudio')[0].play();
                                 $('#alert').removeClass('alert-success');
                                 $('#alert').addClass('alert-danger');
                                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' +
@@ -512,6 +515,7 @@
                         localStorage.clear();
                         location.reload();
                     } else {
+                        $('#myAudio')[0].play();
                         $('#alert').removeClass('alert-success');
                         $('#alert').addClass('alert-danger');
                         $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'GAGAL !!');

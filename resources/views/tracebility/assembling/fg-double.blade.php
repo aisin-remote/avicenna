@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<audio id="myAudio">
+    <source src="{{ asset('polisi.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+    </audio>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -269,6 +274,7 @@
                         localStorage.clear();
                         location.reload();
                     } else {
+                        $('#myAudio')[0].play();
                         $('#alert').removeClass('alert-success');
                         $('#alert').addClass('alert-danger');
                         $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'GAGAL !!');
@@ -402,6 +408,7 @@
 
         function notifMessege(type, messege) {
             if (type == "error") {
+                $('#myAudio')[0].play();
                 $('#alert').removeClass('alert-success');
                 $('#alert').addClass('alert-danger');
                 $('#alert-header').html('<i class="icon fa fa-warning"></i>' + 'ERROR');
